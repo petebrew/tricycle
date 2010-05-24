@@ -3,7 +3,7 @@ package org.tridas.io.gui;
 import javax.swing.UIManager;
 
 import org.grlea.log.SimpleLogger;
-import org.tridas.io.control.main.MainWindowController;
+import org.tridas.io.gui.control.main.MainWindowController;
 import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.mvc.control.CEvent;
 import org.tridas.io.gui.mvc.control.MVC;

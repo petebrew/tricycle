@@ -1,4 +1,4 @@
-package org.tridas.io.control.main;
+package org.tridas.io.gui.control.main;
 
 import org.tridas.io.gui.mvc.control.CEvent;
 import org.tridas.io.gui.mvc.control.FrontController;
