@@ -1,6 +1,6 @@
 package org.tridas.io.gui.model;
 
-import org.tridas.io.control.main.MainWindowController;
+import org.tridas.io.gui.control.main.MainWindowController;
 
 public class ModelLocator {
 	private static final ModelLocator ml = new ModelLocator();
