@@ -5,9 +5,13 @@ package org.tridas.io.gui.model.main;
 
 import java.io.File;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.event.ListDataListener;
+
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.mvc.model.AbstractModel;
 import org.tridas.io.gui.mvc.model.CloneableArrayList;
+import org.tridas.io.gui.mvc.model.ICloneable;
 
 /**
  * @author daniel
@@ -15,17 +19,24 @@ import org.tridas.io.gui.mvc.model.CloneableArrayList;
  */
 public class MainWindowModel extends AbstractModel {
 	
+	private static final MainWindowModel model = new MainWindowModel();
 	private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
 	
 	private String outputFormat = null;	
 	private String inputFormat = null;
-	
 	private String namingConvention = null;
+
+	private ComboBoxModel namingConventionModel = null;
+	private ComboBoxModel inputFormatModel = null;
+	private ComboBoxModel outputFormatModel = null;
 	
 	private CloneableArrayList<File> inputFiles = new CloneableArrayList<File>();
 	private CloneableArrayList<File> outputFiles = new CloneableArrayList<File>();
 	
 	
+	private MainWindowModel(){
+		
+	}
 
 	/**
 	 * @param outputFormat the outputFormat to set
@@ -77,18 +88,24 @@ public class MainWindowModel extends AbstractModel {
 	}
 
 	/**
-	 * @see org.tridas.io.gui.mvc.model.AbstractModel#revert()
+	 * @see org.tridas.io.gui.mvc.model.AbstractModel#clone()
 	 */
 	@Override
-	protected void revert() {
-		log.info("revert does nothing, this isn't a saving model");
+	public ICloneable clone() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
-	 * @see org.tridas.io.gui.mvc.model.AbstractModel#save()
+	 * @see org.tridas.io.gui.mvc.model.ICloneable#cloneFrom(org.tridas.io.gui.mvc.model.ICloneable)
 	 */
 	@Override
-	protected void save() {
-		log.info("save does nothing, this isn't a saving model");
+	public void cloneFrom(ICloneable argOther) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static MainWindowModel getInstance(){
+		return model;
 	}
 }
