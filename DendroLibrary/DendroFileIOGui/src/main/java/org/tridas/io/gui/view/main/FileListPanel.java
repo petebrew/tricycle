@@ -16,69 +16,76 @@ import javax.swing.SwingConstants;
 
 /**
  * @author Daniel
- *
  */
 public class FileListPanel extends JPanel {
 
-    private JPanel topPanel;
-    private JLabel selectLabel;
-    private JList fileList;
-    private JComboBox inputFormat;
-    private JButton addButton;
-    private JButton selectAllButton;
-    private JButton selectNoneButton;
-    private JButton removeSelectedButton;
-    private JScrollPane scrollPane;
-    private JPanel bottomPanel;
+	private JPanel topPanel;
 
-	public FileListPanel(){
+	private JLabel selectLabel;
+
+	private JList fileList;
+
+	private JComboBox inputFormat;
+
+	private JButton addButton;
+
+	private JButton selectAllButton;
+
+	private JButton selectNoneButton;
+
+	private JButton removeSelectedButton;
+
+	private JScrollPane scrollPane;
+
+	private JPanel bottomPanel;
+
+	public FileListPanel() {
 		initComponents();
 		populateLocale();
 	}
-	
-	public void initComponents(){
-        topPanel = new JPanel();
-        addButton = new JButton();
-        inputFormat = new JComboBox();
-        fileList = new JList();
-        removeSelectedButton = new JButton();
-        selectLabel = new JLabel();
-        selectAllButton = new JButton();
-        selectNoneButton = new JButton();
-        scrollPane = new JScrollPane();
-        bottomPanel = new JPanel();
-        
+
+	public void initComponents() {
+		topPanel = new JPanel();
+		addButton = new JButton();
+		inputFormat = new JComboBox();
+		fileList = new JList();
+		removeSelectedButton = new JButton();
+		selectLabel = new JLabel();
+		selectAllButton = new JButton();
+		selectNoneButton = new JButton();
+		scrollPane = new JScrollPane();
+		bottomPanel = new JPanel();
+
 		setLayout(new BorderLayout());
 
-        topPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+		topPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
-        topPanel.add(addButton);
+		topPanel.add(addButton);
 
-        topPanel.add(inputFormat);
+		topPanel.add(inputFormat);
 
-        add(topPanel, java.awt.BorderLayout.PAGE_START);
-        scrollPane.setViewportView(fileList);
+		add(topPanel, java.awt.BorderLayout.PAGE_START);
+		scrollPane.setViewportView(fileList);
 
-        add(scrollPane, java.awt.BorderLayout.CENTER);
+		add(scrollPane, java.awt.BorderLayout.CENTER);
 
-        bottomPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+		bottomPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
+		bottomPanel.add(removeSelectedButton);
 
-        bottomPanel.add(removeSelectedButton);
+		selectLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		bottomPanel.add(selectLabel);
+		bottomPanel.add(selectAllButton);
+		bottomPanel.add(selectNoneButton);
 
-        selectLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        bottomPanel.add(selectLabel);
-        bottomPanel.add(selectAllButton);
-        bottomPanel.add(selectNoneButton);
-
-        add(bottomPanel, java.awt.BorderLayout.PAGE_END);
+		add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 	}
-	
-	public void populateLocale(){
-    	addButton.setText("Add...");
-    	selectAllButton.setText("All");
-    	selectNoneButton.setText("None");
-    	removeSelectedButton.setText("Remove Selected");
-    	selectLabel.setText("Select:");
+
+	public void populateLocale() {
+		addButton.setText("Add...");
+		selectAllButton.setText("All");
+		selectNoneButton.setText("None");
+		removeSelectedButton.setText("Remove Selected");
+		selectLabel.setText("Select:");
 	}
 }

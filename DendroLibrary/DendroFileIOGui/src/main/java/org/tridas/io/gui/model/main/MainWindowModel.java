@@ -6,7 +6,6 @@ package org.tridas.io.gui.model.main;
 import java.io.File;
 
 import javax.swing.ComboBoxModel;
-import javax.swing.event.ListDataListener;
 
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.mvc.model.AbstractModel;
@@ -15,48 +14,53 @@ import org.tridas.io.gui.mvc.model.ICloneable;
 
 /**
  * @author daniel
- *
  */
 public class MainWindowModel extends AbstractModel {
-	
+
 	private static final MainWindowModel model = new MainWindowModel();
+
 	private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
-	
-	private String outputFormat = null;	
+
+	private String outputFormat = null;
+
 	private String inputFormat = null;
+
 	private String namingConvention = null;
 
 	private ComboBoxModel namingConventionModel = null;
+
 	private ComboBoxModel inputFormatModel = null;
+
 	private ComboBoxModel outputFormatModel = null;
-	
+
 	private CloneableArrayList<File> inputFiles = new CloneableArrayList<File>();
+
 	private CloneableArrayList<File> outputFiles = new CloneableArrayList<File>();
-	
-	
-	private MainWindowModel(){
-		
+
+	private MainWindowModel() {
+
 	}
 
 	/**
-	 * @param outputFormat the outputFormat to set
+	 * @param outputFormat
+	 *            the outputFormat to set
 	 */
 	public void setOutputFormat(String argOutputFormat) {
 		String old = outputFormat;
 		outputFormat = argOutputFormat;
 		firePropertyChange("outputFormat", old, outputFormat);
 	}
-	
+
 	/**
 	 * @return the outputFormat
 	 */
 	public String getOutputFormat() {
 		return outputFormat;
 	}
-	
-	
+
 	/**
-	 * @param inputFormat the inputFormat to set
+	 * @param inputFormat
+	 *            the inputFormat to set
 	 */
 	public void setInputFormat(String argInputFormat) {
 		String old = inputFormat;
@@ -70,9 +74,10 @@ public class MainWindowModel extends AbstractModel {
 	public String getInputFormat() {
 		return inputFormat;
 	}
-	
+
 	/**
-	 * @param namingConvention the namingConvention to set
+	 * @param namingConvention
+	 *            the namingConvention to set
 	 */
 	public void setNamingConvention(String argNamingConvention) {
 		String old = namingConvention;
@@ -88,7 +93,8 @@ public class MainWindowModel extends AbstractModel {
 	}
 
 	/**
-	 * @param namingConventionModel the namingConventionModel to set
+	 * @param namingConventionModel
+	 *            the namingConventionModel to set
 	 */
 	public void setNamingConventionModel(ComboBoxModel namingConventionModel) {
 		this.namingConventionModel = namingConventionModel;
@@ -116,10 +122,10 @@ public class MainWindowModel extends AbstractModel {
 	@Override
 	public void cloneFrom(ICloneable argOther) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	public static MainWindowModel getInstance(){
+
+	public static MainWindowModel getInstance() {
 		return model;
 	}
 }

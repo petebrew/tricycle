@@ -11,45 +11,38 @@
 
 package org.tridas.io.gui.view.main;
 
-import java.awt.Dimension;
-
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 
 import org.tridas.io.gui.model.main.MainWindowModel;
 
 /**
- *
  * @author daniel
  */
 public class MainView extends JFrame {
 
 	private JMenu fileMenu;
+
 	private JMenu helpMenu;
+
 	private JMenuBar menuBar;
+
 	private JMenuItem loadMenuButton;
+
 	private JMenuItem quitMenuButton;
+
 	private JMenuItem aboutMenuButton;
+
 	private JMenuItem saveMenuButton;
+
 	private JTabbedPane tabbedPane;
 
 	private FileListPanel fileList;
+
 	private ConvertPanel convertPanel;
 
 	public final MainWindowModel model = MainWindowModel.getInstance();
@@ -81,13 +74,16 @@ public class MainView extends JFrame {
 
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 
-		loadMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+		loadMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L,
+		                                                     java.awt.event.InputEvent.CTRL_MASK));
 		fileMenu.add(loadMenuButton);
 
-		saveMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+		saveMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
+		                                                     java.awt.event.InputEvent.CTRL_MASK));
 		fileMenu.add(saveMenuButton);
 
-		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q,
+		                                                     java.awt.event.InputEvent.CTRL_MASK));
 		fileMenu.add(quitMenuButton);
 
 		menuBar.add(fileMenu);
@@ -99,7 +95,7 @@ public class MainView extends JFrame {
 		setJMenuBar(menuBar);
 	}
 
-	private void populateLocale(){
+	private void populateLocale() {
 
 		loadMenuButton.setText("Load File");
 		quitMenuButton.setText("Quit");
@@ -109,7 +105,7 @@ public class MainView extends JFrame {
 		helpMenu.setText("Help");
 	}
 
-	private void linkModel(){
+	private void linkModel() {
 
 	}
 }

@@ -7,10 +7,9 @@ import org.tridas.io.TridasIO;
 
 /**
  * @author Daniel
- *
  */
 public class InputFormat {
-	public static String[] getInputFormats(){
+	public static String[] getInputFormats() {
 		return TridasIO.getSupportedReadingFormats();
 	}
 }
