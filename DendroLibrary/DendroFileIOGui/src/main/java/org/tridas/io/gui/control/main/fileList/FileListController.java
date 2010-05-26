@@ -16,15 +16,21 @@ import org.tridas.io.gui.mvc.control.events.ObjectEvent;
  */
 public class FileListController extends FrontController {
 	public static final String REMOVE_SELECTED = "FILE_LIST_REMOVE_SELECTED";
+	public static final String ADD_FILE = "FILE_LIST_ADD_FILE";
 	
 	public FileListController(){
 		registerEventKey(REMOVE_SELECTED, "removeSelected");
+		registerEventKey(ADD_FILE, "addFile");
 	}
 	
 	public void removeSelected(MVCEvent argEvent){
-		ObjectEvent<Set<String>> event = (ObjectEvent<Set<String>>) argEvent;
+		RemoveSelectedEvent event = (RemoveSelectedEvent) argEvent;
 		FileListModel model = FileListModel.getInstance();
 		
-		model.removeInputFiles(event.getObject());
+		model.removeInputFiles(event.getSelectedSet());
+	}
+	
+	public void addFile(MVCEvent argEvent){
+		
 	}
 }
