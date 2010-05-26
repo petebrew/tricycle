@@ -88,6 +88,20 @@ public class MainWindowModel extends AbstractModel {
 	}
 
 	/**
+	 * @param namingConventionModel the namingConventionModel to set
+	 */
+	public void setNamingConventionModel(ComboBoxModel namingConventionModel) {
+		this.namingConventionModel = namingConventionModel;
+	}
+
+	/**
+	 * @return the namingConventionModel
+	 */
+	public ComboBoxModel getNamingConventionModel() {
+		return namingConventionModel;
+	}
+
+	/**
 	 * @see org.tridas.io.gui.mvc.model.AbstractModel#clone()
 	 */
 	@Override
