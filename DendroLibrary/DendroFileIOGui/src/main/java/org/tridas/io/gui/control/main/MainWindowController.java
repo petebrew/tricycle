@@ -15,5 +15,7 @@ public class MainWindowController extends FrontController{
 	
 	public void startup(CEvent argEvent){
 		view = new MainView();
+		view.setVisible(true);
+		view.setDefaultCloseOperation(3);
 	}
 }
