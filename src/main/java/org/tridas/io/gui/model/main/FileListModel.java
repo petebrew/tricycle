@@ -8,11 +8,9 @@ import org.tridas.io.gui.mvc.model.ICloneable;
 
 /**
  * @author Daniel
- *
  */
 public class FileListModel extends AbstractModel {
 
-	
 	/**
 	 * @see org.tridas.io.gui.mvc.model.AbstractModel#clone()
 	 */

@@ -7,10 +7,9 @@ import org.tridas.io.TridasIO;
 
 /**
  * @author Daniel
- *
  */
 public class OutputFormat {
-	public static String[] getOutputFormats(){
+	public static String[] getOutputFormats() {
 		return TridasIO.getSupportedWritingFormats();
 	}
 }

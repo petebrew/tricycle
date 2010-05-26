@@ -6,16 +6,12 @@ public class ModelLocator {
 	private static final ModelLocator ml = new ModelLocator();
 
 	private MainWindowController mainWindowController = new MainWindowController();
-	
-	private ModelLocator(){
-		
+
+	private ModelLocator() {
+
 	}
-	
-	
-	
-	
-	
-	public static ModelLocator getInstance(){
+
+	public static ModelLocator getInstance() {
 		return ml;
 	}
 }

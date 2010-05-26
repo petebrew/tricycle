@@ -5,8 +5,7 @@ package org.tridas.io.gui.enums;
 
 /**
  * @author Daniel
- *
  */
 public enum NamingConvention {
-	NUMERICAL, HEIRARCHICAL, UUID; 
+	NUMERICAL, HEIRARCHICAL, UUID;
 }

@@ -5,10 +5,11 @@ package org.tridas.io.gui.mvc.control;
 
 /**
  * Interface for an event receiver.
+ * 
  * @author daniel
  */
 public interface IEventListener {
-	
+
 	/**
 	 * this is what gets called when an event is dispatched that
 	 * this object was listening for
