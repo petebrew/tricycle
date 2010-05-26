@@ -25,9 +25,12 @@
 package org.tridas.io.gui.mvc.model;
 
 /**
+ * For storing arrays of values, look at {@link CloneableArrayList} for easy
+ * cloning.
+ * 
  * @author Daniel
  */
-public abstract class AbstractDirtyableModel extends AbstractModel implements IDirtyable {
+public abstract class AbstractDirtyableModel extends AbstractModel implements IDirtyable, ICloneable {
 
 	private boolean dirty = false;
 
@@ -90,5 +93,7 @@ public abstract class AbstractDirtyableModel extends AbstractModel implements ID
 	 * Save the clean values from the working/dirty values
 	 */
 	protected abstract void save();
+
+	public abstract ICloneable clone();
 
 }

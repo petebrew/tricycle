@@ -17,5 +17,5 @@ public interface IEventListener {
 	 * @param argEvent
 	 *            event dispatched
 	 */
-	public void eventReceived(final CEvent argEvent);
+	public void eventReceived(final MVCEvent argEvent);
 }

@@ -9,12 +9,12 @@ package org.tridas.io.gui.mvc.control;
  * 
  * @author daniel
  */
-public class CEvent {
+public class MVCEvent {
 	public final String key;
 
 	private volatile boolean propagate = true;
 
-	public CEvent(final String argKey) {
+	public MVCEvent(final String argKey) {
 		key = argKey;
 	}
 

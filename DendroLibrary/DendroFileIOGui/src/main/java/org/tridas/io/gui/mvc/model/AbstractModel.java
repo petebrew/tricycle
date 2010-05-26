@@ -29,8 +29,7 @@ import java.beans.PropertyChangeSupport;
  * <p>
  * Abstract model class, used for storing data and throwing {@link PropertyChangeEvent}s when values
  * are changed. Extending classes should call {@link #firePropertyChange(String, Object, Object)}
- * for this to work. For storing arrays of values, look at {@link CloneableArrayList} for easy
- * cloning.
+ * for this to work.
  * </p>
  * <p>
  * For models that need to keep track of original values versus new values (like a dirtyable model
@@ -43,7 +42,7 @@ import java.beans.PropertyChangeSupport;
  * @see AbstractDirtyableModel
  * @author daniel
  */
-public abstract class AbstractModel implements ICloneable {
+public abstract class AbstractModel {
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	public AbstractModel() {
@@ -84,10 +83,4 @@ public abstract class AbstractModel implements ICloneable {
 		// this handles the rest internally
 		propertyChangeSupport.firePropertyChange(argPropertyName, argOldValue, argNewValue);
 	}
-
-	/**
-	 * @see ICloneable#clone()
-	 */
-	@Override
-	public abstract ICloneable clone();
 }

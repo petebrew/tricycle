@@ -75,15 +75,15 @@ public class MainView extends JFrame {
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 
 		loadMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L,
-		                                                     java.awt.event.InputEvent.CTRL_MASK));
+																java.awt.event.InputEvent.CTRL_MASK));
 		fileMenu.add(loadMenuButton);
 
 		saveMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
-		                                                     java.awt.event.InputEvent.CTRL_MASK));
+																java.awt.event.InputEvent.CTRL_MASK));
 		fileMenu.add(saveMenuButton);
 
 		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q,
-		                                                     java.awt.event.InputEvent.CTRL_MASK));
+																java.awt.event.InputEvent.CTRL_MASK));
 		fileMenu.add(quitMenuButton);
 
 		menuBar.add(fileMenu);

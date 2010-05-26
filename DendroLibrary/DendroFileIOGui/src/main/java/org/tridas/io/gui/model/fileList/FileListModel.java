@@ -1,0 +1,102 @@
+/**
+ * Created on May 25, 2010, 8:18:44 PM
+ */
+package org.tridas.io.gui.model.fileList;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.grlea.log.SimpleLogger;
+import org.tridas.io.gui.mvc.model.AbstractModel;
+import org.tridas.io.gui.mvc.model.CloneableArrayList;
+import org.tridas.io.gui.mvc.model.ICloneable;
+
+/**
+ * @author Daniel
+ */
+public class FileListModel extends AbstractModel {
+	private static final FileListModel model = new FileListModel();
+
+	private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
+
+	private String inputFormat = null;
+
+	private ArrayList<String> inputFiles = new CloneableArrayList<String>();
+
+	private FileListModel() {
+
+	}
+
+	/**
+	 * @param inputFormat
+	 *            the inputFormat to set
+	 */
+	public void setInputFormat(String argInputFormat) {
+		String old = inputFormat;
+		inputFormat = argInputFormat;
+		firePropertyChange("inputFormat", old, inputFormat);
+	}
+
+	/**
+	 * @return the inputFormat
+	 */
+	public String getInputFormat() {
+		return inputFormat;
+	}
+
+	public void addInputFile(String argFile) {
+		if(inputFiles.contains(argFile)){
+			return;
+		}
+		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		inputFiles.add(argFile);
+		firePropertyChange("inputFiles", old, inputFiles.clone());
+	}
+
+	public void addInputFiles(Set<String> argFiles) {
+		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		HashSet<String> notCommon = new HashSet<String>();
+		
+		notCommon.addAll(inputFiles);
+		notCommon.addAll(argFiles);
+		
+		inputFiles.clear();
+		inputFiles.addAll(notCommon);
+		if(!inputFiles.equals(old)){
+			firePropertyChange("inputFiles", old, inputFiles.clone());
+		}
+	}
+
+	public void removeInputFile(String argFile) {
+		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		if (inputFiles.remove(argFile)) {
+			firePropertyChange("inputFiles", old, inputFiles.clone());
+		}
+	}
+
+	public void removeInputFiles(Set<String> argFiles) {
+		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		if (inputFiles.removeAll(argFiles)) {
+			firePropertyChange("inputFiles", old, inputFiles.clone());
+		}
+	}
+
+	public void clearInputFiles() {
+		if (inputFiles.size() == 0) {
+			return;
+		}
+		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		inputFiles.clear();
+		firePropertyChange("inputFiles", old, inputFiles);
+	}
+
+	public ArrayList<String> getInputFiles() {
+		return (ArrayList<String>) inputFiles.clone();
+	}
+
+	public static FileListModel getInstance() {
+		return model;
+	}
+}
