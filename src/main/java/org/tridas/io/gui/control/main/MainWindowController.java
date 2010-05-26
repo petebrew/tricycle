@@ -7,7 +7,7 @@ import org.tridas.io.gui.view.main.MainView;
 public class MainWindowController extends FrontController {
 	public static final String STARTUP_EVENT = "STARTUP_EVENT";
 
-	public MainView view = new MainView();
+	public MainView view = null;
 
 	public MainWindowController() {
 		registerEventKey(STARTUP_EVENT, "startup");

@@ -22,6 +22,8 @@ public class FileListModel extends AbstractModel {
 	private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
 
 	private String inputFormat = null;
+	
+	private String fileField = null;
 
 	private ArrayList<String> inputFiles = new CloneableArrayList<String>();
 
@@ -44,6 +46,22 @@ public class FileListModel extends AbstractModel {
 	 */
 	public String getInputFormat() {
 		return inputFormat;
+	}
+
+	/**
+	 * @param fileField the fileField to set
+	 */
+	public void setFileField(String argFileField) {
+		String old = fileField;
+		fileField = argFileField;
+		firePropertyChange("fileField", old, fileField);
+	}
+
+	/**
+	 * @return the fileField
+	 */
+	public String getFileField() {
+		return fileField;
 	}
 
 	public void addInputFile(String argFile) {

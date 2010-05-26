@@ -77,7 +77,7 @@ public abstract class AbstractModel {
 	 * @param argNewValue
 	 */
 	protected void firePropertyChange(String argPropertyName, Object argOldValue, Object argNewValue) {
-		if (argOldValue.equals(argNewValue)) {
+		if (argOldValue != null && argOldValue.equals(argNewValue)) {
 			return;
 		}
 		// this handles the rest internally
