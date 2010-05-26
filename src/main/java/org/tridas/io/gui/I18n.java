@@ -92,7 +92,7 @@ import javax.swing.KeyStroke;
 public class I18n {
 
 	private I18n() {
-		// don't instantiate me
+	// don't instantiate me
 	}
 
 	/**

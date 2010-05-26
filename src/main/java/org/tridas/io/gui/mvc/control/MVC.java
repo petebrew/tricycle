@@ -21,7 +21,7 @@ public class MVC implements Runnable {
 
 	private final HashMap<String, LinkedList<IEventListener>> listeners = new HashMap<String, LinkedList<IEventListener>>();
 
-	private final Queue<CEvent> eventQueue = new LinkedList<CEvent>();
+	private final Queue<MVCEvent> eventQueue = new LinkedList<MVCEvent>();
 
 	private volatile boolean running = false;
 
@@ -106,7 +106,7 @@ public class MVC implements Runnable {
 	 * 
 	 * @param argEvent
 	 */
-	public static void dispatchEvent(CEvent argEvent) {
+	public static void dispatchEvent(MVCEvent argEvent) {
 		if (mvc.listeners.containsKey(argEvent.key)) {
 			mvc.eventQueue.add(argEvent);
 			if (!mvc.running) {
@@ -139,14 +139,14 @@ public class MVC implements Runnable {
 				catch (InterruptedException e) {}
 			}
 			else {
-				CEvent event = eventQueue.poll();
+				MVCEvent event = eventQueue.poll();
 				internalDispatchEvent(event);
 			}
 		}
 		System.out.println("CorinaMVC EventDispatch thread stopped");
 	}
 
-	private synchronized void internalDispatchEvent(CEvent argEvent) {
+	private synchronized void internalDispatchEvent(MVCEvent argEvent) {
 		LinkedList<IEventListener> stack = listeners.get(argEvent.key);
 
 		Iterator<IEventListener> it = stack.iterator();

@@ -24,7 +24,7 @@ public abstract class FrontController {
 
 	// for getting the method
 	private final Class<?> paramTypes[] = {
-			CEvent.class
+		MVCEvent.class
 	};
 
 	public FrontController() {
@@ -32,7 +32,7 @@ public abstract class FrontController {
 	}
 
 	/**
-	 * Registers the listener to the given key. {@link CEvent}'s are dispatched globally, so
+	 * Registers the listener to the given key. {@link MVCEvent}'s are dispatched globally, so
 	 * careful with the actual values of your keys and make sure they are unique.
 	 * 
 	 * @param argKey
@@ -44,7 +44,7 @@ public abstract class FrontController {
 
 	/**
 	 * Registers the given method with the event key. The method must have only one argument
-	 * of type {@link CEvent}. It will be called with the event that was dispatched with this key.
+	 * of type {@link MVCEvent}. It will be called with the event that was dispatched with this key.
 	 * More than one method can be assigned to a key, and they will be called in the order of
 	 * registration. Duplicate registrations will be ignored.
 	 * 
@@ -85,7 +85,7 @@ public abstract class FrontController {
 		}
 
 		@Override
-		public void eventReceived(CEvent argEvent) {
+		public void eventReceived(MVCEvent argEvent) {
 			Vector<Method> vec = keyToMethods.get(argEvent.key);
 			for (Method m : vec) {
 				try {

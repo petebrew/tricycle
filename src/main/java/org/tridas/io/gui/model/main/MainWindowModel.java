@@ -25,16 +25,6 @@ public class MainWindowModel extends AbstractModel {
 
 	private String inputFormat = null;
 
-	private String namingConvention = null;
-
-	private ComboBoxModel namingConventionModel = null;
-
-	private ComboBoxModel inputFormatModel = null;
-
-	private ComboBoxModel outputFormatModel = null;
-
-	private CloneableArrayList<File> inputFiles = new CloneableArrayList<File>();
-
 	private CloneableArrayList<File> outputFiles = new CloneableArrayList<File>();
 
 	private MainWindowModel() {
@@ -73,56 +63,6 @@ public class MainWindowModel extends AbstractModel {
 	 */
 	public String getInputFormat() {
 		return inputFormat;
-	}
-
-	/**
-	 * @param namingConvention
-	 *            the namingConvention to set
-	 */
-	public void setNamingConvention(String argNamingConvention) {
-		String old = namingConvention;
-		namingConvention = argNamingConvention;
-		firePropertyChange("namingConvention", old, namingConvention);
-	}
-
-	/**
-	 * @return the namingConvention
-	 */
-	public String getNamingConvention() {
-		return namingConvention;
-	}
-
-	/**
-	 * @param namingConventionModel
-	 *            the namingConventionModel to set
-	 */
-	public void setNamingConventionModel(ComboBoxModel namingConventionModel) {
-		this.namingConventionModel = namingConventionModel;
-	}
-
-	/**
-	 * @return the namingConventionModel
-	 */
-	public ComboBoxModel getNamingConventionModel() {
-		return namingConventionModel;
-	}
-
-	/**
-	 * @see org.tridas.io.gui.mvc.model.AbstractModel#clone()
-	 */
-	@Override
-	public ICloneable clone() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * @see org.tridas.io.gui.mvc.model.ICloneable#cloneFrom(org.tridas.io.gui.mvc.model.ICloneable)
-	 */
-	@Override
-	public void cloneFrom(ICloneable argOther) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public static MainWindowModel getInstance() {

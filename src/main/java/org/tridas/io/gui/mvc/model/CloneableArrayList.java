@@ -4,6 +4,7 @@
 package org.tridas.io.gui.mvc.model;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Cloneable and dirtyable Array List. Will clone all objects that
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * 
  * @author daniel
  */
-public class CloneableArrayList<E extends Object> extends ArrayList<E> implements ICloneable, IDirtyable {
+public class CloneableArrayList<E extends Object> extends ArrayList<E> implements Set<E>, ICloneable, IDirtyable {
 
 	private boolean dirty = false;
 

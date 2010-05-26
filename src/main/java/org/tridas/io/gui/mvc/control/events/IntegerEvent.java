@@ -3,12 +3,12 @@
  */
 package org.tridas.io.gui.mvc.control.events;
 
-import org.tridas.io.gui.mvc.control.CEvent;
+import org.tridas.io.gui.mvc.control.MVCEvent;
 
 /**
  * @author daniel
  */
-public class IntegerEvent extends CEvent {
+public class IntegerEvent extends MVCEvent {
 
 	private final int integer;
 

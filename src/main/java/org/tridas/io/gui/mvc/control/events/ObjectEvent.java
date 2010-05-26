@@ -3,12 +3,12 @@
  */
 package org.tridas.io.gui.mvc.control.events;
 
-import org.tridas.io.gui.mvc.control.CEvent;
+import org.tridas.io.gui.mvc.control.MVCEvent;
 
 /**
  * @author daniel
  */
-public class ObjectEvent<K> extends CEvent {
+public class ObjectEvent<K> extends MVCEvent {
 
 	private final K object;
 
