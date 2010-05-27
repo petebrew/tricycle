@@ -1,7 +1,7 @@
 /**
  * Created on May 25, 2010, 8:18:44 PM
  */
-package org.tridas.io.gui.model.fileList;
+package org.tridas.io.gui.model;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,15 +21,11 @@ public class FileListModel extends AbstractModel {
 
 	private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
 
-	private String inputFormat = null;
-	
+	private String inputFormat = "automatic";
 	private String fileField = null;
-
 	private ArrayList<String> inputFiles = new CloneableArrayList<String>();
 
-	private FileListModel() {
-
-	}
+	private FileListModel() {}
 
 	/**
 	 * @param inputFormat
@@ -82,9 +78,7 @@ public class FileListModel extends AbstractModel {
 		
 		inputFiles.clear();
 		inputFiles.addAll(notCommon);
-		if(!inputFiles.equals(old)){
-			firePropertyChange("inputFiles", old, inputFiles.clone());
-		}
+		firePropertyChange("inputFiles", old, inputFiles.clone());
 	}
 
 	public void removeInputFile(String argFile) {

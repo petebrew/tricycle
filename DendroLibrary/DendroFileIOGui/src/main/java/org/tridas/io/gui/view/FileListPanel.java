@@ -1,7 +1,7 @@
 /**
  * Created on May 25, 2010, 8:19:22 PM
  */
-package org.tridas.io.gui.view.main;
+package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -30,16 +30,14 @@ import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.control.main.fileList.AddFileEvent;
 import org.tridas.io.gui.control.main.fileList.BrowseEvent;
-import org.tridas.io.gui.control.main.fileList.FileListController;
 import org.tridas.io.gui.control.main.fileList.RemoveSelectedEvent;
 import org.tridas.io.gui.enums.InputFormat;
-import org.tridas.io.gui.model.fileList.FileListModel;
-import org.tridas.io.gui.mvc.control.events.ObjectEvent;
+import org.tridas.io.gui.model.FileListModel;
 
 /**
  * @author Daniel
  */
-public class FileListPanel extends JPanel implements PropertyChangeListener {
+public class FileListPanel extends JPanel {
 	private static final SimpleLogger log = new SimpleLogger(FileListPanel.class);
 
 	private JPanel topPanel;
@@ -224,42 +222,54 @@ public class FileListPanel extends JPanel implements PropertyChangeListener {
 	}
 
 	public void linkModel() {
-		model.addPropertyChangeListener(this);
-		model.addInputFile("HELLOOO");
-		model.addInputFile("HELLOOO1");
-		model.addInputFile("HELLOOO2");
-		model.addInputFile("HELLOOO3");
+		
+		// first set all values from model
+		inputFormat.setSelectedItem(model.getInputFormat());
+		DefaultListModel listModel = (DefaultListModel) fileList.getModel();
+		ArrayList<String> files = (ArrayList<String>) model.getInputFiles();
+		listModel.clear();
+		try {Thread.sleep(100);}
+		catch (InterruptedException e) {}
+		for (String file : files) {
+			try {Thread.sleep(10);}
+			catch (InterruptedException e) {}
+			listModel.addElement(file);
+		}
+		fileField.setText(model.getFileField());
+		
+		// then listen for changes
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				String prop = evt.getPropertyName();
+				log.dbo(DebugLevel.L5_DEBUG, "Property change event received: "+prop, evt.getNewValue());
+				
+				if (prop.equals("inputFormat")) {
+					inputFormat.setSelectedItem(evt.getNewValue());
+				}
+				else if (prop.equals("inputFiles")) {
+					DefaultListModel model = (DefaultListModel) fileList.getModel();
+					ArrayList<String> files = (ArrayList<String>) evt.getNewValue();
+					model.clear();
+					try {Thread.sleep(100);}
+					catch (InterruptedException e) {}
+					for (String file : files) {
+						try {Thread.sleep(10);}
+						catch (InterruptedException e) {}
+						model.addElement(file);
+					}
+					//fileList.setModel(model);
+				}
+				else if(prop.equals("fileField")){
+					if(!fileField.getText().equals(evt.getNewValue().toString())){
+						fileField.setText(evt.getNewValue().toString());				
+					}
+				}
+				repaint();
+			}
+		});
 	}
 
-	/**
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		String prop = evt.getPropertyName();
-		log.dbo(DebugLevel.L5_DEBUG, "Property change event received: "+prop, evt.getNewValue());
-		
-		if (prop.equals("inputFormat")) {
-			inputFormat.setSelectedItem(evt.getNewValue());
-		}
-		else if (prop.equals("inputFiles")) {
-			DefaultListModel model = (DefaultListModel) fileList.getModel();
-			ArrayList<String> files = (ArrayList<String>) evt.getNewValue();
-			model.clear();
-			try {Thread.sleep(100);}
-			catch (InterruptedException e) {}
-			for (String file : files) {
-				try {Thread.sleep(10);}
-				catch (InterruptedException e) {}
-				model.addElement(file);
-			}
-			//fileList.setModel(model);
-		}
-		else if(prop.equals("fileField")){
-			if(!fileField.getText().equals(evt.getNewValue().toString())){
-				fileField.setText(evt.getNewValue().toString());				
-			}
-		}
-		repaint();
-	}
+	
 }

@@ -7,10 +7,9 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.tridas.io.gui.model.fileList.FileListModel;
+import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.mvc.control.FrontController;
 import org.tridas.io.gui.mvc.control.MVCEvent;
-import org.tridas.io.gui.mvc.control.events.ObjectEvent;
 import org.tridas.io.util.FileHelper;
 import org.tridas.io.util.IOUtils;
 

@@ -8,7 +8,6 @@
   <groupId>org.tridas.io.gui</groupId>
   <artifactId>DendroFileIOGui</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
   <developers>
   	<developer>
   		<id>dmurphy10</id>
