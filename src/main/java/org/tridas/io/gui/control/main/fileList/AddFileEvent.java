@@ -11,10 +11,20 @@ import org.tridas.io.gui.mvc.control.MVCEvent;
  */
 public class AddFileEvent extends MVCEvent {
 
+	private final String file;
+	
 	/**
 	 * @param argKey
 	 */
-	public AddFileEvent() {
+	public AddFileEvent(String argFile) {
 		super(FileListController.ADD_FILE);
+		file = argFile;
+	}
+
+	/**
+	 * @return the file
+	 */
+	public String getFile() {
+		return file;
 	}
 }
