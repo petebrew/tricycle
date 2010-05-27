@@ -28,6 +28,8 @@ import javax.swing.event.DocumentListener;
 
 import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
+import org.tridas.io.gui.control.main.fileList.AddFileEvent;
+import org.tridas.io.gui.control.main.fileList.BrowseEvent;
 import org.tridas.io.gui.control.main.fileList.FileListController;
 import org.tridas.io.gui.control.main.fileList.RemoveSelectedEvent;
 import org.tridas.io.gui.enums.InputFormat;
@@ -124,9 +126,6 @@ public class FileListPanel extends JPanel implements PropertyChangeListener {
 		add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 	}
 	
-	/**
-	 * 
-	 */
 	private void addListeners() {
 		
 		addButton.addActionListener(new ActionListener() {
@@ -163,6 +162,7 @@ public class FileListPanel extends JPanel implements PropertyChangeListener {
 		inputFormat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// skip event to controller
 				model.setInputFormat(inputFormat.getSelectedItem().toString());
 			}
 		});
@@ -171,17 +171,38 @@ public class FileListPanel extends JPanel implements PropertyChangeListener {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
+				// skip event to controller
 				model.setFileField(fileField.getText());
 			}
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				// skip event to controller
 				model.setFileField(fileField.getText());
 			}
 			
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				log.debug("change: "+fileField.getText());
+			}
+		});
+		
+		ActionListener addFileListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddFileEvent event = new AddFileEvent(fileField.getText());
+				event.dispatch();
+			}
+		};
+		
+		fileField.addActionListener(addFileListener);
+		addButton.addActionListener(addFileListener);
+		
+		browseButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BrowseEvent event = new BrowseEvent();
+				event.dispatch();
 			}
 		});
 	}
@@ -215,19 +236,30 @@ public class FileListPanel extends JPanel implements PropertyChangeListener {
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		String prop = evt.getPropertyName().toLowerCase();
-		log.dbo(DebugLevel.L5_DEBUG, prop, evt.getNewValue());
+		String prop = evt.getPropertyName();
+		log.dbo(DebugLevel.L5_DEBUG, "Property change event received: "+prop, evt.getNewValue());
 		
-		if (prop.equals("inputformat")) {
+		if (prop.equals("inputFormat")) {
 			inputFormat.setSelectedItem(evt.getNewValue());
 		}
-		else if (prop.equals("inputfiles")) {
+		else if (prop.equals("inputFiles")) {
 			DefaultListModel model = (DefaultListModel) fileList.getModel();
 			ArrayList<String> files = (ArrayList<String>) evt.getNewValue();
 			model.clear();
+			try {Thread.sleep(100);}
+			catch (InterruptedException e) {}
 			for (String file : files) {
+				try {Thread.sleep(10);}
+				catch (InterruptedException e) {}
 				model.addElement(file);
 			}
+			//fileList.setModel(model);
 		}
+		else if(prop.equals("fileField")){
+			if(!fileField.getText().equals(evt.getNewValue().toString())){
+				fileField.setText(evt.getNewValue().toString());				
+			}
+		}
+		repaint();
 	}
 }
