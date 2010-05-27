@@ -6,6 +6,8 @@ package org.tridas.io.gui.enums;
 /**
  * @author Daniel
  */
-public enum NamingConvention {
-	NUMERICAL, HEIRARCHICAL, UUID;
+public class NamingConvention {
+	public static final String[] getNamingConventions(){
+		return new String[]{"UUID", "Heirarchical", "Numerical"};
+	}
 }

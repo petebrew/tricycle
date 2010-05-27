@@ -9,7 +9,7 @@
  * Created on May 23, 2010, 7:36:32 PM
  */
 
-package org.tridas.io.gui.view.main;
+package org.tridas.io.gui.view;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -18,7 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import org.tridas.io.gui.model.main.MainWindowModel;
+import org.tridas.io.gui.model.MainWindowModel;
 
 /**
  * @author daniel
