@@ -3,6 +3,7 @@
  */
 package org.tridas.io.gui.control.main.convert;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,6 +22,8 @@ import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
+import org.tridas.io.util.FileHelper;
+import org.tridas.io.util.IOUtils;
 import org.tridas.io.warnings.ConversionWarning;
 import org.tridas.io.warnings.ConversionWarningException;
 import org.tridas.io.warnings.IncompleteTridasDataException;
@@ -35,8 +38,29 @@ public class ConvertController extends FrontController {
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
 	
+	
+	private ArrayList<ProjectToFiles> structList = new ArrayList<ProjectToFiles>();
+	
 	public ConvertController(){
 		registerEventKey(CONVERT, "convert");
+		registerEventKey(SAVE, "save");
+	}
+	
+	public void save(MVCEvent argEvent){
+		File folder = IOUtils.outputFolder(null);
+		if(folder == null){
+			return;
+		}
+		
+		FileHelper help = new FileHelper(folder.getAbsolutePath());
+		
+		for(ProjectToFiles p : structList){
+			if(p.files != null){
+				for(IDendroFile file : p.files){
+					String[] fileStrings = file.saveToString();
+				}
+			}
+		}
 	}
 	
 	public void convert(MVCEvent argEvent){
@@ -84,11 +108,10 @@ public class ConvertController extends FrontController {
 		convertFiles(model.getInputFiles().toArray(new String[0]), model.getInputFormat(), outputFormat, naming);
 	}
 	
-	private IDendroCollectionWriter writer;
 	private void convertFiles(String[] argFiles, String argInputFormat, String argOutputFormat, INamingConvention argNaming){
 		
 		ArrayList<ProjectToFiles> list = new ArrayList<ProjectToFiles>();
-		
+		IDendroCollectionWriter writer;
 		for(String file : argFiles){
 			IDendroFileReader reader;
 			if(argInputFormat.equals("automatic")){
@@ -119,13 +142,14 @@ public class ConvertController extends FrontController {
 			
 			TridasProject project = reader.getProject();
 			struct.project = project;
-			struct.warnings.addAll(reader.getWarnings());
+			struct.readerWarnings.addAll(reader.getWarnings());
+			struct.readerWarnings.addAll(reader.getDefaults().getConversionWarnings());
 		}
 		
-		writer = TridasIO.getFileWriter(argOutputFormat);
-		writer.setNamingConvention(argNaming);
-		
 		for(ProjectToFiles struct : list){
+			writer = TridasIO.getFileWriter(argOutputFormat);
+			writer.setNamingConvention(argNaming);
+			
 			if(struct.errorMessage != null){
 				continue;
 			}
@@ -142,37 +166,64 @@ public class ConvertController extends FrontController {
 			}
 			
 			struct.files = writer.getFiles();
-			struct.warnings.addAll(writer.getWarnings());
+			struct.writerWarnings.addAll(writer.getWarnings());
+			writer.clearWarnings();
 		}
 		
-		constructNodes(list);
+		constructNodes(list, argNaming);
 	}
 	
 	/**
 	 * @param list
 	 */
-	private void constructNodes(ArrayList<ProjectToFiles> list) {
+	private void constructNodes(ArrayList<ProjectToFiles> list, INamingConvention argNaming) {
 		ArrayList<DefaultMutableTreeNode> nodes = new ArrayList<DefaultMutableTreeNode>();
+		
+		structList.clear();
+		structList.addAll(list);
 		
 		for(ProjectToFiles s : list){
 			DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(s.file);
 			DefaultMutableTreeNode files = new DefaultMutableTreeNode("Files");
+			nodes.add(leaf);
 
+			if(s.errorMessage != null){
+				DefaultMutableTreeNode errorMessage = new DefaultMutableTreeNode(s.errorMessage);
+				leaf.add(errorMessage);
+				nodes.add(leaf);
+				continue;
+			}
+			
 			for(IDendroFile file : s.files){
-				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(writer.getNamingConvention().getFilename(file)+"."+file.getExtension());
+				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(argNaming.getFilename(file)+"."+file.getExtension());
+				if(file.getDefaults().getConversionWarnings().size() != 0){
+					for(ConversionWarning warning : file.getDefaults().getConversionWarnings()){
+						DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
+						fileNode.add(warningNode);
+					}
+				}
 				files.add(fileNode);
 			}
 			
-			DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Warnings");
-			for(ConversionWarning warning : s.warnings){
-				DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
-				readerWarnings.add(warn);
-			}
-			leaf.add(files);
-			if(s.warnings.size() !=0){
+			if(s.readerWarnings.size() != 0){
+				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
+				for(ConversionWarning warning : s.readerWarnings){
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+					readerWarnings.add(warn);
+				}
 				leaf.add(readerWarnings);
 			}
-			nodes.add(leaf);
+			
+			if(s.writerWarnings.size() != 0){
+				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode("Writer Warnings");
+				for(ConversionWarning warning : s.writerWarnings){
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+					writerWarnings.add(warn);
+				}
+				leaf.add(writerWarnings);
+			}
+			
+			leaf.add(files);
 		}
 		
 		ConvertModel model = ConvertModel.getInstance();
@@ -184,6 +235,7 @@ public class ConvertController extends FrontController {
 		String errorMessage = null;
 		TridasProject project = null;
 		IDendroFile[] files = null;
-		ArrayList<ConversionWarning> warnings = new ArrayList<ConversionWarning>();
+		ArrayList<ConversionWarning> readerWarnings = new ArrayList<ConversionWarning>();
+		ArrayList<ConversionWarning> writerWarnings = new ArrayList<ConversionWarning>();
 	}
 }

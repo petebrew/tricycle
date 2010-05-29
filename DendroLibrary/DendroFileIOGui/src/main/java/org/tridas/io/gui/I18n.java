@@ -180,18 +180,6 @@ public class I18n {
 	}
 
 	/**
-	 * Look up translation key, and replace {0} with the
-	 * second parameter
-	 * 
-	 * @param key
-	 * @param replace
-	 * @return
-	 */
-	public static String getText(String key, String replace) {
-		return getText(key).replace("{0}", replace);
-	}
-
-	/**
 	 * Get the keystroke string for this key. This string can be passed directly
 	 * to the Keystroke.getKeyStroke() method.
 	 * <p>
