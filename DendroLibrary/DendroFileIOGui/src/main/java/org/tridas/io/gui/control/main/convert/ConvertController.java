@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.grlea.log.SimpleLogger;
 import org.tridas.io.IDendroCollectionWriter;
 import org.tridas.io.IDendroFile;
 import org.tridas.io.IDendroFileReader;
@@ -35,6 +36,8 @@ import org.tridas.schema.TridasProject;
  *
  */
 public class ConvertController extends FrontController {
+	private static final SimpleLogger log = new SimpleLogger(ConvertController.class);
+	
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
 	
@@ -54,12 +57,18 @@ public class ConvertController extends FrontController {
 		
 		FileHelper help = new FileHelper(folder.getAbsolutePath());
 		
+		boolean saved = false;
 		for(ProjectToFiles p : structList){
-			if(p.files != null){
-				for(IDendroFile file : p.files){
-					String[] fileStrings = file.saveToString();
-				}
+			if(p.writer != null){
+				p.writer.saveAllToDisk(folder.getAbsolutePath());
+				saved = true;
 			}
+		}
+		
+		if(saved){
+			JOptionPane.showMessageDialog(null, "Files saved to '"+folder.getAbsolutePath()+"'", "Save complete", JOptionPane.PLAIN_MESSAGE);
+		}else{
+			JOptionPane.showMessageDialog(null, "No files to save", "", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
@@ -111,11 +120,13 @@ public class ConvertController extends FrontController {
 	private void convertFiles(String[] argFiles, String argInputFormat, String argOutputFormat, INamingConvention argNaming){
 		
 		ArrayList<ProjectToFiles> list = new ArrayList<ProjectToFiles>();
-		IDendroCollectionWriter writer;
+		
 		for(String file : argFiles){
 			IDendroFileReader reader;
 			if(argInputFormat.equals("automatic")){
-				reader = TridasIO.getFileReaderFromExtension(file.substring(file.lastIndexOf(".")+1));
+				String extension = file.substring(file.lastIndexOf(".")+1);
+				log.debug("extention: "+extension);
+				reader = TridasIO.getFileReaderFromExtension(extension);
 			}else {
 				reader = TridasIO.getFileReader(argInputFormat);
 			}
@@ -123,6 +134,7 @@ public class ConvertController extends FrontController {
 			ProjectToFiles struct = new ProjectToFiles();
 			list.add(struct);
 			struct.file = file;
+			
 			if(reader == null){
 				struct.errorMessage = "Reader was null, not supposed to happen.  Please report bug.";
 				continue;
@@ -142,19 +154,17 @@ public class ConvertController extends FrontController {
 			
 			TridasProject project = reader.getProject();
 			struct.project = project;
-			struct.readerWarnings.addAll(reader.getWarnings());
-			struct.readerWarnings.addAll(reader.getDefaults().getConversionWarnings());
+			struct.reader = reader;
 		}
 		
 		for(ProjectToFiles struct : list){
-			writer = TridasIO.getFileWriter(argOutputFormat);
+			IDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
 			writer.setNamingConvention(argNaming);
 			
 			if(struct.errorMessage != null){
 				continue;
 			}
 			
-			writer.clearFiles();
 			try {
 				writer.loadProject(struct.project);
 			}
@@ -165,9 +175,7 @@ public class ConvertController extends FrontController {
 				struct.errorMessage = e.toString();
 			}
 			
-			struct.files = writer.getFiles();
-			struct.writerWarnings.addAll(writer.getWarnings());
-			writer.clearWarnings();
+			struct.writer = writer;
 		}
 		
 		constructNodes(list, argNaming);
@@ -194,7 +202,8 @@ public class ConvertController extends FrontController {
 				continue;
 			}
 			
-			for(IDendroFile file : s.files){
+			
+			for(IDendroFile file : s.writer.getFiles()){
 				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(argNaming.getFilename(file)+"."+file.getExtension());
 				if(file.getDefaults().getConversionWarnings().size() != 0){
 					for(ConversionWarning warning : file.getDefaults().getConversionWarnings()){
@@ -205,18 +214,23 @@ public class ConvertController extends FrontController {
 				files.add(fileNode);
 			}
 			
-			if(s.readerWarnings.size() != 0){
-				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
-				for(ConversionWarning warning : s.readerWarnings){
-					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
-					readerWarnings.add(warn);
-				}
+			DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
+			for(ConversionWarning warning : s.reader.getWarnings()){
+				DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+				readerWarnings.add(warn);
+			}
+			for(ConversionWarning warning : s.reader.getDefaults().getConversionWarnings()){
+				DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+				readerWarnings.add(warn);
+			}
+			if(readerWarnings.getChildCount() != 0){
 				leaf.add(readerWarnings);
 			}
+
 			
-			if(s.writerWarnings.size() != 0){
+			if(s.writer.getWarnings().size() != 0){
 				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode("Writer Warnings");
-				for(ConversionWarning warning : s.writerWarnings){
+				for(ConversionWarning warning : s.writer.getWarnings()){
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
 					writerWarnings.add(warn);
 				}
@@ -234,8 +248,7 @@ public class ConvertController extends FrontController {
 		String file;
 		String errorMessage = null;
 		TridasProject project = null;
-		IDendroFile[] files = null;
-		ArrayList<ConversionWarning> readerWarnings = new ArrayList<ConversionWarning>();
-		ArrayList<ConversionWarning> writerWarnings = new ArrayList<ConversionWarning>();
+		IDendroFileReader reader = null;
+		IDendroCollectionWriter writer = null;
 	}
 }

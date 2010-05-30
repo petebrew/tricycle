@@ -126,9 +126,9 @@ public class ConvertPanel extends JPanel {
 			namingConvention.addItem(conv);
 		}
 		
-		outputFormat.addItem("tridas");
+		outputFormat.addItem("TRiDaS");
 		for(String out : OutputFormat.getOutputFormats()){
-			if(out.equals("tridas")){
+			if(out.equals("TRiDaS")){
 				continue;
 			}
 			outputFormat.addItem(out);
