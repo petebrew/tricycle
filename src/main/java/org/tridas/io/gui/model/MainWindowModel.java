@@ -8,9 +8,9 @@ import java.io.File;
 import javax.swing.ComboBoxModel;
 
 import org.grlea.log.SimpleLogger;
-import org.tridas.io.gui.mvc.model.AbstractModel;
-import org.tridas.io.gui.mvc.model.CloneableArrayList;
-import org.tridas.io.gui.mvc.model.ICloneable;
+
+import com.dmurph.mvc.model.AbstractModel;
+import com.dmurph.mvc.util.MVCArrayList;
 
 /**
  * @author daniel
@@ -21,7 +21,7 @@ public class MainWindowModel extends AbstractModel {
 
 	private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
 
-	private CloneableArrayList<File> outputFiles = new CloneableArrayList<File>();
+	private MVCArrayList<File> outputFiles = new MVCArrayList<File>();
 
 	private MainWindowModel() {}
 

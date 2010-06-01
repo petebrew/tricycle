@@ -3,7 +3,7 @@
  */
 package org.tridas.io.gui.control.main.fileList;
 
-import org.tridas.io.gui.mvc.control.MVCEvent;
+import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author Daniel

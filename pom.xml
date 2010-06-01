@@ -22,8 +22,10 @@
   	<name>Java.net maven2 repo</name>
   	</repository>
   	<repository>
-  		<id>nexus staging2</id>
-  		<url>http://oss.sonatype.org/content/repositories/comdmurphmvc-034/</url>
+  		<releases>
+  		</releases>
+  		<id>nexus staging</id>
+  		<url>http://oss.sonatype.org/content/groups/staging/</url>
   	</repository>
   </repositories>
   <dependencies>
@@ -38,6 +40,13 @@
   		<groupId>org.grlea.log</groupId>
   		<artifactId>simple-log</artifactId>
   		<version>2.0.1</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.dmurph.mvc</groupId>
+  		<artifactId>java-simple-mvc</artifactId>
+  		<version>0.1.0</version>
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>

@@ -1,8 +1,9 @@
 package org.tridas.io.gui.control.main;
 
-import org.tridas.io.gui.mvc.control.MVCEvent;
-import org.tridas.io.gui.mvc.control.FrontController;
 import org.tridas.io.gui.view.MainView;
+
+import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.control.FrontController;
 
 public class MainWindowController extends FrontController {
 	public static final String STARTUP_EVENT = "STARTUP_EVENT";
@@ -10,7 +11,13 @@ public class MainWindowController extends FrontController {
 	public MainView view = null;
 
 	public MainWindowController() {
-		registerEventKey(STARTUP_EVENT, "startup");
+		try {
+			registerCommand(STARTUP_EVENT, "startup");
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void startup(MVCEvent argEvent) {

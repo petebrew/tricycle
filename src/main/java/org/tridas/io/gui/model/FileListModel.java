@@ -9,10 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.grlea.log.SimpleLogger;
-import org.tridas.io.gui.mvc.model.AbstractModel;
-import org.tridas.io.gui.mvc.model.CloneableArrayList;
-import org.tridas.io.gui.mvc.model.ICloneable;
 
+import com.dmurph.mvc.model.AbstractModel;
+import com.dmurph.mvc.util.MVCArrayList;
 /**
  * @author Daniel
  */
@@ -23,7 +22,7 @@ public class FileListModel extends AbstractModel {
 
 	private String inputFormat = "automatic";
 	private String fileField = null;
-	private ArrayList<String> inputFiles = new CloneableArrayList<String>();
+	private ArrayList<String> inputFiles = new MVCArrayList<String>();
 
 	private FileListModel() {}
 
@@ -64,13 +63,13 @@ public class FileListModel extends AbstractModel {
 		if(inputFiles.contains(argFile)){
 			return;
 		}
-		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		MVCArrayList<File> old = (MVCArrayList<File>) inputFiles.clone();
 		inputFiles.add(argFile);
 		firePropertyChange("inputFiles", old, inputFiles.clone());
 	}
 
 	public void addInputFiles(Set<String> argFiles) {
-		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		MVCArrayList<File> old = (MVCArrayList<File>) inputFiles.clone();
 		HashSet<String> notCommon = new HashSet<String>();
 		
 		notCommon.addAll(inputFiles);
@@ -82,14 +81,14 @@ public class FileListModel extends AbstractModel {
 	}
 
 	public void removeInputFile(String argFile) {
-		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		MVCArrayList<File> old = (MVCArrayList<File>) inputFiles.clone();
 		if (inputFiles.remove(argFile)) {
 			firePropertyChange("inputFiles", old, inputFiles.clone());
 		}
 	}
 
 	public void removeInputFiles(Set<String> argFiles) {
-		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		MVCArrayList<File> old = (MVCArrayList<File>) inputFiles.clone();
 		if (inputFiles.removeAll(argFiles)) {
 			firePropertyChange("inputFiles", old, inputFiles.clone());
 		}
@@ -99,7 +98,7 @@ public class FileListModel extends AbstractModel {
 		if (inputFiles.size() == 0) {
 			return;
 		}
-		CloneableArrayList<File> old = (CloneableArrayList<File>) inputFiles.clone();
+		MVCArrayList<File> old = (MVCArrayList<File>) inputFiles.clone();
 		inputFiles.clear();
 		firePropertyChange("inputFiles", old, inputFiles);
 	}

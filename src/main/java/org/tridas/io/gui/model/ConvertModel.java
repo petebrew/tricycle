@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.tridas.io.gui.mvc.model.AbstractModel;
-import org.tridas.io.gui.mvc.model.CloneableArrayList;
+import com.dmurph.mvc.model.AbstractModel;
+import com.dmurph.mvc.util.MVCArrayList;
 
 /**
  * @author Daniel
@@ -23,7 +23,7 @@ public class ConvertModel extends AbstractModel{
 	
 	private String outputFormat = "tridas";
 	private String namingConvention = "UUID";
-	private CloneableArrayList<DefaultMutableTreeNode> nodes = new CloneableArrayList<DefaultMutableTreeNode>();
+	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
 	private ConvertModel(){}
 	
@@ -38,7 +38,7 @@ public class ConvertModel extends AbstractModel{
 	}
 	
 	public void setNodes(List<DefaultMutableTreeNode> argNodes){
-		CloneableArrayList<DefaultMutableTreeNode> old = (CloneableArrayList<DefaultMutableTreeNode>) nodes.clone();
+		MVCArrayList<DefaultMutableTreeNode> old = (MVCArrayList<DefaultMutableTreeNode>) nodes.clone();
 		nodes.clear();
 		nodes.addAll(argNodes);
 		firePropertyChange("nodes", old, nodes.clone());
