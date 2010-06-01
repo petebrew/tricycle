@@ -8,10 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.mvc.control.FrontController;
-import org.tridas.io.gui.mvc.control.MVCEvent;
 import org.tridas.io.util.FileHelper;
 import org.tridas.io.util.IOUtils;
+
+import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.control.FrontController;
 
 /**
  * @author Daniel
@@ -23,9 +24,15 @@ public class FileListController extends FrontController {
 	public static final String BROWSE = "FILE_LIST_BROWSE";
 	
 	public FileListController(){
-		registerEventKey(REMOVE_SELECTED, "removeSelected");
-		registerEventKey(ADD_FILE, "addFile");
-		registerEventKey(BROWSE, "browse");
+		try {
+			registerCommand(REMOVE_SELECTED, "removeSelected");
+			registerCommand(ADD_FILE, "addFile");
+			registerCommand(BROWSE, "browse");
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void removeSelected(MVCEvent argEvent){

@@ -17,8 +17,6 @@ import org.tridas.io.IDendroFileReader;
 import org.tridas.io.TridasIO;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.mvc.control.FrontController;
-import org.tridas.io.gui.mvc.control.MVCEvent;
 import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
@@ -30,6 +28,9 @@ import org.tridas.io.warnings.ConversionWarningException;
 import org.tridas.io.warnings.IncompleteTridasDataException;
 import org.tridas.io.warnings.InvalidDendroFileException;
 import org.tridas.schema.TridasProject;
+
+import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.control.FrontController;
 
 /**
  * @author Daniel
@@ -45,8 +46,14 @@ public class ConvertController extends FrontController {
 	private ArrayList<ProjectToFiles> structList = new ArrayList<ProjectToFiles>();
 	
 	public ConvertController(){
-		registerEventKey(CONVERT, "convert");
-		registerEventKey(SAVE, "save");
+		try {
+			registerCommand(CONVERT, "convert");
+			registerCommand(SAVE, "save");
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void save(MVCEvent argEvent){

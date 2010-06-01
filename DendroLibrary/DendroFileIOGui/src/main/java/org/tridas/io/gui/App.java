@@ -5,8 +5,8 @@ import javax.swing.UIManager;
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.control.main.MainWindowController;
 import org.tridas.io.gui.model.ModelLocator;
-import org.tridas.io.gui.mvc.control.MVCEvent;
-import org.tridas.io.gui.mvc.control.MVC;
+
+import com.dmurph.mvc.MVCEvent;
 
 public class App {
 
@@ -25,6 +25,6 @@ public class App {
 		catch (Exception e) {
 			log.warn("Could not use nimbus look and feel, probably on a Mac.");
 		}
-		MVC.dispatchEvent(new MVCEvent(MainWindowController.STARTUP_EVENT));
+		(new MVCEvent(MainWindowController.STARTUP_EVENT)).dispatch();
 	}
 }
