@@ -15,11 +15,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.enums.NamingConvention;
 import org.tridas.io.gui.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.MainWindowModel;
+
+import com.dmurph.mvc.ObjectEvent;
+import com.dmurph.mvc.StringEvent;
 
 /**
  * @author Daniel Murphy
@@ -31,6 +35,7 @@ public class ConfigPanel extends JPanel {
 	private JComboBox inputFormat;
 	private JComboBox outputFormat;
 	private JComboBox namingConvention;
+	private JCheckBox detectCharset;
 	
 	private ConfigModel model = ConfigModel.getInstance();
 	
@@ -48,11 +53,12 @@ public class ConfigPanel extends JPanel {
 		namingConvention = new JComboBox();
 		outputFormat = new JComboBox();
 		inputFormat = new JComboBox();
+		detectCharset = new JCheckBox();
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0, 1));
 		
-		
+		// TODO locale all of these
 		outputFormat.setEditable(true);
 		JPanel outputFormatPanel = new JPanel();
 		outputFormatPanel.add(new JLabel("Output Format:"));
@@ -68,9 +74,14 @@ public class ConfigPanel extends JPanel {
 		namingConventionPanel.add(new JLabel("Naming Convention:"));
 		namingConventionPanel.add(namingConvention);
 		
+		JPanel detectCharsetPanel = new JPanel();
+		detectCharsetPanel.add(new JLabel("Detect Charset:"));
+		detectCharsetPanel.add(detectCharset);
+		
 		panel.add(inputFormatPanel);
 		panel.add(outputFormatPanel);
 		panel.add(namingConventionPanel);
+		panel.add(detectCharsetPanel);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(panel);
@@ -83,24 +94,36 @@ public class ConfigPanel extends JPanel {
 		namingConvention.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// skip event to controller, implement that if needed
-				model.setNamingConvention(namingConvention.getSelectedItem().toString());
+				String naming = namingConvention.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_NAMING_CONVENTION, naming);
+				event.dispatch();
 			}
 		});
 		
 		outputFormat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// skip event to controller, implement that if needed
-				model.setOutputFormat(outputFormat.getSelectedItem().toString());
+				String output = outputFormat.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_OUTPUT_FORMAT, output);
+				event.dispatch();
 			}
 		});
 		
 		inputFormat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// skip event to controller
-				model.setInputFormat(inputFormat.getSelectedItem().toString());
+				String input = inputFormat.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_INPUT_FORMAT, input);
+				event.dispatch();
+			}
+		});
+		
+		detectCharset.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ObjectEvent<Boolean> event = new ObjectEvent<Boolean>(ConfigController.SET_DETECT_CHARSET, detectCharset.isSelected());
+				event.dispatch();
 			}
 		});
 	}

@@ -3,9 +3,12 @@
  */
 package org.tridas.io.gui.control.config;
 
+import org.tridas.io.TridasIO;
 import org.tridas.io.gui.model.ConfigModel;
 
 import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.ObjectEvent;
+import com.dmurph.mvc.StringEvent;
 import com.dmurph.mvc.control.FrontController;
 
 /**
@@ -34,18 +37,25 @@ public class ConfigController extends FrontController{
 	}
 	
 	public void setInputFormat(MVCEvent argEvent){
-		// TODO
+		StringEvent event = (StringEvent) argEvent;
+		model.setInputFormat(event.getValue());
 	}
 	
 	public void setOutputFormat(MVCEvent argEvent){
-		// TODO
+		StringEvent event = (StringEvent) argEvent;
+		model.setOutputFormat(event.getValue());
 	}
 	
 	public void setNamingConvention(MVCEvent argEvent){
-		// TODO
+		StringEvent event = (StringEvent) argEvent;
+		model.setNamingConvention(event.getValue());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setDetectCharset(MVCEvent argEvent){
-		// TODO
+		ObjectEvent<Boolean> event = (ObjectEvent<Boolean>) argEvent;
+		model.setDetectCharset(event.getValue());
+		
+		TridasIO.setCharsetDetection(event.getValue());
 	}
 }
