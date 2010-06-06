@@ -111,12 +111,6 @@ public class ConvertController extends FrontController {
 					model.setSavingFilename(filename+"."+dof.getExtension());
 					p.writer.saveFileToDisk(outputFolder, filename, dof);
 					model.setSavingPercent(currFile*100/totalFiles);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 				}
 			}
 		}

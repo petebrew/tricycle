@@ -45,6 +45,7 @@ public class SavingProgress extends JFrame{
 		
 		progress.setMinimum(0);
 		progress.setMaximum(100);
+		progress.setStringPainted(true);
 		
 		add(savingLabel);
 		add(progress);
