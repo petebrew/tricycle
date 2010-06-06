@@ -28,24 +28,24 @@ import javax.swing.event.DocumentListener;
 
 import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
-import org.tridas.io.gui.control.main.fileList.AddFileEvent;
-import org.tridas.io.gui.control.main.fileList.BrowseEvent;
-import org.tridas.io.gui.control.main.fileList.RemoveSelectedEvent;
+import org.tridas.io.gui.control.fileList.AddFileEvent;
+import org.tridas.io.gui.control.fileList.BrowseEvent;
+import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
+import org.tridas.io.gui.model.MainWindowModel;
 
 /**
  * @author Daniel
  */
+@SuppressWarnings("serial")
 public class FileListPanel extends JPanel {
 	private static final SimpleLogger log = new SimpleLogger(FileListPanel.class);
 
 	private JPanel topPanel;
 	private JLabel selectLabel;
-	private JLabel inputFormatLabel;
 	private JLabel fileFieldLabel;
 	private JList fileList;
-	private JComboBox inputFormat;
 	private JButton addButton;
 	private JButton browseButton;
 	private JButton selectAllButton;
@@ -67,8 +67,6 @@ public class FileListPanel extends JPanel {
 	public void initComponents() {
 		topPanel = new JPanel();
 		addButton = new JButton();
-		inputFormat = new JComboBox();
-		inputFormatLabel = new JLabel();
 		fileFieldLabel = new JLabel();
 		fileField = new JTextField();
 		browseButton = new JButton();
@@ -79,31 +77,17 @@ public class FileListPanel extends JPanel {
 		selectNoneButton = new JButton();
 		scrollPane = new JScrollPane();
 		bottomPanel = new JPanel();
-
-		JPanel toptopPanel = new JPanel();
-		JPanel bottomtopPanel = new JPanel();
 		
 		setLayout(new BorderLayout());
-
-		topPanel.setLayout(new GridLayout(2,1));
 		
-		toptopPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
-		bottomtopPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+		topPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
-		toptopPanel.add(fileFieldLabel);
+		topPanel.add(fileFieldLabel);
 		
 		fileField.setColumns(20);
-		toptopPanel.add(fileField);
-		toptopPanel.add(browseButton);
-		toptopPanel.add(addButton);
-
-		bottomtopPanel.add(inputFormatLabel);
-
-		inputFormat.setEditable(true);
-		bottomtopPanel.add(inputFormat);
-		
-		topPanel.add(toptopPanel);
-		topPanel.add(bottomtopPanel);
+		topPanel.add(fileField);
+		topPanel.add(browseButton);
+		topPanel.add(addButton);
 
 		add(topPanel, java.awt.BorderLayout.PAGE_START);
 		
@@ -126,12 +110,6 @@ public class FileListPanel extends JPanel {
 	
 	private void addListeners() {
 		
-		addButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		selectAllButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -157,13 +135,7 @@ public class FileListPanel extends JPanel {
 			}
 		});
 		
-		inputFormat.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// skip event to controller
-				model.setInputFormat(inputFormat.getSelectedItem().toString());
-			}
-		});
+		
 		
 		fileField.getDocument().addDocumentListener(new DocumentListener() {
 			
@@ -212,19 +184,12 @@ public class FileListPanel extends JPanel {
 		selectAllButton.setText("All");
 		selectNoneButton.setText("None");
 		removeSelectedButton.setText("Remove Selected");
-		selectLabel.setText("Select:");
-		inputFormatLabel.setText("Input Format:");
-		
-		inputFormat.addItem("automatic");
-		for (String s : InputFormat.getInputFormats()) {
-			inputFormat.addItem(s);
-		}
+		selectLabel.setText("Select:");		
 	}
 
 	public void linkModel() {
 		
 		// first set all values from model
-		inputFormat.setSelectedItem(model.getInputFormat());
 		DefaultListModel listModel = (DefaultListModel) fileList.getModel();
 		ArrayList<String> files = (ArrayList<String>) model.getInputFiles();
 		listModel.clear();
@@ -245,10 +210,7 @@ public class FileListPanel extends JPanel {
 				String prop = evt.getPropertyName();
 				log.dbo(DebugLevel.L5_DEBUG, "Property change event received: "+prop, evt.getNewValue());
 				
-				if (prop.equals("inputFormat")) {
-					inputFormat.setSelectedItem(evt.getNewValue());
-				}
-				else if (prop.equals("inputFiles")) {
+				 if (prop.equals("inputFiles")) {
 					DefaultListModel model = (DefaultListModel) fileList.getModel();
 					ArrayList<String> files = (ArrayList<String>) evt.getNewValue();
 					model.clear();
@@ -267,6 +229,33 @@ public class FileListPanel extends JPanel {
 					}
 				}
 				repaint();
+			}
+		});
+		
+		MainWindowModel mwm = MainWindowModel.getInstance();
+		mwm.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				
+				if(evt.getPropertyName().equals("lock")){
+					boolean lock = (Boolean)evt.getNewValue();
+					if(lock){
+						browseButton.setEnabled(false);
+						addButton.setEnabled(false);
+						fileField.setEnabled(false);
+						removeSelectedButton.setEnabled(false);
+						selectAllButton.setEnabled(false);
+						selectNoneButton.setEnabled(false);
+					}else{
+						browseButton.setEnabled(true);
+						addButton.setEnabled(true);
+						fileField.setEnabled(true);
+						removeSelectedButton.setEnabled(true);
+						selectAllButton.setEnabled(true);
+						selectNoneButton.setEnabled(true);
+					}
+				}
 			}
 		});
 	}

@@ -20,28 +20,11 @@ public class FileListModel extends AbstractModel {
 
 	private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
 
-	private String inputFormat = "automatic";
+	
 	private String fileField = null;
 	private ArrayList<String> inputFiles = new MVCArrayList<String>();
 
 	private FileListModel() {}
-
-	/**
-	 * @param inputFormat
-	 *            the inputFormat to set
-	 */
-	public void setInputFormat(String argInputFormat) {
-		String old = inputFormat;
-		inputFormat = argInputFormat;
-		firePropertyChange("inputFormat", old, inputFormat);
-	}
-
-	/**
-	 * @return the inputFormat
-	 */
-	public String getInputFormat() {
-		return inputFormat;
-	}
 
 	/**
 	 * @param fileField the fileField to set

@@ -21,21 +21,11 @@ public class ConvertModel extends AbstractModel{
 	
 	private static final ConvertModel model = new ConvertModel();
 	
-	private String outputFormat = "tridas";
-	private String namingConvention = "UUID";
+	private int savingPercent = 0;
+	private String savingFilename = null;
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
 	private ConvertModel(){}
-	
-	public void setNamingConvention(String argNamingConvention){
-		String old = namingConvention;
-		namingConvention = argNamingConvention;
-		firePropertyChange("namingConvention", old, namingConvention);
-	}
-	
-	public String getNamingConvention(){
-		return namingConvention;
-	}
 	
 	public void setNodes(List<DefaultMutableTreeNode> argNodes){
 		MVCArrayList<DefaultMutableTreeNode> old = (MVCArrayList<DefaultMutableTreeNode>) nodes.clone();
@@ -49,22 +39,37 @@ public class ConvertModel extends AbstractModel{
 	}
 	
 	/**
-	 * @param outputFormat
-	 *            the outputFormat to set
+	 * @param savingPercent the savingPercent to set
 	 */
-	public void setOutputFormat(String argOutputFormat) {
-		String old = outputFormat;
-		outputFormat = argOutputFormat;
-		firePropertyChange("outputFormat", old, outputFormat);
+	public void setSavingPercent(int argSavingPercent) {
+		int old = savingPercent;
+		savingPercent = argSavingPercent;
+		firePropertyChange("savingPercent", old, savingPercent);
 	}
 
 	/**
-	 * @return the outputFormat
+	 * @return the savingPercent
 	 */
-	public String getOutputFormat() {
-		return outputFormat;
+	public int getSavingPercent() {
+		return savingPercent;
 	}
-	
+
+	/**
+	 * @param savingFilename the savingFilename to set
+	 */
+	public void setSavingFilename(String argSavingFilename) {
+		String old = savingFilename;
+		savingFilename = argSavingFilename;
+		firePropertyChange("savingFilename", old, savingFilename);
+	}
+
+	/**
+	 * @return the savingFilename
+	 */
+	public String getSavingFilename() {
+		return savingFilename;
+	}
+
 	public static final ConvertModel getInstance(){
 		return model;
 	}

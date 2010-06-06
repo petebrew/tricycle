@@ -1,8 +1,8 @@
 package org.tridas.io.gui.model;
 
-import org.tridas.io.gui.control.main.MainWindowController;
-import org.tridas.io.gui.control.main.convert.ConvertController;
-import org.tridas.io.gui.control.main.fileList.FileListController;
+import org.tridas.io.gui.control.MainWindowController;
+import org.tridas.io.gui.control.convert.ConvertController;
+import org.tridas.io.gui.control.fileList.FileListController;
 
 public class ModelLocator {
 	private static final ModelLocator ml = new ModelLocator();

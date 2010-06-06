@@ -1,7 +1,7 @@
 /**
  * Created on May 26, 2010, 3:49:32 AM
  */
-package org.tridas.io.gui.control.main.fileList;
+package org.tridas.io.gui.control.fileList;
 
 import java.io.File;
 import java.util.HashSet;

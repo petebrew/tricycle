@@ -1,7 +1,7 @@
 /**
  * Created on May 26, 2010, 9:27:46 PM
  */
-package org.tridas.io.gui.control.main.fileList;
+package org.tridas.io.gui.control.fileList;
 
 import com.dmurph.mvc.MVCEvent;
 

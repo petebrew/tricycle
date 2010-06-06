@@ -1,7 +1,7 @@
 /**
  * Created on May 27, 2010, 2:40:21 AM
  */
-package org.tridas.io.gui.control.main.convert;
+package org.tridas.io.gui.control.convert;
 
 import com.dmurph.mvc.MVCEvent;
 
