@@ -23,27 +23,20 @@ import org.tridas.io.gui.model.MainWindowModel;
 /**
  * @author daniel
  */
+@SuppressWarnings("serial")
 public class MainView extends JFrame {
 
 	private JMenu fileMenu;
-
 	private JMenu helpMenu;
-
 	private JMenuBar menuBar;
-
 	private JMenuItem loadMenuButton;
-
 	private JMenuItem quitMenuButton;
-
 	private JMenuItem aboutMenuButton;
-
 	private JMenuItem saveMenuButton;
-
 	private JTabbedPane tabbedPane;
-
 	private FileListPanel fileList;
-
 	private ConvertPanel convertPanel;
+	private ConfigPanel config;
 
 	public final MainWindowModel model = MainWindowModel.getInstance();
 
@@ -68,7 +61,9 @@ public class MainView extends JFrame {
 
 		fileList = new FileListPanel();
 		convertPanel = new ConvertPanel();
+		config = new ConfigPanel();
 
+		tabbedPane.addTab("Config", config);
 		tabbedPane.addTab("File List", fileList); // NOI18N
 		tabbedPane.addTab("Convert", convertPanel); // NOI18N
 

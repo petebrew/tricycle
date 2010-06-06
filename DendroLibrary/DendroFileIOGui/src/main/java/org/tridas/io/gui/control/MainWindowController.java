@@ -1,6 +1,7 @@
-package org.tridas.io.gui.control.main;
+package org.tridas.io.gui.control;
 
 import org.tridas.io.gui.view.MainView;
+import org.tridas.io.gui.view.popup.SavingProgress;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;

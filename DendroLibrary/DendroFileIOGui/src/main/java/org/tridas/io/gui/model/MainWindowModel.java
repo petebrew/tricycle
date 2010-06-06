@@ -10,8 +10,6 @@ import javax.swing.ComboBoxModel;
 import org.grlea.log.SimpleLogger;
 
 import com.dmurph.mvc.model.AbstractModel;
-import com.dmurph.mvc.util.MVCArrayList;
-
 /**
  * @author daniel
  */
@@ -20,10 +18,26 @@ public class MainWindowModel extends AbstractModel {
 	private static final MainWindowModel model = new MainWindowModel();
 
 	private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
-
-	private MVCArrayList<File> outputFiles = new MVCArrayList<File>();
-
+	
+	private boolean lock = false;
+	
 	private MainWindowModel() {}
+
+	/**
+	 * @param lock the lock to set
+	 */
+	public void setLock(boolean argLock) {
+		boolean old = lock;
+		lock = argLock;
+		firePropertyChange("lock", old, lock);
+	}
+
+	/**
+	 * @return the lock
+	 */
+	public boolean isLock() {
+		return lock;
+	}
 
 	public static MainWindowModel getInstance() {
 		return model;

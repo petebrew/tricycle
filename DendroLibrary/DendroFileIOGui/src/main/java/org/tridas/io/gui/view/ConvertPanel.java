@@ -19,15 +19,18 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import org.tridas.io.gui.control.main.convert.ConvertEvent;
-import org.tridas.io.gui.control.main.convert.SaveEvent;
+import org.tridas.io.gui.control.convert.ConvertEvent;
+import org.tridas.io.gui.control.convert.SaveEvent;
 import org.tridas.io.gui.enums.NamingConvention;
 import org.tridas.io.gui.enums.OutputFormat;
+import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
+import org.tridas.io.gui.model.MainWindowModel;
 
 /**
  * @author Daniel
  */
+@SuppressWarnings("serial")
 public class ConvertPanel extends JPanel {
 
 	private JPanel topPanel;
@@ -36,8 +39,6 @@ public class ConvertPanel extends JPanel {
 	private JTree convertedTree;
 	private JButton saveButton;
 	private JButton convertButton;
-	private JComboBox outputFormat;
-	private JComboBox namingConvention;
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
 
 	private ConvertModel model = ConvertModel.getInstance();
@@ -52,8 +53,6 @@ public class ConvertPanel extends JPanel {
 	private void initializeComponents() {
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
-		namingConvention = new JComboBox();
-		outputFormat = new JComboBox();
 		convertButton = new JButton();
 		saveButton = new JButton();
 		scrollPane = new JScrollPane();
@@ -64,10 +63,6 @@ public class ConvertPanel extends JPanel {
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 
-		namingConvention.setEditable(false);
-		topPanel.add(namingConvention);
-		
-		topPanel.add(outputFormat);
 		topPanel.add(convertButton);
 		bottomPanel.add(saveButton);
 
@@ -85,26 +80,12 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void addListeners(){
-		namingConvention.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// skip event to controller, implement that if needed
-				model.setNamingConvention(namingConvention.getSelectedItem().toString());
-			}
-		});
-		
-		outputFormat.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// skip event to controller, implement that if needed
-				model.setOutputFormat(outputFormat.getSelectedItem().toString());
-			}
-		});
 		
 		convertButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ConvertEvent event = new ConvertEvent(model.getOutputFormat(), model.getNamingConvention());
+				ConfigModel config = ConfigModel.getInstance();
+				ConvertEvent event = new ConvertEvent(config.getOutputFormat(), config.getNamingConvention());
 				event.dispatch();
 			}
 		});
@@ -122,22 +103,11 @@ public class ConvertPanel extends JPanel {
 		saveButton.setText("Save...");
 		convertButton.setText("Convert");
 		
-		for(String conv : NamingConvention.getNamingConventions()){
-			namingConvention.addItem(conv);
-		}
 		
-		outputFormat.addItem("TRiDaS");
-		for(String out : OutputFormat.getOutputFormats()){
-			if(out.equals("TRiDaS")){
-				continue;
-			}
-			outputFormat.addItem(out);
-		}
 	}
 	
 	private void linkModel() {
-		namingConvention.setSelectedItem(model.getNamingConvention());
-		outputFormat.setSelectedItem(model.getOutputFormat());
+		
 		
 		DefaultTreeModel treeModel = (DefaultTreeModel) convertedTree.getModel();
 		for(DefaultMutableTreeNode node : model.getNodes()){
@@ -151,11 +121,7 @@ public class ConvertPanel extends JPanel {
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();
 				
-				if(prop.equals("namingConvention")){
-					namingConvention.setSelectedItem(evt.getNewValue());
-				}else if(prop.equals("outputFormat")){
-					outputFormat.setSelectedItem(evt.getNewValue());
-				}else if(prop.equals("nodes")){
+				if(prop.equals("nodes")){
 					DefaultTreeModel treeModel = (DefaultTreeModel) convertedTree.getModel();
 					rootNode.removeAllChildren();
 					for(DefaultMutableTreeNode node : model.getNodes()){
@@ -166,13 +132,32 @@ public class ConvertPanel extends JPanel {
 				}
 			}
 		});
+		
+		MainWindowModel mwm = MainWindowModel.getInstance();
+		mwm.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				
+				if(evt.getPropertyName().equals("lock")){
+					boolean lock = (Boolean)evt.getNewValue();
+					if(lock){
+						convertButton.setEnabled(false);
+						saveButton.setEnabled(false);
+					}else{
+						convertButton.setEnabled(true);
+						saveButton.setEnabled(true);
+					}
+				}
+			}
+		});
 	}
 	
 	private void expandAll(){
 		int row = 0;
 	    while (row < convertedTree.getRowCount()) {
 	    	convertedTree.expandRow(row);
-	      row++;
-	     }
+	    	row++;
+	    }
 	}
 }
