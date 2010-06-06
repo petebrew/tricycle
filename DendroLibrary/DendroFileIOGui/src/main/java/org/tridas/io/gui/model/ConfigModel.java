@@ -16,6 +16,7 @@ public class ConfigModel extends AbstractModel {
 	private String inputFormat = "automatic";
 	private String outputFormat = "tridas";
 	private String namingConvention = "UUID";
+	private boolean detectCharset = false;
 	
 	private ConfigModel(){}
 	
@@ -78,6 +79,22 @@ public class ConfigModel extends AbstractModel {
 	public boolean isHideWarnings() {
 		return hideWarnings;
 	}*/
+
+	/**
+	 * @param detectCharset the detectCharset to set
+	 */
+	public void setDetectCharset(boolean argDetectCharset) {
+		boolean old = detectCharset;
+		detectCharset = argDetectCharset;
+		firePropertyChange("detectCharset", old, detectCharset);
+	}
+
+	/**
+	 * @return the detectCharset
+	 */
+	public boolean isDetectCharset() {
+		return detectCharset;
+	}
 
 	public static final ConfigModel getInstance(){
 		return model;
