@@ -9,13 +9,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.nio.charset.Charset;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.tridas.io.gui.control.config.ConfigController;
+import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.enums.NamingConvention;
 import org.tridas.io.gui.enums.OutputFormat;
@@ -32,9 +37,11 @@ import com.dmurph.mvc.StringEvent;
 public class ConfigPanel extends JPanel {
 	
 	private JComboBox inputFormat;
+	private JComboBox readingCharset;
+	
 	private JComboBox outputFormat;
 	private JComboBox namingConvention;
-	private JCheckBox detectCharset;
+	private JComboBox writingCharset;
 	
 	private ConfigModel model = ConfigModel.getInstance();
 	
@@ -52,38 +59,68 @@ public class ConfigPanel extends JPanel {
 		namingConvention = new JComboBox();
 		outputFormat = new JComboBox();
 		inputFormat = new JComboBox();
-		detectCharset = new JCheckBox();
+		writingCharset = new JComboBox();
+		readingCharset = new JComboBox();
+		
 		
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0, 1));
+		panel.setLayout(new GridLayout(1, 0));
+		
+		JPanel readingPanel = new JPanel();
+		readingPanel.setBorder(BorderFactory.createTitledBorder("Reader Config"));
+		readingPanel.setLayout(new GridLayout(0,1,5,5));
 		
 		// TODO locale all of these
-		outputFormat.setEditable(true);
-		JPanel outputFormatPanel = new JPanel();
-		outputFormatPanel.add(new JLabel("Output Format:"));
-		outputFormatPanel.add(outputFormat);
+		inputFormat.setEditable(false);
+		Box ifBox = Box.createHorizontalBox();
+		ifBox.add(Box.createHorizontalGlue());
+		ifBox.add(new JLabel("Input Format: "));
+		ifBox.add(inputFormat);
+		ifBox.add(Box.createHorizontalGlue());
 		
-		inputFormat.setEditable(true);
-		JPanel inputFormatPanel = new JPanel();
-		inputFormatPanel.add(new JLabel("Input Format:"));
-		inputFormatPanel.add(inputFormat);
+		readingCharset.setEditable(false);
+		Box rcBox = Box.createHorizontalBox();
+		rcBox.add(Box.createHorizontalGlue());
+		rcBox.add(new JLabel("Reading Charset: "));
+		rcBox.add(readingCharset);
+		rcBox.add(Box.createHorizontalGlue());
 		
+		readingPanel.add(ifBox);
+		readingPanel.add(rcBox);
+		
+		JPanel writingPanel = new JPanel();
+		writingPanel.setBorder(BorderFactory.createTitledBorder("Writer Config"));
+		writingPanel.setLayout(new GridLayout(0,1,5,5));
+
 		namingConvention.setEditable(false);
-		JPanel namingConventionPanel = new JPanel();
-		namingConventionPanel.add(new JLabel("Naming Convention:"));
-		namingConventionPanel.add(namingConvention);
+		Box ncBox = Box.createHorizontalBox();
+		ncBox.add(Box.createHorizontalGlue());
+		ncBox.add(new JLabel("Naming Convention: "));
+		ncBox.add(namingConvention);
+		ncBox.add(Box.createHorizontalGlue());
+
+		outputFormat.setEditable(false);
+		Box ofBox = Box.createHorizontalBox();
+		ofBox.add(Box.createHorizontalGlue());
+		ofBox.add(new JLabel("Output Format:"));
+		ofBox.add(outputFormat);
+		ofBox.add(Box.createHorizontalGlue());
 		
-		JPanel detectCharsetPanel = new JPanel();
-		detectCharsetPanel.add(new JLabel("Detect Charset:"));
-		detectCharsetPanel.add(detectCharset);
+		writingCharset.setEditable(false);
+		Box ocBox = Box.createHorizontalBox();
+		ocBox.add(Box.createHorizontalGlue());
+		ocBox.add(new JLabel("Writing Charset: "));
+		ocBox.add(writingCharset);
+		ocBox.add(Box.createHorizontalGlue());
 		
-		panel.add(inputFormatPanel);
-		panel.add(outputFormatPanel);
-		panel.add(namingConventionPanel);
-		panel.add(detectCharsetPanel);
+		writingPanel.add(ofBox);
+		writingPanel.add(ncBox);
+		writingPanel.add(ocBox);
 		
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(panel);
+		panel.add(readingPanel);
+		panel.add(writingPanel);
+		
+		add(panel, "Center");
 	}
 	
 	/**
@@ -117,15 +154,26 @@ public class ConfigPanel extends JPanel {
 			}
 		});
 		
-		detectCharset.addActionListener(new ActionListener() {
+		writingCharset.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ObjectEvent<Boolean> event = new ObjectEvent<Boolean>(ConfigController.SET_DETECT_CHARSET,
-						detectCharset.isSelected());
+				String charset = writingCharset.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_WRITING_CHARSET, charset);
 				event.dispatch();
 			}
 		});
+		
+		readingCharset.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String charset = readingCharset.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_READING_CHARSET, charset);
+				event.dispatch();
+			}
+		});
+		
 	}
 	
 	/**
@@ -133,7 +181,6 @@ public class ConfigPanel extends JPanel {
 	 */
 	private void populateLocale() {
 		
-		inputFormat.addItem("automatic");
 		for (String s : InputFormat.getInputFormats()) {
 			inputFormat.addItem(s);
 		}
@@ -142,12 +189,22 @@ public class ConfigPanel extends JPanel {
 			namingConvention.addItem(conv);
 		}
 		
-		outputFormat.addItem("TRiDaS");
 		for (String out : OutputFormat.getOutputFormats()) {
-			if (out.equals("TRiDaS")) {
+			outputFormat.addItem(out);
+		}
+		
+		// put default one on top, so the user will see
+		// "automatic" right underneath
+		readingCharset.addItem(Charset.defaultCharset().displayName());
+		for(String s : Charsets.getReadingCharsets()){
+			if(s.equals(Charset.defaultCharset().displayName())){
 				continue;
 			}
-			outputFormat.addItem(out);
+			readingCharset.addItem(s);
+		}
+		
+		for(String s : Charsets.getWritingCharsets()){
+			writingCharset.addItem(s);
 		}
 	}
 	
@@ -158,6 +215,8 @@ public class ConfigPanel extends JPanel {
 		inputFormat.setSelectedItem(model.getInputFormat());
 		namingConvention.setSelectedItem(model.getNamingConvention());
 		outputFormat.setSelectedItem(model.getOutputFormat());
+		readingCharset.setSelectedItem(model.getReadingCharset());
+		writingCharset.setSelectedItem(model.getWritingCharset());
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			
@@ -174,6 +233,12 @@ public class ConfigPanel extends JPanel {
 				else if (prop.equals("outputFormat")) {
 					outputFormat.setSelectedItem(evt.getNewValue());
 				}
+				else if(prop.equals("writingCharset")){
+					writingCharset.setSelectedItem(evt.getNewValue());
+				}
+				else if(prop.equals("readingCharset")){
+					readingCharset.setSelectedItem(evt.getNewValue());
+				}
 			}
 		});
 		
@@ -189,11 +254,15 @@ public class ConfigPanel extends JPanel {
 						inputFormat.setEnabled(false);
 						namingConvention.setEnabled(false);
 						outputFormat.setEnabled(false);
+						readingCharset.setEnabled(false);
+						writingCharset.setEnabled(false);
 					}
 					else {
 						inputFormat.setEnabled(true);
 						namingConvention.setEnabled(true);
 						outputFormat.setEnabled(true);
+						readingCharset.setEnabled(true);
+						writingCharset.setEnabled(true);
 					}
 				}
 			}

@@ -3,6 +3,10 @@
  */
 package org.tridas.io.gui.model;
 
+import org.tridas.io.TridasIO;
+import org.tridas.io.gui.enums.Charsets;
+import org.tridas.io.gui.enums.InputFormat;
+
 import com.dmurph.mvc.model.AbstractModel;
 
 /**
@@ -12,10 +16,11 @@ public class ConfigModel extends AbstractModel {
 	
 	private static final ConfigModel model = new ConfigModel();
 	
-	private String inputFormat = "automatic";
-	private String outputFormat = "tridas";
+	private String inputFormat = InputFormat.AUTO;
+	private String outputFormat = "TRiDaS";
 	private String namingConvention = "UUID";
-	private boolean detectCharset = false;
+	private String writingCharset = TridasIO.getWritingCharset();
+	private String readingCharset = TridasIO.isCharsetDetection()? Charsets.AUTO: TridasIO.getReadingCharset();;
 	
 	private ConfigModel() {}
 	
@@ -76,24 +81,33 @@ public class ConfigModel extends AbstractModel {
 	 * return hideWarnings;
 	 * }
 	 */
+	
+	public void setWritingCharset(String argCharset){
+		String old = writingCharset;
+		writingCharset = argCharset;
+		firePropertyChange("writingCharset", old, writingCharset);
+	}
+	
+	public String getWritingCharset(){
+		return writingCharset;
+	}
+	
+	/**
+	 * @param argReadingCharset the readingCharset to set
+	 */
+	public void setReadingCharset(String argReadingCharset) {
+		String old = readingCharset;
+		readingCharset = argReadingCharset;
+		firePropertyChange("readingCharset", old, readingCharset);
+	}
 
 	/**
-	 * @param detectCharset
-	 *            the detectCharset to set
+	 * @return the readingCharset
 	 */
-	public void setDetectCharset(boolean argDetectCharset) {
-		boolean old = detectCharset;
-		detectCharset = argDetectCharset;
-		firePropertyChange("detectCharset", old, detectCharset);
+	public String getReadingCharset() {
+		return readingCharset;
 	}
-	
-	/**
-	 * @return the detectCharset
-	 */
-	public boolean isDetectCharset() {
-		return detectCharset;
-	}
-	
+
 	public static final ConfigModel getInstance() {
 		return model;
 	}

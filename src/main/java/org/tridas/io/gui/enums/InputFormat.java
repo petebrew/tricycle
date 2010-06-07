@@ -3,13 +3,22 @@
  */
 package org.tridas.io.gui.enums;
 
+import java.util.ArrayList;
+
 import org.tridas.io.TridasIO;
 
 /**
  * @author Daniel
  */
 public class InputFormat {
+	public static final String AUTO = "Automatic";
+	
 	public static String[] getInputFormats() {
-		return TridasIO.getSupportedReadingFormats();
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(AUTO);
+		for(String s : TridasIO.getSupportedReadingFormats()){
+			list.add(s);
+		}
+		return list.toArray(new String[0]);
 	}
 }

@@ -15,6 +15,8 @@ public class MainWindowController extends FrontController {
 	public AboutWindow about = null;
 	
 	public MainWindowController() {
+		about = new AboutWindow();
+		about.pack();
 		try {
 			registerCommand(STARTUP, "startup");
 			registerCommand(QUIT, "quit");
@@ -30,9 +32,6 @@ public class MainWindowController extends FrontController {
 		view = new MainWindow();
 		view.setVisible(true);
 		view.setDefaultCloseOperation(3);
-		about = new AboutWindow();
-		about.setVisible(true);
-		about.pack();
 	}
 	
 	public void quit(MVCEvent argEvent) {
