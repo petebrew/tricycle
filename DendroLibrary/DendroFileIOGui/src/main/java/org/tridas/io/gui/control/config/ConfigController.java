@@ -3,7 +3,10 @@
  */
 package org.tridas.io.gui.control.config;
 
+import java.nio.charset.Charset;
+
 import org.tridas.io.TridasIO;
+import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
 
 import com.dmurph.mvc.MVCEvent;
@@ -18,7 +21,8 @@ public class ConfigController extends FrontController {
 	public static final String SET_INPUT_FORMAT = "CONFIG_SET_INPUT_FORMAT";
 	public static final String SET_OUTPUT_FORMAT = "CONFIG_SET_OUTPUT_FORMAT";
 	public static final String SET_NAMING_CONVENTION = "CONFIG_SET_NAMING_CONVENTION";
-	public static final String SET_DETECT_CHARSET = "CONFIG_SET_DETECT_CHARSET";
+	public static final String SET_READING_CHARSET = "CONFIG_SET_READING_CHARSET";
+	public static final String SET_WRITING_CHARSET = "CONFIG_SET_WRITING_CHARSET";
 	
 	private ConfigModel model = ConfigModel.getInstance();
 	
@@ -27,7 +31,8 @@ public class ConfigController extends FrontController {
 			registerCommand(SET_INPUT_FORMAT, "setInputFormat");
 			registerCommand(SET_OUTPUT_FORMAT, "setOutputFormat");
 			registerCommand(SET_NAMING_CONVENTION, "setNamingConvention");
-			registerCommand(SET_DETECT_CHARSET, "setDetectCharset");
+			registerCommand(SET_READING_CHARSET, "setReadingCharset");
+			registerCommand(SET_WRITING_CHARSET, "setWritingCharset");
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
@@ -50,11 +55,25 @@ public class ConfigController extends FrontController {
 		model.setNamingConvention(event.getValue());
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void setDetectCharset(MVCEvent argEvent) {
-		ObjectEvent<Boolean> event = (ObjectEvent<Boolean>) argEvent;
-		model.setDetectCharset(event.getValue());
+	public void setReadingCharset(MVCEvent argEvent){
+		StringEvent event = (StringEvent) argEvent;
+		model.setReadingCharset(event.getValue());	
 		
-		TridasIO.setCharsetDetection(event.getValue());
+		if(event.getValue().equals(Charsets.AUTO)){
+			TridasIO.setReadingCharset(null);
+			TridasIO.setCharsetDetection(true);
+			return;
+		}else{
+			TridasIO.setCharsetDetection(false);
+		}
+		
+		TridasIO.setReadingCharset(event.getValue());
+	}
+	
+	public void setWritingCharset(MVCEvent argEvent){
+		StringEvent event = (StringEvent) argEvent;
+		model.setWritingCharset(event.getValue());
+		
+		TridasIO.setWritingCharset(event.getValue());
 	}
 }
