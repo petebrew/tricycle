@@ -51,6 +51,8 @@ public class MainWindow extends JFrame {
 		addListeners();
 		linkModel();
 		pack();
+		setLocationRelativeTo(null);
+		setTitle("TRiCYCLE");
 	}
 	
 	private void constructComponents() {
