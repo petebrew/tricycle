@@ -3,18 +3,12 @@
  */
 package org.tridas.io.gui.view.popup;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import org.tridas.io.util.IOUtils;
