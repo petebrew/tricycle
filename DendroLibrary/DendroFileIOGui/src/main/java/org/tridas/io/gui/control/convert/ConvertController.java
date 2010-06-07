@@ -124,6 +124,7 @@ public class ConvertController extends FrontController {
 		ConvertEvent event = (ConvertEvent) argEvent;
 		String outputFormat = event.getOutputFormat();
 		INamingConvention naming;
+		ConvertModel model = ConvertModel.getInstance();
 		
 		boolean outputFormatFound = false;
 		for (String format : TridasIO.getSupportedWritingFormats()) {
@@ -246,17 +247,26 @@ public class ConvertController extends FrontController {
 		structList.clear();
 		structList.addAll(list);
 		
+		// we need to set processed/failed/convertedWithWarnings
+		int processed = 0;
+		int failed = 0;
+		int convWWarnings = 0;
+		
 		for (ProjectToFiles s : list) {
 			DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(s.file);
 			nodes.add(leaf);
+			
+			processed++;
 			
 			if (s.errorMessage != null) {
 				DefaultMutableTreeNode errorMessage = new DefaultMutableTreeNode(s.errorMessage);
 				leaf.add(errorMessage);
 				nodes.add(leaf);
+				failed++;
 				continue;
 			}
 			
+			boolean warnings = false;
 			for (IDendroFile file : s.writer.getFiles()) {
 				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(argNaming.getFilename(file) + "."
 						+ file.getExtension());
@@ -265,24 +275,24 @@ public class ConvertController extends FrontController {
 						DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
 						fileNode.add(warningNode);
 					}
+					warnings = true;
 				}
 				leaf.add(fileNode);
 			}
 			
-			DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
-			for (ConversionWarning warning : s.reader.getWarnings()) {
-				DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
-				readerWarnings.add(warn);
-			}
-			for (ConversionWarning warning : s.reader.getDefaults().getConversionWarnings()) {
-				DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
-				readerWarnings.add(warn);
-			}
-			if (readerWarnings.getChildCount() != 0) {
+			
+			if(s.reader.getWarnings().length != 0){
+				warnings = true;
+				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
+				for (ConversionWarning warning : s.reader.getWarnings()) {
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+					readerWarnings.add(warn);
+				}
 				leaf.add(readerWarnings);
 			}
 			
 			if (s.writer.getWarnings().length != 0) {
+				warnings = true;
 				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode("Writer Warnings");
 				for (ConversionWarning warning : s.writer.getWarnings()) {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
@@ -290,9 +300,16 @@ public class ConvertController extends FrontController {
 				}
 				leaf.add(writerWarnings);
 			}
+			
+			if(warnings){
+				convWWarnings++;
+			}
 		}
 		
 		ConvertModel model = ConvertModel.getInstance();
+		model.setProcessed(processed);
+		model.setFailed(failed);
+		model.setConvWithWarnings(convWWarnings);
 		model.setNodes(nodes);
 	}
 	

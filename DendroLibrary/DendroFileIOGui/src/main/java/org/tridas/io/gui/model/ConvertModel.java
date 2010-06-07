@@ -21,6 +21,10 @@ public class ConvertModel extends AbstractModel {
 	private String savingFilename = null;
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
+	private int processed = 0;
+	private int failed = 0;
+	private int convWithWarnings = 0;
+	
 	private ConvertModel() {}
 	
 	public void setNodes(List<DefaultMutableTreeNode> argNodes) {
@@ -67,6 +71,50 @@ public class ConvertModel extends AbstractModel {
 	public String getSavingFilename() {
 		return savingFilename;
 	}
+	
+	
+	public void incrementProcessed(){
+		setProcessed(processed +1);
+	}
+
+	public void setProcessed(int argProcessed) {
+		int old = processed;
+		processed = argProcessed;
+		firePropertyChange("processed", old, processed);
+	}
+
+	public int getProcessed() {
+		return processed;
+	}
+
+	public void incrementFailed(){
+		setFailed(failed +1);
+	}
+	
+	public void setFailed(int argFailed) {
+		int old = failed;
+		failed = argFailed;
+		firePropertyChange("failed", old, failed);
+	}
+
+	public int getFailed() {
+		return failed;
+	}
+
+	public void incrementConvWithWarnings(){
+		setConvWithWarnings(convWithWarnings +1);
+	}
+	
+	public void setConvWithWarnings(int argConvWithWarnings) {
+		int old = convWithWarnings;
+		convWithWarnings = argConvWithWarnings;
+		firePropertyChange("convWithWarnings", old, convWithWarnings);
+	}
+
+	public int getConvWithWarnings() {
+		return convWithWarnings;
+	}
+
 	
 	public static final ConvertModel getInstance() {
 		return model;
