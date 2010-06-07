@@ -7,10 +7,9 @@ import com.dmurph.mvc.model.AbstractModel;
 
 /**
  * @author Daniel Murphy
- *
  */
 public class ConfigModel extends AbstractModel {
-
+	
 	private static final ConfigModel model = new ConfigModel();
 	
 	private String inputFormat = "automatic";
@@ -18,7 +17,7 @@ public class ConfigModel extends AbstractModel {
 	private String namingConvention = "UUID";
 	private boolean detectCharset = false;
 	
-	private ConfigModel(){}
+	private ConfigModel() {}
 	
 	/**
 	 * @param inputFormat
@@ -29,7 +28,7 @@ public class ConfigModel extends AbstractModel {
 		inputFormat = argInputFormat;
 		firePropertyChange("inputFormat", old, inputFormat);
 	}
-
+	
 	/**
 	 * @return the inputFormat
 	 */
@@ -37,13 +36,13 @@ public class ConfigModel extends AbstractModel {
 		return inputFormat;
 	}
 	
-	public void setNamingConvention(String argNamingConvention){
+	public void setNamingConvention(String argNamingConvention) {
 		String old = namingConvention;
 		namingConvention = argNamingConvention;
 		firePropertyChange("namingConvention", old, namingConvention);
 	}
 	
-	public String getNamingConvention(){
+	public String getNamingConvention() {
 		return namingConvention;
 	}
 	
@@ -56,7 +55,7 @@ public class ConfigModel extends AbstractModel {
 		outputFormat = argOutputFormat;
 		firePropertyChange("outputFormat", old, outputFormat);
 	}
-
+	
 	/**
 	 * @return the outputFormat
 	 */
@@ -66,37 +65,36 @@ public class ConfigModel extends AbstractModel {
 	
 	/*
 	 * @param argHideWarnings the hideWarnings to set
-	 *
-	public void setHideWarnings(boolean argHideWarnings) {
-		boolean old = hideWarnings;
-		hideWarnings = argHideWarnings;
-		firePropertyChange("hideWarnings", old, hideWarnings);
-	}
-
-	/**
+	 * public void setHideWarnings(boolean argHideWarnings) {
+	 * boolean old = hideWarnings;
+	 * hideWarnings = argHideWarnings;
+	 * firePropertyChange("hideWarnings", old, hideWarnings);
+	 * }
+	 * /**
 	 * @return the hideWarnings
-	 *
-	public boolean isHideWarnings() {
-		return hideWarnings;
-	}*/
+	 * public boolean isHideWarnings() {
+	 * return hideWarnings;
+	 * }
+	 */
 
 	/**
-	 * @param detectCharset the detectCharset to set
+	 * @param detectCharset
+	 *            the detectCharset to set
 	 */
 	public void setDetectCharset(boolean argDetectCharset) {
 		boolean old = detectCharset;
 		detectCharset = argDetectCharset;
 		firePropertyChange("detectCharset", old, detectCharset);
 	}
-
+	
 	/**
 	 * @return the detectCharset
 	 */
 	public boolean isDetectCharset() {
 		return detectCharset;
 	}
-
-	public static final ConfigModel getInstance(){
+	
+	public static final ConfigModel getInstance() {
 		return model;
 	}
 }

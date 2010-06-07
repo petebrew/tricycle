@@ -7,7 +7,6 @@ import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author Daniel
- *
  */
 public class SaveEvent extends MVCEvent {
 	

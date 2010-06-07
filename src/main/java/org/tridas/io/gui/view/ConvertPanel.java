@@ -11,18 +11,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
 
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
-import org.tridas.io.gui.enums.NamingConvention;
-import org.tridas.io.gui.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.MainWindowModel;
@@ -32,7 +28,7 @@ import org.tridas.io.gui.model.MainWindowModel;
  */
 @SuppressWarnings("serial")
 public class ConvertPanel extends JPanel {
-
+	
 	private JPanel topPanel;
 	private JPanel bottomPanel;
 	private JScrollPane scrollPane;
@@ -40,7 +36,7 @@ public class ConvertPanel extends JPanel {
 	private JButton saveButton;
 	private JButton convertButton;
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
-
+	
 	private ConvertModel model = ConvertModel.getInstance();
 	
 	public ConvertPanel() {
@@ -49,7 +45,7 @@ public class ConvertPanel extends JPanel {
 		populateLocale();
 		linkModel();
 	}
-
+	
 	private void initializeComponents() {
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
@@ -57,29 +53,29 @@ public class ConvertPanel extends JPanel {
 		saveButton = new JButton();
 		scrollPane = new JScrollPane();
 		convertedTree = new JTree();
-
+		
 		setLayout(new java.awt.BorderLayout());
 		
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
-
+		
 		topPanel.add(convertButton);
 		bottomPanel.add(saveButton);
-
+		
 		add(topPanel, BorderLayout.NORTH);
 		
 		add(bottomPanel, java.awt.BorderLayout.PAGE_END);
-
-		DefaultTreeModel model = new DefaultTreeModel(rootNode,false);
+		
+		DefaultTreeModel model = new DefaultTreeModel(rootNode, false);
 		convertedTree.setModel(model);
 		convertedTree.setRootVisible(true);
 		convertedTree.expandRow(0);
 		scrollPane.setViewportView(convertedTree);
-
+		
 		add(scrollPane, java.awt.BorderLayout.CENTER);
 	}
 	
-	private void addListeners(){
+	private void addListeners() {
 		
 		convertButton.addActionListener(new ActionListener() {
 			@Override
@@ -98,19 +94,17 @@ public class ConvertPanel extends JPanel {
 			}
 		});
 	}
-
+	
 	private void populateLocale() {
 		saveButton.setText("Save...");
 		convertButton.setText("Convert");
-		
 		
 	}
 	
 	private void linkModel() {
 		
-		
 		DefaultTreeModel treeModel = (DefaultTreeModel) convertedTree.getModel();
-		for(DefaultMutableTreeNode node : model.getNodes()){
+		for (DefaultMutableTreeNode node : model.getNodes()) {
 			treeModel.insertNodeInto(node, rootNode, rootNode.getChildCount());
 		}
 		expandAll();
@@ -121,10 +115,10 @@ public class ConvertPanel extends JPanel {
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();
 				
-				if(prop.equals("nodes")){
+				if (prop.equals("nodes")) {
 					DefaultTreeModel treeModel = (DefaultTreeModel) convertedTree.getModel();
 					rootNode.removeAllChildren();
-					for(DefaultMutableTreeNode node : model.getNodes()){
+					for (DefaultMutableTreeNode node : model.getNodes()) {
 						rootNode.add(node);
 					}
 					treeModel.setRoot(rootNode);
@@ -139,12 +133,13 @@ public class ConvertPanel extends JPanel {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				
-				if(evt.getPropertyName().equals("lock")){
-					boolean lock = (Boolean)evt.getNewValue();
-					if(lock){
+				if (evt.getPropertyName().equals("lock")) {
+					boolean lock = (Boolean) evt.getNewValue();
+					if (lock) {
 						convertButton.setEnabled(false);
 						saveButton.setEnabled(false);
-					}else{
+					}
+					else {
 						convertButton.setEnabled(true);
 						saveButton.setEnabled(true);
 					}
@@ -153,11 +148,11 @@ public class ConvertPanel extends JPanel {
 		});
 	}
 	
-	private void expandAll(){
+	private void expandAll() {
 		int row = 0;
-	    while (row < convertedTree.getRowCount()) {
-	    	convertedTree.expandRow(row);
-	    	row++;
-	    }
+		while (row < convertedTree.getRowCount()) {
+			convertedTree.expandRow(row);
+			row++;
+		}
 	}
 }

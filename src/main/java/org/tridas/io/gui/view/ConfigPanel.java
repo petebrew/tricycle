@@ -27,7 +27,6 @@ import com.dmurph.mvc.StringEvent;
 
 /**
  * @author Daniel Murphy
- *
  */
 @SuppressWarnings("serial")
 public class ConfigPanel extends JPanel {
@@ -45,7 +44,7 @@ public class ConfigPanel extends JPanel {
 		populateLocale();
 		linkModel();
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -54,7 +53,7 @@ public class ConfigPanel extends JPanel {
 		outputFormat = new JComboBox();
 		inputFormat = new JComboBox();
 		detectCharset = new JCheckBox();
-
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0, 1));
 		
@@ -63,7 +62,7 @@ public class ConfigPanel extends JPanel {
 		JPanel outputFormatPanel = new JPanel();
 		outputFormatPanel.add(new JLabel("Output Format:"));
 		outputFormatPanel.add(outputFormat);
-
+		
 		inputFormat.setEditable(true);
 		JPanel inputFormatPanel = new JPanel();
 		inputFormatPanel.add(new JLabel("Input Format:"));
@@ -86,7 +85,7 @@ public class ConfigPanel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(panel);
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -122,36 +121,36 @@ public class ConfigPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ObjectEvent<Boolean> event = new ObjectEvent<Boolean>(ConfigController.SET_DETECT_CHARSET, detectCharset.isSelected());
+				ObjectEvent<Boolean> event = new ObjectEvent<Boolean>(ConfigController.SET_DETECT_CHARSET,
+						detectCharset.isSelected());
 				event.dispatch();
 			}
 		});
 	}
-
+	
 	/**
 	 * 
 	 */
 	private void populateLocale() {
-		
 		
 		inputFormat.addItem("automatic");
 		for (String s : InputFormat.getInputFormats()) {
 			inputFormat.addItem(s);
 		}
 		
-		for(String conv : NamingConvention.getNamingConventions()){
+		for (String conv : NamingConvention.getNamingConventions()) {
 			namingConvention.addItem(conv);
 		}
 		
 		outputFormat.addItem("TRiDaS");
-		for(String out : OutputFormat.getOutputFormats()){
-			if(out.equals("TRiDaS")){
+		for (String out : OutputFormat.getOutputFormats()) {
+			if (out.equals("TRiDaS")) {
 				continue;
 			}
 			outputFormat.addItem(out);
 		}
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -168,9 +167,11 @@ public class ConfigPanel extends JPanel {
 				
 				if (prop.equals("inputFormat")) {
 					inputFormat.setSelectedItem(evt.getNewValue());
-				}else if(prop.equals("namingConvention")){
+				}
+				else if (prop.equals("namingConvention")) {
 					namingConvention.setSelectedItem(evt.getNewValue());
-				}else if(prop.equals("outputFormat")){
+				}
+				else if (prop.equals("outputFormat")) {
 					outputFormat.setSelectedItem(evt.getNewValue());
 				}
 			}
@@ -182,13 +183,14 @@ public class ConfigPanel extends JPanel {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				
-				if(evt.getPropertyName().equals("lock")){
-					boolean lock = (Boolean)evt.getNewValue();
-					if(lock){
+				if (evt.getPropertyName().equals("lock")) {
+					boolean lock = (Boolean) evt.getNewValue();
+					if (lock) {
 						inputFormat.setEnabled(false);
 						namingConvention.setEnabled(false);
 						outputFormat.setEnabled(false);
-					}else{
+					}
+					else {
 						inputFormat.setEnabled(true);
 						namingConvention.setEnabled(true);
 						outputFormat.setEnabled(true);
