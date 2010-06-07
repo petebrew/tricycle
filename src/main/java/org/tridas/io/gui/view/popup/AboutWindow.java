@@ -6,11 +6,18 @@ package org.tridas.io.gui.view.popup;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
+
+import org.tridas.io.util.IOUtils;
 
 /**
  * @author Daniel Murphy
@@ -18,11 +25,16 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class AboutWindow extends JFrame {
 	
+	private JLabel title;
+	private JLabel byLine1;
+	private JLabel byLine2;
+
 	public AboutWindow(JFrame parent) {
-		//super("About");
 		initComponents();
 		populateLocale();
 		setLocationRelativeTo(parent);
+		pack();
+		setResizable(false);
 	}
 	
 	/**
@@ -30,29 +42,43 @@ public class AboutWindow extends JFrame {
 	 */
 	private void initComponents() {
 		
-		Box lbox = Box.createVerticalBox();
-		lbox.add(new JLabel("Icon"));
-		lbox.add(new JLabel("goes"));
-		lbox.add(new JLabel("here"));
+		JLabel logo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/128x128/application.png")));
+		
+		title = new JLabel();
+		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setFont( title.getFont().deriveFont(20f));
+		
+		byLine1 = new JLabel();
+		byLine1.setFont(byLine1.getFont().deriveFont(10f));
+		
+		byLine2 = new JLabel();
+		byLine2.setFont(byLine2.getFont().deriveFont(10f));
+		
 		
 		Box rbox = Box.createVerticalBox();
-		rbox.setAlignmentX(RIGHT_ALIGNMENT);
-		rbox.setBorder(new LineBorder(Color.black, 1, true));
-		rbox.add(new JLabel("TRiCYCLE"));
-		rbox.add(new JLabel("copyright info"));
-		rbox.add(new JLabel("website"));
-		rbox.add(new JLabel("other stuff"));
+		rbox.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+		rbox.add(title);
+		rbox.add(byLine1);
+		rbox.add(byLine2);
+		rbox.add(new JLabel("Copyright stuff?"));
+		rbox.add(new JLabel("Link to project page?"));
+		rbox.add(new JLabel("TODO: choose a font"));
+		
+		JPanel rpanel = new JPanel();
+		rpanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
+		rpanel.add(rbox, "Center");
 		
 		Box box = Box.createHorizontalBox();
-		box.add(lbox);
-		box.add(Box.createRigidArea(new Dimension(10, 10)));
-		box.add(Box.createHorizontalGlue());
-		box.add(rbox);
+		box.add(logo);
+		box.add(rpanel);
 		
 		add(box, "Center");
 	}
 	
 	private void populateLocale() {
-	// nothing for now
+		setTitle("About");
+		title.setText("TRiCYCLE");
+		byLine1.setText("Dendro IO Library by Peter Brewer, Daniel Murphy, and Esther Jansma");
+		byLine2.setText("Graphical interface by Daniel Murphy");
 	}
 }

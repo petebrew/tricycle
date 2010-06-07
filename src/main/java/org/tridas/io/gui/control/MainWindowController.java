@@ -31,7 +31,6 @@ public class MainWindowController extends FrontController {
 		view.setDefaultCloseOperation(3);
 		view.setVisible(true);
 		about = new AboutWindow(view);
-		about.pack();
 	}
 	
 	public void quit(MVCEvent argEvent) {
