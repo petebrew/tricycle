@@ -55,9 +55,9 @@ public class FileListPanel extends JPanel {
 	
 	public FileListPanel() {
 		initComponents();
-		addListeners();
 		populateLocale();
 		linkModel();
+		addListeners();
 	}
 	
 	public void initComponents() {

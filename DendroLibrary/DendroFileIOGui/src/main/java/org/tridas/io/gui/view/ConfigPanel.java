@@ -47,9 +47,9 @@ public class ConfigPanel extends JPanel {
 	
 	public ConfigPanel() {
 		initializeComponents();
-		addListeners();
 		populateLocale();
 		linkModel();
+		addListeners();
 	}
 	
 	/**

@@ -41,9 +41,9 @@ public class ConvertPanel extends JPanel {
 	
 	public ConvertPanel() {
 		initializeComponents();
-		addListeners();
 		populateLocale();
 		linkModel();
+		addListeners();
 	}
 	
 	private void initializeComponents() {
