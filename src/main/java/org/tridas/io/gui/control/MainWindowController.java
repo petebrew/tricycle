@@ -15,7 +15,7 @@ public class MainWindowController extends FrontController {
 	public AboutWindow about = null;
 	
 	public MainWindowController() {
-		about = new AboutWindow();
+		about = new AboutWindow(null);
 		about.pack();
 		try {
 			registerCommand(STARTUP, "startup");

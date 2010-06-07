@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.Box;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
@@ -15,12 +16,14 @@ import javax.swing.border.LineBorder;
  * @author Daniel Murphy
  */
 @SuppressWarnings("serial")
-public class AboutWindow extends JFrame {
+public class AboutWindow extends JDialog {
 	
-	public AboutWindow() {
-		super("About");
+	public AboutWindow(JFrame parent) {
+		//super("About");
 		initComponents();
 		populateLocale();
+		setLocationRelativeTo(parent);
+		setModal(true);
 	}
 	
 	/**

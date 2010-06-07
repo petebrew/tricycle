@@ -44,7 +44,7 @@ public class ConvertController extends FrontController {
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
 	
-	private SavingProgress progressView = new SavingProgress();
+	private SavingProgress progressView = new SavingProgress(null);
 	private ArrayList<ProjectToFiles> structList = new ArrayList<ProjectToFiles>();
 	
 	public ConvertController() {

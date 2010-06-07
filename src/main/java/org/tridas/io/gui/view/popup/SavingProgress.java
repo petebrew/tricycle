@@ -25,13 +25,14 @@ public class SavingProgress extends JFrame {
 	
 	private ConvertModel model = ConvertModel.getInstance();
 	
-	public SavingProgress() {
+	public SavingProgress(JFrame parent) {
 		super("Saving...");
 		initializeComponents();
 		addListeners();
 		populateLocale();
 		linkModel();
 		pack();
+		setLocationRelativeTo(parent);
 	}
 	
 	/**
