@@ -1,5 +1,5 @@
 /**
- * Created on Jun 5, 2010, 10:46:50 PM
+ * Created on Jun 7, 2010, 2:51:29 PM
  */
 package org.tridas.io.gui.view.popup;
 
@@ -18,14 +18,13 @@ import org.tridas.io.gui.model.ConvertModel;
  * @author Daniel Murphy
  */
 @SuppressWarnings("serial")
-public class SavingProgress extends JFrame {
-	
-	private JLabel savingLabel;
+public class ConvertProgress extends JFrame {
+	private JLabel convertingLabel;
 	private JProgressBar progress;
 	
 	private ConvertModel model = ConvertModel.getInstance();
 	
-	public SavingProgress(JFrame parent) {
+	public ConvertProgress(JFrame parent) {
 		initializeComponents();
 		populateLocale();
 		linkModel();
@@ -34,11 +33,8 @@ public class SavingProgress extends JFrame {
 		setLocationRelativeTo(parent);
 	}
 	
-	/**
-	 * 
-	 */
 	private void initializeComponents() {
-		savingLabel = new JLabel();
+		convertingLabel = new JLabel();
 		progress = new JProgressBar();
 		
 		setLayout(new GridLayout(0, 1));
@@ -47,55 +43,43 @@ public class SavingProgress extends JFrame {
 		progress.setMaximum(100);
 		progress.setStringPainted(true);
 		
-		add(savingLabel);
+		add(convertingLabel);
 		add(progress);
 		setPreferredSize(new Dimension(350, 75));
 	}
 	
-	/**
-	 * 
-	 */
-	private void addListeners() {
-		// none
-	}
+	private void addListeners() {} // none
 	
-	/**
-	 * 
-	 */
 	private void populateLocale() {
 		setTitle("Converting...");
-		setSavingFilename("");
+		setConvertingFilename("");
 	}
 	
-	private void setSavingFilename(String argFilename) {
+	private void setConvertingFilename(String argFilename) {
 		if (argFilename == null) {
 			argFilename = "";
 		}
-		savingLabel.setText("Saving: " + argFilename);
+		convertingLabel.setText("Converting: " + argFilename);
 	}
 	
-	/**
-	 * 
-	 */
 	private void linkModel() {
-		if (model.getSavingFilename() != null) {
-			setSavingFilename(model.getSavingFilename());
+		if (model.getConvertingFilename() != null) {
+			setConvertingFilename(model.getConvertingFilename());
 		}
 		
-		progress.setValue(model.getSavingPercent());
+		progress.setValue(model.getConvertingPercent());
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
-			
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();
 				
-				if (prop.equals("savingPercent")) {
+				if (prop.equals("convertingPercent")) {
 					int percent = (Integer) evt.getNewValue();
 					progress.setValue(percent);
 				}
-				else if (prop.equals("savingFilename")) {
-					setSavingFilename(evt.getNewValue().toString());
+				else if (prop.equals("convertingFilename")) {
+					setConvertingFilename(evt.getNewValue().toString());
 				}
 			}
 		});

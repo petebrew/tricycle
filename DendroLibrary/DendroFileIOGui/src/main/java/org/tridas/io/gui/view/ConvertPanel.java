@@ -143,6 +143,7 @@ public class ConvertPanel extends JPanel {
 		convertButton.setText("Convert");
 		collapseAll.setText("Collapse All");
 		expandAll.setText("Expand All");
+		reset.setText("Reset");
 	}
 	
 	private void linkModel() {
