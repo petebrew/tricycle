@@ -48,8 +48,8 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		constructComponents();
 		populateLocale();
-		addListeners();
 		linkModel();
+		addListeners();
 		pack();
 		setLocationRelativeTo(null);
 		setTitle("TRiCYCLE");

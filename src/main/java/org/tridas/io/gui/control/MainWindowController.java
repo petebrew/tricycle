@@ -11,12 +11,10 @@ public class MainWindowController extends FrontController {
 	public static final String QUIT = "MAIN_WINDOW_QUIT";
 	public static final String ABOUT = "MAIN_WINDOW_ABOUT";
 	
-	public MainWindow view = null;
-	public AboutWindow about = null;
+	private MainWindow view = null;
+	private AboutWindow about = null;
 	
 	public MainWindowController() {
-		about = new AboutWindow(null);
-		about.pack();
 		try {
 			registerCommand(STARTUP, "startup");
 			registerCommand(QUIT, "quit");
@@ -29,9 +27,12 @@ public class MainWindowController extends FrontController {
 	}
 	
 	public void startup(MVCEvent argEvent) {
+		// FIXME do this better
 		view = new MainWindow();
-		view.setVisible(true);
 		view.setDefaultCloseOperation(3);
+		view.setVisible(true);
+		about = new AboutWindow(view);
+		about.pack();
 	}
 	
 	public void quit(MVCEvent argEvent) {
