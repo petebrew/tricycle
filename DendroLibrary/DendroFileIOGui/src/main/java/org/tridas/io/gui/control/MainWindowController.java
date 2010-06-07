@@ -27,7 +27,6 @@ public class MainWindowController extends FrontController {
 	}
 	
 	public void startup(MVCEvent argEvent) {
-		// FIXME do this better
 		view = new MainWindow();
 		view.setDefaultCloseOperation(3);
 		view.setVisible(true);
