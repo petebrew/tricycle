@@ -16,14 +16,13 @@ import javax.swing.border.LineBorder;
  * @author Daniel Murphy
  */
 @SuppressWarnings("serial")
-public class AboutWindow extends JDialog {
+public class AboutWindow extends JFrame {
 	
 	public AboutWindow(JFrame parent) {
 		//super("About");
 		initComponents();
 		populateLocale();
 		setLocationRelativeTo(parent);
-		setModal(true);
 	}
 	
 	/**
