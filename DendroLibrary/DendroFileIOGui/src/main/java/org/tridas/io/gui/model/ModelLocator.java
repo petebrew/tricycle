@@ -6,7 +6,7 @@ import org.tridas.io.gui.control.fileList.FileListController;
 
 public class ModelLocator {
 	private static final ModelLocator ml = new ModelLocator();
-
+	
 	private MainWindowController mainWindowController = new MainWindowController();
 	private FileListController fileListController = new FileListController();
 	private ConvertController convertController = new ConvertController();
@@ -14,7 +14,7 @@ public class ModelLocator {
 	private ModelLocator() {
 
 	}
-
+	
 	public static ModelLocator getInstance() {
 		return ml;
 	}

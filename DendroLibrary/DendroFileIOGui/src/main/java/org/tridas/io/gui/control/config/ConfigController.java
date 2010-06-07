@@ -13,17 +13,16 @@ import com.dmurph.mvc.control.FrontController;
 
 /**
  * @author Daniel Murphy
- *
  */
-public class ConfigController extends FrontController{
+public class ConfigController extends FrontController {
 	public static final String SET_INPUT_FORMAT = "CONFIG_SET_INPUT_FORMAT";
 	public static final String SET_OUTPUT_FORMAT = "CONFIG_SET_OUTPUT_FORMAT";
 	public static final String SET_NAMING_CONVENTION = "CONFIG_SET_NAMING_CONVENTION";
 	public static final String SET_DETECT_CHARSET = "CONFIG_SET_DETECT_CHARSET";
-
+	
 	private ConfigModel model = ConfigModel.getInstance();
 	
-	public ConfigController(){
+	public ConfigController() {
 		try {
 			registerCommand(SET_INPUT_FORMAT, "setInputFormat");
 			registerCommand(SET_OUTPUT_FORMAT, "setOutputFormat");
@@ -36,23 +35,23 @@ public class ConfigController extends FrontController{
 		}
 	}
 	
-	public void setInputFormat(MVCEvent argEvent){
+	public void setInputFormat(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
 		model.setInputFormat(event.getValue());
 	}
 	
-	public void setOutputFormat(MVCEvent argEvent){
+	public void setOutputFormat(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
 		model.setOutputFormat(event.getValue());
 	}
 	
-	public void setNamingConvention(MVCEvent argEvent){
+	public void setNamingConvention(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
 		model.setNamingConvention(event.getValue());
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void setDetectCharset(MVCEvent argEvent){
+	public void setDetectCharset(MVCEvent argEvent) {
 		ObjectEvent<Boolean> event = (ObjectEvent<Boolean>) argEvent;
 		model.setDetectCharset(event.getValue());
 		

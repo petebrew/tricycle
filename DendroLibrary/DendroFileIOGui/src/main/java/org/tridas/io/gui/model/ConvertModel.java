@@ -3,9 +3,6 @@
  */
 package org.tridas.io.gui.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,9 +12,8 @@ import com.dmurph.mvc.util.MVCArrayList;
 
 /**
  * @author Daniel
- *
  */
-public class ConvertModel extends AbstractModel{
+public class ConvertModel extends AbstractModel {
 	
 	private static final ConvertModel model = new ConvertModel();
 	
@@ -25,52 +21,54 @@ public class ConvertModel extends AbstractModel{
 	private String savingFilename = null;
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
-	private ConvertModel(){}
+	private ConvertModel() {}
 	
-	public void setNodes(List<DefaultMutableTreeNode> argNodes){
+	public void setNodes(List<DefaultMutableTreeNode> argNodes) {
 		MVCArrayList<DefaultMutableTreeNode> old = (MVCArrayList<DefaultMutableTreeNode>) nodes.clone();
 		nodes.clear();
 		nodes.addAll(argNodes);
 		firePropertyChange("nodes", old, nodes.clone());
 	}
 	
-	public List<DefaultMutableTreeNode> getNodes(){
+	public List<DefaultMutableTreeNode> getNodes() {
 		return (List<DefaultMutableTreeNode>) nodes.clone();
 	}
 	
 	/**
-	 * @param savingPercent the savingPercent to set
+	 * @param savingPercent
+	 *            the savingPercent to set
 	 */
 	public void setSavingPercent(int argSavingPercent) {
 		int old = savingPercent;
 		savingPercent = argSavingPercent;
 		firePropertyChange("savingPercent", old, savingPercent);
 	}
-
+	
 	/**
 	 * @return the savingPercent
 	 */
 	public int getSavingPercent() {
 		return savingPercent;
 	}
-
+	
 	/**
-	 * @param savingFilename the savingFilename to set
+	 * @param savingFilename
+	 *            the savingFilename to set
 	 */
 	public void setSavingFilename(String argSavingFilename) {
 		String old = savingFilename;
 		savingFilename = argSavingFilename;
 		firePropertyChange("savingFilename", old, savingFilename);
 	}
-
+	
 	/**
 	 * @return the savingFilename
 	 */
 	public String getSavingFilename() {
 		return savingFilename;
 	}
-
-	public static final ConvertModel getInstance(){
+	
+	public static final ConvertModel getInstance() {
 		return model;
 	}
 }

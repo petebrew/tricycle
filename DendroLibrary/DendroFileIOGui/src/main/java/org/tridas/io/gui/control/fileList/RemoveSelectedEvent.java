@@ -9,10 +9,9 @@ import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author Daniel
- *
  */
 public class RemoveSelectedEvent extends MVCEvent {
-
+	
 	private final Set<String> selectedSet;
 	
 	/**
@@ -22,12 +21,12 @@ public class RemoveSelectedEvent extends MVCEvent {
 		super(FileListController.REMOVE_SELECTED);
 		selectedSet = argSelectedSet;
 	}
-
+	
 	/**
 	 * @return the selectedSet
 	 */
 	public Set<String> getSelectedSet() {
 		return selectedSet;
 	}
-
+	
 }

@@ -16,16 +16,16 @@ import org.tridas.io.gui.model.ConvertModel;
 
 /**
  * @author Daniel Murphy
- *
  */
-public class SavingProgress extends JFrame{
-
+@SuppressWarnings("serial")
+public class SavingProgress extends JFrame {
+	
 	private JLabel savingLabel;
 	private JProgressBar progress;
 	
 	private ConvertModel model = ConvertModel.getInstance();
 	
-	public SavingProgress(){
+	public SavingProgress() {
 		super("Saving...");
 		initializeComponents();
 		addListeners();
@@ -33,7 +33,7 @@ public class SavingProgress extends JFrame{
 		linkModel();
 		pack();
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -51,14 +51,14 @@ public class SavingProgress extends JFrame{
 		add(progress);
 		setPreferredSize(new Dimension(350, 75));
 	}
-
+	
 	/**
 	 * 
 	 */
 	private void addListeners() {
-		// none
+	// none
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -66,19 +66,19 @@ public class SavingProgress extends JFrame{
 		savingLabel.setText("Saving: ");
 	}
 	
-	private void setSavingFilename(String argFilename){
-		if(argFilename == null){
+	private void setSavingFilename(String argFilename) {
+		if (argFilename == null) {
 			argFilename = "";
 		}
-		savingLabel.setText("Saving: "+argFilename);
+		savingLabel.setText("Saving: " + argFilename);
 	}
-
+	
 	/**
 	 * 
 	 */
 	private void linkModel() {
-		if(model.getSavingFilename() != null){
-			savingLabel.setText("Saving: "+model.getSavingFilename());
+		if (model.getSavingFilename() != null) {
+			savingLabel.setText("Saving: " + model.getSavingFilename());
 		}
 		
 		progress.setValue(model.getSavingPercent());
@@ -89,10 +89,11 @@ public class SavingProgress extends JFrame{
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();
 				
-				if(prop.equals("savingPercent")){
+				if (prop.equals("savingPercent")) {
 					int percent = (Integer) evt.getNewValue();
 					progress.setValue(percent);
-				}else if(prop.equals("savingFilename")){
+				}
+				else if (prop.equals("savingFilename")) {
 					setSavingFilename(evt.getNewValue().toString());
 				}
 			}

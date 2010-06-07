@@ -7,10 +7,9 @@ import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author Daniel
- *
  */
 public class AddFileEvent extends MVCEvent {
-
+	
 	private final String file;
 	
 	/**
@@ -20,7 +19,7 @@ public class AddFileEvent extends MVCEvent {
 		super(FileListController.ADD_FILE);
 		file = argFile;
 	}
-
+	
 	/**
 	 * @return the file
 	 */

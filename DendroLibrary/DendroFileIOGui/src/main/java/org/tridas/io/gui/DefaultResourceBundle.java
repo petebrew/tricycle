@@ -18,19 +18,19 @@ public class DefaultResourceBundle extends ResourceBundle {
 	protected Object handleGetObject(String key) {
 		return key;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getKeys() {
 		return EMPTY_ENUMERATION;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private static final Enumeration EMPTY_ENUMERATION = new Enumeration() {
 		public boolean hasMoreElements() {
 			return false;
 		}
-
+		
 		public Object nextElement() {
 			throw new NoSuchElementException();
 		}
