@@ -20,6 +20,9 @@ import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.view.ConvertPanel;
+import org.tridas.io.gui.view.popup.ConvertProgress;
 import org.tridas.io.gui.view.popup.SavingProgress;
 import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
@@ -44,7 +47,8 @@ public class ConvertController extends FrontController {
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
 	
-	private SavingProgress progressView = new SavingProgress(null);
+	private SavingProgress savingProgress = null;
+	private ConvertProgress convertProgress = null; 
 	private ArrayList<ProjectToFiles> structList = new ArrayList<ProjectToFiles>();
 	
 	public ConvertController() {
@@ -86,8 +90,12 @@ public class ConvertController extends FrontController {
 		mwm.setLock(true);
 		
 		int currFile = 0;
-		progressView.setVisible(true);
-		progressView.toFront();
+		if(savingProgress == null){
+			savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow());
+			savingProgress.setAlwaysOnTop(true);
+		}
+		savingProgress.setVisible(true);
+		savingProgress.toFront();
 		for (int i = 0; i < structList.size(); i++) {
 			ProjectToFiles p = structList.get(i);
 			if (p.writer != null) {
@@ -113,7 +121,7 @@ public class ConvertController extends FrontController {
 				}
 			}
 		}
-		progressView.setVisible(false);
+		savingProgress.setVisible(false);
 		mwm.setLock(false);
 		
 		JOptionPane.showMessageDialog(null, "Files saved to '" + folder.getAbsolutePath() + "'", "Save complete",
@@ -180,7 +188,20 @@ public class ConvertController extends FrontController {
 		mwm.setLock(true);
 		ArrayList<ProjectToFiles> list = new ArrayList<ProjectToFiles>();
 		
-		for (String file : argFiles) {
+		ConvertModel model = ConvertModel.getInstance();
+		
+		if(convertProgress == null){
+			convertProgress = new ConvertProgress(ModelLocator.getInstance().getMainWindow());
+			convertProgress.setAlwaysOnTop(true);
+		}
+		convertProgress.setVisible(true);
+		convertProgress.toFront();
+		
+		for (int i=0; i<argFiles.length; i++){
+			String file = argFiles[i];
+			
+			model.setConvertingFilename(file);
+			
 			AbstractDendroFileReader reader;
 			if (argInputFormat.equals(InputFormat.AUTO)) {
 				String extension = file.substring(file.lastIndexOf(".") + 1);
@@ -211,11 +232,7 @@ public class ConvertController extends FrontController {
 			}
 			
 			TridasProject project = reader.getProject();
-			struct.project = project;
-			struct.reader = reader;
-		}
-		
-		for (ProjectToFiles struct : list) {
+			
 			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
 			writer.setNamingConvention(argNaming);
 			
@@ -224,15 +241,19 @@ public class ConvertController extends FrontController {
 			}
 			
 			try {
-				writer.loadProject(struct.project);
+				writer.loadProject(project);
 			} catch (IncompleteTridasDataException e) {
 				struct.errorMessage = e.toString();
 			} catch (ConversionWarningException e) {
 				struct.errorMessage = e.toString();
 			}
 			
+			struct.reader = reader;
 			struct.writer = writer;
+			
+			model.setConvertingPercent(i*100/argFiles.length);
 		}
+		convertProgress.setVisible(false);
 		
 		constructNodes(list, argNaming);
 		mwm.setLock(false);
@@ -316,7 +337,6 @@ public class ConvertController extends FrontController {
 	private class ProjectToFiles {
 		String file;
 		String errorMessage = null;
-		TridasProject project = null;
 		AbstractDendroFileReader reader = null;
 		AbstractDendroCollectionWriter writer = null;
 	}

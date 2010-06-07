@@ -38,9 +38,9 @@ public class MainWindow extends JFrame {
 	private JMenuItem quitMenuButton;
 	private JMenuItem aboutMenuButton;
 	private JTabbedPane tabbedPane;
-	private FileListPanel fileList;
-	private ConvertPanel convertPanel;
-	private ConfigPanel config;
+	public FileListPanel fileList;
+	public ConvertPanel convertPanel;
+	public ConfigPanel config;
 	
 	public final MainWindowModel model = MainWindowModel.getInstance();
 	

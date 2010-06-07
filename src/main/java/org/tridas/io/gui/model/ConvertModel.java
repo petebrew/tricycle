@@ -19,6 +19,8 @@ public class ConvertModel extends AbstractModel {
 	
 	private int savingPercent = 0;
 	private String savingFilename = null;
+	private int convertingPercent = 0;
+	private String convertingFilename = null;
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
 	private int processed = 0;
@@ -27,6 +29,7 @@ public class ConvertModel extends AbstractModel {
 	
 	private ConvertModel() {}
 	
+	@SuppressWarnings("unchecked")
 	public void setNodes(List<DefaultMutableTreeNode> argNodes) {
 		MVCArrayList<DefaultMutableTreeNode> old = (MVCArrayList<DefaultMutableTreeNode>) nodes.clone();
 		nodes.clear();
@@ -34,61 +37,59 @@ public class ConvertModel extends AbstractModel {
 		firePropertyChange("nodes", old, nodes.clone());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<DefaultMutableTreeNode> getNodes() {
 		return (List<DefaultMutableTreeNode>) nodes.clone();
 	}
 	
-	/**
-	 * @param savingPercent
-	 *            the savingPercent to set
-	 */
 	public void setSavingPercent(int argSavingPercent) {
 		int old = savingPercent;
 		savingPercent = argSavingPercent;
 		firePropertyChange("savingPercent", old, savingPercent);
 	}
 	
-	/**
-	 * @return the savingPercent
-	 */
 	public int getSavingPercent() {
 		return savingPercent;
 	}
 	
-	/**
-	 * @param savingFilename
-	 *            the savingFilename to set
-	 */
 	public void setSavingFilename(String argSavingFilename) {
 		String old = savingFilename;
 		savingFilename = argSavingFilename;
 		firePropertyChange("savingFilename", old, savingFilename);
 	}
 	
-	/**
-	 * @return the savingFilename
-	 */
 	public String getSavingFilename() {
 		return savingFilename;
 	}
 	
-	
-	public void incrementProcessed(){
-		setProcessed(processed +1);
+	public void setConvertingPercent(int argConvertingPercent) {
+		int old = convertingPercent;
+		convertingPercent = argConvertingPercent;
+		firePropertyChange("convertingPercent", old, convertingPercent);
 	}
-
+	
+	public int getConvertingPercent() {
+		return convertingPercent;
+	}
+	
+	public void setConvertingFilename(String argConvertingFilename) {
+		String old = convertingFilename;
+		convertingFilename = argConvertingFilename;
+		firePropertyChange("convertingFilename", old, convertingFilename);
+	}
+	
+	public String getConvertingFilename() {
+		return convertingFilename;
+	}
+	
 	public void setProcessed(int argProcessed) {
 		int old = processed;
 		processed = argProcessed;
 		firePropertyChange("processed", old, processed);
 	}
-
+	
 	public int getProcessed() {
 		return processed;
-	}
-
-	public void incrementFailed(){
-		setFailed(failed +1);
 	}
 	
 	public void setFailed(int argFailed) {
@@ -96,13 +97,9 @@ public class ConvertModel extends AbstractModel {
 		failed = argFailed;
 		firePropertyChange("failed", old, failed);
 	}
-
+	
 	public int getFailed() {
 		return failed;
-	}
-
-	public void incrementConvWithWarnings(){
-		setConvWithWarnings(convWithWarnings +1);
 	}
 	
 	public void setConvWithWarnings(int argConvWithWarnings) {
@@ -110,11 +107,10 @@ public class ConvertModel extends AbstractModel {
 		convWithWarnings = argConvWithWarnings;
 		firePropertyChange("convWithWarnings", old, convWithWarnings);
 	}
-
+	
 	public int getConvWithWarnings() {
 		return convWithWarnings;
 	}
-
 	
 	public static final ConvertModel getInstance() {
 		return model;
