@@ -9,13 +9,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Enumeration;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
@@ -29,12 +36,14 @@ import org.tridas.io.gui.model.MainWindowModel;
 @SuppressWarnings("serial")
 public class ConvertPanel extends JPanel {
 	
-	private JPanel topPanel;
-	private JPanel bottomPanel;
 	private JScrollPane scrollPane;
 	private JTree convertedTree;
 	private JButton saveButton;
 	private JButton convertButton;
+	private JButton expandAll;
+	private JButton collapseAll;
+	private JButton reset;
+	private JLabel results;
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
 	
 	private ConvertModel model = ConvertModel.getInstance();
@@ -47,24 +56,34 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void initializeComponents() {
-		topPanel = new JPanel();
-		bottomPanel = new JPanel();
 		convertButton = new JButton();
 		saveButton = new JButton();
 		scrollPane = new JScrollPane();
 		convertedTree = new JTree();
+		results = new JLabel();
+		expandAll = new JButton();
+		collapseAll = new JButton();
+		reset = new JButton();
 		
 		setLayout(new java.awt.BorderLayout());
 		
-		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+		Box top = Box.createHorizontalBox();
+		top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		top.add(convertButton);
+		top.add(Box.createHorizontalGlue());
+		top.add(collapseAll);
+		top.add(expandAll);
+		top.add(reset);
 		
-		topPanel.add(convertButton);
-		bottomPanel.add(saveButton);
+		Box bottom = Box.createHorizontalBox();
+		bottom.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		bottom.add(results);
+		bottom.add(Box.createHorizontalGlue());
+		bottom.add(saveButton);
 		
-		add(topPanel, BorderLayout.NORTH);
+		add(top, BorderLayout.NORTH);
 		
-		add(bottomPanel, java.awt.BorderLayout.PAGE_END);
+		add(bottom, java.awt.BorderLayout.PAGE_END);
 		
 		DefaultTreeModel model = new DefaultTreeModel(rootNode, false);
 		convertedTree.setModel(model);
@@ -93,21 +112,46 @@ public class ConvertPanel extends JPanel {
 				event.dispatch();
 			}
 		});
+		
+		expandAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// no need to go to controller
+				expandAll();
+			}
+		});
+		
+		collapseAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// no need to go to controller
+				collapseAll();
+			}
+		});
+		
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// no need to go to controller
+				expandToFiles();
+			}
+		});
 	}
 	
 	private void populateLocale() {
 		saveButton.setText("Save...");
 		convertButton.setText("Convert");
-		
+		collapseAll.setText("Collapse All");
+		expandAll.setText("Expand All");
 	}
 	
 	private void linkModel() {
-		
+		setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
 		DefaultTreeModel treeModel = (DefaultTreeModel) convertedTree.getModel();
 		for (DefaultMutableTreeNode node : model.getNodes()) {
 			treeModel.insertNodeInto(node, rootNode, rootNode.getChildCount());
 		}
-		expandAll();
+		expandToFiles();
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			
@@ -122,7 +166,13 @@ public class ConvertPanel extends JPanel {
 						rootNode.add(node);
 					}
 					treeModel.setRoot(rootNode);
-					expandAll();
+					expandToFiles();
+				}else if(prop.equals("processed")){
+					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
+				}else if(prop.equals("failed")){
+					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
+				}else if(prop.equals("convWithWarnings")){
+					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
 				}
 			}
 		});
@@ -148,11 +198,29 @@ public class ConvertPanel extends JPanel {
 		});
 	}
 	
-	private void expandAll() {
+	private void expandToFiles() {
 		int row = 0;
 		while (row < convertedTree.getRowCount()) {
-			convertedTree.expandRow(row);
+			if(convertedTree.getPathForRow(row).getPathCount() < 3){
+				convertedTree.expandRow(row);
+			}
 			row++;
+		}
+	}
+	
+	private void setStatus(int argProcessed, int argFailed, int argConvWithWarnings){
+		results.setText(argProcessed+" processed, "+argFailed+" failed, and "+argConvWithWarnings+" converted with warnings.");
+	}
+	
+	private void expandAll() {
+		for (int i = 0; i < convertedTree.getRowCount(); i++) {
+			convertedTree.expandRow(i);
+		}
+	}
+	
+	private void collapseAll(){
+		for (int i = convertedTree.getRowCount() - 1; i >= 0; i--) {
+			convertedTree.collapseRow(i);
 		}
 	}
 }
