@@ -17,6 +17,7 @@ import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.IDendroFile;
 import org.tridas.io.TridasIO;
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
@@ -39,7 +40,6 @@ import org.tridas.io.warnings.IncompleteTridasDataException;
 import org.tridas.io.warnings.InvalidDendroFileException;
 import org.tridas.schema.TridasProject;
 
-import com.dmurph.mvc.I18n;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.control.FrontController;

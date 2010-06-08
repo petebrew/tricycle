@@ -21,10 +21,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.model.MainWindowModel;
 
-import com.dmurph.mvc.I18n;
 import com.dmurph.mvc.MVCEvent;
 
 /**
