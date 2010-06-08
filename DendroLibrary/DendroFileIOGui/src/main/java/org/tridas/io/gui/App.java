@@ -23,7 +23,7 @@ public class App {
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			} catch (Exception e) {
-				log.warn("Could not use nimbus look and feel");
+				log.warn(I18n.getText("lookfeel.nimbus"));
 			}
 		}
 		

@@ -1,6 +1,5 @@
 package org.tridas.io.gui;
 
-import java.util.ArrayList;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -90,12 +89,31 @@ import javax.swing.KeyStroke;
  * 
  * @see java.util.ResourceBundle
  * @author Ken Harris &lt;kbh7 <i style="color: gray">at</i> cornell <i
- *         style="color: gray">dot</i>
+ *         style="color: gray">dot</i> 
  *         edu&gt;
- * @version $Id: I18n.java 2285 2010-02-11 16:35:25Z aps03pwb $
+ * @author Daniel Murphy
+ * @version $Id: I18n.java 2285 2010-06-08 16:35:25Z dmurphy $
  */
 public class I18n {
 	
+	
+	// the resource bundle to use
+	private final static ResourceBundle msg;
+	
+	static {
+		ResourceBundle bundle;
+		try {
+			bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
+		} catch (MissingResourceException mre) {
+			try {
+				bundle = ResourceBundle.getBundle("DendroFileIOGUI");
+			} catch (MissingResourceException mre2) {
+				mre2.printStackTrace();
+				bundle = new DefaultResourceBundle();
+			}
+		}
+		msg = bundle;
+	}
 	private I18n() {
 	// don't instantiate me
 	}
@@ -147,27 +165,10 @@ public class I18n {
 		return buf.toString().trim();
 	}
 	
+
 	/**
-	 * Look up translation key, and return with each {0} style
-	 * placeholder replaced with item in array
-	 * 
-	 * @param key
-	 * @param replace
-	 * @return
-	 */
-	public static String getText(String key, ArrayList<String> replace) {
-		String text = getText(key);
-		
-		for (int i = 0; i < replace.size(); i++) {
-			text = text.replace("{" + i + "}", replace.get(i));
-		}
-		
-		return text;
-	}
-	
-	/**
-	 * Created by Daniel, easier way of using an arbitrary number of replacing
-	 * strings.
+	 * Look up a translation key with each {n} replaced
+	 * with a value in the array
 	 * 
 	 * @param argKey
 	 * @param argReplacing
@@ -181,6 +182,40 @@ public class I18n {
 		}
 		
 		return text;
+	}
+	
+	/**
+	 * Gets and integer value of the key.  If the 
+	 * value isn't able to parse as an integer,
+	 * null is returned
+	 * @param argKey
+	 * @return
+	 */
+	public static Integer getInteger(String argKey){
+		String text = getText(argKey);
+		try{
+			int i = Integer.parseInt(text);
+			return i;
+		}catch( NumberFormatException e){
+			return null;
+		}
+	}
+	
+	/**
+	 * Gets the boolean value of the key.  If the 
+	 * value is anything but "true", then false
+	 * is returned
+	 * @param argKey
+	 * @return
+	 */
+	public static Boolean getBoolean(String argKey){
+		String text = getText(argKey);
+		try{
+			boolean tf = Boolean.parseBoolean(text);
+			return tf;
+		}catch( NumberFormatException e){
+			return null;
+		}
 	}
 	
 	/**
@@ -261,23 +296,5 @@ public class I18n {
 		}
 		
 		return amp;
-	}
-	
-	// the resource bundle to use
-	private final static ResourceBundle msg;
-	
-	static {
-		ResourceBundle bundle;
-		try {
-			bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
-		} catch (MissingResourceException mre) {
-			try {
-				bundle = ResourceBundle.getBundle("DendroFileIOGUI");
-			} catch (MissingResourceException mre2) {
-				mre2.printStackTrace();
-				bundle = new DefaultResourceBundle();
-			}
-		}
-		msg = bundle;
 	}
 }

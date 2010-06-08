@@ -39,6 +39,7 @@ import org.tridas.io.warnings.IncompleteTridasDataException;
 import org.tridas.io.warnings.InvalidDendroFileException;
 import org.tridas.schema.TridasProject;
 
+import com.dmurph.mvc.I18n;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.control.FrontController;
@@ -97,7 +98,7 @@ public class ConvertController extends FrontController {
 				pmodel.setFileString(StringUtils.join(strings, "\n"));
 			}
 			else {
-				pmodel.setFileString("Either conversion failed or could not render file in string format");
+				pmodel.setFileString(I18n.getText("view.popup.preview.error"));
 			}
 			
 			MainWindow window = ModelLocator.getInstance().getMainWindow();
@@ -131,7 +132,7 @@ public class ConvertController extends FrontController {
 			}
 		}
 		if (totalFiles == 0) {
-			JOptionPane.showMessageDialog(null, "No files to save", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noFiles"), "", JOptionPane.PLAIN_MESSAGE);
 			return;
 		}
 		
@@ -173,7 +174,9 @@ public class ConvertController extends FrontController {
 		savingProgress.setVisible(false);
 		mwm.setLock(false);
 		
-		JOptionPane.showMessageDialog(null, "Files saved to '" + folder.getAbsolutePath() + "'", "Save complete",
+		JOptionPane.showMessageDialog(null,
+				I18n.getText("control.convert.save.folderInfo", folder.getAbsolutePath()),
+				I18n.getText("control.convert.save.complete"),
 				JOptionPane.PLAIN_MESSAGE);
 	}
 	
@@ -190,7 +193,9 @@ public class ConvertController extends FrontController {
 			}
 		}
 		if (!outputFormatFound) {
-			JOptionPane.showMessageDialog(null, "Could not find output format '" + outputFormat + "'", "Error",
+			JOptionPane.showMessageDialog(null,
+					I18n.getText("control.convert.noOutput",outputFormat),
+					I18n.getText("control.convert.error"),
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -206,8 +211,10 @@ public class ConvertController extends FrontController {
 			}
 		}
 		if (!inputFormatFound && !config.getInputFormat().equals(InputFormat.AUTO)) {
-			JOptionPane.showMessageDialog(null, "Could not find input format '" + config.getInputFormat() + "'",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					I18n.getText("control.convert.noInput",outputFormat),
+					I18n.getText("control.convert.error"),
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -221,8 +228,10 @@ public class ConvertController extends FrontController {
 			naming = new NumericalNamingConvention();
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "Could not find naming convention '" + event.getNamingConvention()
-					+ "'", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					I18n.getText("control.convert.noNaming", event.getNamingConvention()),
+					I18n.getText("control.convert.error"),
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -265,14 +274,14 @@ public class ConvertController extends FrontController {
 			struct.file = file;
 			
 			if (reader == null) {
-				struct.errorMessage = "Reader was null, not supposed to happen.  Please report bug.";
+				struct.errorMessage = I18n.getText("control.convert.readerNull");
 				continue;
 			}
 			
 			try {
 				reader.loadFile(file);
 			} catch (IOException e) {
-				struct.errorMessage = "IOException while loading file: " + e;
+				struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
 				continue;
 			} catch (InvalidDendroFileException e) {
 				struct.errorMessage = e.toString();
@@ -347,7 +356,7 @@ public class ConvertController extends FrontController {
 			
 			if (s.reader.getWarnings().length != 0) {
 				warnings = true;
-				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
+				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(I18n.getText("control.convert.readerWarnings"));
 				for (ConversionWarning warning : s.reader.getWarnings()) {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
 					readerWarnings.add(warn);
@@ -357,7 +366,7 @@ public class ConvertController extends FrontController {
 			
 			if (s.writer.getWarnings().length != 0) {
 				warnings = true;
-				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode("Writer Warnings");
+				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(I18n.getText("control.convert.writerWarnings"));
 				for (ConversionWarning warning : s.writer.getWarnings()) {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
 					writerWarnings.add(warn);
