@@ -29,21 +29,14 @@ public class AboutWindow extends JDialog {
 	private JTextArea info;
 	private JFrame parent;
 	public AboutWindow(JFrame argParent) {
-		super(argParent, "About TRiCYCLE", true);
+		super(argParent, true);
 		parent = argParent;
-	}
-	
-	/**
-	 * @see javax.swing.JDialog#dialogInit()
-	 */
-	@Override
-	protected void dialogInit() {
 		initComponents();
 		populateLocale();
 		addListeners();
-		pack();
-		setLocationRelativeTo(parent);
 		setResizable(false);
+		pack();
+		setLocationRelativeTo(argParent);
 	}
 
 	/**
@@ -108,7 +101,7 @@ public class AboutWindow extends JDialog {
 	}
 	
 	private void populateLocale() {
-//		setTitle("About TRiCYCLE");
+		setTitle("About TRiCYCLE");
 //		title.setText("TRiCYCLE");
 //		byLine1.setText("Dendro IO Library by Peter Brewer, Daniel Murphy, and Esther Jansma");
 //		byLine2.setText("Graphical interface by Daniel Murphy");
