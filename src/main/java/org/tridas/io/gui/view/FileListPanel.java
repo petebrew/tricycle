@@ -4,6 +4,7 @@
 package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,7 +41,6 @@ import org.tridas.io.gui.model.MainWindowModel;
 public class FileListPanel extends JPanel {
 	private static final SimpleLogger log = new SimpleLogger(FileListPanel.class);
 	
-	private JPanel topPanel;
 	private JLabel selectLabel;
 	private JLabel fileFieldLabel;
 	private JList fileList;
@@ -48,7 +50,6 @@ public class FileListPanel extends JPanel {
 	private JButton selectNoneButton;
 	private JButton removeSelectedButton;
 	private JScrollPane scrollPane;
-	private JPanel bottomPanel;
 	private JTextField fileField;
 	
 	private FileListModel model = FileListModel.getInstance();
@@ -61,7 +62,6 @@ public class FileListPanel extends JPanel {
 	}
 	
 	public void initComponents() {
-		topPanel = new JPanel();
 		addButton = new JButton();
 		fileFieldLabel = new JLabel();
 		fileField = new JTextField();
@@ -72,36 +72,35 @@ public class FileListPanel extends JPanel {
 		selectAllButton = new JButton();
 		selectNoneButton = new JButton();
 		scrollPane = new JScrollPane();
-		bottomPanel = new JPanel();
 		
 		setLayout(new BorderLayout());
 		
-		topPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+		Box topBox = Box.createHorizontalBox();
+		topBox.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		topBox.add(fileFieldLabel);
+		topBox.add(fileField);
+		topBox.add(browseButton);
+		topBox.add(addButton);
 		
-		topPanel.add(fileFieldLabel);
-		
-		fileField.setColumns(20);
-		topPanel.add(fileField);
-		topPanel.add(browseButton);
-		topPanel.add(addButton);
-		
-		add(topPanel, java.awt.BorderLayout.PAGE_START);
+		add(topBox, java.awt.BorderLayout.PAGE_START);
 		
 		fileList.setModel(new DefaultListModel());
 		scrollPane.setViewportView(fileList);
 		
 		add(scrollPane, java.awt.BorderLayout.CENTER);
 		
-		bottomPanel.setLayout(new FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+		Box bottomBox = Box.createHorizontalBox();
+		bottomBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		
-		bottomPanel.add(removeSelectedButton);
+		bottomBox.add(removeSelectedButton);
+		bottomBox.add(Box.createRigidArea(new Dimension(10, 10)));
+		bottomBox.add(selectLabel);
+		bottomBox.add(Box.createRigidArea(new Dimension(10, 10)));
+		bottomBox.add(selectAllButton);
+		bottomBox.add(selectNoneButton);
+		bottomBox.add(Box.createHorizontalGlue());
 		
-		selectLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		bottomPanel.add(selectLabel);
-		bottomPanel.add(selectAllButton);
-		bottomPanel.add(selectNoneButton);
-		
-		add(bottomPanel, java.awt.BorderLayout.PAGE_END);
+		add(bottomBox, java.awt.BorderLayout.PAGE_END);
 	}
 	
 	private void addListeners() {
@@ -201,6 +200,7 @@ public class FileListPanel extends JPanel {
 		// then listen for changes
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();

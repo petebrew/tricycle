@@ -3,8 +3,6 @@
  */
 package org.tridas.io.gui.model;
 
-import org.grlea.log.SimpleLogger;
-
 import com.dmurph.mvc.model.AbstractModel;
 
 /**
@@ -14,7 +12,7 @@ public class MainWindowModel extends AbstractModel {
 	
 	private static final MainWindowModel model = new MainWindowModel();
 	
-	private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
+	//private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
 	
 	private boolean lock = false;
 	

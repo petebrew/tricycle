@@ -10,6 +10,7 @@ import com.dmurph.mvc.MVCEvent;
 /**
  * @author Daniel
  */
+@SuppressWarnings("serial")
 public class RemoveSelectedEvent extends MVCEvent {
 	
 	private final Set<String> selectedSet;
