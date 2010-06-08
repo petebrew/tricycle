@@ -4,31 +4,32 @@
 package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.MainWindowModel;
+
+import com.dmurph.mvc.ObjectEvent;
 
 /**
  * @author Daniel
@@ -136,6 +137,22 @@ public class ConvertPanel extends JPanel {
 				expandToFiles();
 			}
 		});
+		
+		convertedTree.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int selRow = convertedTree.getRowForLocation(e.getX(), e.getY());
+				TreePath selPath = convertedTree.getPathForLocation(e.getX(), e.getY());
+				if (selRow > 0) {
+					if (e.getClickCount() == 2) {
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
+						ObjectEvent<DefaultMutableTreeNode> event = new ObjectEvent<DefaultMutableTreeNode>(
+								ConvertController.PREVIEW, node);
+						event.dispatch();
+					}
+				}
+			}
+		});
 	}
 	
 	private void populateLocale() {
@@ -168,11 +185,14 @@ public class ConvertPanel extends JPanel {
 					}
 					treeModel.setRoot(rootNode);
 					expandToFiles();
-				}else if(prop.equals("processed")){
+				}
+				else if (prop.equals("processed")) {
 					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
-				}else if(prop.equals("failed")){
+				}
+				else if (prop.equals("failed")) {
 					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
-				}else if(prop.equals("convWithWarnings")){
+				}
+				else if (prop.equals("convWithWarnings")) {
 					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
 				}
 			}
@@ -202,15 +222,16 @@ public class ConvertPanel extends JPanel {
 	private void expandToFiles() {
 		int row = 0;
 		while (row < convertedTree.getRowCount()) {
-			if(convertedTree.getPathForRow(row).getPathCount() < 3){
+			if (convertedTree.getPathForRow(row).getPathCount() < 3) {
 				convertedTree.expandRow(row);
 			}
 			row++;
 		}
 	}
 	
-	private void setStatus(int argProcessed, int argFailed, int argConvWithWarnings){
-		results.setText(argProcessed+" processed, "+argFailed+" failed, and "+argConvWithWarnings+" converted with warnings.");
+	private void setStatus(int argProcessed, int argFailed, int argConvWithWarnings) {
+		results.setText(argProcessed + " processed, " + argFailed + " failed, and " + argConvWithWarnings
+				+ " converted with warnings.");
 	}
 	
 	private void expandAll() {
@@ -219,7 +240,7 @@ public class ConvertPanel extends JPanel {
 		}
 	}
 	
-	private void collapseAll(){
+	private void collapseAll() {
 		for (int i = convertedTree.getRowCount() - 1; i >= 0; i--) {
 			convertedTree.collapseRow(i);
 		}

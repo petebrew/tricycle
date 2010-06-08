@@ -9,6 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import org.tridas.io.util.IOUtils;
@@ -22,7 +24,7 @@ public class AboutWindow extends JFrame {
 	private JLabel title;
 	private JLabel byLine1;
 	private JLabel byLine2;
-
+	
 	public AboutWindow(JFrame parent) {
 		initComponents();
 		populateLocale();
@@ -39,8 +41,8 @@ public class AboutWindow extends JFrame {
 		JLabel logo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/128x128/application.png")));
 		
 		title = new JLabel();
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setFont( title.getFont().deriveFont(20f));
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setFont(title.getFont().deriveFont(20f));
 		
 		byLine1 = new JLabel();
 		byLine1.setFont(byLine1.getFont().deriveFont(10f));
@@ -48,9 +50,8 @@ public class AboutWindow extends JFrame {
 		byLine2 = new JLabel();
 		byLine2.setFont(byLine2.getFont().deriveFont(10f));
 		
-		
 		Box rbox = Box.createVerticalBox();
-		rbox.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+		rbox.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
 		rbox.add(title);
 		rbox.add(byLine1);
 		rbox.add(byLine2);

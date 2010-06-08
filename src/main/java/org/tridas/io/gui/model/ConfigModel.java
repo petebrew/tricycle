@@ -18,9 +18,9 @@ public class ConfigModel extends AbstractModel {
 	
 	private String inputFormat = InputFormat.AUTO;
 	private String outputFormat = "TRiDaS";
-	private String namingConvention = "UUID";
+	private String namingConvention = "Numerical";
 	private String writingCharset = TridasIO.getWritingCharset();
-	private String readingCharset = TridasIO.isCharsetDetection()? Charsets.AUTO: TridasIO.getReadingCharset();;
+	private String readingCharset = TridasIO.isCharsetDetection() ? Charsets.AUTO : TridasIO.getReadingCharset();;
 	
 	private ConfigModel() {}
 	
@@ -81,33 +81,34 @@ public class ConfigModel extends AbstractModel {
 	 * return hideWarnings;
 	 * }
 	 */
-	
-	public void setWritingCharset(String argCharset){
+
+	public void setWritingCharset(String argCharset) {
 		String old = writingCharset;
 		writingCharset = argCharset;
 		firePropertyChange("writingCharset", old, writingCharset);
 	}
 	
-	public String getWritingCharset(){
+	public String getWritingCharset() {
 		return writingCharset;
 	}
 	
 	/**
-	 * @param argReadingCharset the readingCharset to set
+	 * @param argReadingCharset
+	 *            the readingCharset to set
 	 */
 	public void setReadingCharset(String argReadingCharset) {
 		String old = readingCharset;
 		readingCharset = argReadingCharset;
 		firePropertyChange("readingCharset", old, readingCharset);
 	}
-
+	
 	/**
 	 * @return the readingCharset
 	 */
 	public String getReadingCharset() {
 		return readingCharset;
 	}
-
+	
 	public static final ConfigModel getInstance() {
 		return model;
 	}

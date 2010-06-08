@@ -8,25 +8,24 @@ import java.util.ArrayList;
 
 /**
  * @author Daniel Murphy
- *
  */
 public class Charsets {
 	public static final String AUTO = "Automatic";
 	
-	public static final String[] getReadingCharsets(){
+	public static final String[] getReadingCharsets() {
 		ArrayList<String> charsets = new ArrayList<String>();
 		charsets.add(AUTO);
-		for(String cs : Charset.availableCharsets().keySet()){
+		for (String cs : Charset.availableCharsets().keySet()) {
 			charsets.add(cs);
 		}
 		return charsets.toArray(new String[0]);
 	}
 	
-	public static final String[] getWritingCharsets(){
+	public static final String[] getWritingCharsets() {
 		ArrayList<String> charsets = new ArrayList<String>();
-		for(String key : Charset.availableCharsets().keySet()){
+		for (String key : Charset.availableCharsets().keySet()) {
 			Charset cs = Charset.availableCharsets().get(key);
-			if(cs.canEncode()){
+			if (cs.canEncode()) {
 				charsets.add(key);
 			}
 		}

@@ -3,14 +3,11 @@
  */
 package org.tridas.io.gui.control.config;
 
-import java.nio.charset.Charset;
-
 import org.tridas.io.TridasIO;
 import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
 
 import com.dmurph.mvc.MVCEvent;
-import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.StringEvent;
 import com.dmurph.mvc.control.FrontController;
 
@@ -55,22 +52,23 @@ public class ConfigController extends FrontController {
 		model.setNamingConvention(event.getValue());
 	}
 	
-	public void setReadingCharset(MVCEvent argEvent){
+	public void setReadingCharset(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
-		model.setReadingCharset(event.getValue());	
+		model.setReadingCharset(event.getValue());
 		
-		if(event.getValue().equals(Charsets.AUTO)){
+		if (event.getValue().equals(Charsets.AUTO)) {
 			TridasIO.setReadingCharset(null);
 			TridasIO.setCharsetDetection(true);
 			return;
-		}else{
+		}
+		else {
 			TridasIO.setCharsetDetection(false);
 		}
 		
 		TridasIO.setReadingCharset(event.getValue());
 	}
 	
-	public void setWritingCharset(MVCEvent argEvent){
+	public void setWritingCharset(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
 		model.setWritingCharset(event.getValue());
 		

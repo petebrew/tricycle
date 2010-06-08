@@ -3,6 +3,7 @@
  */
 package org.tridas.io.gui.control.convert;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.apache.commons.lang.StringUtils;
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.AbstractDendroCollectionWriter;
-import org.tridas.io.IDendroFile;
 import org.tridas.io.AbstractDendroFileReader;
+import org.tridas.io.IDendroFile;
 import org.tridas.io.TridasIO;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.ConfigModel;
@@ -21,8 +23,10 @@ import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.ModelLocator;
-import org.tridas.io.gui.view.ConvertPanel;
+import org.tridas.io.gui.model.PreviewModel;
+import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.ConvertProgress;
+import org.tridas.io.gui.view.popup.PreviewWindow;
 import org.tridas.io.gui.view.popup.SavingProgress;
 import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
@@ -36,6 +40,7 @@ import org.tridas.io.warnings.InvalidDendroFileException;
 import org.tridas.schema.TridasProject;
 
 import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.control.FrontController;
 
 /**
@@ -46,13 +51,16 @@ public class ConvertController extends FrontController {
 	
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
+	public static final String PREVIEW = "CONVERT_PREVIEW";
 	
 	private SavingProgress savingProgress = null;
-	private ConvertProgress convertProgress = null; 
+	private ConvertProgress convertProgress = null;
+	// TODO get rid of this, use model nodes instead
 	private ArrayList<ProjectToFiles> structList = new ArrayList<ProjectToFiles>();
 	
 	public ConvertController() {
 		try {
+			registerCommand(PREVIEW, "preview");
 			registerCommand(CONVERT, "convert");
 			registerCommand(SAVE, "save");
 		} catch (SecurityException e) {
@@ -62,7 +70,48 @@ public class ConvertController extends FrontController {
 		}
 	}
 	
+	public void preview(MVCEvent argEvent) {
+		ObjectEvent<DefaultMutableTreeNode> event = (ObjectEvent<DefaultMutableTreeNode>) argEvent;
+		
+		DefaultMutableTreeNode node = event.getValue();
+		
+		if (node.getUserObject() == null) {
+			return;
+		}
+		if (node.getUserObject() instanceof DendroWrapper) {
+			DendroWrapper file = (DendroWrapper) node.getUserObject();
+			
+			PreviewModel pmodel = new PreviewModel();
+			pmodel.setFilename(file.toString());
+			
+			boolean worked = false;
+			String[] strings = null;
+			try {
+				strings = file.file.saveToString();
+				worked = strings != null;
+			} catch (Exception e) {
+				worked = false;
+			}
+			
+			if (worked) {
+				pmodel.setFileString(StringUtils.join(strings, "\n"));
+			}
+			else {
+				pmodel.setFileString("Either conversion failed or could not render file in string format");
+			}
+			
+			MainWindow window = ModelLocator.getInstance().getMainWindow();
+			Dimension size = window.getSize();
+			
+			PreviewWindow preview = new PreviewWindow(window, size.width - 40, size.height - 40, pmodel);
+			preview.setVisible(true);
+			preview.toFront();
+		}
+	}
+	
 	public void save(MVCEvent argEvent) {
+		// get rid of popups
+		
 		File folder = IOUtils.outputFolder(null);
 		if (folder == null) {
 			return;
@@ -90,7 +139,7 @@ public class ConvertController extends FrontController {
 		mwm.setLock(true);
 		
 		int currFile = 0;
-		if(savingProgress == null){
+		if (savingProgress == null) {
 			savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow());
 			savingProgress.setAlwaysOnTop(true);
 		}
@@ -132,7 +181,6 @@ public class ConvertController extends FrontController {
 		ConvertEvent event = (ConvertEvent) argEvent;
 		String outputFormat = event.getOutputFormat();
 		INamingConvention naming;
-		ConvertModel model = ConvertModel.getInstance();
 		
 		boolean outputFormatFound = false;
 		for (String format : TridasIO.getSupportedWritingFormats()) {
@@ -190,14 +238,14 @@ public class ConvertController extends FrontController {
 		
 		ConvertModel model = ConvertModel.getInstance();
 		
-		if(convertProgress == null){
+		if (convertProgress == null) {
 			convertProgress = new ConvertProgress(ModelLocator.getInstance().getMainWindow());
 			convertProgress.setAlwaysOnTop(true);
 		}
 		convertProgress.setVisible(true);
 		convertProgress.toFront();
 		
-		for (int i=0; i<argFiles.length; i++){
+		for (int i = 0; i < argFiles.length; i++) {
 			String file = argFiles[i];
 			
 			model.setConvertingFilename(file);
@@ -251,7 +299,7 @@ public class ConvertController extends FrontController {
 			struct.reader = reader;
 			struct.writer = writer;
 			
-			model.setConvertingPercent(i*100/argFiles.length);
+			model.setConvertingPercent(i * 100 / argFiles.length);
 		}
 		convertProgress.setVisible(false);
 		
@@ -259,9 +307,6 @@ public class ConvertController extends FrontController {
 		mwm.setLock(false);
 	}
 	
-	/**
-	 * @param list
-	 */
 	private void constructNodes(ArrayList<ProjectToFiles> list, INamingConvention argNaming) {
 		ArrayList<DefaultMutableTreeNode> nodes = new ArrayList<DefaultMutableTreeNode>();
 		
@@ -274,7 +319,7 @@ public class ConvertController extends FrontController {
 		int convWWarnings = 0;
 		
 		for (ProjectToFiles s : list) {
-			DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(s.file);
+			DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new StructWrapper(s));
 			nodes.add(leaf);
 			
 			processed++;
@@ -289,8 +334,7 @@ public class ConvertController extends FrontController {
 			
 			boolean warnings = false;
 			for (IDendroFile file : s.writer.getFiles()) {
-				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(argNaming.getFilename(file) + "."
-						+ file.getExtension());
+				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
 				if (file.getDefaults().getConversionWarnings().size() != 0) {
 					for (ConversionWarning warning : file.getDefaults().getConversionWarnings()) {
 						DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
@@ -301,8 +345,7 @@ public class ConvertController extends FrontController {
 				leaf.add(fileNode);
 			}
 			
-			
-			if(s.reader.getWarnings().length != 0){
+			if (s.reader.getWarnings().length != 0) {
 				warnings = true;
 				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode("Reader Warnings");
 				for (ConversionWarning warning : s.reader.getWarnings()) {
@@ -322,7 +365,7 @@ public class ConvertController extends FrontController {
 				leaf.add(writerWarnings);
 			}
 			
-			if(warnings){
+			if (warnings) {
 				convWWarnings++;
 			}
 		}
@@ -339,5 +382,34 @@ public class ConvertController extends FrontController {
 		String errorMessage = null;
 		AbstractDendroFileReader reader = null;
 		AbstractDendroCollectionWriter writer = null;
+	}
+	
+	// wrapper for putting in tree nodes
+	private class StructWrapper {
+		ProjectToFiles struct;
+		
+		public StructWrapper(ProjectToFiles argStruct) {
+			struct = argStruct;
+		}
+		
+		@Override
+		public String toString() {
+			return struct.file;
+		}
+	}
+	
+	private class DendroWrapper {
+		IDendroFile file;
+		INamingConvention convention;
+		
+		public DendroWrapper(IDendroFile argFile, INamingConvention argConvention) {
+			file = argFile;
+			convention = argConvention;
+		}
+		
+		@Override
+		public String toString() {
+			return convention.getFilename(file) + "." + file.getExtension();
+		}
 	}
 }

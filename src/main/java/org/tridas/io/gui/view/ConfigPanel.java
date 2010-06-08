@@ -3,7 +3,6 @@
  */
 package org.tridas.io.gui.view;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +12,9 @@ import java.nio.charset.Charset;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.enums.Charsets;
@@ -27,7 +24,6 @@ import org.tridas.io.gui.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.MainWindowModel;
 
-import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.StringEvent;
 
 /**
@@ -62,13 +58,12 @@ public class ConfigPanel extends JPanel {
 		writingCharset = new JComboBox();
 		readingCharset = new JComboBox();
 		
-		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(1, 0));
 		
 		JPanel readingPanel = new JPanel();
 		readingPanel.setBorder(BorderFactory.createTitledBorder("Reader Config"));
-		readingPanel.setLayout(new GridLayout(0,1,5,5));
+		readingPanel.setLayout(new GridLayout(0, 1, 5, 5));
 		
 		// TODO locale all of these
 		inputFormat.setEditable(false);
@@ -90,15 +85,15 @@ public class ConfigPanel extends JPanel {
 		
 		JPanel writingPanel = new JPanel();
 		writingPanel.setBorder(BorderFactory.createTitledBorder("Writer Config"));
-		writingPanel.setLayout(new GridLayout(0,1,5,5));
-
+		writingPanel.setLayout(new GridLayout(0, 1, 5, 5));
+		
 		namingConvention.setEditable(false);
 		Box ncBox = Box.createHorizontalBox();
 		ncBox.add(Box.createHorizontalGlue());
 		ncBox.add(new JLabel("Naming Convention: "));
 		ncBox.add(namingConvention);
 		ncBox.add(Box.createHorizontalGlue());
-
+		
 		outputFormat.setEditable(false);
 		Box ofBox = Box.createHorizontalBox();
 		ofBox.add(Box.createHorizontalGlue());
@@ -196,14 +191,14 @@ public class ConfigPanel extends JPanel {
 		// put default one on top, so the user will see
 		// "automatic" right underneath
 		readingCharset.addItem(Charset.defaultCharset().displayName());
-		for(String s : Charsets.getReadingCharsets()){
-			if(s.equals(Charset.defaultCharset().displayName())){
+		for (String s : Charsets.getReadingCharsets()) {
+			if (s.equals(Charset.defaultCharset().displayName())) {
 				continue;
 			}
 			readingCharset.addItem(s);
 		}
 		
-		for(String s : Charsets.getWritingCharsets()){
+		for (String s : Charsets.getWritingCharsets()) {
 			writingCharset.addItem(s);
 		}
 	}
@@ -233,10 +228,10 @@ public class ConfigPanel extends JPanel {
 				else if (prop.equals("outputFormat")) {
 					outputFormat.setSelectedItem(evt.getNewValue());
 				}
-				else if(prop.equals("writingCharset")){
+				else if (prop.equals("writingCharset")) {
 					writingCharset.setSelectedItem(evt.getNewValue());
 				}
-				else if(prop.equals("readingCharset")){
+				else if (prop.equals("readingCharset")) {
 					readingCharset.setSelectedItem(evt.getNewValue());
 				}
 			}
