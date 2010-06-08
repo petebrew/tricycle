@@ -63,7 +63,9 @@ public class ConfigPanel extends JPanel {
 		
 		JPanel readingPanel = new JPanel();
 		readingPanel.setBorder(BorderFactory.createTitledBorder("Reader Config"));
-		readingPanel.setLayout(new GridLayout(0, 1, 5, 5));
+		//readingPanel.setLayout();
+		
+		Box rpBox = Box.createVerticalBox();
 		
 		// TODO locale all of these
 		inputFormat.setEditable(false);
@@ -80,8 +82,12 @@ public class ConfigPanel extends JPanel {
 		rcBox.add(readingCharset);
 		rcBox.add(Box.createHorizontalGlue());
 		
-		readingPanel.add(ifBox);
-		readingPanel.add(rcBox);
+		rpBox.add(Box.createVerticalGlue());
+		rpBox.add(ifBox);
+		rpBox.add(rcBox);
+		rpBox.add(Box.createVerticalGlue());
+		
+		readingPanel.add(rpBox);
 		
 		JPanel writingPanel = new JPanel();
 		writingPanel.setBorder(BorderFactory.createTitledBorder("Writer Config"));

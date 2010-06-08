@@ -71,6 +71,7 @@ public class ConvertController extends FrontController {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void preview(MVCEvent argEvent) {
 		ObjectEvent<DefaultMutableTreeNode> event = (ObjectEvent<DefaultMutableTreeNode>) argEvent;
 		
@@ -110,6 +111,7 @@ public class ConvertController extends FrontController {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	public void save(MVCEvent argEvent) {
 		// get rid of popups
 		

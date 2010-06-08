@@ -8,6 +8,7 @@ import com.dmurph.mvc.MVCEvent;
 /**
  * @author Daniel
  */
+@SuppressWarnings("serial")
 public class SaveEvent extends MVCEvent {
 	
 	public SaveEvent() {

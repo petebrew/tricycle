@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.grlea.log.SimpleLogger;
-
 import com.dmurph.mvc.model.AbstractModel;
 import com.dmurph.mvc.util.MVCArrayList;
 
@@ -19,7 +17,7 @@ import com.dmurph.mvc.util.MVCArrayList;
 public class FileListModel extends AbstractModel {
 	private static final FileListModel model = new FileListModel();
 	
-	private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
+	//private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
 	
 	private String fileField = null;
 	private ArrayList<String> inputFiles = new MVCArrayList<String>();
