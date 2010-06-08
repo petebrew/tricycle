@@ -1,5 +1,6 @@
 package org.tridas.io.gui.control;
 
+import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.AboutWindow;
 
@@ -30,6 +31,7 @@ public class MainWindowController extends FrontController {
 		view = new MainWindow();
 		view.setDefaultCloseOperation(3);
 		view.setVisible(true);
+		ModelLocator.getInstance().setMainWindow(view);
 		about = new AboutWindow(view);
 	}
 	

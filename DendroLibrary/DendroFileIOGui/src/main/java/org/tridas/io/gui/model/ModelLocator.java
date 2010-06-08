@@ -1,5 +1,9 @@
 package org.tridas.io.gui.model;
 
+import java.util.LinkedList;
+
+import javax.swing.JFrame;
+
 import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
@@ -17,15 +21,17 @@ public class ModelLocator {
 	
 	private MainWindow view = null;
 	
+	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
+	
 	private ModelLocator() {
-		
+
 	}
 	
-	public void setMainWindow(MainWindow argWindow){
+	public void setMainWindow(MainWindow argWindow) {
 		view = argWindow;
 	}
 	
-	public MainWindow getMainWindow(){
+	public MainWindow getMainWindow() {
 		return view;
 	}
 	

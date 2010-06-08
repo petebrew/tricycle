@@ -16,7 +16,7 @@ public class InputFormat {
 	public static String[] getInputFormats() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(AUTO);
-		for(String s : TridasIO.getSupportedReadingFormats()){
+		for (String s : TridasIO.getSupportedReadingFormats()) {
 			list.add(s);
 		}
 		return list.toArray(new String[0]);
