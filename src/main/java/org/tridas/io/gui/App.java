@@ -19,11 +19,14 @@ public class App {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e) {
-			log.warn("Could not use nimbus look and feel, probably on a Mac.");
+		if(!System.getProperty("os.name").startsWith("Mac")){
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			} catch (Exception e) {
+				log.warn("Could not use nimbus look and feel");
+			}
 		}
+		
 		(new MVCEvent(MainWindowController.STARTUP)).dispatch();
 	}
 }
