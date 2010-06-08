@@ -29,10 +29,11 @@ public class MainWindowController extends FrontController {
 	
 	public void startup(MVCEvent argEvent) {
 		view = new MainWindow();
+		ModelLocator.getInstance().setMainWindow(view);
 		view.setDefaultCloseOperation(3);
 		view.setVisible(true);
-		ModelLocator.getInstance().setMainWindow(view);
 		about = new AboutWindow(view);
+		about.pack();
 	}
 	
 	public void quit(MVCEvent argEvent) {
