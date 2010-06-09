@@ -1,0 +1,22 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>/Users/peterbrewer/dev/java/DendroFileIOGui/mac-specific/TRiCYCLE.app/Contents/Resources/Java/DendroFileIOGui-0.0.1-SNAPSHOT-jar-with-dependencies.jar</jar>
+  <outfile>/Users/peterbrewer/Desktop/tricycle.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>/Users/peterbrewer/dev/java/DendroFileIOGui/src/main/resources/icons/ico/application.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+  </jre>
+</launch4jConfig>
