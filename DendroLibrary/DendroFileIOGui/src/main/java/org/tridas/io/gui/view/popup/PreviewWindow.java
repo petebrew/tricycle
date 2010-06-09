@@ -3,6 +3,7 @@
  */
 package org.tridas.io.gui.view.popup;
 
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -35,7 +36,9 @@ public class PreviewWindow extends JFrame {
 	private void initComponents() {
 		text = new JTextArea();
 		text.setEditable(false);
+		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		
+		text.setFont(font);
 		add(new JScrollPane(text), "Center");
 	}
 	
