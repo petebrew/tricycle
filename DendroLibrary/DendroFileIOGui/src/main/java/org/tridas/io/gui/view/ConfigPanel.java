@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.enums.InputFormat;
@@ -62,7 +63,7 @@ public class ConfigPanel extends JPanel {
 		panel.setLayout(new GridLayout(1, 0));
 		
 		JPanel readingPanel = new JPanel();
-		readingPanel.setBorder(BorderFactory.createTitledBorder("Reader Config"));
+		readingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.config.readingPanel")));
 		//readingPanel.setLayout();
 		
 		Box rpBox = Box.createVerticalBox();
@@ -71,14 +72,14 @@ public class ConfigPanel extends JPanel {
 		inputFormat.setEditable(false);
 		Box ifBox = Box.createHorizontalBox();
 		ifBox.add(Box.createHorizontalGlue());
-		ifBox.add(new JLabel("Input Format: "));
+		ifBox.add(new JLabel(I18n.getText("view.config.input.format")));
 		ifBox.add(inputFormat);
 		ifBox.add(Box.createHorizontalGlue());
 		
 		readingCharset.setEditable(false);
 		Box rcBox = Box.createHorizontalBox();
 		rcBox.add(Box.createHorizontalGlue());
-		rcBox.add(new JLabel("Reading Charset: "));
+		rcBox.add(new JLabel(I18n.getText("view.config.input.charset")));
 		rcBox.add(readingCharset);
 		rcBox.add(Box.createHorizontalGlue());
 		
@@ -90,27 +91,27 @@ public class ConfigPanel extends JPanel {
 		readingPanel.add(rpBox);
 		
 		JPanel writingPanel = new JPanel();
-		writingPanel.setBorder(BorderFactory.createTitledBorder("Writer Config"));
+		writingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.config.writerPanel")));
 		writingPanel.setLayout(new GridLayout(0, 1, 5, 5));
 		
 		namingConvention.setEditable(false);
 		Box ncBox = Box.createHorizontalBox();
 		ncBox.add(Box.createHorizontalGlue());
-		ncBox.add(new JLabel("Naming Convention: "));
+		ncBox.add(new JLabel(I18n.getText("view.config.namingConvention")));
 		ncBox.add(namingConvention);
 		ncBox.add(Box.createHorizontalGlue());
 		
 		outputFormat.setEditable(false);
 		Box ofBox = Box.createHorizontalBox();
 		ofBox.add(Box.createHorizontalGlue());
-		ofBox.add(new JLabel("Output Format:"));
+		ofBox.add(new JLabel(I18n.getText("view.config.output.format")));
 		ofBox.add(outputFormat);
 		ofBox.add(Box.createHorizontalGlue());
 		
 		writingCharset.setEditable(false);
 		Box ocBox = Box.createHorizontalBox();
 		ocBox.add(Box.createHorizontalGlue());
-		ocBox.add(new JLabel("Writing Charset: "));
+		ocBox.add(new JLabel(I18n.getText("view.config.output.charset")));
 		ocBox.add(writingCharset);
 		ocBox.add(Box.createHorizontalGlue());
 		
