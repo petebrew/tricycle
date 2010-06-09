@@ -100,11 +100,11 @@ public class MainWindow extends JFrame {
 	private void populateLocale() {
 		
 		// loadMenuButton.setText("Load File");
-		quitMenuButton.setText("Quit");
-		aboutMenuButton.setText("About");
+		quitMenuButton.setText(I18n.getText("view.main.quit"));
+		aboutMenuButton.setText(I18n.getText("view.main.about"));
 		// saveMenuButton.setText("Save");
-		fileMenu.setText("File");
-		helpMenu.setText("Help");
+		fileMenu.setText(I18n.getText("view.main.file"));
+		helpMenu.setText(I18n.getText("view.main.help"));
 	}
 	
 	/**
