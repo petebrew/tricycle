@@ -8,11 +8,13 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
@@ -34,8 +36,9 @@ public class AboutWindow extends JDialog {
 		initComponents();
 		populateLocale();
 		addListeners();
-		setResizable(false);
 		pack();
+		setSize(getSize().width+5, 128);
+		setResizable(false);
 		setLocationRelativeTo(argParent);
 	}
 
@@ -44,11 +47,16 @@ public class AboutWindow extends JDialog {
 	 */
 	private void initComponents() {
 		
-		JLabel logo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/128x128/application.png")));
+		JLabel llogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/about/application-left.png")));
+		JLabel rlogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/about/application-right.png")));
 		info = new JTextArea();
 		info.setEditable(false);
-		add(logo, "West");
-		add(info, "Center");
+		
+		Box box = Box.createHorizontalBox();
+		add(box, "Center");
+		box.add(llogo);
+		box.add(new JScrollPane(info));
+		box.add(rlogo);
 	
 //		title = new JLabel();
 //		title.setHorizontalAlignment(SwingConstants.CENTER);
