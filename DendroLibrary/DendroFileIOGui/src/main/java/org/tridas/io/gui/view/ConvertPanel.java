@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,12 +23,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.tridas.io.gui.components.CustomTreeCellRenderer;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
 
@@ -37,6 +40,7 @@ import com.dmurph.mvc.ObjectEvent;
 @SuppressWarnings("serial")
 public class ConvertPanel extends JPanel {
 	
+	private static final String iconSize = "16x16";
 	private JScrollPane scrollPane;
 	private JTree convertedTree;
 	private JButton saveButton;
@@ -71,22 +75,30 @@ public class ConvertPanel extends JPanel {
 		Box top = Box.createHorizontalBox();
 		top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		top.add(convertButton);
+		top.add(saveButton);
 		top.add(Box.createHorizontalGlue());
-		top.add(collapseAll);
-		top.add(expandAll);
-		top.add(reset);
+
 		
 		Box bottom = Box.createHorizontalBox();
 		bottom.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		bottom.add(results);
 		bottom.add(Box.createHorizontalGlue());
-		bottom.add(saveButton);
+		bottom.add(collapseAll);
+		bottom.add(expandAll);
+		bottom.add(reset);
 		
 		add(top, BorderLayout.NORTH);
 		
 		add(bottom, java.awt.BorderLayout.PAGE_END);
 		
+		ImageIcon ficon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/fail.png"));
+		ImageIcon wicon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/warning.png"));
+		ImageIcon sicon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/success.png"));
+
+		CustomTreeCellRenderer renderer = new CustomTreeCellRenderer(sicon, wicon, ficon);
+		
 		DefaultTreeModel model = new DefaultTreeModel(rootNode, false);
+		convertedTree.setCellRenderer(renderer);
 		convertedTree.setModel(model);
 		convertedTree.setRootVisible(true);
 		convertedTree.expandRow(0);

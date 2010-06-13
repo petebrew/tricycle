@@ -57,7 +57,7 @@ public class ConvertController extends FrontController {
 	private SavingProgress savingProgress = null;
 	private ConvertProgress convertProgress = null;
 	// TODO get rid of this, use model nodes instead
-	private ArrayList<ProjectToFiles> structList = new ArrayList<ProjectToFiles>();
+	private ArrayList<ReaderWriterObject> structList = new ArrayList<ReaderWriterObject>();
 	
 	public ConvertController() {
 		try {
@@ -125,7 +125,7 @@ public class ConvertController extends FrontController {
 		model.setSavingPercent(0);
 		
 		int totalFiles = 0;
-		for (ProjectToFiles p : structList) {
+		for (ReaderWriterObject p : structList) {
 			if (p.writer == null) {
 				continue;
 			}
@@ -149,7 +149,7 @@ public class ConvertController extends FrontController {
 		savingProgress.setVisible(true);
 		savingProgress.toFront();
 		for (int i = 0; i < structList.size(); i++) {
-			ProjectToFiles p = structList.get(i);
+			ReaderWriterObject p = structList.get(i);
 			if (p.writer != null) {
 				
 				String outputFolder = folder.getAbsolutePath();
@@ -245,7 +245,7 @@ public class ConvertController extends FrontController {
 		
 		MainWindowModel mwm = MainWindowModel.getInstance();
 		mwm.setLock(true);
-		ArrayList<ProjectToFiles> list = new ArrayList<ProjectToFiles>();
+		ArrayList<ReaderWriterObject> list = new ArrayList<ReaderWriterObject>();
 		
 		ConvertModel model = ConvertModel.getInstance();
 		
@@ -271,7 +271,7 @@ public class ConvertController extends FrontController {
 				reader = TridasIO.getFileReader(argInputFormat);
 			}
 			
-			ProjectToFiles struct = new ProjectToFiles();
+			ReaderWriterObject struct = new ReaderWriterObject();
 			list.add(struct);
 			struct.file = file;
 			
@@ -310,6 +310,10 @@ public class ConvertController extends FrontController {
 			struct.reader = reader;
 			struct.writer = writer;
 			
+			if(writer.getFiles().length == 0){
+				struct.errorMessage = I18n.getText("control.convert.noFilesWritten");
+			}
+			
 			model.setConvertingPercent(i * 100 / argFiles.length);
 		}
 		convertProgress.setVisible(false);
@@ -318,7 +322,7 @@ public class ConvertController extends FrontController {
 		mwm.setLock(false);
 	}
 	
-	private void constructNodes(ArrayList<ProjectToFiles> list, INamingConvention argNaming) {
+	private void constructNodes(ArrayList<ReaderWriterObject> list, INamingConvention argNaming) {
 		ArrayList<DefaultMutableTreeNode> nodes = new ArrayList<DefaultMutableTreeNode>();
 		
 		structList.clear();
@@ -329,34 +333,37 @@ public class ConvertController extends FrontController {
 		int failed = 0;
 		int convWWarnings = 0;
 		
-		for (ProjectToFiles s : list) {
+		for (ReaderWriterObject s : list) {
 			DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new StructWrapper(s));
 			nodes.add(leaf);
 			
 			processed++;
 			
+			boolean fail = false;
 			if (s.errorMessage != null) {
 				DefaultMutableTreeNode errorMessage = new DefaultMutableTreeNode(s.errorMessage);
 				leaf.add(errorMessage);
 				nodes.add(leaf);
 				failed++;
-				continue;
+				fail = true;
 			}
 			
 			boolean warnings = false;
-			for (IDendroFile file : s.writer.getFiles()) {
-				DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
-				if (file.getDefaults().getConversionWarnings().size() != 0) {
-					for (ConversionWarning warning : file.getDefaults().getConversionWarnings()) {
-						DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
-						fileNode.add(warningNode);
+			if(s.writer != null){
+				for (IDendroFile file : s.writer.getFiles()) {
+					DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
+					if (file.getDefaults().getConversionWarnings().size() != 0) {
+						for (ConversionWarning warning : file.getDefaults().getConversionWarnings()) {
+							DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
+							fileNode.add(warningNode);
+						}
+						warnings = true;
 					}
-					warnings = true;
+					leaf.add(fileNode);
 				}
-				leaf.add(fileNode);
 			}
 			
-			if (s.reader.getWarnings().length != 0) {
+			if (s.reader != null && s.reader.getWarnings().length != 0) {
 				warnings = true;
 				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(I18n.getText("control.convert.readerWarnings"));
 				for (ConversionWarning warning : s.reader.getWarnings()) {
@@ -366,7 +373,7 @@ public class ConvertController extends FrontController {
 				leaf.add(readerWarnings);
 			}
 			
-			if (s.writer.getWarnings().length != 0) {
+			if (s.writer != null && s.writer.getWarnings().length != 0) {
 				warnings = true;
 				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(I18n.getText("control.convert.writerWarnings"));
 				for (ConversionWarning warning : s.writer.getWarnings()) {
@@ -377,7 +384,10 @@ public class ConvertController extends FrontController {
 			}
 			
 			if (warnings) {
-				convWWarnings++;
+				s.warnings = true;
+				if(!fail){ // make sure we didn't already count this file as a fail
+					convWWarnings++;
+				}
 			}
 		}
 		
@@ -388,18 +398,19 @@ public class ConvertController extends FrontController {
 		model.setNodes(nodes);
 	}
 	
-	private class ProjectToFiles {
-		String file;
-		String errorMessage = null;
-		AbstractDendroFileReader reader = null;
-		AbstractDendroCollectionWriter writer = null;
+	public static class ReaderWriterObject {
+		public String file;
+		public String errorMessage = null;
+		public AbstractDendroFileReader reader = null;
+		public AbstractDendroCollectionWriter writer = null;
+		public boolean warnings = false;
 	}
 	
 	// wrapper for putting in tree nodes
-	private class StructWrapper {
-		ProjectToFiles struct;
+	public static class StructWrapper {
+		public ReaderWriterObject struct;
 		
-		public StructWrapper(ProjectToFiles argStruct) {
+		public StructWrapper(ReaderWriterObject argStruct) {
 			struct = argStruct;
 		}
 		
@@ -409,9 +420,9 @@ public class ConvertController extends FrontController {
 		}
 	}
 	
-	private class DendroWrapper {
-		IDendroFile file;
-		INamingConvention convention;
+	public static class DendroWrapper {
+		public IDendroFile file;
+		public INamingConvention convention;
 		
 		public DendroWrapper(IDendroFile argFile, INamingConvention argConvention) {
 			file = argFile;
