@@ -10,6 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertController.DendroWrapper;
 import org.tridas.io.gui.control.convert.ConvertController.StructWrapper;
 
@@ -54,6 +55,10 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 			}else{
 				return def;
 			}
+		}else if(userObject.toString().equals(I18n.getText("control.convert.readerWarnings"))){
+			setIcon(warningIcon);
+		}else if(userObject.toString().equals(I18n.getText("control.convert.writerWarnings"))){
+			setIcon(warningIcon);
 		}
 		return this;
 	}
