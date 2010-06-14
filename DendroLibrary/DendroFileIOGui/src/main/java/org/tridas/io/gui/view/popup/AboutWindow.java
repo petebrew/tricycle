@@ -37,7 +37,7 @@ public class AboutWindow extends JDialog {
 		populateLocale();
 		addListeners();
 		pack();
-		setSize(getSize().width+5, 128);
+		setSize(600, 128);
 		setResizable(false);
 		setLocationRelativeTo(argParent);
 	}
