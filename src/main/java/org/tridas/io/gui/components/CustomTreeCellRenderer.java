@@ -18,6 +18,7 @@ import org.tridas.io.gui.control.convert.ConvertController.StructWrapper;
  * @author daniel
  *
  */
+@SuppressWarnings("serial")
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	private final Icon successIcon;
 	private final Icon warningIcon;

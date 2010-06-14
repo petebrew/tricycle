@@ -14,6 +14,7 @@ import com.dmurph.mvc.util.MVCArrayList;
 /**
  * @author Daniel
  */
+@SuppressWarnings("unchecked")
 public class FileListModel extends AbstractModel {
 	private static final FileListModel model = new FileListModel();
 	

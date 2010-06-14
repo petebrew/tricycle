@@ -23,6 +23,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.components.CustomTreeCellRenderer;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.convert.ConvertEvent;
@@ -170,11 +171,11 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void populateLocale() {
-		saveButton.setText("Save...");
-		convertButton.setText("Convert");
-		collapseAll.setText("Collapse All");
-		expandAll.setText("Expand All");
-		reset.setText("Reset");
+		saveButton.setText(I18n.getText("view.convert.save"));
+		convertButton.setText(I18n.getText("view.convert.convert"));
+		collapseAll.setText(I18n.getText("view.convert.collapse"));
+		expandAll.setText(I18n.getText("view.convert.expand"));
+		reset.setText(I18n.getText("view.convert.reset"));
 	}
 	
 	private void linkModel() {
@@ -244,8 +245,7 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void setStatus(int argProcessed, int argFailed, int argConvWithWarnings) {
-		results.setText(argProcessed + " processed, " + argFailed + " failed, and " + argConvWithWarnings
-				+ " converted with warnings.");
+		results.setText(I18n.getText("view.convert.status", argProcessed+"", argFailed+"", argConvWithWarnings+""));
 	}
 	
 	private void expandAll() {

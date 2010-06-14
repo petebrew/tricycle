@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.ConvertModel;
 
 /**
@@ -63,15 +64,15 @@ public class SavingProgress extends JFrame {
 	 * 
 	 */
 	private void populateLocale() {
-		setTitle("Converting...");
+		setTitle(I18n.getText("view.popup.save.title"));
 		setSavingFilename("");
 	}
 	
 	private void setSavingFilename(String argFilename) {
 		if (argFilename == null) {
-			argFilename = "";
+			argFilename = "?";
 		}
-		savingLabel.setText("Saving: " + argFilename);
+		savingLabel.setText(I18n.getText("view.popup.save.label", argFilename));
 	}
 	
 	/**

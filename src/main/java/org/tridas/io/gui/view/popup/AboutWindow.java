@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.util.IOUtils;
 
 /**
@@ -109,16 +110,10 @@ public class AboutWindow extends JDialog {
 	}
 	
 	private void populateLocale() {
-		setTitle("About TRiCYCLE");
+		setTitle(I18n.getText("view.popup.about.title"));
 //		title.setText("TRiCYCLE");
 //		byLine1.setText("Dendro IO Library by Peter Brewer, Daniel Murphy, and Esther Jansma");
 //		byLine2.setText("Graphical interface by Daniel Murphy");
-		info.setText("TRiCYCLE\n" +
-					 "Version: 0.0.1\n" +
-					 "\n" +
-					 "Dendro IO Libary by Peter Brewer, Daniel Murphy, and Esther Jansma\n" +
-					 "Graphical interface by Daniel Murphy\n" +
-					 "\n" +
-					 "Copyright info");
+		info.setText(I18n.getText("view.popup.about.text"));
 	}
 }
