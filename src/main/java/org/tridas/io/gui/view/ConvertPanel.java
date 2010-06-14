@@ -100,7 +100,8 @@ public class ConvertPanel extends JPanel {
 		DefaultTreeModel model = new DefaultTreeModel(rootNode, false);
 		convertedTree.setCellRenderer(renderer);
 		convertedTree.setModel(model);
-		convertedTree.setRootVisible(true);
+		convertedTree.setRootVisible(false);
+		convertedTree.setShowsRootHandles(true);
 		convertedTree.expandRow(0);
 		scrollPane.setViewportView(convertedTree);
 		
@@ -146,6 +147,7 @@ public class ConvertPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// no need to go to controller
+				collapseAll();
 				expandToFiles();
 			}
 		});
