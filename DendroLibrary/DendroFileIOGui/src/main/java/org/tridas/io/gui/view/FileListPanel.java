@@ -5,7 +5,6 @@ package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -22,12 +21,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.fileList.AddFileEvent;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
@@ -145,9 +144,7 @@ public class FileListPanel extends JPanel {
 			}
 			
 			@Override
-			public void changedUpdate(DocumentEvent e) {
-				log.debug("change: " + fileField.getText());
-			}
+			public void changedUpdate(DocumentEvent e) {}
 		});
 		
 		ActionListener addFileListener = new ActionListener() {
@@ -171,13 +168,13 @@ public class FileListPanel extends JPanel {
 	}
 	
 	public void populateLocale() {
-		fileFieldLabel.setText("Choose file/url:");
-		browseButton.setText("Browse");
-		addButton.setText("Add...");
-		selectAllButton.setText("All");
-		selectNoneButton.setText("None");
-		removeSelectedButton.setText("Remove Selected");
-		selectLabel.setText("Select:");
+		fileFieldLabel.setText(I18n.getText("view.files.fileLabel"));
+		browseButton.setText(I18n.getText("view.files.browse"));
+		addButton.setText(I18n.getText("view.files.add"));
+		selectAllButton.setText(I18n.getText("view.files.selectAll"));
+		selectNoneButton.setText(I18n.getText("view.files.selectNone"));
+		removeSelectedButton.setText(I18n.getText("view.files.removeSelected"));
+		selectLabel.setText(I18n.getText("view.files.selectLabel"));
 	}
 	
 	public void linkModel() {

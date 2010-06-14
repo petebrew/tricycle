@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.ConvertModel;
 
 /**
@@ -51,7 +52,7 @@ public class ConvertProgress extends JFrame {
 	private void addListeners() {} // none
 	
 	private void populateLocale() {
-		setTitle("Converting...");
+		setTitle(I18n.getText("view.popup.convert.title"));
 		setConvertingFilename("");
 	}
 	
@@ -59,7 +60,7 @@ public class ConvertProgress extends JFrame {
 		if (argFilename == null) {
 			argFilename = "";
 		}
-		convertingLabel.setText("Converting: " + argFilename);
+		convertingLabel.setText(I18n.getText("view.popup.convert.label", argFilename));
 	}
 	
 	private void linkModel() {

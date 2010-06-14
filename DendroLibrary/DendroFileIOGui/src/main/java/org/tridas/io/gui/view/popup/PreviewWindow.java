@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.PreviewModel;
 
 /**
@@ -48,9 +49,9 @@ public class PreviewWindow extends JFrame {
 	
 	private void setTitleName(String argFilename) {
 		if (argFilename == null) {
-			setTitle("Preview");
+			setTitle(I18n.getText("view.popup.preview.title", "?"));
 		}
-		setTitle("Preview of " + argFilename);
+		setTitle(I18n.getText("view.popup.preview.title", argFilename));
 	}
 	
 	private void linkModel() {
