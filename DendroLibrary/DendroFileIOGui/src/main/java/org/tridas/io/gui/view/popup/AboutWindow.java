@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.util.IOUtils;
 
 /**
@@ -74,10 +75,8 @@ public class AboutWindow extends JDialog {
 	}
 	
 	private void populateLocale() {
+		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.about.title"));
-//		title.setText("TRiCYCLE");
-//		byLine1.setText("Dendro IO Library by Peter Brewer, Daniel Murphy, and Esther Jansma");
-//		byLine2.setText("Graphical interface by Daniel Murphy");
 		info.setText(I18n.getText("view.popup.about.text"));
 	}
 }
