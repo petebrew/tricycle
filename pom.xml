@@ -43,11 +43,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
@@ -68,6 +63,7 @@
 					<archive>
             			<manifest>
               				<mainClass>org.tridas.io.gui.App</mainClass>
+              				<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
             			</manifest>
           			</archive>
 				</configuration>
@@ -83,6 +79,17 @@
 					<debug>true</debug>
 				</configuration>
 			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <configuration>
+		          <archive>
+		            <manifestEntries>
+		              <SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
+		            </manifestEntries>
+		          </archive>
+		        </configuration>
+		      </plugin>
 		</plugins>
 	</build>
 </project>
