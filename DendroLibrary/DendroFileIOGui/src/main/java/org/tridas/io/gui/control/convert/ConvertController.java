@@ -306,6 +306,11 @@ public class ConvertController extends FrontController {
 			TridasProject project = reader.getProject();
 			
 			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
+			
+			if(argNaming instanceof NumericalNamingConvention){
+				String justFile = file.substring(file.lastIndexOf('/')+1, file.lastIndexOf('.'));
+				((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
+			}
 			writer.setNamingConvention(argNaming);
 			
 			if (struct.errorMessage != null) {
@@ -371,8 +376,8 @@ public class ConvertController extends FrontController {
 			if(s.writer != null){
 				for (IDendroFile file : s.writer.getFiles()) {
 					DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
-					if (file.getDefaults().getConversionWarnings().size() != 0) {
-						for (ConversionWarning warning : file.getDefaults().getConversionWarnings()) {
+					if (file.getDefaults().getWarnings().size() != 0) {
+						for (ConversionWarning warning : file.getDefaults().getWarnings()) {
 							DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
 							fileNode.add(warningNode);
 						}
