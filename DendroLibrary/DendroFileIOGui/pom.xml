@@ -61,11 +61,13 @@
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 					<archive>
-            			<manifest>
-              				<mainClass>org.tridas.io.gui.App</mainClass>
-              				<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
-            			</manifest>
-          			</archive>
+						<manifest>
+							<mainClass>org.tridas.io.gui.App</mainClass>
+						</manifest>
+						<manifestEntries>
+							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -80,16 +82,19 @@
 				</configuration>
 			</plugin>
 			<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-jar-plugin</artifactId>
-		        <configuration>
-		          <archive>
-		            <manifestEntries>
-		              <SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
-		            </manifestEntries>
-		          </archive>
-		        </configuration>
-		      </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.tridas.io.gui.App</mainClass>
+						</manifest>
+						<manifestEntries>
+							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
