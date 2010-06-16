@@ -8,6 +8,6 @@ package org.tridas.io.gui.enums;
  */
 public class NamingConvention {
 	public static final String[] getNamingConventions() {
-		return new String[]{"Numerical", "UUID", "Heirarchical"};
+		return new String[]{"Numerical", "UUID", "Hierarchical"};
 	}
 }
