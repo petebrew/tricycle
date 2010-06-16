@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
@@ -148,8 +149,14 @@ public class ConvertController extends FrontController {
 			savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow());
 			savingProgress.setAlwaysOnTop(true);
 		}
-		savingProgress.setVisible(true);
-		savingProgress.toFront();
+		// i have to do this in a different thread
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				savingProgress.setVisible(true);
+			}
+		});
+		
 		for (int i = 0; i < structList.size(); i++) {
 			ReaderWriterObject p = structList.get(i);
 			if (p.writer != null) {
@@ -260,8 +267,13 @@ public class ConvertController extends FrontController {
 			convertProgress = new ConvertProgress(ModelLocator.getInstance().getMainWindow());
 			convertProgress.setAlwaysOnTop(true);
 		}
-		convertProgress.setVisible(true);
-		convertProgress.toFront();
+		// i have to do this in a different thread
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				convertProgress.setVisible(true);
+			}
+		});
 		
 		for (int i = 0; i < argFiles.length; i++) {
 			String file = argFiles[i];
