@@ -4,6 +4,7 @@
 package org.tridas.io.gui.model;
 
 import org.tridas.io.TridasIO;
+import org.tridas.io.defaults.IMetadataFieldSet;
 import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.enums.InputFormat;
 
@@ -21,6 +22,9 @@ public class ConfigModel extends AbstractModel {
 	private String namingConvention = "Numerical";
 	private String writingCharset = TridasIO.getWritingCharset();
 	private String readingCharset = TridasIO.isCharsetDetection() ? Charsets.AUTO : TridasIO.getReadingCharset();;
+	
+	private IMetadataFieldSet readerDefaults = null;
+	private IMetadataFieldSet writerDefaults = null;
 	
 	private ConfigModel() {}
 	
@@ -107,6 +111,26 @@ public class ConfigModel extends AbstractModel {
 	 */
 	public String getReadingCharset() {
 		return readingCharset;
+	}
+	
+	public void setReaderDefaults(IMetadataFieldSet argReaderDefaults) {
+		IMetadataFieldSet old = readerDefaults;
+		readerDefaults = argReaderDefaults;
+		firePropertyChange("readerDefaults", old, readerDefaults);
+	}
+	
+	public IMetadataFieldSet getReaderDefaults() {
+		return readerDefaults;
+	}
+
+	public void setWriterDefaults(IMetadataFieldSet argWriterDefaults) {
+		IMetadataFieldSet old = writerDefaults;
+		writerDefaults = argWriterDefaults;
+		firePropertyChange("writerDefaults", old, writerDefaults);
+	}
+
+	public IMetadataFieldSet getWriterDefaults() {
+		return writerDefaults;
 	}
 	
 	public static final ConfigModel getInstance() {

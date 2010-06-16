@@ -12,7 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.model.PreviewModel;
+import org.tridas.io.gui.model.popup.PreviewModel;
 
 /**
  * @author Daniel Murphy
