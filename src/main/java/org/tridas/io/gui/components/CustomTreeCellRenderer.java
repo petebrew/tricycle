@@ -59,7 +59,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 			}
 		}else if(userObject instanceof DendroWrapper){
 			DendroWrapper wrapper = (DendroWrapper) userObject;
-			if(wrapper.file.getDefaults().getConversionWarnings().size() != 0){
+			if(wrapper.file.getDefaults().getWarnings().size() != 0){
 				setIcon(fileWarningIcon);
 			}else{
 				setIcon(fileSuccessIcon);
