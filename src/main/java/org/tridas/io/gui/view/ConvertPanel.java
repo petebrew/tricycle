@@ -92,11 +92,14 @@ public class ConvertPanel extends JPanel {
 		
 		add(bottom, java.awt.BorderLayout.PAGE_END);
 		
-		ImageIcon ficon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/fail.png"));
-		ImageIcon wicon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/warning.png"));
-		ImageIcon sicon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/success.png"));
+		ImageIcon ficon     = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/fail.png"));
+		ImageIcon wicon     = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/warning.png"));
+		ImageIcon sicon     = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/success.png"));
+		ImageIcon infoicon  = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/info.png"));
+		ImageIcon filewicon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/filewarning.png"));
+		ImageIcon filesicon = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/filesuccess.png"));
 
-		CustomTreeCellRenderer renderer = new CustomTreeCellRenderer(sicon, wicon, ficon);
+		CustomTreeCellRenderer renderer = new CustomTreeCellRenderer(sicon, wicon, ficon, filesicon, filewicon, infoicon);
 		
 		DefaultTreeModel model = new DefaultTreeModel(rootNode, false);
 		convertedTree.setCellRenderer(renderer);
@@ -175,7 +178,7 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void populateLocale() {
-		saveButton.setText(I18n.getText("view.convert.save"));
+		saveButton.setText(I18n.getText("view.convert.saveAll"));
 		convertButton.setText(I18n.getText("view.convert.convert"));
 		collapseAll.setText(I18n.getText("view.convert.collapse"));
 		expandAll.setText(I18n.getText("view.convert.expand"));

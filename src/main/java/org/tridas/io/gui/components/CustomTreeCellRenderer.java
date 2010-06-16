@@ -10,6 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.apache.commons.lang.WordUtils;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertController.DendroWrapper;
 import org.tridas.io.gui.control.convert.ConvertController.StructWrapper;
@@ -23,11 +24,18 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	private final Icon successIcon;
 	private final Icon warningIcon;
 	private final Icon failIcon;
+	private final Icon fileSuccessIcon;
+	private final Icon fileWarningIcon;
+	private final Icon infoIcon;
 	
-	public CustomTreeCellRenderer(Icon argSuccessIcon, Icon argWarningIcon, Icon argFailIcon){
+	public CustomTreeCellRenderer(Icon argSuccessIcon, Icon argWarningIcon, Icon argFailIcon, Icon argFileSuccessIcon, Icon argFileWarningIcon, Icon argInfoIcon){
 		successIcon = argSuccessIcon;
 		warningIcon = argWarningIcon;
 		failIcon = argFailIcon;
+		fileSuccessIcon = argFileSuccessIcon;
+		fileWarningIcon = argFileWarningIcon;
+		infoIcon = argInfoIcon;
+		
 	}
 	
 	/**
@@ -51,15 +59,19 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 			}
 		}else if(userObject instanceof DendroWrapper){
 			DendroWrapper wrapper = (DendroWrapper) userObject;
-			if(wrapper.file.getDefaults().getWarnings().size() != 0){
-				setIcon(warningIcon);
+			if(wrapper.file.getDefaults().getConversionWarnings().size() != 0){
+				setIcon(fileWarningIcon);
 			}else{
+				setIcon(fileSuccessIcon);
 				return def;
 			}
 		}else if(userObject.toString().equals(I18n.getText("control.convert.readerWarnings"))){
 			setIcon(warningIcon);
 		}else if(userObject.toString().equals(I18n.getText("control.convert.writerWarnings"))){
 			setIcon(warningIcon);
+		}
+		else{
+			setIcon(infoIcon);
 		}
 		return this;
 	}
