@@ -3,9 +3,18 @@
  */
 package org.tridas.io.gui.control.config;
 
+import java.util.TreeMap;
+
+import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.TridasIO;
+import org.tridas.io.defaults.AbstractDefaultValue;
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
+import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.popup.MetadataEditorModel;
+import org.tridas.io.gui.model.popup.MetadataTableModel;
+import org.tridas.io.gui.view.popup.MetadataEditor;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.StringEvent;
@@ -17,6 +26,7 @@ import com.dmurph.mvc.control.FrontController;
 public class ConfigController extends FrontController {
 	public static final String SET_INPUT_FORMAT = "CONFIG_SET_INPUT_FORMAT";
 	public static final String SET_OUTPUT_FORMAT = "CONFIG_SET_OUTPUT_FORMAT";
+	public static final String INPUT_DEFAULTS_PRESSED = "CONFIG_INPUT_DEFAULTS_PRESSED";
 	public static final String SET_NAMING_CONVENTION = "CONFIG_SET_NAMING_CONVENTION";
 	public static final String SET_READING_CHARSET = "CONFIG_SET_READING_CHARSET";
 	public static final String SET_WRITING_CHARSET = "CONFIG_SET_WRITING_CHARSET";
@@ -30,6 +40,7 @@ public class ConfigController extends FrontController {
 			registerCommand(SET_NAMING_CONVENTION, "setNamingConvention");
 			registerCommand(SET_READING_CHARSET, "setReadingCharset");
 			registerCommand(SET_WRITING_CHARSET, "setWritingCharset");
+			registerCommand(INPUT_DEFAULTS_PRESSED, "displayInputDefaults");
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
@@ -73,5 +84,28 @@ public class ConfigController extends FrontController {
 		model.setWritingCharset(event.getValue());
 		
 		TridasIO.setWritingCharset(event.getValue());
+	}
+	
+	public void displayInputDefaults(MVCEvent argEvent){
+		
+		MetadataTableModel tmodel = new MetadataTableModel();
+		
+		if(model.getReaderDefaults() == null){
+			AbstractDendroFileReader reader = TridasIO.getFileReader(model.getInputFormat());
+			if(reader == null){
+				System.err.println("reader was null");
+				return;
+			}else{
+				model.setReaderDefaults(reader.constructDefaultMetadata());
+			}
+		}
+		tmodel.setMetadataSet(model.getReaderDefaults());
+
+		MetadataEditorModel model = new MetadataEditorModel(I18n.getText("view.popup.meta.readerDefault"));
+		model.setTableModel(tmodel);
+		
+		MetadataEditor editor = new MetadataEditor(ModelLocator.getInstance().getMainWindow(), model);
+		editor.setVisible(true);
+		
 	}
 }

@@ -3,12 +3,14 @@
  */
 package org.tridas.io.gui.model.popup;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.tridas.io.defaults.AbstractDefaultValue;
+import org.tridas.io.defaults.IMetadataFieldSet;
 
 import com.dmurph.mvc.ICloneable;
 
@@ -19,10 +21,15 @@ import com.dmurph.mvc.ICloneable;
 public class MetadataTableModel extends AbstractTableModel implements ICloneable {
 	
 	public static final String[] columns = {"Property", "Value", "Overriding"};
-	private TreeMap<Enum<?>, AbstractDefaultValue<Object>> map = new TreeMap<Enum<?>, AbstractDefaultValue<Object>>();
-	
-	// enum title, value, overriding
-	
+	private final HashMap<Enum, AbstractDefaultValue> map = new HashMap<Enum, AbstractDefaultValue>();
+		
+	public void setMetadataSet(IMetadataFieldSet argSet){
+		map.clear();
+		for(Enum e : argSet.keySet()){
+			map.put(e, argSet.getDefaultValue(e));
+		}
+	}
+
 	/**
 	 * @see javax.swing.table.TableModel#getColumnCount()
 	 */
@@ -99,8 +106,8 @@ public class MetadataTableModel extends AbstractTableModel implements ICloneable
 		}
 	}
 	
-	private Enum<?> getKeyAt(int argRow) {
-		Iterator<Enum<?>> it = map.keySet().iterator();
+	private Enum getKeyAt(int argRow) {
+		Iterator<Enum> it = map.keySet().iterator();
 		for (int i = 0; i < argRow; i++) {
 			it.next();
 		}

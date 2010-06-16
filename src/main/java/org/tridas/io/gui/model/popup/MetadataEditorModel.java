@@ -3,8 +3,6 @@
  */
 package org.tridas.io.gui.model.popup;
 
-import javax.swing.table.TableModel;
-
 import com.dmurph.mvc.ICloneable;
 import com.dmurph.mvc.model.AbstractDirtyableModel;
 
@@ -26,7 +24,6 @@ public class MetadataEditorModel extends AbstractDirtyableModel{
 	}
 	
 	public void setFilename(String argFilename){
-		updateDirty(!cleanFilename.equals(argFilename));
 		String old = filename;
 		filename = argFilename;
 		firePropertyChange("filename", old, filename);
@@ -37,10 +34,13 @@ public class MetadataEditorModel extends AbstractDirtyableModel{
 	}
 	
 	public void setTableModel(MetadataTableModel argModel){
-		updateDirty(cleanTableModel.equals(argModel));
 		MetadataTableModel old = tableModel;
 		tableModel = argModel;
 		firePropertyChange("tableModel", old, tableModel);
+	}
+	
+	public MetadataTableModel getTableModel(){
+		return tableModel;
 	}
 
 	/**
