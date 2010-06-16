@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.tridas.io.defaults.IMetadataFieldSet;
+
 import com.dmurph.mvc.model.AbstractModel;
 import com.dmurph.mvc.util.MVCArrayList;
 
@@ -41,7 +43,7 @@ public class ConvertModel extends AbstractModel {
 	public List<DefaultMutableTreeNode> getNodes() {
 		return (List<DefaultMutableTreeNode>) nodes.clone();
 	}
-	
+
 	public void setSavingPercent(int argSavingPercent) {
 		int old = savingPercent;
 		savingPercent = argSavingPercent;

@@ -17,6 +17,7 @@ import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.IDendroFile;
 import org.tridas.io.TridasIO;
+import org.tridas.io.defaults.IMetadataFieldSet;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.ConfigModel;
@@ -24,7 +25,7 @@ import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.ModelLocator;
-import org.tridas.io.gui.model.PreviewModel;
+import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.ConvertProgress;
 import org.tridas.io.gui.view.popup.PreviewWindow;
@@ -34,11 +35,19 @@ import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
 import org.tridas.io.util.IOUtils;
+<<<<<<< .mine
+import org.tridas.io.warnings.ConversionWarning;
+import org.tridas.io.warnings.ConversionWarningException;
+import org.tridas.io.warnings.IncompleteTridasDataException;
+import org.tridas.io.warnings.IncorrectDefaultFieldsException;
+import org.tridas.io.warnings.InvalidDendroFileException;
+=======
 import org.tridas.io.warningsandexceptions.ConversionWarning;
 import org.tridas.io.warningsandexceptions.ConversionWarningException;
 import org.tridas.io.warningsandexceptions.IncompleteTridasDataException;
 import org.tridas.io.warningsandexceptions.InvalidDendroFileException;
 import org.tridas.io.warningsandexceptions.UnrepresentableTridasDataException;
+>>>>>>> .r370
 import org.tridas.schema.TridasProject;
 
 import com.dmurph.mvc.MVCEvent;
@@ -208,12 +217,12 @@ public class ConvertController extends FrontController {
 		
 		boolean inputFormatFound = false;
 		for (String format : TridasIO.getSupportedReadingFormats()) {
-			if (format.equalsIgnoreCase(config.getInputFormat())) {
+			if (format.equalsIgnoreCase(event.getInputFormat())) {
 				config.setInputFormat(format);
 				inputFormatFound = true;
 			}
 		}
-		if (!inputFormatFound && !config.getInputFormat().equals(InputFormat.AUTO)) {
+		if (!inputFormatFound && !event.getInputFormat().equals(InputFormat.AUTO)) {
 			JOptionPane.showMessageDialog(null,
 					I18n.getText("control.convert.noInput",outputFormat),
 					I18n.getText("control.convert.error"),
@@ -238,11 +247,16 @@ public class ConvertController extends FrontController {
 			return;
 		}
 		
-		convertFiles(fileList.getInputFiles().toArray(new String[0]), config.getInputFormat(), outputFormat, naming);
+		convertFiles(fileList.getInputFiles().toArray(new String[0]),
+					 config.getInputFormat(),
+					 event.getReaderDefaults(),
+					 outputFormat,
+					 event.getWriterDefaults(),
+					 naming);
 	}
 	
-	private void convertFiles(String[] argFiles, String argInputFormat, String argOutputFormat,
-			INamingConvention argNaming) {
+	private void convertFiles(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
+							  String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) {
 		
 		MainWindowModel mwm = MainWindowModel.getInstance();
 		mwm.setLock(true);
@@ -282,13 +296,19 @@ public class ConvertController extends FrontController {
 			}
 			
 			try {
-				reader.loadFile(file);
+				if(argInputDefaults == null){
+					reader.loadFile(file);
+				}else{
+					reader.loadFile(file, (IMetadataFieldSet) argInputDefaults.clone());
+				}
 			} catch (IOException e) {
 				struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
 				continue;
 			} catch (InvalidDendroFileException e) {
 				struct.errorMessage = e.toString();
 				continue;
+			} catch (IncorrectDefaultFieldsException e) {
+				struct.errorMessage = e.toString() +" Please report bug.";
 			}
 			
 			TridasProject project = reader.getProject();
@@ -301,12 +321,16 @@ public class ConvertController extends FrontController {
 			}
 			
 			try {
-				writer.loadProject(project);
+				if(argOutputDefaults == null){
+					writer.loadProject(project);
+				}else{
+					writer.loadProject(project, (IMetadataFieldSet) argOutputDefaults.clone());
+				}
 			} catch (IncompleteTridasDataException e) {
 				struct.errorMessage = e.toString();
 			} catch (ConversionWarningException e) {
 				struct.errorMessage = e.toString();
-			} catch (UnrepresentableTridasDataException e) {
+			} catch (IncorrectDefaultFieldsException e) {
 				struct.errorMessage = e.toString();
 			}
 			
@@ -405,7 +429,9 @@ public class ConvertController extends FrontController {
 		public String file;
 		public String errorMessage = null;
 		public AbstractDendroFileReader reader = null;
+		public IMetadataFieldSet readerDefaults = null;
 		public AbstractDendroCollectionWriter writer = null;
+		public IMetadataFieldSet writerDefaults = null;
 		public boolean warnings = false;
 	}
 	

@@ -1,7 +1,7 @@
 /**
  * Created on Jun 7, 2010, 6:33:44 PM
  */
-package org.tridas.io.gui.model;
+package org.tridas.io.gui.model.popup;
 
 import com.dmurph.mvc.model.AbstractModel;
 

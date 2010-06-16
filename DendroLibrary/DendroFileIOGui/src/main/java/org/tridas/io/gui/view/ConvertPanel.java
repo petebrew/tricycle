@@ -115,7 +115,11 @@ public class ConvertPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConfigModel config = ConfigModel.getInstance();
-				ConvertEvent event = new ConvertEvent(config.getOutputFormat(), config.getNamingConvention());
+				ConvertEvent event = new ConvertEvent(config.getInputFormat(),
+													  config.getOutputFormat(),
+													  config.getNamingConvention(),
+													  config.getReaderDefaults(),
+													  config.getWriterDefaults());
 				event.dispatch();
 			}
 		});

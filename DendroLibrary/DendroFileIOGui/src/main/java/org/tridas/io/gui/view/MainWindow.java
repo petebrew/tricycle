@@ -70,9 +70,9 @@ public class MainWindow extends JFrame {
 		convertPanel = new ConvertPanel();
 		config = new ConfigPanel();
 		
+		tabbedPane.addTab(I18n.getText("view.main.fileListTab"), fileList);
 		tabbedPane.addTab(I18n.getText("view.main.configTab"), config);
-		tabbedPane.addTab(I18n.getText("view.main.fileListTab"), fileList); // NOI18N
-		tabbedPane.addTab(I18n.getText("view.main.convertTab"), convertPanel); // NOI18N
+		tabbedPane.addTab(I18n.getText("view.main.convertTab"), convertPanel);
 		
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 		
