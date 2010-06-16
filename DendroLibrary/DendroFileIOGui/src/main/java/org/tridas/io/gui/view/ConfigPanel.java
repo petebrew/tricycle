@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +26,7 @@ import org.tridas.io.gui.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.MainWindowModel;
 
+import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.StringEvent;
 
 /**
@@ -35,11 +37,12 @@ public class ConfigPanel extends JPanel {
 	
 	private JComboBox inputFormat;
 	private JComboBox readingCharset;
+	private JButton readingDefaults;
 	
 	private JComboBox outputFormat;
 	private JComboBox namingConvention;
 	private JComboBox writingCharset;
-	
+		
 	private ConfigModel model = ConfigModel.getInstance();
 	
 	public ConfigPanel() {
@@ -58,6 +61,7 @@ public class ConfigPanel extends JPanel {
 		inputFormat = new JComboBox();
 		writingCharset = new JComboBox();
 		readingCharset = new JComboBox();
+		readingDefaults = new JButton();
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(1, 0));
@@ -86,6 +90,7 @@ public class ConfigPanel extends JPanel {
 		rpBox.add(Box.createVerticalGlue());
 		rpBox.add(ifBox);
 		rpBox.add(rcBox);
+		rpBox.add(readingDefaults);
 		rpBox.add(Box.createVerticalGlue());
 		
 		readingPanel.add(rpBox);
@@ -176,12 +181,22 @@ public class ConfigPanel extends JPanel {
 			}
 		});
 		
+		readingDefaults.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				MVCEvent event = new MVCEvent(ConfigController.INPUT_DEFAULTS_PRESSED);
+				event.dispatch();
+			}
+		});
 	}
 	
 	/**
 	 * 
 	 */
 	private void populateLocale() {
+		
+		readingDefaults.setText(I18n.getText("view.config.input.defaults"));
 		
 		for (String s : InputFormat.getInputFormats()) {
 			inputFormat.addItem(s);
