@@ -29,6 +29,7 @@ import org.tridas.io.defaults.AbstractDefaultValue;
 import org.tridas.io.defaults.values.StringDefaultValue;
 import org.tridas.io.gui.components.DefaultFieldEditor;
 import org.tridas.io.gui.components.editors.StringValueEditor;
+import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.MetadataEditorModel;
 
 /**
@@ -69,7 +70,7 @@ public class MetadataEditor extends JDialog {
 	 * 
 	 */
 	private void populateLocale() {
-		
+		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
 	}
 	
 	/**

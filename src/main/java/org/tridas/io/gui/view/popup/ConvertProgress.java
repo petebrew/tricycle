@@ -14,6 +14,7 @@ import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.ConvertModel;
+import org.tridas.io.gui.model.ModelLocator;
 
 /**
  * @author Daniel Murphy
@@ -52,6 +53,7 @@ public class ConvertProgress extends JFrame {
 	private void addListeners() {} // none
 	
 	private void populateLocale() {
+		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.convert.title"));
 		setConvertingFilename("");
 	}

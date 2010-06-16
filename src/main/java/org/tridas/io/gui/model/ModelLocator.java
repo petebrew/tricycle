@@ -2,6 +2,8 @@ package org.tridas.io.gui.model;
 
 import java.util.LinkedList;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import org.tridas.io.gui.control.MainWindowController;
@@ -9,6 +11,7 @@ import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.view.MainWindow;
+import org.tridas.io.util.IOUtils;
 
 @SuppressWarnings("unused")
 public class ModelLocator {
@@ -19,12 +22,18 @@ public class ModelLocator {
 	private ConvertController convertController = new ConvertController();
 	private ConfigController configController = new ConfigController();
 	
+	private ImageIcon windowIcon = new ImageIcon( IOUtils.getFileInJarURL("icons/16x16/application.png"));
+	
 	private MainWindow view = null;
 	
 	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
 	
 	private ModelLocator() {
 
+	}
+	
+	public ImageIcon getWindowIcon(){
+		return windowIcon;
 	}
 	
 	public void setMainWindow(MainWindow argWindow) {

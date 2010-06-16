@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
 
 /**
@@ -44,7 +45,7 @@ public class PreviewWindow extends JFrame {
 	}
 	
 	private void populateLocale() {
-	// nothing to do here
+		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
 	}
 	
 	private void setTitleName(String argFilename) {
