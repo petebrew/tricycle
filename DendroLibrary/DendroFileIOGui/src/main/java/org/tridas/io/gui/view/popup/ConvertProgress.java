@@ -5,9 +5,12 @@ package org.tridas.io.gui.view.popup;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -20,13 +23,14 @@ import org.tridas.io.gui.model.ModelLocator;
  * @author Daniel Murphy
  */
 @SuppressWarnings("serial")
-public class ConvertProgress extends JFrame {
+public class ConvertProgress extends JDialog {
 	private JLabel convertingLabel;
 	private JProgressBar progress;
 	
 	private ConvertModel model = ConvertModel.getInstance();
 	
 	public ConvertProgress(JFrame parent) {
+		super(parent, true);
 		initializeComponents();
 		populateLocale();
 		linkModel();
@@ -50,7 +54,13 @@ public class ConvertProgress extends JFrame {
 		setPreferredSize(new Dimension(350, 75));
 	}
 	
-	private void addListeners() {} // none
+	private void addListeners() {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+			}
+		});
+	}
 	
 	private void populateLocale() {
 		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());

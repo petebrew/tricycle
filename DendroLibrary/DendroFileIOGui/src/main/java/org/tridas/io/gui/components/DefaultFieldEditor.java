@@ -13,19 +13,15 @@ import java.io.Serializable;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
-import org.tridas.io.defaults.AbstractDefaultValue;
+import org.tridas.io.defaults.values.BooleanDefaultValue;
 import org.tridas.io.defaults.values.DoubleDefaultValue;
 import org.tridas.io.defaults.values.IntegerDefaultValue;
 import org.tridas.io.defaults.values.StringDefaultValue;
+import org.tridas.io.gui.components.editors.BooleanEditor;
 import org.tridas.io.gui.components.editors.DoubleEditor;
-import org.tridas.io.gui.components.editors.ICellFieldEditor;
 import org.tridas.io.gui.components.editors.IntegerEditor;
 import org.tridas.io.gui.components.editors.StringValueEditor;
 import org.tridas.io.gui.components.editors.UneditableEditor;
@@ -33,6 +29,7 @@ import org.tridas.io.gui.components.editors.UneditableEditor;
 /**
  * @author daniel
  */
+@SuppressWarnings("serial")
 public class DefaultFieldEditor extends AbstractCellEditor implements TableCellEditor {
 	
 	public AbstractEditorDelegate delegate = null;
@@ -107,6 +104,8 @@ public class DefaultFieldEditor extends AbstractCellEditor implements TableCellE
 				delegate = new IntegerEditor(this);
 			}else if(argValue instanceof DoubleDefaultValue){
 				delegate = new DoubleEditor(this);
+			}else if(argValue instanceof BooleanDefaultValue){
+				delegate = new BooleanEditor(this);
 			}
 			else {
 				delegate = new UneditableEditor(this);

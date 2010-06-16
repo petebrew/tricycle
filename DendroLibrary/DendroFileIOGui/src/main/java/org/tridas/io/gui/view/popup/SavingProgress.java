@@ -5,9 +5,12 @@ package org.tridas.io.gui.view.popup;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -20,7 +23,7 @@ import org.tridas.io.gui.model.ModelLocator;
  * @author Daniel Murphy
  */
 @SuppressWarnings("serial")
-public class SavingProgress extends JFrame {
+public class SavingProgress extends JDialog {
 	
 	private JLabel savingLabel;
 	private JProgressBar progress;
@@ -28,6 +31,7 @@ public class SavingProgress extends JFrame {
 	private ConvertModel model = ConvertModel.getInstance();
 	
 	public SavingProgress(JFrame parent) {
+		super(parent, true);
 		initializeComponents();
 		populateLocale();
 		linkModel();
@@ -58,7 +62,11 @@ public class SavingProgress extends JFrame {
 	 * 
 	 */
 	private void addListeners() {
-	// none
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+			}
+		});
 	}
 	
 	/**

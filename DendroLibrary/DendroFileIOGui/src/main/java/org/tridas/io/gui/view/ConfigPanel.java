@@ -3,6 +3,7 @@
  */
 package org.tridas.io.gui.view;
 
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +43,7 @@ public class ConfigPanel extends JPanel {
 	private JComboBox outputFormat;
 	private JComboBox namingConvention;
 	private JComboBox writingCharset;
+	private JButton writingDefaults;
 		
 	private ConfigModel model = ConfigModel.getInstance();
 	
@@ -62,67 +64,55 @@ public class ConfigPanel extends JPanel {
 		writingCharset = new JComboBox();
 		readingCharset = new JComboBox();
 		readingDefaults = new JButton();
+		writingDefaults = new JButton();
 		
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(1, 0));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5,5));
 		
 		JPanel readingPanel = new JPanel();
 		readingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.config.readingPanel")));
-		//readingPanel.setLayout();
+		readingPanel.setLayout(new GridLayout(0, 1, 5, 5));
 		
 		Box rpBox = Box.createVerticalBox();
 		
 		// TODO locale all of these
 		inputFormat.setEditable(false);
 		Box ifBox = Box.createHorizontalBox();
-		ifBox.add(Box.createHorizontalGlue());
 		ifBox.add(new JLabel(I18n.getText("view.config.input.format")));
 		ifBox.add(inputFormat);
-		ifBox.add(Box.createHorizontalGlue());
 		
 		readingCharset.setEditable(false);
 		Box rcBox = Box.createHorizontalBox();
-		rcBox.add(Box.createHorizontalGlue());
 		rcBox.add(new JLabel(I18n.getText("view.config.input.charset")));
 		rcBox.add(readingCharset);
-		rcBox.add(Box.createHorizontalGlue());
 		
-		rpBox.add(Box.createVerticalGlue());
-		rpBox.add(ifBox);
-		rpBox.add(rcBox);
-		rpBox.add(readingDefaults);
-		rpBox.add(Box.createVerticalGlue());
-		
-		readingPanel.add(rpBox);
-		
+		readingPanel.add(ifBox);
+		readingPanel.add(rcBox);
+		readingPanel.add(readingDefaults);
+				
 		JPanel writingPanel = new JPanel();
 		writingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.config.writerPanel")));
 		writingPanel.setLayout(new GridLayout(0, 1, 5, 5));
 		
 		namingConvention.setEditable(false);
 		Box ncBox = Box.createHorizontalBox();
-		ncBox.add(Box.createHorizontalGlue());
-		ncBox.add(new JLabel(I18n.getText("view.config.namingConvention")));
+		ncBox.add(new JLabel(I18n.getText("view.config.output.naming")));
 		ncBox.add(namingConvention);
-		ncBox.add(Box.createHorizontalGlue());
 		
 		outputFormat.setEditable(false);
 		Box ofBox = Box.createHorizontalBox();
-		ofBox.add(Box.createHorizontalGlue());
 		ofBox.add(new JLabel(I18n.getText("view.config.output.format")));
 		ofBox.add(outputFormat);
-		ofBox.add(Box.createHorizontalGlue());
 		
 		writingCharset.setEditable(false);
 		Box ocBox = Box.createHorizontalBox();
-		ocBox.add(Box.createHorizontalGlue());
 		ocBox.add(new JLabel(I18n.getText("view.config.output.charset")));
 		ocBox.add(writingCharset);
-		ocBox.add(Box.createHorizontalGlue());
 		
 		writingPanel.add(ofBox);
 		writingPanel.add(ncBox);
 		writingPanel.add(ocBox);
+		writingPanel.add(writingDefaults);
 		
 		panel.add(readingPanel);
 		panel.add(writingPanel);
@@ -189,6 +179,15 @@ public class ConfigPanel extends JPanel {
 				event.dispatch();
 			}
 		});
+		
+		writingDefaults.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				MVCEvent event = new MVCEvent(ConfigController.OUTPUT_DEFAULTS_PRESSED);
+				event.dispatch();
+			}
+		});
 	}
 	
 	/**
@@ -197,7 +196,7 @@ public class ConfigPanel extends JPanel {
 	private void populateLocale() {
 		
 		readingDefaults.setText(I18n.getText("view.config.input.defaults"));
-		
+		writingDefaults.setText(I18n.getText("view.config.output.defaults"));
 		for (String s : InputFormat.getInputFormats()) {
 			inputFormat.addItem(s);
 		}
