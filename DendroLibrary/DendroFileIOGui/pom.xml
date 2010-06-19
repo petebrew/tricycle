@@ -100,10 +100,20 @@
 				<artifactId>osxappbundle-maven-plugin</artifactId>
 				<version>1.0-alpha-2</version>
 				<configuration>
+					<additionalResources>
+						<fileSet>
+							<directory>${basedir}/package-includes</directory>
+							<includes>
+								<include>**</include>
+							</includes>
+						</fileSet>
+					</additionalResources>
+					<bundleName>TRiCYCLE</bundleName>
 					<mainClass>org.tridas.io.gui.App</mainClass>
 					<jvmVersion>1.6+</jvmVersion>
 					<iconFile>${basedir}/mac-specific/application.icns</iconFile>
 					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
+					<vmOptions>-Dapple.laf.useScreenMenuBar=true -Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
 				</configuration>
 				<executions>
 					<execution>
