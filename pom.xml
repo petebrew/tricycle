@@ -6,8 +6,9 @@
 		<groupId>org.tridas</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
-	<artifactId>DendroFileIOGui</artifactId>
+	<artifactId>TRiCYCLE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<developers>
 		<developer>
@@ -16,6 +17,12 @@
 			<email>daniel@dmurph.com</email>
 		</developer>
 	</developers>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>codehaus</id>
+			<url>http://repository.codehaus.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.tridas.io</groupId>
@@ -113,7 +120,8 @@
 					<jvmVersion>1.6+</jvmVersion>
 					<iconFile>${basedir}/mac-specific/application.icns</iconFile>
 					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
-					<vmOptions>-Dapple.laf.useScreenMenuBar=true -Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
+					<vmOptions>-Dapple.laf.useScreenMenuBar=true
+						-Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
 				</configuration>
 				<executions>
 					<execution>
