@@ -95,6 +95,25 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>osxappbundle-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<configuration>
+					<mainClass>org.tridas.io.gui.App</mainClass>
+					<jvmVersion>1.6+</jvmVersion>
+					<iconFile>${basedir}/mac-specific/application.icns</iconFile>
+					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
