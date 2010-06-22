@@ -63,6 +63,8 @@ public class MetadataEditor extends JDialog {
 		
 		table.setDefaultEditor(AbstractDefaultValue.class, new DefaultFieldEditor());
 		table.setDefaultRenderer(AbstractDefaultValue.class, new FieldRenderer());
+		table.setRowHeight(20);
+		table.setAutoCreateRowSorter(true);
 		add(new JScrollPane(table), "Center");
 	}
 

@@ -40,14 +40,13 @@ import com.dmurph.mvc.StringEvent;
  *
  */
 public class OptionsWindow extends JDialog {
-	private JComboBox inputFormat;
 	private JComboBox readingCharset;
 	private JButton readingDefaults;
 	
-	private JComboBox outputFormat;
 	private JComboBox namingConvention;
 	private JComboBox writingCharset;
 	private JButton writingDefaults;
+	private JButton cancelButton;
 	private JButton okButton;
 		
 	private ConfigModel model = ConfigModel.getInstance();
@@ -67,33 +66,25 @@ public class OptionsWindow extends JDialog {
 	 */
 	private void initializeComponents() {
 		namingConvention = new JComboBox();
-		outputFormat = new JComboBox();
-		inputFormat = new JComboBox();
 		writingCharset = new JComboBox();
 		readingCharset = new JComboBox();
 		readingDefaults = new JButton();
 		writingDefaults = new JButton();
+		cancelButton = new JButton();
 		okButton = new JButton();
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		Box panel = Box.createVerticalBox();
 		
 		JPanel readingPanel = new JPanel();
 		readingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.options.readingPanel")));
 		readingPanel.setLayout(new GridLayout(0, 1, 5, 5));
 				
-		// TODO locale all of these
-		inputFormat.setEditable(false);
-		Box ifBox = Box.createHorizontalBox();
-		ifBox.add(new JLabel(I18n.getText("view.options.input.format")));
-		ifBox.add(inputFormat);
 		
 		readingCharset.setEditable(false);
 		Box rcBox = Box.createHorizontalBox();
 		rcBox.add(new JLabel(I18n.getText("view.options.input.charset")));
 		rcBox.add(readingCharset);
 		
-		readingPanel.add(ifBox);
 		readingPanel.add(rcBox);
 		readingPanel.add(readingDefaults);
 				
@@ -106,26 +97,23 @@ public class OptionsWindow extends JDialog {
 		ncBox.add(new JLabel(I18n.getText("view.options.output.naming")));
 		ncBox.add(namingConvention);
 		
-		outputFormat.setEditable(false);
-		Box ofBox = Box.createHorizontalBox();
-		ofBox.add(new JLabel(I18n.getText("view.options.output.format")));
-		ofBox.add(outputFormat);
-		
 		writingCharset.setEditable(false);
 		Box ocBox = Box.createHorizontalBox();
 		ocBox.add(new JLabel(I18n.getText("view.options.output.charset")));
 		ocBox.add(writingCharset);
 		
-		writingPanel.add(ofBox);
 		writingPanel.add(ncBox);
 		writingPanel.add(ocBox);
 		writingPanel.add(writingDefaults);
 		
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+		
 		panel.add(readingPanel);
 		panel.add(writingPanel);
 		panel.add(Box.createVerticalGlue());
-		panel.add(okButton);
-		
+		panel.add(buttonPanel);
 		add(panel, "Center");
 	}
 	
@@ -136,34 +124,19 @@ public class OptionsWindow extends JDialog {
 		namingConvention.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String naming = namingConvention.getSelectedItem().toString();
 				StringEvent event = new StringEvent(ConfigController.SET_NAMING_CONVENTION, naming);
 				event.dispatch();
 			}
 		});
 		
-		outputFormat.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String output = outputFormat.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_OUTPUT_FORMAT, output);
-				event.dispatch();
-			}
-		});
-		
-		inputFormat.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String input = inputFormat.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_INPUT_FORMAT, input);
-				event.dispatch();
-			}
-		});
 		
 		writingCharset.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String charset = writingCharset.getSelectedItem().toString();
 				StringEvent event = new StringEvent(ConfigController.SET_WRITING_CHARSET, charset);
 				event.dispatch();
@@ -174,6 +147,7 @@ public class OptionsWindow extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String charset = readingCharset.getSelectedItem().toString();
 				StringEvent event = new StringEvent(ConfigController.SET_READING_CHARSET, charset);
 				event.dispatch();
@@ -184,6 +158,7 @@ public class OptionsWindow extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent argE) {
+				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				MVCEvent event = new MVCEvent(ConfigController.INPUT_DEFAULTS_PRESSED);
 				event.dispatch();
 			}
@@ -193,14 +168,25 @@ public class OptionsWindow extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent argE) {
+				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				MVCEvent event = new MVCEvent(ConfigController.OUTPUT_DEFAULTS_PRESSED);
 				event.dispatch();
 			}
 		});
 		
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				model.revertChanges();
+				getRootPane().putClientProperty("Window.documentModified", Boolean.FALSE);
+				setVisible(false);
+			}
+		});
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
+				model.saveChanges();
+				getRootPane().putClientProperty("Window.documentModified", Boolean.FALSE);
 				setVisible(false);
 			}
 		});
@@ -210,22 +196,16 @@ public class OptionsWindow extends JDialog {
 	 * 
 	 */
 	private void populateLocale() {
-		
+		setTitle(I18n.getText("view.options.title"));
 		readingDefaults.setText(I18n.getText("view.options.input.defaults"));
 		writingDefaults.setText(I18n.getText("view.options.output.defaults"));
 		okButton.setText(I18n.getText("view.options.ok"));
-		for (String s : InputFormat.getInputFormats()) {
-			inputFormat.addItem(s);
-		}
-		
+		cancelButton.setText(I18n.getText("view.options.cancel"));
+
 		for (String conv : NamingConvention.getNamingConventions()) {
 			namingConvention.addItem(conv);
 		}
-		
-		for (String out : OutputFormat.getOutputFormats()) {
-			outputFormat.addItem(out);
-		}
-		
+
 		// put default one on top, so the user will see
 		// "automatic" right underneath
 		readingCharset.addItem(Charset.defaultCharset().displayName());
@@ -247,11 +227,10 @@ public class OptionsWindow extends JDialog {
 	private void linkModel() {
 		FileListModel fmodel = FileListModel.getInstance();
 		ConvertModel cmodel = ConvertModel.getInstance();
-		inputFormat.setSelectedItem(fmodel.getInputFormat());
 		namingConvention.setSelectedItem(model.getNamingConvention());
-		outputFormat.setSelectedItem(cmodel.getOutputFormat());
 		readingCharset.setSelectedItem(model.getReadingCharset());
 		writingCharset.setSelectedItem(model.getWritingCharset());
+		model.saveChanges();
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -270,29 +249,6 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
-		fmodel.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent argEvt) {
-				String prop = argEvt.getPropertyName();
-				
-				if (prop.equals("inputFormat")) {
-					inputFormat.setSelectedItem(argEvt.getNewValue());
-				}
-			}
-		});
-		
-		cmodel.addPropertyChangeListener(new PropertyChangeListener() {
-			
-			@Override
-			public void propertyChange(PropertyChangeEvent argEvt) {
-				String prop = argEvt.getPropertyName();
-
-				if (prop.equals("outputFormat")) {
-					outputFormat.setSelectedItem(argEvt.getNewValue());
-				}
-			}
-		});
-		
 		MainWindowModel mwm = MainWindowModel.getInstance();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -301,18 +257,18 @@ public class OptionsWindow extends JDialog {
 				if (evt.getPropertyName().equals("lock")) {
 					boolean lock = (Boolean) evt.getNewValue();
 					if (lock) {
-						inputFormat.setEnabled(false);
 						namingConvention.setEnabled(false);
-						outputFormat.setEnabled(false);
 						readingCharset.setEnabled(false);
 						writingCharset.setEnabled(false);
+						readingDefaults.setEnabled(false);
+						writingDefaults.setEnabled(false);
 					}
 					else {
-						inputFormat.setEnabled(true);
 						namingConvention.setEnabled(true);
-						outputFormat.setEnabled(true);
 						readingCharset.setEnabled(true);
 						writingCharset.setEnabled(true);
+						readingDefaults.setEnabled(true);
+						writingDefaults.setEnabled(true);
 					}
 				}
 			}

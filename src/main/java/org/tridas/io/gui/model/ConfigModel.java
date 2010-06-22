@@ -6,14 +6,14 @@ package org.tridas.io.gui.model;
 import org.tridas.io.TridasIO;
 import org.tridas.io.defaults.IMetadataFieldSet;
 import org.tridas.io.gui.enums.Charsets;
-import org.tridas.io.gui.enums.InputFormat;
 
-import com.dmurph.mvc.model.AbstractModel;
+import com.dmurph.mvc.ICloneable;
+import com.dmurph.mvc.model.AbstractRevertableModel;
 
 /**
  * @author Daniel Murphy
  */
-public class ConfigModel extends AbstractModel {
+public class ConfigModel extends AbstractRevertableModel {
 	
 	private static final ConfigModel model = new ConfigModel();
 	
@@ -99,5 +99,41 @@ public class ConfigModel extends AbstractModel {
 	
 	public static final ConfigModel getInstance() {
 		return model;
+	}
+
+	/**
+	 * @see com.dmurph.mvc.model.AbstractRevertableModel#clone()
+	 */
+	@Override
+	public ICloneable clone() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see com.dmurph.mvc.model.AbstractRevertableModel#setProperty(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	protected void setProperty(String argPropertyName, Object argValue) {
+		String prop = argPropertyName;
+		
+		if(prop.equals("writerDefaults")){
+			setWriterDefaults((IMetadataFieldSet) argValue);
+		}else if(prop.equals("readerDefaults")){
+			setReaderDefaults((IMetadataFieldSet) argValue);
+		}else if(prop.equals("writingCharset")){
+			setWritingCharset((String) argValue);
+		}else if(prop.equals("readingCharset")){
+			setReadingCharset((String) argValue);
+		}else if(prop.equals("namingConvention")){
+			setNamingConvention((String) argValue);
+		}
+	}
+
+	/**
+	 * @see com.dmurph.mvc.ICloneable#cloneFrom(com.dmurph.mvc.ICloneable)
+	 */
+	@Override
+	public void cloneFrom(ICloneable argOther) {
+		throw new UnsupportedOperationException();
 	}
 }
