@@ -15,7 +15,7 @@ public class InputFormat {
 	
 	public static String[] getInputFormats() {
 		ArrayList<String> list = new ArrayList<String>();
-		list.add(AUTO);
+		//list.add(AUTO); TODO djm add when library supports
 		for (String s : TridasIO.getSupportedReadingFormats()) {
 			list.add(s);
 		}

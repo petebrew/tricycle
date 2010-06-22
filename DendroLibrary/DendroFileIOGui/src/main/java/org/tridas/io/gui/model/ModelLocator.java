@@ -1,5 +1,6 @@
 package org.tridas.io.gui.model;
 
+import java.net.URL;
 import java.util.LinkedList;
 
 import javax.swing.Icon;
@@ -22,14 +23,19 @@ public class ModelLocator {
 	private ConvertController convertController = new ConvertController();
 	private ConfigController configController = new ConfigController();
 	
-	private ImageIcon windowIcon = new ImageIcon( IOUtils.getFileInJarURL("icons/16x16/application.png"));
+	private ImageIcon windowIcon;
 	
 	private MainWindow view = null;
 	
 	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
 	
 	private ModelLocator() {
-
+		URL windowIconURL = IOUtils.getFileInJarURL("icons/16x16/application.png");
+		if(windowIconURL != null){
+			windowIcon = new ImageIcon( windowIconURL);
+		}else{
+			windowIcon = new ImageIcon();
+		}
 	}
 	
 	public ImageIcon getWindowIcon(){

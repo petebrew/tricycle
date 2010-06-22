@@ -17,8 +17,6 @@ public class ConfigModel extends AbstractModel {
 	
 	private static final ConfigModel model = new ConfigModel();
 	
-	private String inputFormat = InputFormat.AUTO;
-	private String outputFormat = "TRiDaS";
 	private String namingConvention = "Numerical";
 	private String writingCharset = TridasIO.getWritingCharset();
 	private String readingCharset = TridasIO.isCharsetDetection() ? Charsets.AUTO : TridasIO.getReadingCharset();;
@@ -27,23 +25,6 @@ public class ConfigModel extends AbstractModel {
 	private IMetadataFieldSet writerDefaults = null;
 	
 	private ConfigModel() {}
-	
-	/**
-	 * @param inputFormat
-	 *            the inputFormat to set
-	 */
-	public void setInputFormat(String argInputFormat) {
-		String old = inputFormat;
-		inputFormat = argInputFormat;
-		firePropertyChange("inputFormat", old, inputFormat);
-	}
-	
-	/**
-	 * @return the inputFormat
-	 */
-	public String getInputFormat() {
-		return inputFormat;
-	}
 	
 	public void setNamingConvention(String argNamingConvention) {
 		String old = namingConvention;
@@ -54,24 +35,7 @@ public class ConfigModel extends AbstractModel {
 	public String getNamingConvention() {
 		return namingConvention;
 	}
-	
-	/**
-	 * @param outputFormat
-	 *            the outputFormat to set
-	 */
-	public void setOutputFormat(String argOutputFormat) {
-		String old = outputFormat;
-		outputFormat = argOutputFormat;
-		firePropertyChange("outputFormat", old, outputFormat);
-	}
-	
-	/**
-	 * @return the outputFormat
-	 */
-	public String getOutputFormat() {
-		return outputFormat;
-	}
-	
+
 	/*
 	 * @param argHideWarnings the hideWarnings to set
 	 * public void setHideWarnings(boolean argHideWarnings) {

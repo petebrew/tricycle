@@ -15,6 +15,8 @@ import org.tridas.io.defaults.AbstractDefaultValue;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
+import org.tridas.io.gui.model.ConvertModel;
+import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.MetadataEditorModel;
 import org.tridas.io.gui.model.popup.MetadataTableModel;
@@ -57,13 +59,15 @@ public class ConfigController extends FrontController {
 	public void setInputFormat(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
 		model.setReaderDefaults(null);
-		model.setInputFormat(event.getValue());
+		FileListModel fmodel = FileListModel.getInstance();
+		fmodel.setInputFormat(event.getValue());
 	}
 	
 	public void setOutputFormat(MVCEvent argEvent) {
 		StringEvent event = (StringEvent) argEvent;
 		model.setWriterDefaults(null);
-		model.setOutputFormat(event.getValue());
+		ConvertModel cmodel = ConvertModel.getInstance();
+		cmodel.setOutputFormat(event.getValue());
 	}
 	
 	public void setNamingConvention(MVCEvent argEvent) {
@@ -99,11 +103,12 @@ public class ConfigController extends FrontController {
 		MetadataTableModel tmodel = new MetadataTableModel();
 		
 		if(model.getReaderDefaults() == null){
-			AbstractDendroFileReader reader = TridasIO.getFileReader(model.getInputFormat());
+			FileListModel fmodel = FileListModel.getInstance();
+			AbstractDendroFileReader reader = TridasIO.getFileReader(fmodel.getInputFormat());
 			if(reader == null){
 				Frame parent = ModelLocator.getInstance().getMainWindow();
-				JOptionPane.showMessageDialog(parent, "Could not find defaults for input format '"+model.getInputFormat()+"'.",
-											  "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(parent, I18n.getText("control.config.inputDefaultsNotFound", fmodel.getInputFormat()),
+											  I18n.getText("control.config.error"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
 				model.setReaderDefaults(reader.constructDefaultMetadata());
@@ -122,11 +127,12 @@ public class ConfigController extends FrontController {
 		MetadataTableModel tmodel = new MetadataTableModel();
 		
 		if(model.getWriterDefaults() == null){
-			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(model.getOutputFormat());
+			ConvertModel cmodel = ConvertModel.getInstance();
+			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(cmodel.getOutputFormat());
 			if(writer == null){
 				Frame parent = ModelLocator.getInstance().getMainWindow();
-				JOptionPane.showMessageDialog(parent, "Could not find defaults for output format '"+model.getOutputFormat()+"'.",
-											  "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(parent, I18n.getText("control.config.outputDefaultsNotFound", cmodel.getOutputFormat()),
+						  					  I18n.getText("control.config.error"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
 				model.setWriterDefaults(writer.constructDefaultMetadata());

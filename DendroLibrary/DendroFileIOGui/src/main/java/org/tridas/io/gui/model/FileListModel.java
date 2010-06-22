@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.tridas.io.gui.enums.InputFormat;
+
 import com.dmurph.mvc.model.AbstractModel;
 import com.dmurph.mvc.util.MVCArrayList;
 
@@ -20,10 +22,29 @@ public class FileListModel extends AbstractModel {
 	
 	//private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
 	
+	private String inputFormat = InputFormat.getInputFormats()[0];
 	private String fileField = null;
 	private ArrayList<String> inputFiles = new MVCArrayList<String>();
 	
 	private FileListModel() {}
+	
+	/**
+	 * @param inputFormat
+	 *            the inputFormat to set
+	 */
+	public void setInputFormat(String argInputFormat) {
+		String old = inputFormat;
+		inputFormat = argInputFormat;
+		firePropertyChange("inputFormat", old, inputFormat);
+	}
+	
+	/**
+	 * @return the inputFormat
+	 */
+	public String getInputFormat() {
+		return inputFormat;
+	}
+	
 	
 	/**
 	 * @param fileField

@@ -16,13 +16,9 @@ import com.dmurph.mvc.util.MVCArrayList;
  * @author Daniel
  */
 public class ConvertModel extends AbstractModel {
-	
 	private static final ConvertModel model = new ConvertModel();
 	
-	private int savingPercent = 0;
-	private String savingFilename = null;
-	private int convertingPercent = 0;
-	private String convertingFilename = null;
+	private String outputFormat = "TRiDaS";
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
 	private int processed = 0;
@@ -43,45 +39,23 @@ public class ConvertModel extends AbstractModel {
 	public List<DefaultMutableTreeNode> getNodes() {
 		return (List<DefaultMutableTreeNode>) nodes.clone();
 	}
-
-	public void setSavingPercent(int argSavingPercent) {
-		int old = savingPercent;
-		savingPercent = argSavingPercent;
-		firePropertyChange("savingPercent", old, savingPercent);
+	
+	
+	/**
+	 * @param outputFormat
+	 *            the outputFormat to set
+	 */
+	public void setOutputFormat(String argOutputFormat) {
+		String old = outputFormat;
+		outputFormat = argOutputFormat;
+		firePropertyChange("outputFormat", old, outputFormat);
 	}
 	
-	public int getSavingPercent() {
-		return savingPercent;
-	}
-	
-	public void setSavingFilename(String argSavingFilename) {
-		String old = savingFilename;
-		savingFilename = argSavingFilename;
-		firePropertyChange("savingFilename", old, savingFilename);
-	}
-	
-	public String getSavingFilename() {
-		return savingFilename;
-	}
-	
-	public void setConvertingPercent(int argConvertingPercent) {
-		int old = convertingPercent;
-		convertingPercent = argConvertingPercent;
-		firePropertyChange("convertingPercent", old, convertingPercent);
-	}
-	
-	public int getConvertingPercent() {
-		return convertingPercent;
-	}
-	
-	public void setConvertingFilename(String argConvertingFilename) {
-		String old = convertingFilename;
-		convertingFilename = argConvertingFilename;
-		firePropertyChange("convertingFilename", old, convertingFilename);
-	}
-	
-	public String getConvertingFilename() {
-		return convertingFilename;
+	/**
+	 * @return the outputFormat
+	 */
+	public String getOutputFormat() {
+		return outputFormat;
 	}
 	
 	public void setProcessed(int argProcessed) {
