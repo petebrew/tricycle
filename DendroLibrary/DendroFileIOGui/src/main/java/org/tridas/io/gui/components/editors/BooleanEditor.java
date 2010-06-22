@@ -27,6 +27,7 @@ public class BooleanEditor extends AbstractEditorDelegate{
 	 */
 	public BooleanEditor(DefaultFieldEditor argEditor) {
 		super(argEditor);
+		comp.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
 		comp.addItemListener(this);
 	}
 

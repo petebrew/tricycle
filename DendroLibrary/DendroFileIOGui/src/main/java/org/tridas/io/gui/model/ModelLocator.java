@@ -30,7 +30,7 @@ public class ModelLocator {
 	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
 	
 	private ModelLocator() {
-		URL windowIconURL = IOUtils.getFileInJarURL("icons/16x16/application.png");
+		URL windowIconURL = IOUtils.getFileInJarURL("icons/64x64/application.png");
 		if(windowIconURL != null){
 			windowIcon = new ImageIcon( windowIconURL);
 		}else{
