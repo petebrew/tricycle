@@ -215,6 +215,7 @@ public class ConvertPanel extends JPanel {
 			treeModel.insertNodeInto(node, rootNode, rootNode.getChildCount());
 		}
 		expandToFiles();
+		outputFormat.setSelectedItem(model.getOutputFormat());
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			

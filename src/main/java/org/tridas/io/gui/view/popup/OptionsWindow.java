@@ -196,9 +196,11 @@ public class OptionsWindow extends JDialog {
 	 * 
 	 */
 	private void populateLocale() {
+		FileListModel fmodel = FileListModel.getInstance();
+		ConvertModel cmodel = ConvertModel.getInstance();
 		setTitle(I18n.getText("view.options.title"));
-		readingDefaults.setText(I18n.getText("view.options.input.defaults"));
-		writingDefaults.setText(I18n.getText("view.options.output.defaults"));
+		readingDefaults.setText(I18n.getText("view.options.input.defaults", fmodel.getInputFormat()));
+		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
 		okButton.setText(I18n.getText("view.options.ok"));
 		cancelButton.setText(I18n.getText("view.options.cancel"));
 
