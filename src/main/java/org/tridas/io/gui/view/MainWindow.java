@@ -13,6 +13,8 @@ package org.tridas.io.gui.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -38,11 +40,11 @@ public class MainWindow extends JFrame {
 	private JMenu helpMenu;
 	private JMenuBar menuBar;
 	private JMenuItem quitMenuButton;
+	private JMenuItem optionsMenuButton;
 	private JMenuItem aboutMenuButton;
 	private JTabbedPane tabbedPane;
 	public FileListPanel fileList;
 	public ConvertPanel convertPanel;
-	public ConfigPanel config;
 	
 	public final MainWindowModel model = MainWindowModel.getInstance();
 	
@@ -61,37 +63,30 @@ public class MainWindow extends JFrame {
 		tabbedPane = new JTabbedPane();
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu();
-		// loadMenuButton = new JMenuItem();
-		// saveMenuButton = new JMenuItem();
 		quitMenuButton = new JMenuItem();
 		helpMenu = new JMenu();
 		aboutMenuButton = new JMenuItem();
+		optionsMenuButton = new JMenuItem();
 		
 		fileList = new FileListPanel();
 		convertPanel = new ConvertPanel();
-		config = new ConfigPanel();
 		
 		tabbedPane.addTab(I18n.getText("view.main.fileListTab"), fileList);
-		tabbedPane.addTab(I18n.getText("view.main.configTab"), config);
 		tabbedPane.addTab(I18n.getText("view.main.convertTab"), convertPanel);
+		// set selected component to the file list
+		tabbedPane.setSelectedComponent(fileList);
 		
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 		
-		// loadMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L,
-		// java.awt.event.InputEvent.CTRL_MASK));
-		// fileMenu.add(loadMenuButton);
+		optionsMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		fileMenu.add(optionsMenuButton);
 		
-		// saveMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
-		// java.awt.event.InputEvent.CTRL_MASK));
-		// fileMenu.add(saveMenuButton);
-		
-		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q,
-				java.awt.event.InputEvent.CTRL_MASK));
+		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		fileMenu.add(quitMenuButton);
 		
 		menuBar.add(fileMenu);
 		
-		aboutMenuButton.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+		aboutMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		helpMenu.add(aboutMenuButton);
 		
 		menuBar.add(helpMenu);
@@ -100,10 +95,9 @@ public class MainWindow extends JFrame {
 	
 	private void populateLocale() {
 		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
-		// loadMenuButton.setText("Load File");
+		optionsMenuButton.setText("Options");
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
-		// saveMenuButton.setText("Save");
 		fileMenu.setText(I18n.getText("view.main.file"));
 		helpMenu.setText(I18n.getText("view.main.help"));
 	}
@@ -112,6 +106,14 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private void addListeners() {
+		optionsMenuButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				MVCEvent event = new MVCEvent(MainWindowController.OPTIONS);
+				event.dispatch();
+			}
+		});
+		
 		quitMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

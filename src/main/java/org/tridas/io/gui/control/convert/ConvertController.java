@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,7 +32,9 @@ import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 import org.tridas.io.gui.model.popup.PreviewModel;
+import org.tridas.io.gui.model.popup.SavingDialogModel;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.ConvertProgress;
 import org.tridas.io.gui.view.popup.PreviewWindow;
@@ -57,8 +60,8 @@ public class ConvertController extends FrontController {
 	public static final String CONVERT = "CONVERT_CONVERT";
 	public static final String PREVIEW = "CONVERT_PREVIEW";
 	
-	private SavingProgress savingProgress = null;
-	private ConvertProgress convertProgress = null;
+	private File lastDirectory = null;
+	
 	// TODO get rid of this, use model nodes instead
 	private ArrayList<ReaderWriterObject> structList = new ArrayList<ReaderWriterObject>();
 	
@@ -116,14 +119,24 @@ public class ConvertController extends FrontController {
 	
 	@SuppressWarnings("unused")
 	public void save(MVCEvent argEvent) {
-		// get rid of popups
 		
-		File folder = IOUtils.outputFolder(null);
-		if (folder == null) {
+		File folder = null;
+		JFileChooser fd = new JFileChooser();
+		fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fd.setMultiSelectionEnabled(false);
+		if(lastDirectory != null){
+			lastDirectory = fd.getCurrentDirectory();
+		}
+		int retValue = fd.showSaveDialog(ModelLocator.getInstance().getMainWindow());
+		if (retValue == JFileChooser.APPROVE_OPTION) {
+			folder = fd.getSelectedFile();
+			lastDirectory = fd.getCurrentDirectory();
+		}
+		else {
 			return;
 		}
 		
-		ConvertModel model = ConvertModel.getInstance();
+		SavingDialogModel model = new SavingDialogModel();
 		model.setSavingFilename("");
 		model.setSavingPercent(0);
 		
@@ -145,10 +158,7 @@ public class ConvertController extends FrontController {
 		mwm.setLock(true);
 		
 		int currFile = 0;
-		if (savingProgress == null) {
-			savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow());
-			savingProgress.setAlwaysOnTop(true);
-		}
+		final SavingProgress savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow(), model);
 		// i have to do this in a different thread
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -211,13 +221,12 @@ public class ConvertController extends FrontController {
 			return;
 		}
 		
-		ConfigModel config = ConfigModel.getInstance();
 		FileListModel fileList = FileListModel.getInstance();
 		
 		boolean inputFormatFound = false;
 		for (String format : TridasIO.getSupportedReadingFormats()) {
 			if (format.equalsIgnoreCase(event.getInputFormat())) {
-				config.setInputFormat(format);
+				fileList.setInputFormat(format);
 				inputFormatFound = true;
 			}
 		}
@@ -247,7 +256,7 @@ public class ConvertController extends FrontController {
 		}
 		
 		convertFiles(fileList.getInputFiles().toArray(new String[0]),
-					 config.getInputFormat(),
+					 fileList.getInputFormat(),
 					 event.getReaderDefaults(),
 					 outputFormat,
 					 event.getWriterDefaults(),
@@ -261,12 +270,11 @@ public class ConvertController extends FrontController {
 		mwm.setLock(true);
 		ArrayList<ReaderWriterObject> list = new ArrayList<ReaderWriterObject>();
 		
-		ConvertModel model = ConvertModel.getInstance();
+		ConvertingDialogModel model = new ConvertingDialogModel();
+		model.setConvertingFilename("");
+		model.setConvertingPercent(0);
 		
-		if (convertProgress == null) {
-			convertProgress = new ConvertProgress(ModelLocator.getInstance().getMainWindow());
-			convertProgress.setAlwaysOnTop(true);
-		}
+		final ConvertProgress convertProgress = new ConvertProgress(ModelLocator.getInstance().getMainWindow(), model);
 		// i have to do this in a different thread
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

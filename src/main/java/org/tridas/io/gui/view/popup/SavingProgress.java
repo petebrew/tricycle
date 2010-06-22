@@ -18,6 +18,7 @@ import javax.swing.JProgressBar;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.popup.SavingDialogModel;
 
 /**
  * @author Daniel Murphy
@@ -28,10 +29,11 @@ public class SavingProgress extends JDialog {
 	private JLabel savingLabel;
 	private JProgressBar progress;
 	
-	private ConvertModel model = ConvertModel.getInstance();
+	private final SavingDialogModel model;
 	
-	public SavingProgress(JFrame parent) {
+	public SavingProgress(JFrame parent, SavingDialogModel argModel) {
 		super(parent, true);
+		model = argModel;
 		initializeComponents();
 		populateLocale();
 		linkModel();

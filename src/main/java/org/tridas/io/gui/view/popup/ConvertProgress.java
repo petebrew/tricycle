@@ -16,8 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 
 /**
  * @author Daniel Murphy
@@ -27,10 +27,11 @@ public class ConvertProgress extends JDialog {
 	private JLabel convertingLabel;
 	private JProgressBar progress;
 	
-	private ConvertModel model = ConvertModel.getInstance();
+	private final ConvertingDialogModel model;
 	
-	public ConvertProgress(JFrame parent) {
+	public ConvertProgress(JFrame parent, ConvertingDialogModel argModel) {
 		super(parent, true);
+		model = argModel;
 		initializeComponents();
 		populateLocale();
 		linkModel();

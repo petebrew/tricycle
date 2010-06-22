@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -27,11 +28,15 @@ import javax.swing.event.DocumentListener;
 import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.fileList.AddFileEvent;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
+import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
+
+import com.dmurph.mvc.StringEvent;
 
 /**
  * @author Daniel
@@ -43,6 +48,7 @@ public class FileListPanel extends JPanel {
 	private JLabel selectLabel;
 	private JLabel fileFieldLabel;
 	private JList fileList;
+	private JComboBox inputFormat;
 	private JButton addButton;
 	private JButton browseButton;
 	private JButton selectAllButton;
@@ -71,11 +77,13 @@ public class FileListPanel extends JPanel {
 		selectAllButton = new JButton();
 		selectNoneButton = new JButton();
 		scrollPane = new JScrollPane();
+		inputFormat = new JComboBox();
 		
 		setLayout(new BorderLayout());
 		
 		Box topBox = Box.createHorizontalBox();
 		topBox.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		topBox.add(inputFormat);
 		topBox.add(fileFieldLabel);
 		topBox.add(fileField);
 		topBox.add(browseButton);
@@ -129,6 +137,15 @@ public class FileListPanel extends JPanel {
 			}
 		});
 		
+		inputFormat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String input = inputFormat.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_INPUT_FORMAT, input);
+				event.dispatch();
+			}
+		});
+		
 		fileField.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
@@ -175,14 +192,19 @@ public class FileListPanel extends JPanel {
 		selectNoneButton.setText(I18n.getText("view.files.selectNone"));
 		removeSelectedButton.setText(I18n.getText("view.files.removeSelected"));
 		selectLabel.setText(I18n.getText("view.files.selectLabel"));
+		
+		for (String s : InputFormat.getInputFormats()) {
+			inputFormat.addItem(s);
+		}
 	}
 	
 	public void linkModel() {
-		
+		inputFormat.setSelectedItem(model.getInputFormat());
 		// first set all values from model
 		DefaultListModel listModel = (DefaultListModel) fileList.getModel();
 		ArrayList<String> files = model.getInputFiles();
 		listModel.clear();
+		// swing is doing weird stuff, so we spcae it out
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {}
@@ -222,6 +244,8 @@ public class FileListPanel extends JPanel {
 					if (!fileField.getText().equals(evt.getNewValue().toString())) {
 						fileField.setText(evt.getNewValue().toString());
 					}
+				}else if (prop.equals("inputFormat")) {
+					inputFormat.setSelectedItem(evt.getNewValue());
 				}
 				repaint();
 			}

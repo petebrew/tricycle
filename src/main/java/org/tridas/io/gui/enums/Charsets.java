@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class Charsets {
 	public static final String AUTO = "Automatic";
+	public static final String DEFAULT = "System Default"; // djm TODO locale
 	
 	public static final String[] getReadingCharsets() {
 		ArrayList<String> charsets = new ArrayList<String>();

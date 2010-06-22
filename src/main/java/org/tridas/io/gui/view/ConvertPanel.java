@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,15 +26,19 @@ import javax.swing.tree.TreePath;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.components.CustomTreeCellRenderer;
+import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
+import org.tridas.io.gui.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
+import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
+import com.dmurph.mvc.StringEvent;
 
 /**
  * @author Daniel
@@ -50,6 +55,8 @@ public class ConvertPanel extends JPanel {
 	private JButton collapseAll;
 	private JButton reset;
 	private JLabel results;
+	private JComboBox outputFormat;
+
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
 	
 	private ConvertModel model = ConvertModel.getInstance();
@@ -70,11 +77,13 @@ public class ConvertPanel extends JPanel {
 		expandAll = new JButton();
 		collapseAll = new JButton();
 		reset = new JButton();
+		outputFormat = new JComboBox();
 		
 		setLayout(new java.awt.BorderLayout());
 		
 		Box top = Box.createHorizontalBox();
 		top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		top.add(outputFormat);
 		top.add(convertButton);
 		top.add(saveButton);
 		top.add(Box.createHorizontalGlue());
@@ -118,11 +127,21 @@ public class ConvertPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConfigModel config = ConfigModel.getInstance();
-				ConvertEvent event = new ConvertEvent(config.getInputFormat(),
-													  config.getOutputFormat(),
+				FileListModel flmodel = FileListModel.getInstance();
+				ConvertEvent event = new ConvertEvent(flmodel.getInputFormat(),
+													  model.getOutputFormat(),
 													  config.getNamingConvention(),
 													  config.getReaderDefaults(),
 													  config.getWriterDefaults());
+				event.dispatch();
+			}
+		});
+
+		outputFormat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String output = outputFormat.getSelectedItem().toString();
+				StringEvent event = new StringEvent(ConfigController.SET_OUTPUT_FORMAT, output);
 				event.dispatch();
 			}
 		});
@@ -183,6 +202,10 @@ public class ConvertPanel extends JPanel {
 		collapseAll.setText(I18n.getText("view.convert.collapse"));
 		expandAll.setText(I18n.getText("view.convert.expand"));
 		reset.setText(I18n.getText("view.convert.reset"));
+		
+		for (String out : OutputFormat.getOutputFormats()) {
+			outputFormat.addItem(out);
+		}
 	}
 	
 	private void linkModel() {
@@ -216,6 +239,8 @@ public class ConvertPanel extends JPanel {
 				}
 				else if (prop.equals("convWithWarnings")) {
 					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
+				}else if (prop.equals("outputFormat")) {
+					outputFormat.setSelectedItem(evt.getNewValue());
 				}
 			}
 		});
