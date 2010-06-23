@@ -98,6 +98,7 @@
 						</manifest>
 						<manifestEntries>
 							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
+							
 						</manifestEntries>
 					</archive>
 				</configuration>

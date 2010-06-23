@@ -4,6 +4,7 @@
 package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -45,7 +48,6 @@ import com.dmurph.mvc.StringEvent;
 public class FileListPanel extends JPanel {
 	private static final SimpleLogger log = new SimpleLogger(FileListPanel.class);
 	
-	private JLabel selectLabel;
 	private JLabel fileFieldLabel;
 	private JList fileList;
 	private JComboBox inputFormat;
@@ -54,6 +56,7 @@ public class FileListPanel extends JPanel {
 	private JButton selectAllButton;
 	private JButton selectNoneButton;
 	private JButton removeSelectedButton;
+	private JButton removeAll;
 	private JScrollPane scrollPane;
 	private JTextField fileField;
 	
@@ -73,9 +76,9 @@ public class FileListPanel extends JPanel {
 		browseButton = new JButton();
 		fileList = new JList();
 		removeSelectedButton = new JButton();
-		selectLabel = new JLabel();
 		selectAllButton = new JButton();
 		selectNoneButton = new JButton();
+		removeAll = new JButton();
 		scrollPane = new JScrollPane();
 		inputFormat = new JComboBox();
 		
@@ -99,13 +102,20 @@ public class FileListPanel extends JPanel {
 		Box bottomBox = Box.createHorizontalBox();
 		bottomBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		
+		selectAllButton.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		selectAllButton.putClientProperty( "JButton.segmentPosition", "middle" );
+		selectNoneButton.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		selectNoneButton.putClientProperty( "JButton.segmentPosition", "last" );
+		removeSelectedButton.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		removeSelectedButton.putClientProperty( "JButton.segmentPosition", "first" );
+		
+		removeAll.putClientProperty("JButton.buttonType", "textured");
+		
 		bottomBox.add(removeSelectedButton);
-		bottomBox.add(Box.createRigidArea(new Dimension(10, 10)));
-		bottomBox.add(selectLabel);
-		bottomBox.add(Box.createRigidArea(new Dimension(10, 10)));
 		bottomBox.add(selectAllButton);
 		bottomBox.add(selectNoneButton);
 		bottomBox.add(Box.createHorizontalGlue());
+		bottomBox.add(removeAll);
 		
 		add(bottomBox, java.awt.BorderLayout.PAGE_END);
 	}
@@ -182,6 +192,13 @@ public class FileListPanel extends JPanel {
 				event.dispatch();
 			}
 		});
+		
+		removeAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				fileList.removeAll();
+			}
+		});
 	}
 	
 	public void populateLocale() {
@@ -191,7 +208,7 @@ public class FileListPanel extends JPanel {
 		selectAllButton.setText(I18n.getText("view.files.selectAll"));
 		selectNoneButton.setText(I18n.getText("view.files.selectNone"));
 		removeSelectedButton.setText(I18n.getText("view.files.removeSelected"));
-		selectLabel.setText(I18n.getText("view.files.selectLabel"));
+		removeAll.setText(I18n.getText("view.files.removeAll"));
 		
 		for (String s : InputFormat.getInputFormats()) {
 			inputFormat.addItem(s);

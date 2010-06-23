@@ -53,7 +53,6 @@ public class ConvertPanel extends JPanel {
 	private JButton convertButton;
 	private JButton expandAll;
 	private JButton collapseAll;
-	private JButton reset;
 	private JLabel results;
 	private JComboBox outputFormat;
 
@@ -76,7 +75,6 @@ public class ConvertPanel extends JPanel {
 		results = new JLabel();
 		expandAll = new JButton();
 		collapseAll = new JButton();
-		reset = new JButton();
 		outputFormat = new JComboBox();
 		
 		setLayout(new java.awt.BorderLayout());
@@ -88,6 +86,10 @@ public class ConvertPanel extends JPanel {
 		top.add(saveButton);
 		top.add(Box.createHorizontalGlue());
 
+		collapseAll.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		collapseAll.putClientProperty( "JButton.segmentPosition", "first" );
+		expandAll.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		expandAll.putClientProperty( "JButton.segmentPosition", "last" );
 		
 		Box bottom = Box.createHorizontalBox();
 		bottom.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -95,7 +97,6 @@ public class ConvertPanel extends JPanel {
 		bottom.add(Box.createHorizontalGlue());
 		bottom.add(collapseAll);
 		bottom.add(expandAll);
-		bottom.add(reset);
 		
 		add(top, BorderLayout.NORTH);
 		
@@ -170,15 +171,6 @@ public class ConvertPanel extends JPanel {
 			}
 		});
 		
-		reset.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// no need to go to controller
-				collapseAll();
-				expandToFiles();
-			}
-		});
-		
 		convertedTree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -201,7 +193,6 @@ public class ConvertPanel extends JPanel {
 		convertButton.setText(I18n.getText("view.convert.convert"));
 		collapseAll.setText(I18n.getText("view.convert.collapse"));
 		expandAll.setText(I18n.getText("view.convert.expand"));
-		reset.setText(I18n.getText("view.convert.reset"));
 		
 		for (String out : OutputFormat.getOutputFormats()) {
 			outputFormat.addItem(out);
