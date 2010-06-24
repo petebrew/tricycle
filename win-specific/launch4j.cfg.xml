@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>../mac-specific/TRiCYCLE.app/Contents/Resources/Java/DendroFileIOGui-0.0.1-SNAPSHOT-jar-with-dependencies.jar</jar>
-  <outfile>../target/tricycle.exe</outfile>
+  <jar>../target/TRiCYCLE-0.0.1-SNAPSHOT-jar-with-dependencies.jar</jar>
+  <outfile>../target/TRiCYCLE-0.0.1-SNAPSHOT.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -12,7 +12,7 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>../src/main/resources/icons/16x16/application.ico</icon>
+  <icon>../src/main/resources/icons/application.ico</icon>
   <jre>
     <path></path>
     <minVersion>1.6.0</minVersion>
