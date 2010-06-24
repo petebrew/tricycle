@@ -103,7 +103,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>deb-maven-plugin</artifactId>
 		        <configuration>
@@ -120,7 +120,7 @@
 		            </goals>
 		          </execution>
 		        </executions>
-		      </plugin>
+		      </plugin>-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>osxappbundle-maven-plugin</artifactId>
@@ -137,7 +137,7 @@
 					<bundleName>TRiCYCLE</bundleName>
 					<mainClass>org.tridas.io.gui.App</mainClass>
 					<jvmVersion>1.6+</jvmVersion>
-					<iconFile>${basedir}/mac-specific/application.icns</iconFile>
+					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
 					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
 					<vmOptions>-Dapple.laf.useScreenMenuBar=true
 						-Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
