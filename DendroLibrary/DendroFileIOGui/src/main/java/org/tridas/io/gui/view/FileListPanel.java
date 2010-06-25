@@ -34,11 +34,13 @@ import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.fileList.AddFileEvent;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
+import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 
+import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.StringEvent;
 
 /**
@@ -196,7 +198,8 @@ public class FileListPanel extends JPanel {
 		removeAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
-				fileList.removeAll();
+				MVCEvent event = new MVCEvent(FileListController.REMOVE_ALL);
+				event.dispatch();
 			}
 		});
 	}

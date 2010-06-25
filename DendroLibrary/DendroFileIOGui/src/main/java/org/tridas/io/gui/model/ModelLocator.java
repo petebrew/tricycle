@@ -1,5 +1,6 @@
 package org.tridas.io.gui.model;
 
+import java.io.File;
 import java.net.URL;
 import java.util.LinkedList;
 
@@ -24,7 +25,7 @@ public class ModelLocator {
 	private ConfigController configController = new ConfigController();
 	
 	private ImageIcon windowIcon;
-	
+	private File lastDirectory = null;
 	private MainWindow view = null;
 	
 	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
@@ -36,6 +37,14 @@ public class ModelLocator {
 		}else{
 			windowIcon = new ImageIcon();
 		}
+	}
+	
+	public File getLastDirectory(){
+		return lastDirectory;
+	}
+	
+	public void setLastDirectory(File argLastDirectory){
+		lastDirectory = argLastDirectory;
 	}
 	
 	public ImageIcon getWindowIcon(){

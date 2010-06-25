@@ -10,7 +10,6 @@ import javax.swing.JFileChooser;
 
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.ModelLocator;
-import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
@@ -20,13 +19,14 @@ import com.dmurph.mvc.control.FrontController;
  */
 public class FileListController extends FrontController {
 	public static final String REMOVE_SELECTED = "FILE_LIST_REMOVE_SELECTED";
+	public static final String REMOVE_ALL = "FILE_LIST_REMOVE_ALL";
 	public static final String ADD_FILE = "FILE_LIST_ADD_FILE";
 	public static final String BROWSE = "FILE_LIST_BROWSE";
-	private static File lastDirectory = null;
 	
 	public FileListController() {
 		try {
 			registerCommand(REMOVE_SELECTED, "removeSelected");
+			registerCommand(REMOVE_ALL, "removeAll");
 			registerCommand(ADD_FILE, "addFile");
 			registerCommand(BROWSE, "browse");
 		} catch (SecurityException e) {
@@ -34,6 +34,11 @@ public class FileListController extends FrontController {
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void removeAll(MVCEvent argEvent){
+		FileListModel model = FileListModel.getInstance();
+		model.clearInputFiles();
 	}
 	
 	public void removeSelected(MVCEvent argEvent) {
@@ -59,13 +64,15 @@ public class FileListController extends FrontController {
 		JFileChooser fd = new JFileChooser();
 		fd.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fd.setMultiSelectionEnabled(true);
+		File lastDirectory = ModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
 			fd.setCurrentDirectory(lastDirectory);
 		}
+		
 		int retValue = fd.showOpenDialog(ModelLocator.getInstance().getMainWindow());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			files = fd.getSelectedFiles();
-			lastDirectory = fd.getCurrentDirectory();
+			ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		}
 		if (files == null) {
 			return;
