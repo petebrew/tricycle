@@ -1,4 +1,19 @@
 /**
+ * Copyright 2010 Daniel Murphy
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *   
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
  * Created at Jun 15, 2010, 8:39:53 PM
  */
 package org.tridas.io.gui.view.popup;
@@ -8,27 +23,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.EventObject;
-import java.util.Vector;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import org.tridas.io.defaults.AbstractDefaultValue;
-import org.tridas.io.defaults.values.StringDefaultValue;
 import org.tridas.io.gui.components.DefaultFieldEditor;
-import org.tridas.io.gui.components.editors.StringValueEditor;
 import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.MetadataEditorModel;
 

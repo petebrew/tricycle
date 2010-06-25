@@ -1,6 +1,23 @@
+/**
+ * Copyright 2010 Daniel Murphy
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *   
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.tridas.io.gui;
 
+import java.util.Enumeration;
 import java.util.MissingResourceException;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 import javax.swing.KeyStroke;
@@ -108,8 +125,32 @@ public class I18n {
 			try {
 				bundle = ResourceBundle.getBundle("DendroFileIOGUI");
 			} catch (MissingResourceException mre2) {
+				System.out.println("Could not find locale file.");
 				mre2.printStackTrace();
-				bundle = new DefaultResourceBundle();
+				bundle = new ResourceBundle() {
+					
+					@Override
+					protected Object handleGetObject(String key) {
+						return key;
+					}
+					
+					@SuppressWarnings("unchecked")
+					@Override
+					public Enumeration getKeys() {
+						return EMPTY_ENUMERATION;
+					}
+					
+					@SuppressWarnings("unchecked")
+					private final Enumeration EMPTY_ENUMERATION = new Enumeration() {
+						public boolean hasMoreElements() {
+							return false;
+						}
+						
+						public Object nextElement() {
+							throw new NoSuchElementException();
+						}
+					};
+				};
 			}
 		}
 		msg = bundle;
