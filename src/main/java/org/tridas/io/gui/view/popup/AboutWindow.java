@@ -18,10 +18,17 @@
  */
 package org.tridas.io.gui.view.popup;
 
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.net.URL;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -47,7 +54,6 @@ public class AboutWindow extends JDialog {
 		populateLocale();
 		addListeners();
 		pack();
-		setSize(600, 128);
 		setResizable(false);
 		setLocationRelativeTo(argParent);
 	}
@@ -57,16 +63,17 @@ public class AboutWindow extends JDialog {
 	 */
 	private void initComponents() {
 		
-		JLabel llogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/about/application-left.png")));
-		JLabel rlogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/about/application-right.png")));
+		JLabel llogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/256x256/application.png")));
+		
 		info = new JTextArea();
 		info.setEditable(false);
 		
 		Box box = Box.createHorizontalBox();
-		add(box, "Center");
+		box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		box.add(llogo);
+		box.add(Box.createRigidArea(new Dimension(5, 1)));
 		box.add(new JScrollPane(info));
-		box.add(rlogo);
+		add(box, "Center");
 	}
 	
 	
