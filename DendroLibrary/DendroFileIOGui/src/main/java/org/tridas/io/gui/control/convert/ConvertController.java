@@ -125,7 +125,7 @@ public class ConvertController extends FrontController {
 		fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fd.setMultiSelectionEnabled(false);
 		if(lastDirectory != null){
-			lastDirectory = fd.getCurrentDirectory();
+			fd.setCurrentDirectory(lastDirectory);
 		}
 		int retValue = fd.showSaveDialog(ModelLocator.getInstance().getMainWindow());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -174,11 +174,8 @@ public class ConvertController extends FrontController {
 				String outputFolder = folder.getAbsolutePath();
 				// custom implementation of saveAllToDisk, as we need to
 				// keep track of each dendro file for the progress window
-				if (outputFolder.contains("\\")) {
-					outputFolder.replaceAll("\\\\", "/");
-				}
 				
-				if (!outputFolder.endsWith("/") && !outputFolder.equals("")) {
+				if (!outputFolder.endsWith(File.separator) && !outputFolder.equals("")) {
 					outputFolder += File.separator;
 				}
 				
@@ -328,7 +325,7 @@ public class ConvertController extends FrontController {
 			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
 			
 			if(argNaming instanceof NumericalNamingConvention){
-				String justFile = file.substring(file.lastIndexOf('/')+1, file.lastIndexOf('.'));
+				String justFile = file.substring(file.lastIndexOf(File.separatorChar)+1, file.lastIndexOf('.'));
 				((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
 			}
 			writer.setNamingConvention(argNaming);

@@ -60,7 +60,7 @@ public class FileListController extends FrontController {
 		fd.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fd.setMultiSelectionEnabled(true);
 		if(lastDirectory != null){
-			lastDirectory = fd.getCurrentDirectory();
+			fd.setCurrentDirectory(lastDirectory);
 		}
 		int retValue = fd.showOpenDialog(ModelLocator.getInstance().getMainWindow());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
