@@ -27,7 +27,6 @@ import org.tridas.io.exceptions.IncorrectDefaultFieldsException;
 import org.tridas.io.exceptions.InvalidDendroFileException;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.enums.InputFormat;
-import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
@@ -43,7 +42,6 @@ import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
-import org.tridas.io.util.IOUtils;
 import org.tridas.schema.TridasProject;
 
 import com.dmurph.mvc.MVCEvent;
@@ -59,9 +57,7 @@ public class ConvertController extends FrontController {
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
 	public static final String PREVIEW = "CONVERT_PREVIEW";
-	
-	private File lastDirectory = null;
-	
+		
 	// TODO get rid of this, use model nodes instead
 	private ArrayList<ReaderWriterObject> structList = new ArrayList<ReaderWriterObject>();
 	
@@ -124,13 +120,15 @@ public class ConvertController extends FrontController {
 		JFileChooser fd = new JFileChooser();
 		fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fd.setMultiSelectionEnabled(false);
+		File lastDirectory = ModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
 			fd.setCurrentDirectory(lastDirectory);
 		}
+		
 		int retValue = fd.showSaveDialog(ModelLocator.getInstance().getMainWindow());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			folder = fd.getSelectedFile();
-			lastDirectory = fd.getCurrentDirectory();
+			ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		}
 		else {
 			return;
