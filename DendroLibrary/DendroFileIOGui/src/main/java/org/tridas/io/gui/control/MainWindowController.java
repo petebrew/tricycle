@@ -15,10 +15,17 @@
  */
 package org.tridas.io.gui.control;
 
+import java.awt.Dimension;
+
+import org.apache.commons.lang.StringUtils;
 import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.AboutWindow;
 import org.tridas.io.gui.view.popup.OptionsWindow;
+import org.tridas.io.gui.view.popup.PreviewWindow;
+import org.tridas.io.util.FileHelper;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.IllegalThreadException;
 import com.dmurph.mvc.IncorrectThreadException;
@@ -31,6 +38,7 @@ public class MainWindowController extends FrontController {
 	public static final String QUIT = "MAIN_WINDOW_QUIT";
 	public static final String ABOUT = "MAIN_WINDOW_ABOUT";
 	public static final String OPTIONS = "MAIN_WINDOW_OPTIONS";
+	public static final String VIEW_LOG = "MAIN_WINDOW_VIEW_LOG";
 	
 	private MainWindow view = null;
 	private AboutWindow about = null;
@@ -42,6 +50,7 @@ public class MainWindowController extends FrontController {
 			registerCommand(QUIT, "quit");
 			registerCommand(ABOUT, "about");
 			registerCommand(OPTIONS, "options");
+			registerCommand(VIEW_LOG, "log");
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
@@ -82,5 +91,19 @@ public class MainWindowController extends FrontController {
 			e.printStackTrace();
 		}
 		options.setVisible(true);
+	}
+	
+	public void log(MVCEvent argEvent){
+		PreviewModel pmodel = new PreviewModel();
+		pmodel.setFilename("TRiCYCLE.log");
+		
+		FileHelper fh = new FileHelper();
+		pmodel.setFileString(StringUtils.join(fh.loadStrings("TRiCYCLE.log"), "\n"));
+		
+		MainWindow window = ModelLocator.getInstance().getMainWindow();
+		Dimension size = window.getSize();
+		
+		PreviewWindow preview = new PreviewWindow(ModelLocator.getInstance().getMainWindow(), size.width - 40, size.height - 40, pmodel);
+		preview.setVisible(true);
 	}
 }

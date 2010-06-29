@@ -47,6 +47,7 @@ public class MainWindow extends JFrame {
 	private JMenuItem quitMenuButton;
 	private JMenuItem optionsMenuButton;
 	private JMenuItem aboutMenuButton;
+	private JMenuItem logMenuButton;
 	private JTabbedPane tabbedPane;
 	public FileListPanel fileList;
 	public ConvertPanel convertPanel;
@@ -72,6 +73,7 @@ public class MainWindow extends JFrame {
 		helpMenu = new JMenu();
 		aboutMenuButton = new JMenuItem();
 		optionsMenuButton = new JMenuItem();
+		logMenuButton = new JMenuItem();
 		
 		fileList = new FileListPanel();
 		convertPanel = new ConvertPanel();
@@ -92,6 +94,7 @@ public class MainWindow extends JFrame {
 		menuBar.add(fileMenu);
 		
 		aboutMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		helpMenu.add(logMenuButton);
 		helpMenu.add(aboutMenuButton);
 		
 		menuBar.add(helpMenu);
@@ -103,6 +106,7 @@ public class MainWindow extends JFrame {
 		optionsMenuButton.setText("Options");
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
+		logMenuButton.setText(I18n.getText("view.main.log"));
 		fileMenu.setText(I18n.getText("view.main.file"));
 		helpMenu.setText(I18n.getText("view.main.help"));
 	}
@@ -130,6 +134,13 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MVCEvent event = new MVCEvent(MainWindowController.ABOUT);
+				event.dispatch();
+			}
+		});
+		logMenuButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				MVCEvent event = new MVCEvent(MainWindowController.VIEW_LOG);
 				event.dispatch();
 			}
 		});
