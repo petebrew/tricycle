@@ -60,6 +60,7 @@ public class ConvertProgress extends JDialog {
 		addListeners();
 		pack();
 		setLocationRelativeTo(parent);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	}
 	
 	private void initializeComponents() {

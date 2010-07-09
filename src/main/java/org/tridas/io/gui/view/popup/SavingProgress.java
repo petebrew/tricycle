@@ -61,6 +61,7 @@ public class SavingProgress extends JDialog {
 		addListeners();
 		pack();
 		setLocationRelativeTo(parent);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	}
 	
 	/**
@@ -80,8 +81,8 @@ public class SavingProgress extends JDialog {
 		add(savingLabel);
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new BorderLayout());
-		bottom.add(progress);
-		bottom.add(cancel);
+		bottom.add(progress, "Center");
+		bottom.add(cancel, "East");
 		add(bottom);
 		setPreferredSize(new Dimension(350, 75));
 	}

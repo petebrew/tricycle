@@ -59,6 +59,9 @@ import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
 import org.tridas.schema.TridasProject;
 
+import com.dmurph.mvc.IllegalThreadException;
+import com.dmurph.mvc.IncorrectThreadException;
+import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.control.FrontController;
@@ -139,6 +142,14 @@ public class ConvertController extends FrontController {
 	
 	@SuppressWarnings("unused")
 	public void save(MVCEvent argEvent) {
+		
+		try {
+			MVC.splitOff();
+		} catch (IllegalThreadException e1) {
+			e1.printStackTrace();
+		} catch (IncorrectThreadException e1) {
+			e1.printStackTrace();
+		}
 		
 		File folder = null;
 		JFileChooser fd = new JFileChooser();
@@ -226,6 +237,14 @@ public class ConvertController extends FrontController {
 		ConvertEvent event = (ConvertEvent) argEvent;
 		String outputFormat = event.getOutputFormat();
 		INamingConvention naming;
+		
+		try {
+			MVC.splitOff();
+		} catch (IllegalThreadException e1) {
+			e1.printStackTrace();
+		} catch (IncorrectThreadException e1) {
+			e1.printStackTrace();
+		}
 		
 		boolean outputFormatFound = false;
 		for (String format : TridasIO.getSupportedWritingFormats()) {
