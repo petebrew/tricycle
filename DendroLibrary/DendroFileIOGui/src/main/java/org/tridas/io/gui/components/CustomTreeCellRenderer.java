@@ -59,7 +59,8 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 			boolean leaf, int row, boolean hasFocus) {
-		//Component def = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+		// need this call to populate text
+		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 		
 		Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
 		if(userObject instanceof StructWrapper){
