@@ -39,16 +39,10 @@ public class FileListController extends FrontController {
 	public static final String BROWSE = "FILE_LIST_BROWSE";
 	
 	public FileListController() {
-		try {
-			registerCommand(REMOVE_SELECTED, "removeSelected");
-			registerCommand(REMOVE_ALL, "removeAll");
-			registerCommand(ADD_FILE, "addFile");
-			registerCommand(BROWSE, "browse");
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
+		registerCommand(REMOVE_SELECTED, "removeSelected");
+		registerCommand(REMOVE_ALL, "removeAll");
+		registerCommand(ADD_FILE, "addFile");
+		registerCommand(BROWSE, "browse");
 	}
 	
 	public void removeAll(MVCEvent argEvent){
