@@ -53,19 +53,13 @@ public class ConfigController extends FrontController {
 	private ConfigModel model = ConfigModel.getInstance();
 	
 	public ConfigController() {
-		try {
-			registerCommand(SET_INPUT_FORMAT, "setInputFormat");
-			registerCommand(SET_OUTPUT_FORMAT, "setOutputFormat");
-			registerCommand(SET_NAMING_CONVENTION, "setNamingConvention");
-			registerCommand(SET_READING_CHARSET, "setReadingCharset");
-			registerCommand(SET_WRITING_CHARSET, "setWritingCharset");
-			registerCommand(INPUT_DEFAULTS_PRESSED, "displayInputDefaults");
-			registerCommand(OUTPUT_DEFAULTS_PRESSED, "displayOutputDefaults");
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
+		registerCommand(SET_INPUT_FORMAT, "setInputFormat");
+		registerCommand(SET_OUTPUT_FORMAT, "setOutputFormat");
+		registerCommand(SET_NAMING_CONVENTION, "setNamingConvention");
+		registerCommand(SET_READING_CHARSET, "setReadingCharset");
+		registerCommand(SET_WRITING_CHARSET, "setWritingCharset");
+		registerCommand(INPUT_DEFAULTS_PRESSED, "displayInputDefaults");
+		registerCommand(OUTPUT_DEFAULTS_PRESSED, "displayOutputDefaults");
 	}
 	
 	public void setInputFormat(MVCEvent argEvent) {

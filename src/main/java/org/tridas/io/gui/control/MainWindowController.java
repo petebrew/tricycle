@@ -25,7 +25,6 @@ import org.tridas.io.gui.view.popup.AboutWindow;
 import org.tridas.io.gui.view.popup.OptionsWindow;
 import org.tridas.io.gui.view.popup.PreviewWindow;
 import org.tridas.io.util.FileHelper;
-import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.IllegalThreadException;
 import com.dmurph.mvc.IncorrectThreadException;
@@ -45,17 +44,11 @@ public class MainWindowController extends FrontController {
 	private OptionsWindow options = null;
 	
 	public MainWindowController() {
-		try {
-			registerCommand(STARTUP, "startup");
-			registerCommand(QUIT, "quit");
-			registerCommand(ABOUT, "about");
-			registerCommand(OPTIONS, "options");
-			registerCommand(VIEW_LOG, "log");
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
+		registerCommand(STARTUP, "startup");
+		registerCommand(QUIT, "quit");
+		registerCommand(ABOUT, "about");
+		registerCommand(OPTIONS, "options");
+		registerCommand(VIEW_LOG, "log");
 	}
 	
 	public void startup(MVCEvent argEvent) {

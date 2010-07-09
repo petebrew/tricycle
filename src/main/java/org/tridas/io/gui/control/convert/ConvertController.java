@@ -72,20 +72,29 @@ public class ConvertController extends FrontController {
 	public static final String SAVE = "CONVERT_SAVE";
 	public static final String CONVERT = "CONVERT_CONVERT";
 	public static final String PREVIEW = "CONVERT_PREVIEW";
+	public static final String CANCEL_CONVERT = "CONVERT_CANCEL_CONVERT";
+	public static final String CANCEL_SAVE = "CONVERT_CANCEL_SAVE";
+
 		
 	// TODO get rid of this, use model nodes instead
 	private ArrayList<ReaderWriterObject> structList = new ArrayList<ReaderWriterObject>();
+	private volatile boolean convertRunning = false;
+	private volatile boolean saveRunning = false;
 	
 	public ConvertController() {
-		try {
-			registerCommand(PREVIEW, "preview");
-			registerCommand(CONVERT, "convert");
-			registerCommand(SAVE, "save");
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
+		registerCommand(PREVIEW, "preview");
+		registerCommand(CONVERT, "convert");
+		registerCommand(SAVE, "save");
+		registerCommand(CANCEL_CONVERT, "cancelConvert");
+		registerCommand(CANCEL_SAVE, "cancelSave");
+	}
+	
+	public void cancelConvert(MVCEvent argEvent){
+		convertRunning = false;
+	}
+	
+	public void cancelSave(MVCEvent argEvent){
+		saveRunning = false;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -180,7 +189,11 @@ public class ConvertController extends FrontController {
 			}
 		});
 		
+		saveRunning = true;
 		for (int i = 0; i < structList.size(); i++) {
+			if(!saveRunning){
+				break;
+			}
 			ReaderWriterObject p = structList.get(i);
 			if (p.writer != null) {
 				
@@ -193,6 +206,9 @@ public class ConvertController extends FrontController {
 				}
 				
 				for (IDendroFile dof : p.writer.getFiles()) {
+					if(!saveRunning){
+						break;
+					}
 					currFile++;
 					String filename = p.writer.getNamingConvention().getFilename(dof);
 					
@@ -293,7 +309,11 @@ public class ConvertController extends FrontController {
 			}
 		});
 		
+		convertRunning = true;
 		for (int i = 0; i < argFiles.length; i++) {
+			if(!convertRunning){
+				break;
+			}
 			String file = argFiles[i];
 			
 			model.setConvertingFilename(file);

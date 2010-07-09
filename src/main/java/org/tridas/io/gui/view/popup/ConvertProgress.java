@@ -18,21 +18,27 @@
  */
 package org.tridas.io.gui.view.popup;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.ConvertingDialogModel;
+
+import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author Daniel Murphy
@@ -41,6 +47,7 @@ import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 public class ConvertProgress extends JDialog {
 	private JLabel convertingLabel;
 	private JProgressBar progress;
+	private JButton cancelButton;
 	
 	private final ConvertingDialogModel model;
 	
@@ -58,6 +65,7 @@ public class ConvertProgress extends JDialog {
 	private void initializeComponents() {
 		convertingLabel = new JLabel();
 		progress = new JProgressBar();
+		cancelButton = new JButton();
 		
 		setLayout(new GridLayout(0, 1));
 		
@@ -66,14 +74,26 @@ public class ConvertProgress extends JDialog {
 		progress.setStringPainted(true);
 		
 		add(convertingLabel);
-		add(progress);
+		JPanel bottom = new JPanel();
+		bottom.setLayout(new BorderLayout());
+		bottom.add(progress, "Center");
+		bottom.add(cancelButton, "East");
+		add(bottom);
 		setPreferredSize(new Dimension(350, 75));
 	}
 	
 	private void addListeners() {
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
+//		addWindowListener(new WindowAdapter() {
+//			public void windowClosing(WindowEvent e) {
+//				setVisible(false);
+//			}
+//		});
+		
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MVCEvent event = new MVCEvent(ConvertController.CANCEL_CONVERT);
+				event.dispatch();
 			}
 		});
 	}
@@ -82,6 +102,7 @@ public class ConvertProgress extends JDialog {
 		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.convert.title"));
 		setConvertingFilename("");
+		cancelButton.setText(I18n.getText("view.popup.convert.cancel"));
 	}
 	
 	private void setConvertingFilename(String argFilename) {

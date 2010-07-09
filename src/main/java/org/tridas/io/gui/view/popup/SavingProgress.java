@@ -18,21 +18,27 @@
  */
 package org.tridas.io.gui.view.popup;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.SavingDialogModel;
+
+import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author Daniel Murphy
@@ -42,6 +48,7 @@ public class SavingProgress extends JDialog {
 	
 	private JLabel savingLabel;
 	private JProgressBar progress;
+	private JButton cancel;
 	
 	private final SavingDialogModel model;
 	
@@ -62,6 +69,7 @@ public class SavingProgress extends JDialog {
 	private void initializeComponents() {
 		savingLabel = new JLabel();
 		progress = new JProgressBar();
+		cancel = new JButton();
 		
 		setLayout(new GridLayout(0, 1));
 		
@@ -70,7 +78,11 @@ public class SavingProgress extends JDialog {
 		progress.setStringPainted(true);
 		
 		add(savingLabel);
-		add(progress);
+		JPanel bottom = new JPanel();
+		bottom.setLayout(new BorderLayout());
+		bottom.add(progress);
+		bottom.add(cancel);
+		add(bottom);
 		setPreferredSize(new Dimension(350, 75));
 	}
 	
@@ -78,9 +90,16 @@ public class SavingProgress extends JDialog {
 	 * 
 	 */
 	private void addListeners() {
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
+//		addWindowListener(new WindowAdapter() {
+//			public void windowClosing(WindowEvent e) {
+//				setVisible(false);
+//			}
+//		});
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MVCEvent event = new MVCEvent(ConvertController.CANCEL_SAVE);
+				event.dispatch();
 			}
 		});
 	}
