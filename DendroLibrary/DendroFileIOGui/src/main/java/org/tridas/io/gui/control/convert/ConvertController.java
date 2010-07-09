@@ -220,11 +220,6 @@ public class ConvertController extends FrontController {
 		}
 		savingProgress.setVisible(false);
 		mwm.setLock(false);
-		
-		JOptionPane.showMessageDialog(null,
-				I18n.getText("control.convert.save.folderInfo", folder.getAbsolutePath()),
-				I18n.getText("control.convert.save.complete"),
-				JOptionPane.PLAIN_MESSAGE);
 	}
 	
 	public void convert(MVCEvent argEvent) {

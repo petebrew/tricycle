@@ -111,6 +111,7 @@ public class SavingProgress extends JDialog {
 		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.save.title"));
 		setSavingFilename("");
+		cancel.setText(I18n.getText("view.popup.save.cancel"));
 	}
 	
 	private void setSavingFilename(String argFilename) {
