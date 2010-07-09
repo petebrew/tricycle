@@ -28,6 +28,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertController.DendroWrapper;
 import org.tridas.io.gui.control.convert.ConvertController.StructWrapper;
+import org.tridas.io.gui.util.TooltipUtil;
 
 /**
  * @author daniel
@@ -77,7 +78,6 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 				setIcon(fileWarningIcon);
 			}else{
 				setIcon(fileSuccessIcon);
-				return def;
 			}
 		}else if(userObject.toString().equals(I18n.getText("control.convert.readerWarnings"))){
 			setIcon(warningIcon);
@@ -85,8 +85,12 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 			setIcon(warningIcon);
 		}
 		else{
+			// warning
 			setIcon(infoIcon);
+			setToolTipText(TooltipUtil.wrapTooltip(userObject.toString(), 60));
+			return this;
 		}
+		setToolTipText(null);
 		return this;
 	}
 }

@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -127,6 +128,7 @@ public class ConvertPanel extends JPanel {
 		CustomTreeCellRenderer renderer = new CustomTreeCellRenderer(sicon, wicon, ficon, filesicon, filewicon, infoicon);
 		
 		DefaultTreeModel model = new DefaultTreeModel(rootNode, false);
+        ToolTipManager.sharedInstance().registerComponent(convertedTree);
 		convertedTree.setCellRenderer(renderer);
 		convertedTree.setModel(model);
 		convertedTree.setRootVisible(false);
