@@ -79,9 +79,9 @@ public class FileListController extends FrontController {
 		}
 		
 		int retValue = fd.showOpenDialog(ModelLocator.getInstance().getMainWindow());
+		ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			files = fd.getSelectedFiles();
-			ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		}
 		if (files == null) {
 			return;
