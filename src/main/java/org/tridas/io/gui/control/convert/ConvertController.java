@@ -161,9 +161,9 @@ public class ConvertController extends FrontController {
 		}
 		
 		int retValue = fd.showSaveDialog(ModelLocator.getInstance().getMainWindow());
+		ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			folder = fd.getSelectedFile();
-			ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		}
 		else {
 			return;

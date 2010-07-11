@@ -16,23 +16,37 @@
 package org.tridas.io.gui.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.InvalidPropertiesFormatException;
 import java.util.LinkedList;
+import java.util.Properties;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import org.grlea.log.DebugLevel;
+import org.grlea.log.SimpleLog;
+import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.view.MainWindow;
+import org.tridas.io.util.FileHelper;
 import org.tridas.io.util.IOUtils;
 
 @SuppressWarnings("unused")
 public class ModelLocator {
+	private static final SimpleLogger log = new SimpleLogger(ModelLocator.class);
+	
 	private static final ModelLocator ml = new ModelLocator();
+	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
+	private static final String LAST_DIRECTORY = "LastDirectory";
 	
 	private MainWindowController mainWindowController = new MainWindowController();
 	private FileListController fileListController = new FileListController();
@@ -40,8 +54,8 @@ public class ModelLocator {
 	private ConfigController configController = new ConfigController();
 	
 	private ImageIcon windowIcon;
-	private File lastDirectory = null;
 	private MainWindow view = null;
+	private Properties properties = null;
 	
 	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
 	
@@ -54,12 +68,54 @@ public class ModelLocator {
 		}
 	}
 	
+	public Properties getProperties(){
+		if(properties == null){
+			properties = new Properties();
+			FileHelper fh = new FileHelper();
+			InputStream is = fh.createInput(PROPERTIES_LOCATION);
+			if(is != null){
+				try {
+					properties.loadFromXML(fh.createInput(PROPERTIES_LOCATION));
+				} catch (InvalidPropertiesFormatException e) {
+					log.error("Could not load properties.");
+					log.dbe(DebugLevel.L2_ERROR, e);
+				} catch (IOException e) {
+					log.error("Could not load properties.");
+					log.dbe(DebugLevel.L2_ERROR, e);
+				}
+			}
+		}
+		return properties;
+	}
+	
+	public void saveProperties(){
+		if(properties == null){
+			getProperties();
+		}
+		FileHelper fh = new FileHelper();
+		try {
+			properties.storeToXML(fh.createOutput(PROPERTIES_LOCATION), "Saved on "+DateFormat.getDateTimeInstance().format(new Date()));
+		} catch (IOException e) {
+			log.error("Could not save properties.");
+			log.dbe(DebugLevel.L2_ERROR, e);
+		}
+	}
+	
 	public File getLastDirectory(){
-		return lastDirectory;
+		Properties p = getProperties();
+		if(p.containsKey(LAST_DIRECTORY)){
+			return new File(p.getProperty(LAST_DIRECTORY));
+		}
+		return null;
 	}
 	
 	public void setLastDirectory(File argLastDirectory){
-		lastDirectory = argLastDirectory;
+		Properties p = getProperties();
+		String path = p.getProperty(LAST_DIRECTORY);
+		if(path == null || !path.equals(argLastDirectory.getAbsolutePath())){
+			p.setProperty(LAST_DIRECTORY, argLastDirectory.getAbsolutePath());
+			saveProperties();
+		}
 	}
 	
 	public ImageIcon getWindowIcon(){
