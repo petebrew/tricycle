@@ -262,6 +262,27 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
+		FileListModel fmodel = FileListModel.getInstance();
+		ConvertModel cmodel = ConvertModel.getInstance();
+		fmodel.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent argEvt) {
+				if(argEvt.getPropertyName().equals("inputFormat")){
+					readingDefaults.setText(I18n.getText("view.options.input.defaults", argEvt.getNewValue().toString()));
+				}
+			}
+		});
+		cmodel.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent argEvt) {
+				if(argEvt.getPropertyName().equals("outputFormat")){
+					writingDefaults.setText(I18n.getText("view.options.output.defaults", argEvt.getNewValue().toString()));
+				}
+			}
+		});
+		
 		MainWindowModel mwm = MainWindowModel.getInstance();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override

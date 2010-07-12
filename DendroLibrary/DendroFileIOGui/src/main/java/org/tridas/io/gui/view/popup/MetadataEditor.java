@@ -120,7 +120,12 @@ class FieldRenderer extends DefaultTableCellRenderer implements TableCellRendere
 	@Override
 	public Component getTableCellRendererComponent(JTable argTable, Object argValue, boolean argIsSelected,
 			boolean argHasFocus, int argRow, int argColumn) {
-		String value = ((AbstractDefaultValue<?>)argValue).getStringValue();
+		String value;
+		if(argValue != null){
+			value = ((AbstractDefaultValue<?>)argValue).getStringValue();
+		}else{
+			value = null;
+		}
 		return super.getTableCellRendererComponent(argTable, value, argIsSelected, argHasFocus, argRow, argColumn);
 	}
 }
