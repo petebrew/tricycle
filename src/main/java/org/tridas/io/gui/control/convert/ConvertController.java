@@ -47,10 +47,13 @@ import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.ModelLocator;
 import org.tridas.io.gui.model.popup.ConvertingDialogModel;
+import org.tridas.io.gui.model.popup.OverwriteModel;
 import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.model.popup.SavingDialogModel;
+import org.tridas.io.gui.model.popup.OverwriteModel.Response;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.ConvertProgress;
+import org.tridas.io.gui.view.popup.OverwritePopup;
 import org.tridas.io.gui.view.popup.PreviewWindow;
 import org.tridas.io.gui.view.popup.SavingProgress;
 import org.tridas.io.naming.HierarchicalNamingConvention;
@@ -141,7 +144,7 @@ public class ConvertController extends FrontController {
 	}
 	
 	@SuppressWarnings("unused")
-	public void save(MVCEvent argEvent) {
+	public synchronized void save(MVCEvent argEvent) {
 		
 		try {
 			MVC.splitOff();
@@ -201,6 +204,8 @@ public class ConvertController extends FrontController {
 		});
 		
 		saveRunning = true;
+		Response response = null;
+		boolean all = false;
 		for (int i = 0; i < structList.size(); i++) {
 			if(!saveRunning){
 				break;
@@ -216,7 +221,9 @@ public class ConvertController extends FrontController {
 					outputFolder += File.separator;
 				}
 				
-				for (IDendroFile dof : p.writer.getFiles()) {
+				IDendroFile[] files = p.writer.getFiles();
+				for (int j=0; j<files.length; j++) {
+					IDendroFile dof = files[j];
 					if(!saveRunning){
 						break;
 					}
@@ -224,6 +231,46 @@ public class ConvertController extends FrontController {
 					String filename = p.writer.getNamingConvention().getFilename(dof);
 					
 					model.setSavingFilename(filename + "." + dof.getExtension());
+					
+					// check to see if it exists:
+					File file = new File(outputFolder+File.separator+filename + "." + dof.getExtension());
+					if(file.exists()){
+						if(response == null){
+							OverwriteModel om = new OverwriteModel();
+							om.setAll(false);
+							om.setMessage(I18n.getText("control.convert.overwrite", filename, filename+"(1)"));
+							OverwritePopup popup = new OverwritePopup(om, ModelLocator.getInstance().getMainWindow());
+							// this should hang until the window is closed
+							popup.setVisible(true);
+							
+							response = om.getResponse();
+							all = om.isAll();
+							if(response == null){
+								log.error("response is null");
+								j--;
+								currFile--;
+								continue;
+							}
+						}
+						
+						switch(response){
+							case IGNORE:
+								response = null;
+								continue;
+							case OVERWRITE:
+								p.writer.saveFileToDisk(outputFolder, dof);
+								break;
+							case RENAME:
+								p.writer.getNamingConvention().setFilename(dof, filename+"(1)");
+								j--;
+								currFile--;
+								response = null;
+								continue;
+						}
+						if(!all){
+							response = null;
+						}
+					}
 					p.writer.saveFileToDisk(outputFolder, dof);
 					model.setSavingPercent(currFile * 100 / totalFiles);
 				}
