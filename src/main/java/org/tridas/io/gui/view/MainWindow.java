@@ -20,7 +20,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
+import javax.help.CSH;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -32,6 +36,7 @@ import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.MVCEvent;
 
@@ -47,6 +52,8 @@ public class MainWindow extends JFrame {
 	private JMenuItem quitMenuButton;
 	private JMenuItem optionsMenuButton;
 	private JMenuItem aboutMenuButton;
+	private JMenuItem helpMenuButton;
+
 	private JMenuItem logMenuButton;
 	private JTabbedPane tabbedPane;
 	public FileListPanel fileList;
@@ -72,6 +79,8 @@ public class MainWindow extends JFrame {
 		quitMenuButton = new JMenuItem();
 		helpMenu = new JMenu();
 		aboutMenuButton = new JMenuItem();
+		helpMenuButton = new JMenuItem();
+
 		optionsMenuButton = new JMenuItem();
 		logMenuButton = new JMenuItem();
 		
@@ -93,9 +102,13 @@ public class MainWindow extends JFrame {
 		
 		menuBar.add(fileMenu);
 		
-		aboutMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		
+		helpMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+
 		helpMenu.add(logMenuButton);
 		helpMenu.add(aboutMenuButton);
+		helpMenu.addSeparator();
+		helpMenu.add(helpMenuButton);
 		
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
@@ -106,6 +119,8 @@ public class MainWindow extends JFrame {
 		optionsMenuButton.setText("Options");
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
+		helpMenuButton.setText("Help");
+
 		logMenuButton.setText(I18n.getText("view.main.log"));
 		fileMenu.setText(I18n.getText("view.main.file"));
 		helpMenu.setText(I18n.getText("view.main.help"));
@@ -137,6 +152,18 @@ public class MainWindow extends JFrame {
 				event.dispatch();
 			}
 		});
+		
+
+		HelpSet hs;
+		try {
+		    hs = new HelpSet(null, IOUtils.getFileInJarURL("help/jhelpset.hs"));
+		} catch (Exception ee) {
+		    System.out.println ("HelpSet not found");
+		    return;
+		}
+		HelpBroker hb = hs.createHelpBroker();
+		helpMenuButton.addActionListener(new CSH.DisplayHelpFromSource(hb));
+		
 		logMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {

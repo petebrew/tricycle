@@ -16,6 +16,11 @@
 package org.tridas.io.gui.control;
 
 import java.awt.Dimension;
+import java.net.URL;
+
+import javax.swing.AbstractButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.tridas.io.gui.model.ModelLocator;
@@ -32,10 +37,18 @@ import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
 
+import javax.help.*;
+import javax.swing.*;
+import java.net.URL;
+
+
+
 public class MainWindowController extends FrontController {
 	public static final String STARTUP = "STARTUP_EVENT";
 	public static final String QUIT = "MAIN_WINDOW_QUIT";
 	public static final String ABOUT = "MAIN_WINDOW_ABOUT";
+	public static final String HELPVIEWER = "MAIN_WINDOW_HELP";
+
 	public static final String OPTIONS = "MAIN_WINDOW_OPTIONS";
 	public static final String VIEW_LOG = "MAIN_WINDOW_VIEW_LOG";
 	
@@ -49,6 +62,8 @@ public class MainWindowController extends FrontController {
 		registerCommand(ABOUT, "about");
 		registerCommand(OPTIONS, "options");
 		registerCommand(VIEW_LOG, "log");
+		registerCommand(HELPVIEWER, "helpViewer");
+
 	}
 	
 	public void startup(MVCEvent argEvent) {
@@ -98,5 +113,11 @@ public class MainWindowController extends FrontController {
 		
 		PreviewWindow preview = new PreviewWindow(ModelLocator.getInstance().getMainWindow(), size.width - 40, size.height - 40, pmodel);
 		preview.setVisible(true);
+	}
+	
+	public void helpViewer(MVCEvent argEvent){
+		
+
+		
 	}
 }

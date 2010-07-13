@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" type="xml"?>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>TRiCYCLE Manual</title>
+        <author>
+            <orgname>TRiDaS Team</orgname>
+            <address>
+                <city>Ithaca</city>
+                <street>Cornell University</street>
+                <postcode>14853</postcode>
+                <country>USA</country>
+            </address>
+            <email>info@tridas.org</email>
+        </author>
+        <abstract>
+            <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="application.png" format="PNG" width="200"/>
+                </imageobject>
+            </inlinemediaobject>
+            </para>
+        </abstract>
+    </info>
+    
+    <chapter>
+        <title>What is TRiCYCLE</title>
+        <para>TRiCYCLE is a universal dendrochronology file format converter.  It currently has support for reading and writing 17 different file formats.  </para>
+        
+    </chapter>
+    
+    <chapter>
+        <title>Installation</title>
+        <para>TRiCYCLE is a Java application and so can be installed on any modern operating system.
+            To make installation more familiar though we have packaged it up into native installers
+            for Windows, Mac OSX and Linux. Download the relevant package for your operating system
+            from the <link xlink:href="http://tridas.sf.net">SourceForge</link> website.</para>
+        <para>
+            <variablelist>
+                <varlistentry>
+                    <term>Windows</term>
+                    <listitem>
+                        <para>Run the setup program and follow the steps.  The program will be installed to your hard disk and shortcuts added to your start menu. If you do not have Java installed on your system or 
+                        you do not have the required version the installer will provide you with assistance to do so.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>MaxOSX</term>
+                    <listitem>
+                        <para>Open the .dmg file in Finder.  Drag the TRiCYCLE.app file into your Applications folder, or wherever you'd like it installed.  MacOSX comes pre-installed with Java so there is no need
+                            to install it separately.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>Linux</term>
+                    <listitem>
+                        <para>An Ubuntu deb package is provided for TRiCYCLE.  Install this package with your standard package manager (e.g. dpkg).  It includes information on all the dependencies required
+                        including Java therefore it should install everything you need if you are running Ubuntu. On other distributions you may find that the dependencies do not install automatically and the 
+                        TRiCYCLE installation fails.  If this is the case you will have to install the following dependencies manually:...</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </para>
+    </chapter>
+    
+    
+    <chapter>
+        <title>How to use TRiCYCLE</title>
+
+        <para>The first step is to specify the format of your input file(s).  Choose the your format from the pull down list on the File List page.  Then select the file(s) that you'd like to convert 
+        by clicking on the browse button.  You can add files one at a time or in bulk.  Once you have your list of files prepared you can then go to the Convert tab.</para>
+
+        <para>
+            On the Convert page, the first thing you need to do is select the desired output format from the drop down list.  Next, press the convert button and after a short delay your files should appear
+            in the list below.  At the bottom of the window, you'll see a summary showing how many files were processed, how many of the convertions failed and how many were converted successfully but with 
+            warnings.  
+        </para>
+        
+        <para>
+            The results of the conversion are shown in a tree view on the convert tab.  Each file that convered successfully and with no warnings is shown with a green tick icon, below which are shown the output
+            file or files.  Files that failed to convert are highlighted by a red cross along with a message explaining what went wrong.  Depending on the input and output formats chosen, a input file may be 
+            converted into one or more output files as some formats can store just one series while others can store multiple series.  
+        </para>
+        
+        <para>
+            If there were warnings produced during the conversion process, then the file will be marked with a orange exclamation icon.  Warnings can be associated with either the process of reading the input file, or 
+            writing the output file.  They can also be related to a single series within the file or the input file as a whole.  The warning messages are displayed to illustrate the context of the warning.  Longer 
+            warnings will scroll of the edge of the window, but if you hover your mouse over the warning a tooltip will show the entire message.
+        </para>
+        
+        <para>
+            If you would like to preview the result of the conversion process you can double click on the output files and they will be displayed in a text viewer.  This option is not, however, available for binary
+            formats such as CATRAS and Excel.
+        </para>
+        
+        <para>
+            Once you are happy with the results of the conversion you can save the files permanently to disk by pressing the save button.  It will offer you the option of specifying which folder to save the files to. 
+        </para>
+        
+        
+        
+        
+        
+        
+        
+        
+    </chapter>
+</book>
