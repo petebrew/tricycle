@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
+
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN" "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+   <tocitem target="d0e2" text="TRiCYCLE Manual">
+      <tocitem target="d0e25" text="What is TRiCYCLE"/>
+      <tocitem target="d0e84" text="Installation"/>
+      <tocitem target="d0e117" text="How to use TRiCYCLE"/>
+   </tocitem>
+</toc>
