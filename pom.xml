@@ -140,6 +140,12 @@
 								<include>**</include>
 							</includes>
 						</fileSet>
+						<fileSet>
+							<directory>${basedir}/src/main/generated/manual/</directory>
+							<includes>
+								<include>manual.pdf</include>
+							</includes>
+						</fileSet>
 					</additionalResources>
 					<bundleName>TRiCYCLE</bundleName>
 					<mainClass>org.tridas.io.gui.App</mainClass>
@@ -188,6 +194,7 @@
 		        	<generateToc>1</generateToc>
 		        	<generateIndex>1</generateIndex>
           			<includes>*.xml</includes>
+          			<targetDirectory>src/main/generated/manual</targetDirectory>
         		</configuration>
 		        
 			</plugin>

@@ -156,7 +156,7 @@ public class MainWindow extends JFrame {
 
 		HelpSet hs;
 		try {
-		    hs = new HelpSet(null, IOUtils.getFileInJarURL("help/jhelpset.hs"));
+		    hs = new HelpSet(null, IOUtils.getFileInJarURL("manual/jhelpset.hs"));
 		} catch (Exception ee) {
 		    System.out.println ("HelpSet not found");
 		    return;
