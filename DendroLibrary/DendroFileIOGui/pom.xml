@@ -45,6 +45,13 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.help</groupId>
+			<artifactId>javahelp</artifactId>
+			<version>2.0.02</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -150,6 +157,39 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-maven-plugin</artifactId>
+				<version>2.0.10</version>
+				<executions>
+		          <execution>
+		            <goals>
+		              <goal>generate-html</goal>
+		              <goal>generate-xhtml</goal>
+		              <goal>generate-pdf</goal>
+		              <goal>generate-javahelp</goal>
+
+		            </goals>
+		            <phase>package</phase>
+		          </execution>
+		        </executions>
+				
+				<dependencies>
+		          <dependency>
+		            <groupId>org.docbook</groupId>
+		            <artifactId>docbook-xml</artifactId>
+		            <version>4.4</version>
+		            <scope>runtime</scope>
+		          </dependency>
+		        </dependencies>
+		        
+		        <configuration>
+		        	<generateToc>1</generateToc>
+		        	<generateIndex>1</generateIndex>
+          			<includes>*.xml</includes>
+        		</configuration>
+		        
 			</plugin>
 		</plugins>
 	</build>
