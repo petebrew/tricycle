@@ -4,8 +4,15 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN" "http://java.sun.com/products/javahelp/toc_1_0.dtd">
 <toc version="1.0">
    <tocitem target="d0e2" text="TRiCYCLE Manual">
-      <tocitem target="d0e25" text="What is TRiCYCLE"/>
-      <tocitem target="d0e84" text="Installation"/>
-      <tocitem target="d0e117" text="How to use TRiCYCLE"/>
+      <tocitem target="d0e56" text="What is TRiCYCLE"/>
+      <tocitem target="d0e136" text="Installation"/>
+      <tocitem target="d0e166" text="How to use TRiCYCLE"/>
+      <tocitem target="d0e183" text="Options">
+         <tocitem target="d0e188" text="Character sets"/>
+         <tocitem target="d0e201" text="Metadata editor"/>
+         <tocitem target="d0e210" text="Naming convention"/>
+      </tocitem>
+      <tocitem target="d0e237" text="Help and more information"/>
+      <tocitem target="d0e261" text="Bibliography"/>
    </tocitem>
 </toc>
