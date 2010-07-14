@@ -1,0 +1,33 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Naming convention</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"><link rel="home" href="manual.html" title="TRiCYCLE Manual"><link rel="up" href="ch04.html" title="Chapter&nbsp;4.&nbsp;Options"><link rel="prev" href="ch04s02.html" title="Metadata editor"><link rel="next" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Help and more information"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" title="Naming convention"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e210"></a>Naming convention</h2></div></div></div><p> Some file formats can contain just one data series while other can contain many.
+                When converting from a multi-series format to a single series format this means that
+                one input file is converted to multiple output files. The naming convention is used
+                to determine how to name the output files. The naming convention relates to the
+                filename itself and not the file extension. The file extension is specific to the
+                output format chosen (e.g. Heidelberg files are .fh and TRiDaS files are .xml). </p><p>
+                </p><div class="variablelist"><dl><dt><span class="term">Numerical</span></dt><dd><p>This is the default naming convention. It uses the name of the
+                                input data file and appends an incrementing number if more than one
+                                output file is produced.</p></dd><dt><span class="term">UUID</span></dt><dd><p>This gives all output files a random named based on Universally
+                                Unique Identifiers (UUIDs). This is a 36 character hexidecimal code
+                                which due to the astronomically large number of possible
+                                combinations is garanteed to be universally unique. A typical
+                                filename will look like:
+                                550e8400-e29b-41d4-a716-446655440000.</p></dd><dt><span class="term">Hierarchical</span></dt><dd><p>This uses the hierarchical structure of the TRiDaS data model to
+                                provide a meaningful name for the output file. It joins together the
+                                title of each entity in the file beginning with the project name
+                                through to the series name. For files that contain multiple series,
+                                the name will contain details of all the entities shared by all the
+                                series in the file. For example, if a file contains several series
+                                from the same sample, then the file name will be
+                                projectTitle-objectTitle-elementTitle-sampleTitle. If the file
+                                contains several series from different samples of the same object,
+                                then the file would be projectTitle-objectTitle. If multiple output
+                                files end up with the same name then like the numerical convention
+                                described above, the files will have an incremental number appended
+                                to the end. Unfortunately, most input data files do not contain rich
+                                name information so files end up being called
+                                unnamedProject-unnamedObject-unnamedElement etc. This convention is
+                                therefore more appropriate when converting from TRiDaS to other
+                                formats. </p></dd></dl></div><p>
+            </p></div></body></html>
