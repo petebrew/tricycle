@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" type="xml"?>
-<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+            >
     <info>
-        
-        <title>TRiCYCLE Manual</title>
-        
-        <authorgroup>
+        <productname>TRiCYCLE</productname>
+        <productnumber>0.1</productnumber>
+                <title>TRiCYCLE Manual</title><authorgroup>
             <author>
                 <personname>Peter Brewer</personname>
                 <address>
@@ -28,16 +28,10 @@
                 </address></author>
         </authorgroup>
         <date>14 July 2010</date>
-    </info>
-    
-    <toc/>
-    
-    <chapter>
+    </info><toc/><chapter>
         <title>What is TRiCYCLE</title>
         <para>TRiCYCLE is a universal dendrochronology file format converter. It currently has
-            support for reading and writing 17 different file formats:
-            
-            <itemizedlist>
+            support for reading and writing 17 different file formats: <itemizedlist>
                 <listitem>
                     <para>Belfast Apple</para>
                 </listitem>
@@ -90,16 +84,11 @@
                     <para>WinDENDRO</para>
                 </listitem>
             </itemizedlist></para>
-        
         <para> TRiCYCLE extracts both data and any metadata present in files and converts them to
             the Tree-Ring Data Standard (TRiDas) data model. As TRiDaS is capable of representing
             the full range of dendro data and metadata, it is then possible to write out the file to
-            any one of the supported formats. 
-        </para>
-        
-        <para> Key features of TRiCYCLE are: 
-            
-            <itemizedlist>
+            any one of the supported formats. </para>
+        <para> Key features of TRiCYCLE are: <itemizedlist>
                 <listitem>
                     <para>Seamless support for units where possible</para>
                 </listitem>
@@ -114,18 +103,12 @@
                     <para>Comprehensive warning and exception system which provides detailed
                         feedback when errors are detected in files</para>
                 </listitem>
-            </itemizedlist>
-        
-        </para>
-        
+            </itemizedlist></para>
         <para>For a complete discussion of TRiCYCLE and its underlying libraries please see
                     <citation><xref linkend="BrewerInReview" endterm="BrewerInReviewCite"
-                    /></citation>
+                /></citation>
         </para>
-        
-    </chapter>
-    
-    <chapter>
+    </chapter><chapter>
         <title>Installation</title>
         <para>TRiCYCLE is a Java application and so can be installed on any modern operating system.
             To make installation more familiar though we have packaged it up into native installers
@@ -166,9 +149,7 @@
                 </varlistentry>
             </variablelist>
         </para>
-    </chapter>
-    
-    <chapter>
+    </chapter><chapter>
         <title>How to use TRiCYCLE</title>
         <para>The first step is to specify the format of your input file(s). Choose your input file
             format from the pull down list on the File List page. Then select the file(s) that you'd
@@ -192,18 +173,35 @@
             to a single series within the file or the input file as a whole. The warning messages
             are displayed to illustrate the context of the warning. Longer warnings will scroll of
             the edge of the window, but if you hover your mouse over the warning a tooltip will show
-            the entire message.
-            <tip>
-                <para>If you would like to preview the result of the conversion process you can double
-                click on the output files and they will be displayed in a text viewer. This option is
-                not, however, available for binary formats such as CATRAS and Excel.
-                </para>
-            </tip> 
+            the entire message.</para>
+        
+        <para>
+            If you would like to preview the result of the conversion process you can
+            double click on the output files and they will be displayed in a text viewer.
+            This option is not, however, available for binary formats such as CATRAS and
+            Excel.
         </para>
-
+            
         <para> Once you are happy with the results of the conversion you can save the files
             permanently to disk by pressing the save button. It will offer you the option of
-            specifying which folder to save the files to. </para>
+            specifying which folder to save the files to.
+        </para>
+        
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" format="png" width="9cm"
+                        fileref="../../main/resources/images/screenshot1.png" />
+                </imageobject>
+                <textobject>
+                    <para>Screenshot of the convert tab showing three TRiDaS files converted into
+                        multiple Sheffied format files. Note that one of the files includes a
+                        warning that a series is unrepresentable in Sheffield format.</para>
+                </textobject>
+            </inlinemediaobject>
+        </para>
+        
+        
     </chapter>
     
     <chapter>
@@ -216,13 +214,12 @@
                 written. The character set is the system for pairing computer character codes with
                 the character glyphes that we read. The widely used standard was originally ASCII,
                 but this does not include diacritic characters, and characters specific to certain
-                languages. There have since been many character encodings proposed (e.g ISO
-                8859-1 for Western Europe and ISO 8859-7 for Greece) as well as some that are
-                specific to Windows and Mac operating systems (e.g. Windows-1252 and MacRoman). The 
-                character set this is becoming most widely used is the Unicode UTF-8. This is capable
-                of representing all 107,000+ distinct characters while remaining backwards compatible
-                with ASCII for the 128 characters that it ASCII is able to represent.   
-            </para>                    
+                languages. There have since been many character encodings proposed (e.g ISO 8859-1
+                for Western Europe and ISO 8859-7 for Greece) as well as some that are specific to
+                Windows and Mac operating systems (e.g. Windows-1252 and MacRoman). The character
+                set this is becoming most widely used is the Unicode UTF-8. This is capable of
+                representing all 107,000+ distinct characters while remaining backwards compatible
+                with ASCII for the 128 characters that it ASCII is able to represent. </para>
             <para> If an incorrect character encoding is used to interpret a file, normally the
                 majority of characters will display correctly (where the character sets share the
                 same encodings) but more unusual characters will be displayed incorrectly -
@@ -330,27 +327,19 @@
                 </variablelist>
             </para>
         </section>
-    </chapter>
-    
-    
-    <chapter>
+    </chapter><chapter>
         <title>Help and more information</title>
-        <para>The best place to start is through the TRiDaS website (
-            <link xlink:href="http://www.tridas.org">www.tridas.org</link>) and the Dendro Data Standards
-            forum.  The forum is a email list for the discussion of TRiDaS and other dendro data standards
-            issues.  It is open to all to join by emailing 
-            <link xlink:href="mailto:p.brewer@cornell.edu">Peter Brewer</link>.  
-        </para>
-        
-        <para>
-            TRiCYCLE is an open source product therefore we are very pleased to welcome anyone that would like
-            to assist in its development.  This obviously includes programmers, but also people willing to
-            help with documentation and translations too.  To find out more information please contact
-            <link xlink:href="mailto:p.brewer@cornell.edu">Peter Brewer</link>.
-        </para>
+        <para>The best place to start is through the TRiDaS website ( <link
+                xlink:href="http://www.tridas.org">www.tridas.org</link>) and the Dendro Data
+            Standards forum. The forum is a email list for the discussion of TRiDaS and other dendro
+            data standards issues. It is open to all to join by emailing <link
+                xlink:href="mailto:p.brewer@cornell.edu">Peter Brewer</link>. </para>
+        <para> TRiCYCLE is an open source product therefore we are very pleased to welcome anyone
+            that would like to assist in its development. This obviously includes programmers, but
+            also people willing to help with documentation and translations too. To find out more
+            information please contact <link xlink:href="mailto:p.brewer@cornell.edu">Peter
+                Brewer</link>. </para>
     </chapter>
-    
-    
     <acknowledgements>
         <para> Funding for the development of TRiCYCLE has been provided by NWO section Humanities
             through the DCCD project and through the various patrons of the Malcolm and Carolyn
@@ -361,8 +350,6 @@
             Knibbe, George Lambert, Catherine Lavier, Hubert Leuschner, Martin Munro, Ian Tyers and
             Ronald Visser for assistance understanding many of the data formats implemented. </para>
     </acknowledgements>
-    
-    
     <bibliography>
         <biblioentry role="article"><authorgroup>
                 <author>
@@ -489,6 +476,4 @@
             <title>Dendro For Windows program guide</title>
             <publishername>ARCUS Report 500</publishername>
         </biblioentry>
-    </bibliography>
-
-</book>
+    </bibliography></book>

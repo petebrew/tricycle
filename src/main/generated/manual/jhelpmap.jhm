@@ -4,13 +4,13 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN" "http://java.sun.com/products/javahelp/map_1_0.dtd">
 <map version="1.0">
    <mapID target="d0e2" url="manual.html"/>
-   <mapID target="d0e56" url="ch01.html"/>
-   <mapID target="d0e136" url="ch02.html"/>
-   <mapID target="d0e166" url="ch03.html"/>
-   <mapID target="d0e183" url="ch04.html"/>
-   <mapID target="d0e188" url="ch04.html#d0e188"/>
-   <mapID target="d0e201" url="ch04s02.html"/>
-   <mapID target="d0e210" url="ch04s03.html"/>
-   <mapID target="d0e237" url="ch05.html"/>
-   <mapID target="d0e261" url="bi01.html"/>
+   <mapID target="d0e60" url="ch01.html"/>
+   <mapID target="d0e139" url="ch02.html"/>
+   <mapID target="d0e169" url="ch03.html"/>
+   <mapID target="d0e193" url="ch04.html"/>
+   <mapID target="d0e198" url="ch04.html#d0e198"/>
+   <mapID target="d0e211" url="ch04s02.html"/>
+   <mapID target="d0e220" url="ch04s03.html"/>
+   <mapID target="d0e247" url="ch05.html"/>
+   <mapID target="d0e271" url="bi01.html"/>
 </map>
