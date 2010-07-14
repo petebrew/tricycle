@@ -164,6 +164,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--  Java Help -->
 			<plugin>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-maven-plugin</artifactId>
@@ -171,16 +172,12 @@
 				<executions>
 		          <execution>
 		            <goals>
-		              <goal>generate-html</goal>
-		              <goal>generate-xhtml</goal>
-		              <goal>generate-pdf</goal>
 		              <goal>generate-javahelp</goal>
-
+		              <goal>generate-pdf</goal>
 		            </goals>
 		            <phase>package</phase>
 		          </execution>
 		        </executions>
-				
 				<dependencies>
 		          <dependency>
 		            <groupId>org.docbook</groupId>
@@ -188,16 +185,21 @@
 		            <version>4.4</version>
 		            <scope>runtime</scope>
 		          </dependency>
-		        </dependencies>
-		        
+		        </dependencies> 
 		        <configuration>
 		        	<generateToc>1</generateToc>
 		        	<generateIndex>1</generateIndex>
           			<includes>*.xml</includes>
           			<targetDirectory>src/main/generated/manual</targetDirectory>
+          			<htmlhelpHhcFoldersInsteadBooks>1</htmlhelpHhcFoldersInsteadBooks>	
+          			<entities>
+			            <entity>
+			              <name>version</name>
+			              <value>${{version}}</value>
+			            </entity>
+			        </entities>
         		</configuration>
-		        
-			</plugin>
+			</plugin>			
 		</plugins>
 	</build>
 </project>
