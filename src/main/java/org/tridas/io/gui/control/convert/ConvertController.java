@@ -193,15 +193,33 @@ public class ConvertController extends FrontController {
 		MainWindowModel mwm = MainWindowModel.getInstance();
 		mwm.setLock(true);
 		
+		final OverwritePopup[] popup = { null }; // have to have it as an array so we can make it final for bug 213
+		
 		int currFile = 0;
 		final SavingProgress savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow(), model);
 		// i have to do this in a different thread
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				while(popup[0] != null){ // for bug 213
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {}
+				}
 				savingProgress.setVisible(true);
 			}
 		});
+		int slept = 0;
+		while(!savingProgress.isVisible()){
+			try {
+				Thread.sleep(50); // for bug 213
+			} catch (InterruptedException e) {}
+			slept+=50;
+			if(slept >= 5000){
+				log.error("Slept for 5 seconds but saving progress window is still not open. breaking");
+				break;
+			}
+		}
 		
 		saveRunning = true;
 		Response response = null;
@@ -239,9 +257,10 @@ public class ConvertController extends FrontController {
 							OverwriteModel om = new OverwriteModel();
 							om.setAll(false);
 							om.setMessage(I18n.getText("control.convert.overwrite", filename, filename+"(1)"));
-							OverwritePopup popup = new OverwritePopup(om, ModelLocator.getInstance().getMainWindow());
+							popup[0] = new OverwritePopup(om, ModelLocator.getInstance().getMainWindow());
 							// this should hang until the window is closed
-							popup.setVisible(true);
+							popup[0].setVisible(true);
+							popup[0] = null; // so the saving dialog knows it's ok to show itself
 							
 							response = om.getResponse();
 							all = om.isAll();
