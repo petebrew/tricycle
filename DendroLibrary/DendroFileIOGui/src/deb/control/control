@@ -1,0 +1,9 @@
+Package: TRiCYCLE
+Version: 0.1
+Section: misc
+Priority: optional
+Architecture: all
+Depends: sun-java6-jre
+Maintainer: Peter Brewer <p.brewer@cornell.edu>
+Description: jetty java servlet container
+Distribution: development
