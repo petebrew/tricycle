@@ -37,7 +37,7 @@ import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
 
-import javax.help.*;
+//import javax.help.*;
 import javax.swing.*;
 import java.net.URL;
 

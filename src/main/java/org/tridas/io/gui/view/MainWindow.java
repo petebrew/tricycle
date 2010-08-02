@@ -22,9 +22,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
-import javax.help.CSH;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
+//import javax.help.CSH;
+//import javax.help.HelpBroker;
+//import javax.help.HelpSet;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -153,7 +153,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-
+/*
 		HelpSet hs;
 		try {
 		    hs = new HelpSet(null, IOUtils.getFileInJarURL("manual/jhelpset.hs"));
@@ -163,7 +163,7 @@ public class MainWindow extends JFrame {
 		}
 		HelpBroker hb = hs.createHelpBroker();
 		helpMenuButton.addActionListener(new CSH.DisplayHelpFromSource(hb));
-		
+	*/	
 		logMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
