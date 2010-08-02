@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=0.1
+Type=Application
+Name=TRiCYCLE
+Comment=Dendrochronology data file converter
+TryExec=tricycle
+Exec=tricycle
+Icon=/usr/share/pixmaps/tricycle.xpm
+Terminal=false
+Categories=Utility;Science
