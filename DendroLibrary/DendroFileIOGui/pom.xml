@@ -113,43 +113,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Create MacOSX native executable -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>osxappbundle-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<configuration>
-					<additionalResources>
-						<fileSet>
-							<directory>${basedir}/package-includes</directory>
-							<includes>
-								<include>**</include>
-							</includes>
-						</fileSet>
-						<fileSet>
-							<directory>${basedir}/src/main/generated/manual/</directory>
-							<includes>
-								<include>manual.pdf</include>
-							</includes>
-						</fileSet>
-					</additionalResources>
-					<bundleName>TRiCYCLE</bundleName>
-					<mainClass>org.tridas.io.gui.App</mainClass>
-					<jvmVersion>1.6+</jvmVersion>
-					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
-					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
-					<vmOptions>-Dapple.laf.useScreenMenuBar=true
-						-Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+		
 			
 			<!--  Java Help -->
 			<plugin>
@@ -211,7 +175,7 @@
 	        </executions>
 	      </plugin>
 			
-			<!--  Create a DEB installer -->
+			<!--  Create a Linux native installer -->
 	        <plugin>
 	            <artifactId>jdeb</artifactId>
 	            <groupId>org.vafer</groupId>
@@ -298,6 +262,45 @@
 		      </executions>
 		    </plugin>
 	        
+	        
+	        <!-- Create MacOSX native executable -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>osxappbundle-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<configuration>
+					<additionalResources>
+						<fileSet>
+							<directory>${basedir}/package-includes</directory>
+							<includes>
+								<include>**</include>
+							</includes>
+						</fileSet>
+						<fileSet>
+							<directory>${basedir}/src/main/generated/manual/</directory>
+							<includes>
+								<include>manual.pdf</include>
+							</includes>
+						</fileSet>
+					</additionalResources>
+					<bundleName>TRiCYCLE</bundleName>
+					<zipFile>${project.build.directory}/${project.build.finalName}-app.zip</zipFile>
+					<mainClass>org.tridas.io.gui.App</mainClass>
+					<jvmVersion>1.6+</jvmVersion>
+					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
+					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
+					<vmOptions>-Dapple.laf.useScreenMenuBar=true
+						-Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 	        
 		</plugins>
 	</build>
