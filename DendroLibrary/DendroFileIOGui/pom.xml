@@ -253,6 +253,7 @@
 		            <headerType>gui</headerType>
 		            <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
 		            <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
+		            <icon>src/main/resources/icons/application.ico</icon>
 		            <errTitle>TRiCYCLE</errTitle>
 		            <jre>
 		              <minVersion>1.6.0</minVersion>
