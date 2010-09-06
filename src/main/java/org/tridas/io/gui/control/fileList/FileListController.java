@@ -89,15 +89,10 @@ public class FileListController extends FrontController {
 		
 		FileListModel model = FileListModel.getInstance();
 		
-		if (files.length == 1) {
-			model.setFileField(files[0].getAbsolutePath());
+		HashSet<String> s = new HashSet<String>();
+		for (File file : files) {
+			s.add(file.getAbsolutePath());
 		}
-		else {
-			HashSet<String> s = new HashSet<String>();
-			for (File file : files) {
-				s.add(file.getAbsolutePath());
-			}
-			model.addInputFiles(s);
-		}
+		model.addInputFiles(s);
 	}
 }
