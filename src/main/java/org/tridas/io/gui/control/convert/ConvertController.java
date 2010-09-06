@@ -438,8 +438,12 @@ public class ConvertController extends FrontController {
 			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
 			
 			if(argNaming instanceof NumericalNamingConvention){
-				String justFile = file.substring(file.lastIndexOf(File.separatorChar)+1, file.lastIndexOf('.'));
-				((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
+				if(file.contains(".")){
+					String justFile = file.substring(file.lastIndexOf(File.separatorChar)+1, file.lastIndexOf('.'));
+					((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
+				}else{
+					((NumericalNamingConvention) argNaming).setBaseFilename(file);
+				}
 			}
 			writer.setNamingConvention(argNaming);
 			
