@@ -126,6 +126,8 @@ public class ConvertController extends FrontController {
 				strings = file.file.saveToString();
 				worked = strings != null;
 			} catch (Exception e) {
+				log.error("Could not convert file '"+file.toString()+"' to strings");
+				log.dbe(DebugLevel.L2_ERROR, e);
 				worked = false;
 			}
 			
