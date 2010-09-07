@@ -29,7 +29,8 @@ import com.dmurph.mvc.model.AbstractRevertibleModel;
  * @author Daniel Murphy
  */
 public class ConfigModel extends AbstractRevertibleModel {
-	
+	private static final long serialVersionUID = 1L;
+
 	private static final ConfigModel model = new ConfigModel();
 	
 	private String namingConvention = "Numerical";

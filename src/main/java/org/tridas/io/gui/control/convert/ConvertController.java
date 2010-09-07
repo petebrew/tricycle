@@ -555,7 +555,7 @@ public class ConvertController extends FrontController {
 					DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
 					if (file.getDefaults().getWarnings().size() != 0) {
 						for (ConversionWarning warning : file.getDefaults().getWarnings()) {
-							DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toString());
+							DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toStringWithField());
 							fileNode.add(warningNode);
 						}
 						warnings = true;
@@ -569,7 +569,7 @@ public class ConvertController extends FrontController {
 				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(
 						I18n.getText("control.convert.readerWarnings"));
 				for (ConversionWarning warning : s.reader.getWarnings()) {
-					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toStringWithField());
 					readerWarnings.add(warn);
 				}
 				leaf.add(readerWarnings);
@@ -580,7 +580,7 @@ public class ConvertController extends FrontController {
 				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(
 						I18n.getText("control.convert.writerWarnings"));
 				for (ConversionWarning warning : s.writer.getWarnings()) {
-					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toStringWithField());
 					writerWarnings.add(warn);
 				}
 				leaf.add(writerWarnings);

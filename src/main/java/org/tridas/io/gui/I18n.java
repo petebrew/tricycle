@@ -134,19 +134,17 @@ public class I18n {
 						return key;
 					}
 					
-					@SuppressWarnings("unchecked")
 					@Override
-					public Enumeration getKeys() {
+					public Enumeration<String> getKeys() {
 						return EMPTY_ENUMERATION;
 					}
 					
-					@SuppressWarnings("unchecked")
-					private final Enumeration EMPTY_ENUMERATION = new Enumeration() {
+					private final Enumeration<String> EMPTY_ENUMERATION = new Enumeration<String>() {
 						public boolean hasMoreElements() {
 							return false;
 						}
 						
-						public Object nextElement() {
+						public String nextElement() {
 							throw new NoSuchElementException();
 						}
 					};

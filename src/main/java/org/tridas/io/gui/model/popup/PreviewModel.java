@@ -24,6 +24,7 @@ import com.dmurph.mvc.model.AbstractModel;
  * @author Daniel Murphy
  */
 public class PreviewModel extends AbstractModel {
+	private static final long serialVersionUID = 1L;
 	
 	private String fileString = null;
 	private String filename = null;

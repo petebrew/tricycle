@@ -30,9 +30,9 @@ import com.dmurph.mvc.ICloneable;
 /**
  * @author daniel
  */
-@SuppressWarnings("serial")
 public class MetadataTableModel extends AbstractTableModel implements ICloneable {
-	
+	private static final long serialVersionUID = 1L;
+
 	public static final String[] columns = {"Property", "Value", "Overriding"};
 	private final HashMap<Enum, AbstractDefaultValue> map = new HashMap<Enum, AbstractDefaultValue>();
 		

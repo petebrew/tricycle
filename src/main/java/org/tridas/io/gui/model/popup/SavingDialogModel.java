@@ -25,6 +25,7 @@ import com.dmurph.mvc.model.AbstractModel;
  *
  */
 public class SavingDialogModel extends AbstractModel {
+	private static final long serialVersionUID = 1L;
 	
 	private int savingPercent = 0;
 	private String savingFilename = null;
