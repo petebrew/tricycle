@@ -17,6 +17,8 @@ package org.tridas.io.gui.control;
 
 import java.awt.Dimension;
 
+import javax.swing.ToolTipManager;
+
 import org.apache.commons.lang.StringUtils;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
@@ -62,6 +64,7 @@ public class MainWindowController extends FrontController {
 		view.setVisible(true);
 		about = new AboutWindow(view);
 		options = new OptionsWindow(view);
+		ToolTipManager.sharedInstance().setDismissDelay(10000);
 	}
 	
 	public void quit(MVCEvent argEvent) {
