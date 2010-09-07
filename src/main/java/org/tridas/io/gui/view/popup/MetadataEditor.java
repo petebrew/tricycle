@@ -34,7 +34,7 @@ import javax.swing.table.TableModel;
 
 import org.tridas.io.defaults.AbstractDefaultValue;
 import org.tridas.io.gui.components.DefaultFieldEditor;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.MetadataEditorModel;
 
 /**
@@ -77,7 +77,7 @@ public class MetadataEditor extends JDialog {
 	 * 
 	 */
 	private void populateLocale() {
-		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
+		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 	}
 	
 	/**

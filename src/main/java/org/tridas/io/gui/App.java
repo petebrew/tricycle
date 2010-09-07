@@ -19,16 +19,18 @@ import javax.swing.UIManager;
 
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.control.MainWindowController;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
+import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.monitor.EventMonitor;
 
 public class App {
 	
 	private static final SimpleLogger log = new SimpleLogger(App.class);
 	
 	// here to instantiate controllers
-	protected static final ModelLocator model = ModelLocator.getInstance();
+	protected static final TricycleModelLocator model = TricycleModelLocator.getInstance();
 	
 	/**
 	 * @param args
@@ -41,6 +43,9 @@ public class App {
 				log.warn(I18n.getText("lookfeel.nimbus"));
 			}
 		}
+		EventMonitor monitor = new EventMonitor( null, 400);
+		MVC.setGlobalEventMonitor(monitor);
+		monitor.setVisible(true);
 		
 		(new MVCEvent(MainWindowController.STARTUP)).dispatch();
 	}

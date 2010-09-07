@@ -35,7 +35,7 @@ import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertController;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.SavingDialogModel;
 
 import com.dmurph.mvc.MVCEvent;
@@ -109,7 +109,7 @@ public class SavingProgress extends JDialog {
 	 * 
 	 */
 	private void populateLocale() {
-		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
+		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.save.title"));
 		setSavingFilename("");
 		cancel.setText(I18n.getText("view.popup.save.cancel"));

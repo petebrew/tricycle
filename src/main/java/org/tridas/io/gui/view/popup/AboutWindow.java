@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 
 /**
@@ -92,7 +92,7 @@ public class AboutWindow extends JDialog {
 	}
 	
 	private void populateLocale() {
-		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
+		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.about.title"));
 		info.setText(I18n.getText("view.popup.about.text"));
 	}

@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
+import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
@@ -40,17 +41,19 @@ import org.tridas.io.exceptions.ConversionWarningException;
 import org.tridas.io.exceptions.IncompleteTridasDataException;
 import org.tridas.io.exceptions.IncorrectDefaultFieldsException;
 import org.tridas.io.exceptions.InvalidDendroFileException;
+import org.tridas.io.formats.tridas.TridasFile;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 import org.tridas.io.gui.model.popup.OverwriteModel;
 import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.model.popup.SavingDialogModel;
 import org.tridas.io.gui.model.popup.OverwriteModel.Response;
+import org.tridas.io.gui.util.XMLFormatter;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.ConvertProgress;
 import org.tridas.io.gui.view.popup.OverwritePopup;
@@ -80,8 +83,7 @@ public class ConvertController extends FrontController {
 	public static final String PREVIEW = "CONVERT_PREVIEW";
 	public static final String CANCEL_CONVERT = "CONVERT_CANCEL_CONVERT";
 	public static final String CANCEL_SAVE = "CONVERT_CANCEL_SAVE";
-
-		
+	
 	// TODO get rid of this, use model nodes instead
 	private ArrayList<ReaderWriterObject> structList = new ArrayList<ReaderWriterObject>();
 	private volatile boolean convertRunning = false;
@@ -95,11 +97,11 @@ public class ConvertController extends FrontController {
 		registerCommand(CANCEL_SAVE, "cancelSave");
 	}
 	
-	public void cancelConvert(MVCEvent argEvent){
+	public void cancelConvert(MVCEvent argEvent) {
 		convertRunning = false;
 	}
 	
-	public void cancelSave(MVCEvent argEvent){
+	public void cancelSave(MVCEvent argEvent) {
 		saveRunning = false;
 	}
 	
@@ -128,13 +130,21 @@ public class ConvertController extends FrontController {
 			}
 			
 			if (worked) {
-				pmodel.setFileString(StringUtils.join(strings, "\n"));
+				String all = StringUtils.join(strings, "\n");
+				if(file.file instanceof TridasFile){
+					try{
+						all = XMLFormatter.format(all);
+					}catch(Exception e){
+						log.error("Error formatting xml text: "+all);
+					}
+				}
+				pmodel.setFileString(all);
 			}
 			else {
 				pmodel.setFileString(I18n.getText("view.popup.preview.error"));
 			}
 			
-			MainWindow window = ModelLocator.getInstance().getMainWindow();
+			MainWindow window = TricycleModelLocator.getInstance().getMainWindow();
 			Dimension size = window.getSize();
 			
 			PreviewWindow preview = new PreviewWindow(window, size.width - 40, size.height - 40, pmodel);
@@ -154,149 +164,172 @@ public class ConvertController extends FrontController {
 			e1.printStackTrace();
 		}
 		
-		File folder = null;
-		JFileChooser fd = new JFileChooser();
-		fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fd.setMultiSelectionEnabled(false);
-		File lastDirectory = ModelLocator.getInstance().getLastDirectory();
-		if(lastDirectory != null){
-			fd.setCurrentDirectory(lastDirectory);
-		}
-		
-		int retValue = fd.showSaveDialog(ModelLocator.getInstance().getMainWindow());
-		ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
-		if (retValue == JFileChooser.APPROVE_OPTION) {
-			folder = fd.getSelectedFile();
-		}
-		else {
-			return;
-		}
-		
-		SavingDialogModel model = new SavingDialogModel();
-		model.setSavingFilename("");
-		model.setSavingPercent(0);
-		
-		int totalFiles = 0;
-		for (ReaderWriterObject p : structList) {
-			if (p.writer == null) {
-				continue;
-			}
-			for (IDendroFile f : p.writer.getFiles()) {
-				totalFiles++;
-			}
-		}
-		if (totalFiles == 0) {
-			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noFiles"), "", JOptionPane.PLAIN_MESSAGE);
-			return;
-		}
-		
 		MainWindowModel mwm = MainWindowModel.getInstance();
-		mwm.setLock(true);
+		SavingProgress storedSavingProgress = null;
+		final OverwritePopup[] popup = {null}; // have to have it as an array so we can
+												// make it final for bug 213
 		
-		final OverwritePopup[] popup = { null }; // have to have it as an array so we can make it final for bug 213
-		
-		int currFile = 0;
-		final SavingProgress savingProgress = new SavingProgress(ModelLocator.getInstance().getMainWindow(), model);
-		// i have to do this in a different thread
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				while(popup[0] != null){ // for bug 213
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {}
+		// surround it all with try, so no matter what happens we will close the saving
+		// dialog and
+		// unlock the gui
+		try {
+			
+			File folder = null;
+			JFileChooser fd = new JFileChooser();
+			fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			fd.setMultiSelectionEnabled(false);
+			File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
+			if (lastDirectory != null) {
+				fd.setCurrentDirectory(lastDirectory);
+			}
+			
+			int retValue = fd.showSaveDialog(TricycleModelLocator.getInstance().getMainWindow());
+			TricycleModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
+			if (retValue == JFileChooser.APPROVE_OPTION) {
+				folder = fd.getSelectedFile();
+			}
+			else {
+				return;
+			}
+			
+			SavingDialogModel model = new SavingDialogModel();
+			model.setSavingFilename("");
+			model.setSavingPercent(0);
+			
+			int totalFiles = 0;
+			for (ReaderWriterObject p : structList) {
+				if (p.writer == null) {
+					continue;
 				}
-				savingProgress.setVisible(true);
-			}
-		});
-		int slept = 0;
-		while(!savingProgress.isVisible()){
-			try {
-				Thread.sleep(50); // for bug 213
-			} catch (InterruptedException e) {}
-			slept+=50;
-			if(slept >= 5000){
-				log.error("Slept for 5 seconds but saving progress window is still not open. breaking");
-				break;
-			}
-		}
-		
-		saveRunning = true;
-		Response response = null;
-		boolean all = false;
-		for (int i = 0; i < structList.size(); i++) {
-			if(!saveRunning){
-				break;
-			}
-			ReaderWriterObject p = structList.get(i);
-			if (p.writer != null) {
-				
-				String outputFolder = folder.getAbsolutePath();
-				// custom implementation of saveAllToDisk, as we need to
-				// keep track of each dendro file for the progress window
-				
-				if (!outputFolder.endsWith(File.separator) && !outputFolder.equals("")) {
-					outputFolder += File.separator;
+				for (IDendroFile f : p.writer.getFiles()) {
+					totalFiles++;
 				}
-				
-				IDendroFile[] files = p.writer.getFiles();
-				for (int j=0; j<files.length; j++) {
-					IDendroFile dof = files[j];
-					if(!saveRunning){
-						break;
+			}
+			if (totalFiles == 0) {
+				JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noFiles"), "",
+						JOptionPane.PLAIN_MESSAGE);
+				return;
+			}
+			
+			mwm.setLock(true);
+			
+			int currFile = 0;
+			final SavingProgress savingProgress = new SavingProgress(
+					TricycleModelLocator.getInstance().getMainWindow(), model);
+			storedSavingProgress = savingProgress; // so we can shut it down at the end
+			
+			// i have to do this in a different thread
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					while (popup[0] != null) { // for bug 213
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {}
 					}
-					currFile++;
-					String filename = p.writer.getNamingConvention().getFilename(dof);
+					savingProgress.setVisible(true);
+				}
+			});
+			
+			// waiting for saving dialog window to become visible
+			int slept = 0;
+			while (!savingProgress.isVisible()) {
+				try {
+					Thread.sleep(50); // for bug 213
+				} catch (InterruptedException e) {}
+				slept += 50;
+				if (slept >= 5000) {
+					log.error("Slept for 5 seconds but saving progress window is still not open. breaking");
+					break;
+				}
+			}
+			
+			// start the saving loop
+			saveRunning = true;
+			Response response = null;
+			boolean all = false;
+			for (int i = 0; i < structList.size(); i++) {
+				if (!saveRunning) {
+					break;
+				}
+				ReaderWriterObject p = structList.get(i);
+				if (p.writer != null) {
 					
-					model.setSavingFilename(filename + "." + dof.getExtension());
+					String outputFolder = folder.getAbsolutePath();
+					// custom implementation of saveAllToDisk, as we need to
+					// keep track of each dendro file for the progress window
 					
-					// check to see if it exists:
-					File file = new File(outputFolder+File.separator+filename + "." + dof.getExtension());
-					if(file.exists()){
-						if(response == null){
-							OverwriteModel om = new OverwriteModel();
-							om.setAll(false);
-							om.setMessage(I18n.getText("control.convert.overwrite", filename, filename+"(1)"));
-							popup[0] = new OverwritePopup(om, ModelLocator.getInstance().getMainWindow());
-							// this should hang until the window is closed
-							popup[0].setVisible(true);
-							popup[0] = null; // so the saving dialog knows it's ok to show itself
+					if (!outputFolder.endsWith(File.separator) && !outputFolder.equals("")) {
+						outputFolder += File.separator;
+					}
+					
+					IDendroFile[] files = p.writer.getFiles();
+					for (int j = 0; j < files.length; j++) {
+						IDendroFile dof = files[j];
+						if (!saveRunning) {
+							break;
+						}
+						currFile++;
+						String filename = p.writer.getNamingConvention().getFilename(dof);
+						
+						model.setSavingFilename(filename + "." + dof.getExtension());
+						
+						// check to see if it exists:
+						File file = new File(outputFolder + File.separator + filename + "." + dof.getExtension());
+						if (file.exists()) {
+							if (response == null) {
+								OverwriteModel om = new OverwriteModel();
+								om.setAll(false);
+								om.setMessage(I18n.getText("control.convert.overwrite", filename, filename + "(1)"));
+								popup[0] = new OverwritePopup(om, TricycleModelLocator.getInstance().getMainWindow());
+								// this should hang until the window is closed
+								popup[0].setVisible(true);
+								popup[0] = null; // so the saving dialog knows it's ok to
+													// show itself
+								
+								response = om.getResponse();
+								all = om.isAll();
+								if (response == null) {
+									log.error("response is null");
+									j--;
+									currFile--;
+									continue;
+								}
+							}
 							
-							response = om.getResponse();
-							all = om.isAll();
-							if(response == null){
-								log.error("response is null");
-								j--;
-								currFile--;
-								continue;
+							switch (response) {
+								case IGNORE :
+									response = null;
+									continue;
+								case OVERWRITE :
+									p.writer.saveFileToDisk(outputFolder, dof);
+									break;
+								case RENAME :
+									p.writer.getNamingConvention().setFilename(dof, filename + "(1)");
+									j--;
+									currFile--;
+									response = null;
+									continue;
+							}
+							if (!all) {
+								response = null;
 							}
 						}
-						
-						switch(response){
-							case IGNORE:
-								response = null;
-								continue;
-							case OVERWRITE:
-								p.writer.saveFileToDisk(outputFolder, dof);
-								break;
-							case RENAME:
-								p.writer.getNamingConvention().setFilename(dof, filename+"(1)");
-								j--;
-								currFile--;
-								response = null;
-								continue;
-						}
-						if(!all){
-							response = null;
-						}
+						p.writer.saveFileToDisk(outputFolder, dof);
+						model.setSavingPercent(currFile * 100 / totalFiles);
 					}
-					p.writer.saveFileToDisk(outputFolder, dof);
-					model.setSavingPercent(currFile * 100 / totalFiles);
 				}
 			}
+		} catch (Exception e) {
+			log.error("Exception thrown while saving.");
+			log.dbe(DebugLevel.L2_ERROR, e);
+			throw new RuntimeException(e);
+		} finally {
+			if (storedSavingProgress != null) {
+				storedSavingProgress.setVisible(false);
+			}
+			mwm.setLock(false);
 		}
-		savingProgress.setVisible(false);
-		mwm.setLock(false);
 	}
 	
 	public void convert(MVCEvent argEvent) {
@@ -320,10 +353,8 @@ public class ConvertController extends FrontController {
 			}
 		}
 		if (!outputFormatFound) {
-			JOptionPane.showMessageDialog(null,
-					I18n.getText("control.convert.noOutput",outputFormat),
-					I18n.getText("control.convert.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noOutput", outputFormat),
+					I18n.getText("control.convert.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -337,10 +368,8 @@ public class ConvertController extends FrontController {
 			}
 		}
 		if (!inputFormatFound && !event.getInputFormat().equals(InputFormat.AUTO)) {
-			JOptionPane.showMessageDialog(null,
-					I18n.getText("control.convert.noInput",outputFormat),
-					I18n.getText("control.convert.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noInput", outputFormat),
+					I18n.getText("control.convert.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -354,130 +383,142 @@ public class ConvertController extends FrontController {
 			naming = new NumericalNamingConvention();
 		}
 		else {
-			JOptionPane.showMessageDialog(null,
-					I18n.getText("control.convert.noNaming", event.getNamingConvention()),
-					I18n.getText("control.convert.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noNaming", event.getNamingConvention()),
+					I18n.getText("control.convert.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-		convertFiles(fileList.getInputFiles().toArray(new String[0]),
-					 fileList.getInputFormat(),
-					 event.getReaderDefaults(),
-					 outputFormat,
-					 event.getWriterDefaults(),
-					 naming);
+		convertFiles(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
+				event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
 	}
 	
 	private void convertFiles(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
-							  String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) {
+			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) {
 		
 		MainWindowModel mwm = MainWindowModel.getInstance();
-		mwm.setLock(true);
-		ArrayList<ReaderWriterObject> list = new ArrayList<ReaderWriterObject>();
-		
-		ConvertingDialogModel model = new ConvertingDialogModel();
-		model.setConvertingFilename("");
-		model.setConvertingPercent(0);
-		
-		final ConvertProgress convertProgress = new ConvertProgress(ModelLocator.getInstance().getMainWindow(), model);
-		// i have to do this in a different thread
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				convertProgress.setVisible(true);
-			}
-		});
-		
-		convertRunning = true;
-		for (int i = 0; i < argFiles.length; i++) {
-			if(!convertRunning){
-				break;
-			}
-			String file = argFiles[i];
+		ConvertProgress storedConvertProgress = null;
+		try {
 			
-			model.setConvertingFilename(file);
+			mwm.setLock(true);
+			ArrayList<ReaderWriterObject> list = new ArrayList<ReaderWriterObject>();
 			
-			AbstractDendroFileReader reader;
-			if (argInputFormat.equals(InputFormat.AUTO)) {
-				String extension = file.substring(file.lastIndexOf(".") + 1);
-				log.debug("extention: " + extension);
-				reader = TridasIO.getFileReaderFromExtension(extension);
-			}
-			else {
-				reader = TridasIO.getFileReader(argInputFormat);
-			}
+			ConvertingDialogModel model = new ConvertingDialogModel();
+			model.setConvertingFilename("");
+			model.setConvertingPercent(0);
 			
-			ReaderWriterObject struct = new ReaderWriterObject();
-			list.add(struct);
-			struct.file = file;
-			
-			if (reader == null) {
-				struct.errorMessage = I18n.getText("control.convert.readerNull");
-				continue;
-			}
-			
-			try {
-				if(argInputDefaults == null){
-					reader.loadFile(file);
-				}else{
-					reader.loadFile(file, (IMetadataFieldSet) argInputDefaults.clone());
+			final ConvertProgress convertProgress = new ConvertProgress(TricycleModelLocator.getInstance()
+					.getMainWindow(), model);
+			storedConvertProgress = convertProgress;
+			// i have to do this in a different thread
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					convertProgress.setVisible(true);
 				}
-			} catch (IOException e) {
-				struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
-				continue;
-			} catch (InvalidDendroFileException e) {
-				struct.errorMessage = e.toString();
-				continue;
-			} catch (IncorrectDefaultFieldsException e) {
-				struct.errorMessage = e.toString() +" Please report bug.";
-			}
+			});
 			
-			TridasProject project = reader.getProject();
-			
-			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
-			
-			if(argNaming instanceof NumericalNamingConvention){
-				if(file.contains(".")){
-					String justFile = file.substring(file.lastIndexOf(File.separatorChar)+1, file.lastIndexOf('.'));
-					((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
-				}else{
-					((NumericalNamingConvention) argNaming).setBaseFilename(file);
+			convertRunning = true;
+			for (int i = 0; i < argFiles.length; i++) {
+				if (!convertRunning) {
+					break;
 				}
-			}
-			writer.setNamingConvention(argNaming);
-			
-			if (struct.errorMessage != null) {
-				continue;
-			}
-			
-			try {
-				if(argOutputDefaults == null){
-					writer.loadProject(project);
-				}else{
-					writer.loadProject(project, (IMetadataFieldSet) argOutputDefaults.clone());
+				String file = argFiles[i];
+				
+				model.setConvertingFilename(file);
+				
+				AbstractDendroFileReader reader;
+				if (argInputFormat.equals(InputFormat.AUTO)) {
+					String extension = file.substring(file.lastIndexOf(".") + 1);
+					log.debug("extention: " + extension);
+					reader = TridasIO.getFileReaderFromExtension(extension);
 				}
-			} catch (IncompleteTridasDataException e) {
-				struct.errorMessage = e.toString();
-			} catch (ConversionWarningException e) {
-				struct.errorMessage = e.toString();
-			} catch (IncorrectDefaultFieldsException e) {
-				struct.errorMessage = e.toString();
+				else {
+					reader = TridasIO.getFileReader(argInputFormat);
+				}
+				
+				ReaderWriterObject struct = new ReaderWriterObject();
+				list.add(struct);
+				struct.file = file;
+				
+				if (reader == null) {
+					struct.errorMessage = I18n.getText("control.convert.readerNull");
+					continue;
+				}
+				
+				try {
+					if (argInputDefaults == null) {
+						reader.loadFile(file);
+					}
+					else {
+						reader.loadFile(file, (IMetadataFieldSet) argInputDefaults.clone());
+					}
+				} catch (IOException e) {
+					struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
+					continue;
+				} catch (InvalidDendroFileException e) {
+					struct.errorMessage = e.toString();
+					continue;
+				} catch (IncorrectDefaultFieldsException e) {
+					struct.errorMessage = e.toString() + " Please report bug.";
+				}
+				
+				TridasProject project = reader.getProject();
+				
+				AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
+				
+				if (argNaming instanceof NumericalNamingConvention) {
+					if (file.contains(".")) {
+						String justFile = file.substring(file.lastIndexOf(File.separatorChar) + 1,
+								file.lastIndexOf('.'));
+						((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
+					}
+					else {
+						((NumericalNamingConvention) argNaming).setBaseFilename(file);
+					}
+				}
+				writer.setNamingConvention(argNaming);
+				
+				if (struct.errorMessage != null) {
+					continue;
+				}
+				
+				try {
+					if (argOutputDefaults == null) {
+						writer.loadProject(project);
+					}
+					else {
+						writer.loadProject(project, (IMetadataFieldSet) argOutputDefaults.clone());
+					}
+				} catch (IncompleteTridasDataException e) {
+					struct.errorMessage = e.toString();
+				} catch (ConversionWarningException e) {
+					struct.errorMessage = e.toString();
+				} catch (IncorrectDefaultFieldsException e) {
+					struct.errorMessage = e.toString();
+				}
+				
+				struct.reader = reader;
+				struct.writer = writer;
+				
+				if (writer.getFiles().length == 0) {
+					struct.errorMessage = I18n.getText("control.convert.noFilesWritten");
+				}
+				
+				model.setConvertingPercent(i * 100 / argFiles.length);
+			}
+			constructNodes(list, argNaming);
+			
+		} catch (Exception e) {
+			log.error("Exception thrown while converting.");
+			log.dbe(DebugLevel.L2_ERROR, e);
+			throw new RuntimeException(e);
+		} finally {
+			if (storedConvertProgress != null) {
+				storedConvertProgress.setVisible(false);
 			}
 			
-			struct.reader = reader;
-			struct.writer = writer;
-			
-			if(writer.getFiles().length == 0){
-				struct.errorMessage = I18n.getText("control.convert.noFilesWritten");
-			}
-			
-			model.setConvertingPercent(i * 100 / argFiles.length);
+			mwm.setLock(false);
 		}
-		convertProgress.setVisible(false);
-		
-		constructNodes(list, argNaming);
-		mwm.setLock(false);
 	}
 	
 	private void constructNodes(ArrayList<ReaderWriterObject> list, INamingConvention argNaming) {
@@ -507,7 +548,7 @@ public class ConvertController extends FrontController {
 			}
 			
 			boolean warnings = false;
-			if(s.writer != null){
+			if (s.writer != null) {
 				for (IDendroFile file : s.writer.getFiles()) {
 					DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
 					if (file.getDefaults().getWarnings().size() != 0) {
@@ -523,7 +564,8 @@ public class ConvertController extends FrontController {
 			
 			if (s.reader != null && s.reader.getWarnings().length != 0) {
 				warnings = true;
-				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(I18n.getText("control.convert.readerWarnings"));
+				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(
+						I18n.getText("control.convert.readerWarnings"));
 				for (ConversionWarning warning : s.reader.getWarnings()) {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
 					readerWarnings.add(warn);
@@ -533,7 +575,8 @@ public class ConvertController extends FrontController {
 			
 			if (s.writer != null && s.writer.getWarnings().length != 0) {
 				warnings = true;
-				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(I18n.getText("control.convert.writerWarnings"));
+				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(
+						I18n.getText("control.convert.writerWarnings"));
 				for (ConversionWarning warning : s.writer.getWarnings()) {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toString());
 					writerWarnings.add(warn);
@@ -543,7 +586,7 @@ public class ConvertController extends FrontController {
 			
 			if (warnings) {
 				s.warnings = true;
-				if(!fail){ // make sure we didn't already count this file as a fail
+				if (!fail) { // make sure we didn't already count this file as a fail
 					convWWarnings++;
 				}
 			}

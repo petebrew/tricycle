@@ -23,7 +23,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.dmurph.mvc.model.AbstractModel;
-import com.dmurph.mvc.util.MVCArrayList;
+import com.dmurph.mvc.model.MVCArrayList;
 
 /**
  * @author Daniel
