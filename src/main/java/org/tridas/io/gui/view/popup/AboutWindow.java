@@ -21,6 +21,12 @@ package org.tridas.io.gui.view.popup;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -93,7 +99,16 @@ public class AboutWindow extends JDialog {
 	
 	private void populateLocale() {
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
+		
+		// Extract build timestamp from Manifest
+		String timestamp = "Unknown";
+		if(this.getClass().getPackage().getImplementationVersion()!=null)
+		{
+			timestamp = this.getClass().getPackage().getImplementationVersion();
+			
+		}
+
 		setTitle(I18n.getText("view.popup.about.title"));
-		info.setText(I18n.getText("view.popup.about.text"));
+		info.setText(I18n.getText("view.popup.about.text", timestamp));
 	}
 }

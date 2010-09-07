@@ -45,7 +45,7 @@ public class App {
 		}
 		EventMonitor monitor = new EventMonitor( null, 400);
 		MVC.setGlobalEventMonitor(monitor);
-		monitor.setVisible(true);
+		monitor.setVisible(false);
 		
 		(new MVCEvent(MainWindowController.STARTUP)).dispatch();
 	}

@@ -56,19 +56,28 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+	
+		
+		<plugin>
+		  <groupId>org.codehaus.mojo</groupId>
+		  <artifactId>groovy-maven-plugin</artifactId>
+		  <executions>
+		      <execution>
+		          <phase>generate-resources</phase>
+		          <goals>
+		              <goal>execute</goal>
+		          </goals>
+		          <configuration>
+		              <source>
+		                      import java.util.Date
+		                      import java.text.MessageFormat
+		                      def timestamp = MessageFormat.format("{0,date,HH:mm dd-MM-yyyy }", new Date())
+		                      project.properties['buildtimestamp'] = timestamp
+		              </source>
+		          </configuration>
+		      </execution>
+		  </executions>
+		</plugin>
 		<!-- Replaced by Shade 	
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -107,7 +116,7 @@
 						</manifest>
 						<manifestEntries>
 							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
-							
+							<Implementation-Version>${buildtimestamp}</Implementation-Version>
 						</manifestEntries>
 					</archive>
 				</configuration>
