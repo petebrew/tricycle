@@ -23,7 +23,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.apache.commons.lang.StringUtils;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.view.MainWindow;
 import org.tridas.io.gui.view.popup.AboutWindow;
@@ -68,7 +68,7 @@ public class MainWindowController extends FrontController {
 	
 	public void startup(MVCEvent argEvent) {
 		view = new MainWindow();
-		ModelLocator.getInstance().setMainWindow(view);
+		TricycleModelLocator.getInstance().setMainWindow(view);
 		view.setDefaultCloseOperation(3);
 		view.setVisible(true);
 		about = new AboutWindow(view);
@@ -108,10 +108,10 @@ public class MainWindowController extends FrontController {
 		FileHelper fh = new FileHelper();
 		pmodel.setFileString(StringUtils.join(fh.loadStrings("TRiCYCLE.log"), "\n"));
 		
-		MainWindow window = ModelLocator.getInstance().getMainWindow();
+		MainWindow window = TricycleModelLocator.getInstance().getMainWindow();
 		Dimension size = window.getSize();
 		
-		PreviewWindow preview = new PreviewWindow(ModelLocator.getInstance().getMainWindow(), size.width - 40, size.height - 40, pmodel);
+		PreviewWindow preview = new PreviewWindow(TricycleModelLocator.getInstance().getMainWindow(), size.width - 40, size.height - 40, pmodel);
 		preview.setVisible(true);
 	}
 	

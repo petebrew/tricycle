@@ -26,7 +26,7 @@ import java.util.Set;
 import org.tridas.io.gui.enums.InputFormat;
 
 import com.dmurph.mvc.model.AbstractModel;
-import com.dmurph.mvc.util.MVCArrayList;
+import com.dmurph.mvc.model.MVCArrayList;
 
 /**
  * @author Daniel

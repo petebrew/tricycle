@@ -29,7 +29,7 @@ import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.MetadataEditorModel;
 import org.tridas.io.gui.model.popup.MetadataTableModel;
 import org.tridas.io.gui.view.popup.MetadataEditor;
@@ -112,7 +112,7 @@ public class ConfigController extends FrontController {
 			FileListModel fmodel = FileListModel.getInstance();
 			AbstractDendroFileReader reader = TridasIO.getFileReader(fmodel.getInputFormat());
 			if(reader == null){
-				Frame parent = ModelLocator.getInstance().getMainWindow();
+				Frame parent = TricycleModelLocator.getInstance().getMainWindow();
 				JOptionPane.showMessageDialog(parent, I18n.getText("control.config.inputDefaultsNotFound", fmodel.getInputFormat()),
 											  I18n.getText("control.config.error"), JOptionPane.ERROR_MESSAGE);
 				return;
@@ -125,7 +125,7 @@ public class ConfigController extends FrontController {
 		MetadataEditorModel model = new MetadataEditorModel(I18n.getText("view.popup.meta.readerDefault"));
 		model.setTableModel(tmodel);
 		
-		MetadataEditor editor = new MetadataEditor(ModelLocator.getInstance().getMainWindow(), model);
+		MetadataEditor editor = new MetadataEditor(TricycleModelLocator.getInstance().getMainWindow(), model);
 		editor.setVisible(true);
 	}
 	
@@ -136,7 +136,7 @@ public class ConfigController extends FrontController {
 			ConvertModel cmodel = ConvertModel.getInstance();
 			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(cmodel.getOutputFormat());
 			if(writer == null){
-				Frame parent = ModelLocator.getInstance().getMainWindow();
+				Frame parent = TricycleModelLocator.getInstance().getMainWindow();
 				JOptionPane.showMessageDialog(parent, I18n.getText("control.config.outputDefaultsNotFound", cmodel.getOutputFormat()),
 						  					  I18n.getText("control.config.error"), JOptionPane.ERROR_MESSAGE);
 				return;
@@ -149,7 +149,7 @@ public class ConfigController extends FrontController {
 		MetadataEditorModel model = new MetadataEditorModel(I18n.getText("view.popup.meta.writerDefault"));
 		model.setTableModel(tmodel);
 		
-		MetadataEditor editor = new MetadataEditor(ModelLocator.getInstance().getMainWindow(), model);
+		MetadataEditor editor = new MetadataEditor(TricycleModelLocator.getInstance().getMainWindow(), model);
 		editor.setVisible(true);
 	}
 }

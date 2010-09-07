@@ -20,7 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 
 //import javax.help.CSH;
 //import javax.help.HelpBroker;
@@ -35,8 +34,7 @@ import javax.swing.KeyStroke;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.model.MainWindowModel;
-import org.tridas.io.gui.model.ModelLocator;
-import org.tridas.io.util.IOUtils;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVCEvent;
 
@@ -115,7 +113,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void populateLocale() {
-		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
+		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 		optionsMenuButton.setText("Options");
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));

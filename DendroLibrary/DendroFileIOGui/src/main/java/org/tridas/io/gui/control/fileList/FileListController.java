@@ -24,7 +24,7 @@ import java.util.HashSet;
 import javax.swing.JFileChooser;
 
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
@@ -73,13 +73,13 @@ public class FileListController extends FrontController {
 		JFileChooser fd = new JFileChooser();
 		fd.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fd.setMultiSelectionEnabled(true);
-		File lastDirectory = ModelLocator.getInstance().getLastDirectory();
+		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
 			fd.setCurrentDirectory(lastDirectory);
 		}
 		
-		int retValue = fd.showOpenDialog(ModelLocator.getInstance().getMainWindow());
-		ModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
+		int retValue = fd.showOpenDialog(TricycleModelLocator.getInstance().getMainWindow());
+		TricycleModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			files = fd.getSelectedFiles();
 		}

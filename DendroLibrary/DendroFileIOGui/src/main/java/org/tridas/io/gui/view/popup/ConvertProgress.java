@@ -35,7 +35,7 @@ import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertController;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 
 import com.dmurph.mvc.MVCEvent;
@@ -100,7 +100,7 @@ public class ConvertProgress extends JDialog {
 	}
 	
 	private void populateLocale() {
-		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
+		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.convert.title"));
 		setConvertingFilename("");
 		cancelButton.setText(I18n.getText("view.popup.convert.cancel"));

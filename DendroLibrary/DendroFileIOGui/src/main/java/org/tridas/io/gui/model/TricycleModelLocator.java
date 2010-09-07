@@ -37,14 +37,16 @@ import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.view.MainWindow;
+import org.tridas.io.gui.view.popup.ConvertProgress;
+import org.tridas.io.gui.view.popup.SavingProgress;
 import org.tridas.io.util.FileHelper;
 import org.tridas.io.util.IOUtils;
 
 @SuppressWarnings("unused")
-public class ModelLocator {
-	private static final SimpleLogger log = new SimpleLogger(ModelLocator.class);
+public class TricycleModelLocator {
+	private static final SimpleLogger log = new SimpleLogger(TricycleModelLocator.class);
 	
-	private static final ModelLocator ml = new ModelLocator();
+	private static final TricycleModelLocator ml = new TricycleModelLocator();
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
 	private static final String LAST_DIRECTORY = "LastDirectory";
 	
@@ -57,9 +59,10 @@ public class ModelLocator {
 	private MainWindow view = null;
 	private Properties properties = null;
 	
-	private LinkedList<JFrame> dependantPopups = new LinkedList<JFrame>();
+	private SavingProgress savingProgress = null;
+	private ConvertProgress convertProgress = null;
 	
-	private ModelLocator() {
+	private TricycleModelLocator() {
 		URL windowIconURL = IOUtils.getFileInJarURL("icons/64x64/application.png");
 		if(windowIconURL != null){
 			windowIcon = new ImageIcon( windowIconURL);
@@ -130,7 +133,35 @@ public class ModelLocator {
 		return view;
 	}
 	
-	public static ModelLocator getInstance() {
+	/**
+	 * @return the savingProgress
+	 */
+	public SavingProgress getSavingProgress() {
+		return savingProgress;
+	}
+
+	/**
+	 * @param argSavingProgress the savingProgress to set
+	 */
+	public void setSavingProgress(SavingProgress argSavingProgress) {
+		savingProgress = argSavingProgress;
+	}
+
+	/**
+	 * @return the convertProgress
+	 */
+	public ConvertProgress getConvertProgress() {
+		return convertProgress;
+	}
+
+	/**
+	 * @param argConvertProgress the convertProgress to set
+	 */
+	public void setConvertProgress(ConvertProgress argConvertProgress) {
+		convertProgress = argConvertProgress;
+	}
+
+	public static TricycleModelLocator getInstance() {
 		return ml;
 	}
 }

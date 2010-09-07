@@ -23,12 +23,12 @@ import org.tridas.io.defaults.IMetadataFieldSet;
 import org.tridas.io.gui.enums.Charsets;
 
 import com.dmurph.mvc.ICloneable;
-import com.dmurph.mvc.model.AbstractRevertableModel;
+import com.dmurph.mvc.model.AbstractRevertibleModel;
 
 /**
  * @author Daniel Murphy
  */
-public class ConfigModel extends AbstractRevertableModel {
+public class ConfigModel extends AbstractRevertibleModel {
 	
 	private static final ConfigModel model = new ConfigModel();
 	
@@ -127,8 +127,7 @@ public class ConfigModel extends AbstractRevertableModel {
 	/**
 	 * @see com.dmurph.mvc.model.AbstractRevertableModel#setProperty(java.lang.String, java.lang.Object)
 	 */
-	@Override
-	protected void setProperty(String argPropertyName, Object argValue) {
+	protected Object setProperty(String argPropertyName, Object argValue) {
 		String prop = argPropertyName;
 		
 		if(prop.equals("writerDefaults")){
@@ -142,12 +141,12 @@ public class ConfigModel extends AbstractRevertableModel {
 		}else if(prop.equals("namingConvention")){
 			setNamingConvention((String) argValue);
 		}
+		return null;
 	}
 
 	/**
 	 * @see com.dmurph.mvc.ICloneable#cloneFrom(com.dmurph.mvc.ICloneable)
 	 */
-	@Override
 	public void cloneFrom(ICloneable argOther) {
 		throw new UnsupportedOperationException();
 	}

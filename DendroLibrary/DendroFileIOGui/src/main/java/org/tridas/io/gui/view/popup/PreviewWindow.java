@@ -19,15 +19,21 @@
 package org.tridas.io.gui.view.popup;
 
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.model.ModelLocator;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
 
 /**
@@ -38,6 +44,7 @@ public class PreviewWindow extends JFrame {
 	
 	private final PreviewModel model;
 	private JTextArea text;
+	private JButton copy;
 	
 	public PreviewWindow(JFrame argParent, int argWidth, int argHeight, PreviewModel argModel) {
 		model = argModel;
@@ -52,15 +59,20 @@ public class PreviewWindow extends JFrame {
 	
 	private void initComponents() {
 		text = new JTextArea();
+		copy = new JButton();
 		text.setEditable(false);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		
 		text.setFont(font);
 		add(new JScrollPane(text), "Center");
+		JPanel p = new JPanel();
+		p.add(copy, "East");
+		add(p, "South");
 	}
 	
 	private void populateLocale() {
-		setIconImage(ModelLocator.getInstance().getWindowIcon().getImage());
+		copy.setText("Copy");
+		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 	}
 	
 	private void setTitleName(String argFilename) {
@@ -90,6 +102,12 @@ public class PreviewWindow extends JFrame {
 	}
 	
 	private void addListeners() {
-	// nothing to do here
+		copy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				StringSelection ss = new StringSelection(model.getFileString());
+			    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+			}
+		});
 	}
 }
