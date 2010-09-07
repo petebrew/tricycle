@@ -25,7 +25,8 @@ import com.dmurph.mvc.model.AbstractModel;
  *
  */
 public class MetadataEditorModel extends AbstractModel{
-	
+	private static final long serialVersionUID = 1L;
+
 	private MetadataTableModel tableModel = null;
 	
 	private String filename = null;

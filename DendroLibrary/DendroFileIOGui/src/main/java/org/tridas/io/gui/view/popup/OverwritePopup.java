@@ -25,6 +25,7 @@ import org.tridas.io.gui.model.popup.OverwriteModel.Response;
  *
  */
 public class OverwritePopup extends JDialog {
+	private static final long serialVersionUID = 1L;
 
 	private final OverwriteModel model;
 	

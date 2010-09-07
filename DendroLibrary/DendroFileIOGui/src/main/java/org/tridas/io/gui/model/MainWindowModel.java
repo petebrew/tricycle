@@ -24,7 +24,8 @@ import com.dmurph.mvc.model.AbstractModel;
  * @author daniel
  */
 public class MainWindowModel extends AbstractModel {
-	
+	private static final long serialVersionUID = 1L;
+
 	private static final MainWindowModel model = new MainWindowModel();
 	
 	//private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);

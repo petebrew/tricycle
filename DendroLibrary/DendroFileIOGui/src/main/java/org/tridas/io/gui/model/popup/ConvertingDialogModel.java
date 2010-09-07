@@ -25,7 +25,8 @@ import com.dmurph.mvc.model.AbstractModel;
  *
  */
 public class ConvertingDialogModel extends AbstractModel {
-
+	private static final long serialVersionUID = 1L;
+	
 	private int convertingPercent = 0;
 	private String convertingFilename = null;
 	

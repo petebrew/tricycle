@@ -24,6 +24,8 @@ import com.dmurph.mvc.model.AbstractModel;
  * @author Daniel Murphy
  */
 public class OverwriteModel extends AbstractModel {
+	private static final long serialVersionUID = 1L;
+
 	public enum Response {OVERWRITE , IGNORE, RENAME}
 	
 	private Response response = null;

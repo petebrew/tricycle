@@ -33,6 +33,8 @@ import com.dmurph.mvc.model.MVCArrayList;
  */
 @SuppressWarnings("unchecked")
 public class FileListModel extends AbstractModel {
+	private static final long serialVersionUID = 1L;
+
 	private static final FileListModel model = new FileListModel();
 	
 	//private static final SimpleLogger log = new SimpleLogger(FileListModel.class);

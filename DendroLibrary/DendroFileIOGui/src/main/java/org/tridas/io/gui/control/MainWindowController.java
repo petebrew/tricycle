@@ -16,11 +16,6 @@
 package org.tridas.io.gui.control;
 
 import java.awt.Dimension;
-import java.net.URL;
-
-import javax.swing.AbstractButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.tridas.io.gui.model.TricycleModelLocator;
@@ -36,12 +31,6 @@ import com.dmurph.mvc.IncorrectThreadException;
 import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
-
-//import javax.help.*;
-import javax.swing.*;
-import java.net.URL;
-
-
 
 public class MainWindowController extends FrontController {
 	public static final String STARTUP = "STARTUP_EVENT";

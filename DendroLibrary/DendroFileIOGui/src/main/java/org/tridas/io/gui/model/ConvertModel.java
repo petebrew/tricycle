@@ -29,6 +29,8 @@ import com.dmurph.mvc.model.MVCArrayList;
  * @author Daniel
  */
 public class ConvertModel extends AbstractModel {
+	private static final long serialVersionUID = 1L;
+
 	private static final ConvertModel model = new ConvertModel();
 	
 	private String outputFormat = "TRiDaS";
