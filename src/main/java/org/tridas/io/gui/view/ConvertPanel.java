@@ -36,11 +36,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.command.ConvertCommand.DendroWrapper;
 import org.tridas.io.gui.components.CustomTreeCellRenderer;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
@@ -71,6 +74,7 @@ public class ConvertPanel extends JPanel {
 	private JButton collapseAll;
 	private JLabel results;
 	private JComboBox outputFormat;
+	private JButton previewButton;
 
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
 	
@@ -92,6 +96,7 @@ public class ConvertPanel extends JPanel {
 		expandAll = new JButton();
 		collapseAll = new JButton();
 		outputFormat = new JComboBox();
+		previewButton = new JButton();
 		
 		setLayout(new java.awt.BorderLayout());
 		
@@ -99,6 +104,7 @@ public class ConvertPanel extends JPanel {
 		top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		top.add(outputFormat);
 		top.add(convertButton);
+		top.add(previewButton);
 		top.add(saveButton);
 		top.add(Box.createHorizontalGlue());
 
@@ -196,11 +202,31 @@ public class ConvertPanel extends JPanel {
 				if (selRow > 0) {
 					if (e.getClickCount() == 2) {
 						DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
-						ObjectEvent<DefaultMutableTreeNode> event = new ObjectEvent<DefaultMutableTreeNode>(
-								ConvertController.PREVIEW, node);
-						event.dispatch();
+						if(node.getUserObject() instanceof DendroWrapper){ // means it's a file node
+							ObjectEvent<DefaultMutableTreeNode> event = new ObjectEvent<DefaultMutableTreeNode>(
+									ConvertController.PREVIEW, node);
+							event.dispatch();
+						}
 					}
 				}
+			}
+		});
+		
+		convertedTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent argE) {
+				// BAD PRACTICE this should be an event to the controller
+				model.setSelectedNode((DefaultMutableTreeNode) argE.getNewLeadSelectionPath().getLastPathComponent());
+			}
+		});
+		
+		previewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent argE) {
+				if(model.getSelectedNode() == null){
+					return;
+				}
+				ObjectEvent<DefaultMutableTreeNode> event = new ObjectEvent<DefaultMutableTreeNode>(
+						ConvertController.PREVIEW, model.getSelectedNode());
+				event.dispatch();
 			}
 		});
 	}
@@ -210,6 +236,7 @@ public class ConvertPanel extends JPanel {
 		convertButton.setText(I18n.getText("view.convert.convert"));
 		collapseAll.setText(I18n.getText("view.convert.collapse"));
 		expandAll.setText(I18n.getText("view.convert.expand"));
+		previewButton.setText("Preview File");
 		
 		for (String out : OutputFormat.getOutputFormats()) {
 			outputFormat.addItem(out);
@@ -227,6 +254,10 @@ public class ConvertPanel extends JPanel {
 		
 		if(model.getConvertedList().isEmpty()){
 			saveButton.setEnabled(false); // for issue 233
+		}
+		
+		if(model.getSelectedNode() == null){
+			previewButton.setEnabled(false);
 		}
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
@@ -254,6 +285,16 @@ public class ConvertPanel extends JPanel {
 					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
 				}else if (prop.equals("outputFormat")) {
 					outputFormat.setSelectedItem(evt.getNewValue());
+				}else if(prop.equals("selectedNode")){
+					DefaultMutableTreeNode node = model.getSelectedNode();
+					if(node == null){
+						previewButton.setEnabled(false);
+					}
+					if(node.getUserObject() instanceof DendroWrapper){ // means it's a file
+						previewButton.setEnabled(true);
+					}else{
+						previewButton.setEnabled(false);
+					}
 				}
 			}
 		});
