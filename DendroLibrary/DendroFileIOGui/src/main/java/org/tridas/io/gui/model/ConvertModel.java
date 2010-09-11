@@ -51,19 +51,33 @@ public class ConvertModel extends AbstractModel {
 	private volatile boolean saveRunning = false;
 	private volatile boolean convertRunning = false;
 	
+	private DefaultMutableTreeNode selectedNode = null;
+	
 	private ConvertModel() {}
 	
 	@SuppressWarnings("unchecked")
 	public void setNodes(List<DefaultMutableTreeNode> argNodes) {
 		MVCArrayList<DefaultMutableTreeNode> old = (MVCArrayList<DefaultMutableTreeNode>) nodes.clone();
 		nodes.clear();
-		nodes.addAll(argNodes);
+		for(DefaultMutableTreeNode tn : argNodes){
+			nodes.add(tn); // djm FIXME change back to addAll once MVC is updated
+		}
 		firePropertyChange("nodes", old, nodes.clone());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<DefaultMutableTreeNode> getNodes() {
 		return (List<DefaultMutableTreeNode>) nodes.clone();
+	}
+
+	public void setSelectedNode(DefaultMutableTreeNode argSelectedNode) {
+		DefaultMutableTreeNode old = selectedNode;
+		selectedNode = argSelectedNode;
+		firePropertyChange("selectedNode", old, selectedNode);
+	}
+
+	public DefaultMutableTreeNode getSelectedNode() {
+		return selectedNode;
 	}
 
 	// don't bother with property change
