@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 //import javax.help.CSH;
 //import javax.help.HelpBroker;
@@ -33,10 +35,12 @@ import javax.swing.KeyStroke;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.MainWindowController;
+import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.model.MVCArrayList;
 
 /**
  * @author daniel
@@ -172,6 +176,24 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void linkModel() {
-	// nothing
+		final FileListModel model = FileListModel.getInstance();
+		if(model.getInputFiles().size() == 0){
+			tabbedPane.setEnabledAt(1, false);
+		}else{
+			tabbedPane.setEnabledAt(1, true);
+		}
+		
+		model.getInputFiles().addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent argEvt) {
+				if(argEvt.getPropertyName().equals(MVCArrayList.REMOVED)){
+					if(model.getInputFiles().size() == 0){
+						tabbedPane.setEnabledAt(1, false);
+					}
+				}else if(argEvt.getPropertyName().equals(MVCArrayList.ADDED)){
+					tabbedPane.setEnabledAt(1, true);
+				}
+			}
+		});
 	}
 }

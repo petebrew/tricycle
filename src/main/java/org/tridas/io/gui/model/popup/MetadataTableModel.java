@@ -28,8 +28,9 @@ import org.tridas.io.defaults.IMetadataFieldSet;
 import com.dmurph.mvc.ICloneable;
 
 /**
- * @author daniel
+ * @author Daniel Murphy
  */
+@SuppressWarnings("rawtypes")
 public class MetadataTableModel extends AbstractTableModel implements ICloneable {
 	private static final long serialVersionUID = 1L;
 
@@ -101,6 +102,7 @@ public class MetadataTableModel extends AbstractTableModel implements ICloneable
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setValueAt(Object value, int row, int col) {
 		Enum<?> e = getKeyAt(row);
 		if (col == 0) {

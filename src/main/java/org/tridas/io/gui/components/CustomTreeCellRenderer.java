@@ -26,8 +26,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.control.convert.ConvertController.DendroWrapper;
-import org.tridas.io.gui.control.convert.ConvertController.StructWrapper;
+import org.tridas.io.gui.command.ConvertCommand.DendroWrapper;
+import org.tridas.io.gui.command.ConvertCommand.StructWrapper;
 import org.tridas.io.gui.util.TooltipUtil;
 
 /**
