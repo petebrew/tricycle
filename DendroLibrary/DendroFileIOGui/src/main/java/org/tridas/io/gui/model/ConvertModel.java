@@ -42,7 +42,7 @@ public class ConvertModel extends AbstractModel {
 	private String outputFormat = "TRiDaS";
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
-	private final ArrayList<ConvertModel.ReaderWriterObject> structList = new ArrayList<ConvertModel.ReaderWriterObject>();
+	private final MVCArrayList<ConvertModel.ReaderWriterObject> structList = new MVCArrayList<ConvertModel.ReaderWriterObject>();
 	
 	private int processed = 0;
 	private int failed = 0;
