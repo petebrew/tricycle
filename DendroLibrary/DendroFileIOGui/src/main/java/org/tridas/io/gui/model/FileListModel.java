@@ -40,7 +40,7 @@ public class FileListModel extends AbstractModel {
 	
 	private String inputFormat = InputFormat.getInputFormats()[0];
 	private String fileField = null;
-	private MVCArrayList<String> inputFiles = new MVCArrayList<String>();
+	private final MVCArrayList<String> inputFiles = new MVCArrayList<String>();
 	
 	private FileListModel() {}
 	
@@ -96,7 +96,9 @@ public class FileListModel extends AbstractModel {
 		notCommon.addAll(argFiles);
 		
 		inputFiles.clear();
-		inputFiles.addAll(notCommon);
+		for(String s : notCommon){
+			inputFiles.add(s);
+		}
 		firePropertyChange("inputFiles", old, inputFiles.clone());
 	}
 	
