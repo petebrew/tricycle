@@ -18,9 +18,14 @@
  */
 package org.tridas.io.gui.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.tridas.io.AbstractDendroCollectionWriter;
+import org.tridas.io.AbstractDendroFileReader;
+import org.tridas.io.defaults.IMetadataFieldSet;
 
 import com.dmurph.mvc.model.AbstractModel;
 import com.dmurph.mvc.model.MVCArrayList;
@@ -29,6 +34,7 @@ import com.dmurph.mvc.model.MVCArrayList;
  * @author Daniel
  */
 public class ConvertModel extends AbstractModel {
+
 	private static final long serialVersionUID = 1L;
 
 	private static final ConvertModel model = new ConvertModel();
@@ -36,9 +42,14 @@ public class ConvertModel extends AbstractModel {
 	private String outputFormat = "TRiDaS";
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
+	private final ArrayList<ConvertModel.ReaderWriterObject> structList = new ArrayList<ConvertModel.ReaderWriterObject>();
+	
 	private int processed = 0;
 	private int failed = 0;
 	private int convWithWarnings = 0;
+	
+	private volatile boolean saveRunning = false;
+	private volatile boolean convertRunning = false;
 	
 	private ConvertModel() {}
 	
@@ -54,8 +65,28 @@ public class ConvertModel extends AbstractModel {
 	public List<DefaultMutableTreeNode> getNodes() {
 		return (List<DefaultMutableTreeNode>) nodes.clone();
 	}
-	
-	
+
+	// don't bother with property change
+	public void setSaveRunning(boolean saveRunning) {
+		this.saveRunning = saveRunning;
+	}
+
+	public boolean isSaveRunning() {
+		return saveRunning;
+	}
+
+	public void setConvertRunning(boolean convertRunning) {
+		this.convertRunning = convertRunning;
+	}
+
+	public boolean isConvertRunning() {
+		return convertRunning;
+	}
+
+	public ArrayList<ConvertModel.ReaderWriterObject> getConvertedList() {
+		return structList;
+	}
+
 	/**
 	 * @param outputFormat
 	 *            the outputFormat to set
@@ -105,5 +136,15 @@ public class ConvertModel extends AbstractModel {
 	
 	public static final ConvertModel getInstance() {
 		return model;
+	}
+	
+	public static class ReaderWriterObject {
+		public String file;
+		public String errorMessage = null;
+		public AbstractDendroFileReader reader = null;
+		public IMetadataFieldSet readerDefaults = null;
+		public AbstractDendroCollectionWriter writer = null;
+		public IMetadataFieldSet writerDefaults = null;
+		public boolean warnings = false;
 	}
 }

@@ -19,7 +19,6 @@
 package org.tridas.io.gui.model;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +40,7 @@ public class FileListModel extends AbstractModel {
 	
 	private String inputFormat = InputFormat.getInputFormats()[0];
 	private String fileField = null;
-	private ArrayList<String> inputFiles = new MVCArrayList<String>();
+	private MVCArrayList<String> inputFiles = new MVCArrayList<String>();
 	
 	private FileListModel() {}
 	
@@ -124,8 +123,8 @@ public class FileListModel extends AbstractModel {
 		firePropertyChange("inputFiles", old, inputFiles);
 	}
 	
-	public ArrayList<String> getInputFiles() {
-		return (ArrayList<String>) inputFiles.clone();
+	public MVCArrayList<String> getInputFiles() {
+		return inputFiles;
 	}
 	
 	public static FileListModel getInstance() {
