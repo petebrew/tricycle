@@ -62,8 +62,6 @@ public class MainWindowController extends FrontController {
 		TricycleModelLocator.getInstance().setMainWindow(view);
 		view.setDefaultCloseOperation(3);
 		view.setVisible(true);
-		about = new AboutWindow(view);
-		options = new OptionsWindow(view);
 		ToolTipManager.sharedInstance().setDismissDelay(10000);
 	}
 	
@@ -79,6 +77,9 @@ public class MainWindowController extends FrontController {
 		} catch (IncorrectThreadException e) {
 			e.printStackTrace();
 		}
+		if(about == null){
+			about = new AboutWindow(TricycleModelLocator.getInstance().getMainWindow());
+		}
 		about.setVisible(true);
 	}
 	
@@ -89,6 +90,9 @@ public class MainWindowController extends FrontController {
 			e.printStackTrace();
 		} catch (IncorrectThreadException e) {
 			e.printStackTrace();
+		}
+		if(options == null){
+			options = new OptionsWindow(TricycleModelLocator.getInstance().getMainWindow());
 		}
 		options.setVisible(true);
 	}
