@@ -225,6 +225,10 @@ public class ConvertPanel extends JPanel {
 		expandToFiles();
 		outputFormat.setSelectedItem(model.getOutputFormat());
 		
+		if(model.getConvertedList().isEmpty()){
+			saveButton.setEnabled(false); // for issue 233
+		}
+		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override
@@ -268,7 +272,11 @@ public class ConvertPanel extends JPanel {
 					}
 					else {
 						convertButton.setEnabled(true);
-						saveButton.setEnabled(true);
+						if(!model.getConvertedList().isEmpty()){
+							saveButton.setEnabled(true); // for issue 233
+						}else{
+							saveButton.setEnabled(false);
+						}
 					}
 				}
 			}
