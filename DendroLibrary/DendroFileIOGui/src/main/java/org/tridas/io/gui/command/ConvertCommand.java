@@ -6,6 +6,7 @@ package org.tridas.io.gui.command;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -272,9 +273,17 @@ public class ConvertCommand implements ICommand {
 			if (s.writer != null) {
 				for (IDendroFile file : s.writer.getFiles()) {
 					DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(new DendroWrapper(file, argNaming));
+					
 					if (file.getDefaults().getWarnings().size() != 0) {
+						// put them all in a hash set first so no duplicates.
+						HashSet<String> set = new HashSet<String>();
+						
 						for (ConversionWarning warning : file.getDefaults().getWarnings()) {
-							DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning.toStringWithField());
+							set.add(warning.toStringWithField());
+						}
+						
+						for(String warning : set){
+							DefaultMutableTreeNode warningNode = new DefaultMutableTreeNode(warning);
 							fileNode.add(warningNode);
 						}
 						warnings = true;
@@ -287,8 +296,15 @@ public class ConvertCommand implements ICommand {
 				warnings = true;
 				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(
 						I18n.getText("control.convert.readerWarnings"));
+				
+				// put them all in a hash set first so no duplicates.
+				HashSet<String> set = new HashSet<String>();
+				
 				for (ConversionWarning warning : s.reader.getWarnings()) {
-					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toStringWithField());
+					set.add(warning.toStringWithField());
+				}
+				for(String warning : set){
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning);
 					readerWarnings.add(warn);
 				}
 				leaf.add(readerWarnings);
@@ -298,8 +314,15 @@ public class ConvertCommand implements ICommand {
 				warnings = true;
 				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(
 						I18n.getText("control.convert.writerWarnings"));
+				
+				// put them all in a hash set first so no duplicates.
+				HashSet<String> set = new HashSet<String>();
 				for (ConversionWarning warning : s.writer.getWarnings()) {
-					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning.toStringWithField());
+					set.add(warning.toStringWithField());
+				}
+				
+				for(String warning : set){
+					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning);
 					writerWarnings.add(warn);
 				}
 				leaf.add(writerWarnings);
