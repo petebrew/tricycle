@@ -21,9 +21,7 @@ import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
-import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
-import com.dmurph.mvc.monitor.EventMonitor;
 
 public class App {
 	
@@ -43,9 +41,9 @@ public class App {
 				log.warn(I18n.getText("lookfeel.nimbus"));
 			}
 		}
-		EventMonitor monitor = new EventMonitor( null, 400);
-		MVC.setGlobalEventMonitor(monitor);
-		monitor.setVisible(false);
+//		EventMonitor monitor = new EventMonitor( null, 400);
+//		MVC.setGlobalEventMonitor(monitor);
+//		monitor.setVisible(true);
 		
 		(new MVCEvent(MainWindowController.STARTUP)).dispatch();
 	}
