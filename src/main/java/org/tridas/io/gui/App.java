@@ -35,11 +35,23 @@ public class App {
 	 */
 	public static void main(String[] args) {
 		if(!System.getProperty("os.name").startsWith("Mac")){
+			// For non-MacOSX systems set Nimbus as LnF
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			} catch (Exception e) {
 				log.warn(I18n.getText("lookfeel.nimbus"));
 			}
+		}
+		else
+		{
+			// On MacOSX set standard GUI conventions...
+			
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Corina");
+			System.setProperty("com.apple.macos.use-file-dialog-packages", "false"); // for AWT
+			UIManager.put("JFileChooser.packageIsTraversable", "never"); // for swing
+
+			
 		}
 //		EventMonitor monitor = new EventMonitor( null, 400);
 //		MVC.setGlobalEventMonitor(monitor);

@@ -250,7 +250,7 @@
         <section>
             <title>Metadata editor</title>
             <para> TRiCYCLE works by reading in a data file and translating it into the TRiDaS data
-                model. TRiDaS has a rich array of fields to represent all manor of dendro data and
+                model. TRiDaS has a rich array of fields to represent all manner of dendro data and
                 metadata. Although most of these are optional, the TRiDaS specification requires
                 that a handful of these are always filled in. Unfortunately many of the legacy data
                 formats do not contain information for these mandatory fields, therefore TRiCYCLE

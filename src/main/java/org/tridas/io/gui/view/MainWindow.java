@@ -23,9 +23,9 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-//import javax.help.CSH;
-//import javax.help.HelpBroker;
-//import javax.help.HelpSet;
+import javax.help.CSH;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -38,6 +38,7 @@ import org.tridas.io.gui.control.MainWindowController;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.MainWindowModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.model.MVCArrayList;
@@ -155,7 +156,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-/*
+
 		HelpSet hs;
 		try {
 		    hs = new HelpSet(null, IOUtils.getFileInJarURL("manual/jhelpset.hs"));
@@ -165,7 +166,7 @@ public class MainWindow extends JFrame {
 		}
 		HelpBroker hb = hs.createHelpBroker();
 		helpMenuButton.addActionListener(new CSH.DisplayHelpFromSource(hb));
-	*/	
+	
 		logMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {

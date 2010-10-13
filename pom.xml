@@ -45,14 +45,13 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<!-- Removed because of problems with signing of package in Shade
 		<dependency>
 			<groupId>javax.help</groupId>
 			<artifactId>javahelp</artifactId>
 			<version>2.0.02</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>-->
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -78,23 +77,6 @@
 		      </execution>
 		  </executions>
 		</plugin>
-		<!-- Replaced by Shade 	
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>org.tridas.io.gui.App</mainClass>
-						</manifest>
-						<manifestEntries>
-							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>-->
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -158,6 +140,7 @@
 			              <value>${{version}}</value>
 			            </entity>
 			        </entities>
+			        
         		</configuration>
 			</plugin>	
 			
@@ -179,6 +162,18 @@
 	                  <mainClass>org.tridas.io.gui.App</mainClass>
 	                </transformer>
 	              </transformers>
+	              <filters>
+	              	  <!-- Remove signatures from other jars-->
+		              <filter>
+		                  <artifact>*:*</artifact>
+		                  <excludes>
+		                    <exclude>META-INF/*.SF</exclude>
+		                    <exclude>META-INF/*.DSA</exclude>
+		                    <exclude>META-INF/*.RSA</exclude>
+		                  </excludes>
+	                  </filter>
+                  </filters>
+	              
 	            </configuration>
 	          </execution>
 	        </executions>
@@ -299,8 +294,7 @@
 					<jvmVersion>1.6+</jvmVersion>
 					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
 					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
-					<vmOptions>-Dapple.laf.useScreenMenuBar=true
-						-Dapple.awt.showGrowBox=true -splash:splash.png</vmOptions>
+					<vmOptions>-Dcom.apple.macos.useScreenMenuBar=true</vmOptions>
 				</configuration>
 				<executions>
 					<execution>
