@@ -291,10 +291,9 @@
 					<bundleName>TRiCYCLE</bundleName>
 					<zipFile>${project.build.directory}/${project.build.finalName}-app.zip</zipFile>
 					<mainClass>org.tridas.io.gui.App</mainClass>
-					<jvmVersion>1.6+</jvmVersion>
+					<jvmVersion>1.5+</jvmVersion>
 					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
 					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
-					<vmOptions>-Dcom.apple.macos.useScreenMenuBar=true</vmOptions>
 				</configuration>
 				<executions>
 					<execution>
