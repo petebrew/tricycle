@@ -26,7 +26,7 @@
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "../package-includes/LICENSE.txt"
+!insertmacro MUI_PAGE_LICENSE "..\package-includes\LICENSE.txt"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Start menu page
@@ -55,7 +55,7 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "TRiCYCLE-setup.exe"
+OutFile "..\target\TRiCYCLE-0.1-SNAPSHOT-setup.exe"
 InstallDir "$PROGRAMFILES\TRiCYCLE"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -68,7 +68,7 @@ FunctionEnd
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "../target/TRiCYCLE-0.1-SNAPSHOT.exe"
+  File "..\target\TRiCYCLE-0.1-SNAPSHOT.exe"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
