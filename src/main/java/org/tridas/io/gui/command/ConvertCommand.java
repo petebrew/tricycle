@@ -177,7 +177,7 @@ public class ConvertCommand implements ICommand {
 					struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
 					continue;
 				} catch (InvalidDendroFileException e) {
-					struct.errorMessage = e.toString();
+					struct.errorMessage = e.getLocalizedMessage();
 					continue;
 				} catch (IncorrectDefaultFieldsException e) {
 					struct.errorMessage = e.toString() + " Please report bug.";
@@ -211,17 +211,17 @@ public class ConvertCommand implements ICommand {
 						writer.loadProject(project, (IMetadataFieldSet) argOutputDefaults.clone());
 					}
 				} catch (IncompleteTridasDataException e) {
-					struct.errorMessage = e.toString();
+					struct.errorMessage = e.getMessage();
 				} catch (ConversionWarningException e) {
-					struct.errorMessage = e.toString();
+					struct.errorMessage = e.getLocalizedMessage();
 				} catch (IncorrectDefaultFieldsException e) {
-					struct.errorMessage = e.toString();
+					struct.errorMessage = e.getLocalizedMessage();
 				}
 				
 				struct.reader = reader;
 				struct.writer = writer;
 				
-				if (writer.getFiles().length == 0) {
+				if (struct.errorMessage==null && writer.getFiles().length == 0) {
 					struct.errorMessage = I18n.getText("control.convert.noFilesWritten");
 				}
 				
