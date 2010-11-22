@@ -18,10 +18,13 @@ package org.tridas.io.gui;
 import javax.swing.UIManager;
 
 import org.grlea.log.SimpleLogger;
-import org.tridas.io.gui.control.MainWindowController;
+import org.tridas.io.gui.control.StartupEvent;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
-import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.MVC;
+import com.dmurph.tracking.AnalyticsConfigData;
+import com.dmurph.tracking.JGoogleAnalyticsTracker;
+import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
 
 public class App {
 	
@@ -57,6 +60,11 @@ public class App {
 //		MVC.setGlobalEventMonitor(monitor);
 //		monitor.setVisible(true);
 		
-		(new MVCEvent(MainWindowController.STARTUP)).dispatch();
+		// set tracking key
+		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-7");
+		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
+		MVC.setTracker(tracker);
+		
+		(new StartupEvent(true)).dispatch();
 	}
 }

@@ -47,11 +47,11 @@ import com.dmurph.mvc.control.FrontController;
 public class ConvertController extends FrontController {
 	private static final SimpleLogger log = new SimpleLogger(ConvertController.class);
 	
-	public static final String SAVE = "CONVERT_SAVE";
-	public static final String CONVERT = "CONVERT_CONVERT";
-	public static final String PREVIEW = "CONVERT_PREVIEW";
-	public static final String CANCEL_CONVERT = "CONVERT_CANCEL_CONVERT";
-	public static final String CANCEL_SAVE = "CONVERT_CANCEL_SAVE";
+	public static final String SAVE = "TRIYCYCLE_CONVERT_SAVE";
+	public static final String CONVERT = "TRIYCYCLE_CONVERT_CONVERT";
+	public static final String PREVIEW = "TRIYCYCLE_CONVERT_PREVIEW";
+	public static final String CANCEL_CONVERT = "TRIYCYCLE_CONVERT_CANCEL_CONVERT";
+	public static final String CANCEL_SAVE = "TRIYCYCLE_CONVERT_CANCEL_SAVE";
 	
 	
 	public ConvertController() {

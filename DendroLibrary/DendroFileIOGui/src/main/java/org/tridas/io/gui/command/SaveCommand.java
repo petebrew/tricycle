@@ -14,7 +14,7 @@ import org.grlea.log.SimpleLogger;
 import org.tridas.io.IDendroFile;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.ConvertModel;
-import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.OverwriteModel;
 import org.tridas.io.gui.model.popup.SavingDialogModel;
@@ -46,7 +46,7 @@ public class SaveCommand implements ICommand {
 			e1.printStackTrace();
 		}
 		
-		MainWindowModel mwm = MainWindowModel.getInstance();
+		TricycleModel mwm = TricycleModel.getInstance();
 		SavingProgress storedSavingProgress = null;
 		final OverwritePopup[] popup = {null}; // have to have it as an array so we can
 												// make it final for bug 213

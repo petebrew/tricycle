@@ -43,13 +43,14 @@ import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLogger;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
+import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.control.fileList.AddFileEvent;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.TricycleModel;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.StringEvent;
@@ -164,7 +165,7 @@ public class FileListPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String input = inputFormat.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_INPUT_FORMAT, input);
+				ConfigEvent event = new ConfigEvent(ConfigController.SET_INPUT_FORMAT, input);
 				event.dispatch();
 			}
 		});
@@ -235,6 +236,7 @@ public class FileListPanel extends JPanel {
 		DefaultListModel listModel = (DefaultListModel) fileList.getModel();
 		ArrayList<String> files = model.getInputFiles();
 		listModel.clear();
+		
 		// swing is doing weird stuff, so we spcae it out
 		try {
 			Thread.sleep(100);
@@ -282,7 +284,7 @@ public class FileListPanel extends JPanel {
 			}
 		});
 		
-		MainWindowModel mwm = MainWindowModel.getInstance();
+		TricycleModel mwm = TricycleModel.getInstance();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override

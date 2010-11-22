@@ -46,6 +46,7 @@ import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.ConvertCommand.DendroWrapper;
 import org.tridas.io.gui.components.CustomTreeCellRenderer;
 import org.tridas.io.gui.control.config.ConfigController;
+import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
@@ -53,7 +54,7 @@ import org.tridas.io.gui.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
@@ -165,7 +166,7 @@ public class ConvertPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String output = outputFormat.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_OUTPUT_FORMAT, output);
+				ConfigEvent event = new ConfigEvent(ConfigController.SET_OUTPUT_FORMAT, output);
 				event.dispatch();
 			}
 		});
@@ -214,8 +215,13 @@ public class ConvertPanel extends JPanel {
 		
 		convertedTree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent argE) {
+				
 				// BAD PRACTICE this should be an event to the controller
-				model.setSelectedNode((DefaultMutableTreeNode) argE.getNewLeadSelectionPath().getLastPathComponent());
+				if(argE != null && argE.getNewLeadSelectionPath() != null && argE.getNewLeadSelectionPath().getLastPathComponent() != null){
+					model.setSelectedNode((DefaultMutableTreeNode) argE.getNewLeadSelectionPath().getLastPathComponent());
+				}else{
+					model.setSelectedNode(null);
+				}
 			}
 		});
 		
@@ -290,7 +296,7 @@ public class ConvertPanel extends JPanel {
 					if(node == null){
 						previewButton.setEnabled(false);
 					}
-					if(node.getUserObject() instanceof DendroWrapper){ // means it's a file
+					else if(node.getUserObject() instanceof DendroWrapper){ // means it's a file
 						previewButton.setEnabled(true);
 					}else{
 						previewButton.setEnabled(false);
@@ -299,7 +305,7 @@ public class ConvertPanel extends JPanel {
 			}
 		});
 		
-		MainWindowModel mwm = MainWindowModel.getInstance();
+		TricycleModel mwm = TricycleModel.getInstance();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override

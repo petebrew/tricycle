@@ -21,12 +21,13 @@ package org.tridas.io.gui.control.convert;
 import org.tridas.io.defaults.IMetadataFieldSet;
 
 import com.dmurph.mvc.MVCEvent;
+import com.dmurph.mvc.tracking.ITrackable;
 
 /**
  * @author Daniel
  */
 @SuppressWarnings("serial")
-public class ConvertEvent extends MVCEvent {
+public class ConvertEvent extends MVCEvent implements ITrackable{
 	
 	private final String inputFormat;
 	private final String namingConvention;
@@ -62,5 +63,38 @@ public class ConvertEvent extends MVCEvent {
 
 	public IMetadataFieldSet getWriterDefaults() {
 		return writerDefaults;
+	}
+
+	/**
+	 * @see com.dmurph.mvc.tracking.ITrackable#getTrackingCategory()
+	 */
+	@Override
+	public String getTrackingCategory() {
+		return "Tricycle";
+	}
+
+	/**
+	 * @see com.dmurph.mvc.tracking.ITrackable#getTrackingAction()
+	 */
+	@Override
+	public String getTrackingAction() {
+		return "Convert";
+	}
+
+	/**
+	 * @see com.dmurph.mvc.tracking.ITrackable#getTrackingLabel()
+	 */
+	@Override
+	public String getTrackingLabel() {
+		return inputFormat +" > "+outputFormat;
+	}
+
+	/**
+	 * @see com.dmurph.mvc.tracking.ITrackable#getTrackingValue()
+	 */
+	@Override
+	public Integer getTrackingValue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -23,16 +23,16 @@ import com.dmurph.mvc.model.AbstractModel;
 /**
  * @author daniel
  */
-public class MainWindowModel extends AbstractModel {
+public class TricycleModel extends AbstractModel {
 	private static final long serialVersionUID = 1L;
 
-	private static final MainWindowModel model = new MainWindowModel();
+	private static final TricycleModel model = new TricycleModel();
 	
 	//private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
 	
 	private boolean lock = false;
 	
-	private MainWindowModel() {}
+	private TricycleModel() {}
 	
 	/**
 	 * @param lock
@@ -51,7 +51,7 @@ public class MainWindowModel extends AbstractModel {
 		return lock;
 	}
 	
-	public static MainWindowModel getInstance() {
+	public static TricycleModel getInstance() {
 		return model;
 	}
 }

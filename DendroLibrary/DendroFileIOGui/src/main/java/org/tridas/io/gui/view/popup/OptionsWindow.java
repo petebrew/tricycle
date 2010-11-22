@@ -37,15 +37,15 @@ import javax.swing.JPanel;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
+import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.enums.Charsets;
 import org.tridas.io.gui.enums.NamingConvention;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.TricycleModel;
 
 import com.dmurph.mvc.MVCEvent;
-import com.dmurph.mvc.StringEvent;
 
 /**
  * @author daniel
@@ -139,7 +139,7 @@ public class OptionsWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String naming = namingConvention.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_NAMING_CONVENTION, naming);
+				ConfigEvent event = new ConfigEvent(ConfigController.SET_NAMING_CONVENTION, naming);
 				event.dispatch();
 			}
 		});
@@ -151,7 +151,7 @@ public class OptionsWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String charset = writingCharset.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_WRITING_CHARSET, charset);
+				ConfigEvent event = new ConfigEvent(ConfigController.SET_WRITING_CHARSET, charset);
 				event.dispatch();
 			}
 		});
@@ -162,7 +162,7 @@ public class OptionsWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String charset = readingCharset.getSelectedItem().toString();
-				StringEvent event = new StringEvent(ConfigController.SET_READING_CHARSET, charset);
+				ConfigEvent event = new ConfigEvent(ConfigController.SET_READING_CHARSET, charset);
 				event.dispatch();
 			}
 		});
@@ -283,7 +283,7 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
-		MainWindowModel mwm = MainWindowModel.getInstance();
+		TricycleModel mwm = TricycleModel.getInstance();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {

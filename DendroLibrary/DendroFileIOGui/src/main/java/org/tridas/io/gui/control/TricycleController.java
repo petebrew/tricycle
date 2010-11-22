@@ -17,6 +17,7 @@ package org.tridas.io.gui.control;
 
 import java.awt.Dimension;
 
+import javax.swing.JFrame;
 import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,35 +35,44 @@ import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
 
-public class MainWindowController extends FrontController {
-	public static final String STARTUP = "STARTUP_EVENT";
-	public static final String QUIT = "MAIN_WINDOW_QUIT";
-	public static final String ABOUT = "MAIN_WINDOW_ABOUT";
-	public static final String HELPVIEWER = "MAIN_WINDOW_HELP";
+public class TricycleController extends FrontController {
+	public static final String STARTUP = "TRIYCYCLE_STARTUP_EVENT";
+	public static final String QUIT = "TRIYCYCLE_QUIT";
+	public static final String ABOUT = "TRIYCYCLE_ABOUT";
+	public static final String HELPVIEWER = "TRIYCYCLE_HELP";
 
-	public static final String OPTIONS = "MAIN_WINDOW_OPTIONS";
-	public static final String VIEW_LOG = "MAIN_WINDOW_VIEW_LOG";
+	public static final String OPTIONS = "TRIYCYCLE_OPTIONS";
+	public static final String VIEW_LOG = "TRIYCYCLE_VIEW_LOG";
 	
 	private MainWindow view = null;
 	private AboutWindow about = null;
 	private OptionsWindow options = null;
 	
-	public MainWindowController() {
+	public TricycleController() {
 		registerCommand(STARTUP, "startup");
 		registerCommand(QUIT, "quit");
 		registerCommand(ABOUT, "about");
 		registerCommand(OPTIONS, "options");
 		registerCommand(VIEW_LOG, "log");
 		registerCommand(HELPVIEWER, "helpViewer");
-
 	}
 	
 	public void startup(MVCEvent argEvent) {
-		view = new MainWindow();
-		TricycleModelLocator.getInstance().setMainWindow(view);
-		view.setDefaultCloseOperation(3);
-		view.setVisible(true);
-		ToolTipManager.sharedInstance().setDismissDelay(10000);
+		if(view == null){
+			view = new MainWindow();
+			TricycleModelLocator.getInstance().setMainWindow(view);
+			if(argEvent instanceof StartupEvent){
+				if(((StartupEvent) argEvent).exitOnClose){
+					view.setDefaultCloseOperation(3);
+				}else{
+					view.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				}
+			}
+			view.setVisible(true);
+			ToolTipManager.sharedInstance().setDismissDelay(10000);
+		}else{
+			view.setVisible(true);
+		}
 	}
 	
 	public void quit(MVCEvent argEvent) {
