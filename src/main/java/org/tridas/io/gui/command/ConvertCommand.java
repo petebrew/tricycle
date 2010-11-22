@@ -29,7 +29,7 @@ import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 import org.tridas.io.gui.view.popup.ConvertProgress;
@@ -115,7 +115,7 @@ public class ConvertCommand implements ICommand {
 	private void convertFiles(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
 			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) {
 		
-		MainWindowModel mwm = MainWindowModel.getInstance();
+		TricycleModel mwm = TricycleModel.getInstance();
 		ConvertProgress storedConvertProgress = null;
 		try {
 			

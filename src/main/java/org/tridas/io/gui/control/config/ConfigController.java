@@ -42,13 +42,13 @@ import com.dmurph.mvc.control.FrontController;
  * @author Daniel Murphy
  */
 public class ConfigController extends FrontController {
-	public static final String SET_INPUT_FORMAT = "CONFIG_SET_INPUT_FORMAT";
-	public static final String SET_OUTPUT_FORMAT = "CONFIG_SET_OUTPUT_FORMAT";
-	public static final String INPUT_DEFAULTS_PRESSED = "CONFIG_INPUT_DEFAULTS_PRESSED";
-	public static final String OUTPUT_DEFAULTS_PRESSED = "CONFIG_OUTPUT_DEFAULTS_PRESSED";
-	public static final String SET_NAMING_CONVENTION = "CONFIG_SET_NAMING_CONVENTION";
-	public static final String SET_READING_CHARSET = "CONFIG_SET_READING_CHARSET";
-	public static final String SET_WRITING_CHARSET = "CONFIG_SET_WRITING_CHARSET";
+	public static final String SET_INPUT_FORMAT = "TRIYCYCLE_CONFIG_SET_INPUT_FORMAT";
+	public static final String SET_OUTPUT_FORMAT = "TRIYCYCLE_CONFIG_SET_OUTPUT_FORMAT";
+	public static final String INPUT_DEFAULTS_PRESSED = "TRIYCYCLE_CONFIG_INPUT_DEFAULTS_PRESSED";
+	public static final String OUTPUT_DEFAULTS_PRESSED = "TRIYCYCLE_CONFIG_OUTPUT_DEFAULTS_PRESSED";
+	public static final String SET_NAMING_CONVENTION = "TRIYCYCLE_CONFIG_SET_NAMING_CONVENTION";
+	public static final String SET_READING_CHARSET = "TRIYCYCLE_CONFIG_SET_READING_CHARSET";
+	public static final String SET_WRITING_CHARSET = "TRIYCYCLE_CONFIG_SET_WRITING_CHARSET";
 	
 	private ConfigModel model = ConfigModel.getInstance();
 	
@@ -63,26 +63,26 @@ public class ConfigController extends FrontController {
 	}
 	
 	public void setInputFormat(MVCEvent argEvent) {
-		StringEvent event = (StringEvent) argEvent;
+		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setReaderDefaults(null);
 		FileListModel fmodel = FileListModel.getInstance();
 		fmodel.setInputFormat(event.getValue());
 	}
 	
 	public void setOutputFormat(MVCEvent argEvent) {
-		StringEvent event = (StringEvent) argEvent;
+		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setWriterDefaults(null);
 		ConvertModel cmodel = ConvertModel.getInstance();
 		cmodel.setOutputFormat(event.getValue());
 	}
 	
 	public void setNamingConvention(MVCEvent argEvent) {
-		StringEvent event = (StringEvent) argEvent;
+		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setNamingConvention(event.getValue());
 	}
 	
 	public void setReadingCharset(MVCEvent argEvent) {
-		StringEvent event = (StringEvent) argEvent;
+		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setReadingCharset(event.getValue());
 		
 		if (event.getValue().equals(Charsets.AUTO)) {
@@ -98,7 +98,7 @@ public class ConfigController extends FrontController {
 	}
 	
 	public void setWritingCharset(MVCEvent argEvent) {
-		StringEvent event = (StringEvent) argEvent;
+		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setWritingCharset(event.getValue());
 		
 		TridasIO.setWritingCharset(event.getValue());

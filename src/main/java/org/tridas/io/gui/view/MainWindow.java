@@ -34,9 +34,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.control.MainWindowController;
+import org.tridas.io.gui.control.TricycleController;
 import org.tridas.io.gui.model.FileListModel;
-import org.tridas.io.gui.model.MainWindowModel;
+import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 
@@ -62,7 +62,7 @@ public class MainWindow extends JFrame {
 	public FileListPanel fileList;
 	public ConvertPanel convertPanel;
 	
-	public final MainWindowModel model = MainWindowModel.getInstance();
+	public final TricycleModel model = TricycleModel.getInstance();
 	
 	/** Creates new form NewJFrame */
 	public MainWindow() {
@@ -136,7 +136,7 @@ public class MainWindow extends JFrame {
 		optionsMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
-				MVCEvent event = new MVCEvent(MainWindowController.OPTIONS);
+				MVCEvent event = new MVCEvent(TricycleController.OPTIONS);
 				event.dispatch();
 			}
 		});
@@ -144,14 +144,14 @@ public class MainWindow extends JFrame {
 		quitMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MVCEvent event = new MVCEvent(MainWindowController.QUIT);
+				MVCEvent event = new MVCEvent(TricycleController.QUIT);
 				event.dispatch();
 			}
 		});
 		aboutMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MVCEvent event = new MVCEvent(MainWindowController.ABOUT);
+				MVCEvent event = new MVCEvent(TricycleController.ABOUT);
 				event.dispatch();
 			}
 		});
@@ -165,12 +165,13 @@ public class MainWindow extends JFrame {
 		    return;
 		}
 		HelpBroker hb = hs.createHelpBroker();
+		
 		helpMenuButton.addActionListener(new CSH.DisplayHelpFromSource(hb));
 	
 		logMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
-				MVCEvent event = new MVCEvent(MainWindowController.VIEW_LOG);
+				MVCEvent event = new MVCEvent(TricycleController.VIEW_LOG);
 				event.dispatch();
 			}
 		});

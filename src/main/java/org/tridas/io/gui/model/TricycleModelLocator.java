@@ -32,7 +32,7 @@ import javax.swing.JFrame;
 import org.grlea.log.DebugLevel;
 import org.grlea.log.SimpleLog;
 import org.grlea.log.SimpleLogger;
-import org.tridas.io.gui.control.MainWindowController;
+import org.tridas.io.gui.control.TricycleController;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.fileList.FileListController;
@@ -50,7 +50,7 @@ public class TricycleModelLocator {
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
 	private static final String LAST_DIRECTORY = "LastDirectory";
 	
-	private MainWindowController mainWindowController = new MainWindowController();
+	private TricycleController mainWindowController = new TricycleController();
 	private FileListController fileListController = new FileListController();
 	private ConvertController convertController = new ConvertController();
 	private ConfigController configController = new ConfigController();
