@@ -13,6 +13,93 @@
          <tocitem target="d0e220" text="Naming convention"/>
       </tocitem>
       <tocitem target="d0e247" text="Help and more information"/>
-      <tocitem target="d0e271" text="Bibliography"/>
+      <tocitem target="d0e263" text="Descriptions of file formats">
+         <tocitem target="d0e266" text="Belfast Apple">
+            <tocitem target="d0e366" text="Description"/>
+            <tocitem target="d0e386" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e392" text="Belfast Archive">
+            <tocitem target="d0e395" text=""/>
+            <tocitem target="d0e485" text="Description"/>
+            <tocitem target="d0e529" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e535" text="Besancon">
+            <tocitem target="d0e627" text="Description"/>
+            <tocitem target="d0e663" text="Quirks and problems"/>
+            <tocitem target="d0e679" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e685" text="CATRAS">
+            <tocitem target="d0e777" text="Background"/>
+            <tocitem target="d0e787" text="Reading byte code"/>
+            <tocitem target="d0e944" text="Metadata"/>
+            <tocitem target="d0e995" text="Data"/>
+            <tocitem target="d0e1003" text="Unknown bytes"/>
+         </tocitem>
+         <tocitem target="d0e1023" text="Comma Separated Values (CSV)">
+            <tocitem target="d0e1115" text="Description"/>
+            <tocitem target="d0e1123" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e1129" text="Corina Legacy">
+            <tocitem target="d0e1221" text="Description"/>
+            <tocitem target="d0e1318" text="Example files"/>
+         </tocitem>
+         <tocitem target="d0e1333" text="Excel">
+            <tocitem target="d0e1425" text="Description"/>
+            <tocitem target="d0e1444" text="Example"/>
+         </tocitem>
+         <tocitem target="d0e1620" text="Heidelberg">
+            <tocitem target="d0e1712" text="Description"/>
+            <tocitem target="d0e2129" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e2150" text="Nottingham">
+            <tocitem target="d0e2242" text="Description"/>
+            <tocitem target="d0e2252" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e2258" text="PAST4">
+            <tocitem target="d0e2350" text="Description"/>
+            <tocitem target="d0e2548" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e2553" text="Sheffield">
+            <tocitem target="d0e2645" text="Description"/>
+            <tocitem target="d0e3108" text="Quirks and workarounds"/>
+            <tocitem target="d0e3161" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e3167" text="Topham">
+            <tocitem target="d0e3258" text="Description"/>
+            <tocitem target="d0e3264" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e3270" text="TRiDaS">
+            <tocitem target="d0e3362" text="Description"/>
+            <tocitem target="d0e3416" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e3423" text="TRIMS">
+            <tocitem target="d0e3514" text="Description"/>
+            <tocitem target="d0e3531" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e3537" text="Tucson">
+            <tocitem target="d0e3629" text="Description">
+               <tocitem target="d0e3645" text="RWL files"/>
+               <tocitem target="d0e3690" text="CRN files"/>
+               <tocitem target="d0e3707" text="Workarounds and quirks"/>
+            </tocitem>
+            <tocitem target="d0e3732" text="Example file">
+               <tocitem target="d0e3736" text="RWL style"/>
+               <tocitem target="d0e3743" text="CRN style"/>
+            </tocitem>
+         </tocitem>
+         <tocitem target="d0e3749" text="Tucson Compact">
+            <tocitem target="d0e3841" text="Description"/>
+            <tocitem target="d0e3890" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e3896" text="VFormat">
+            <tocitem target="d0e3988" text="Description"/>
+            <tocitem target="d0e4096" text="Example file"/>
+         </tocitem>
+         <tocitem target="d0e4102" text="WinDENDRO">
+            <tocitem target="d0e4193" text="Description"/>
+            <tocitem target="d0e4218" text="Example file"/>
+         </tocitem>
+      </tocitem>
+      <tocitem target="d0e4232" text="Bibliography"/>
    </tocitem>
 </toc>

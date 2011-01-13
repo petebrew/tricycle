@@ -36,12 +36,14 @@ public class FileListController extends FrontController {
 	public static final String REMOVE_SELECTED = "FILE_LIST_REMOVE_SELECTED";
 	public static final String REMOVE_ALL = "FILE_LIST_REMOVE_ALL";
 	public static final String ADD_FILE = "FILE_LIST_ADD_FILE";
+	public static final String ADD_MULTIPLE_FILES = "FILE_LIST_ADD_MULTIPLE_FILES";
 	public static final String BROWSE = "FILE_LIST_BROWSE";
 	
 	public FileListController() {
 		registerCommand(REMOVE_SELECTED, "removeSelected");
 		registerCommand(REMOVE_ALL, "removeAll");
 		registerCommand(ADD_FILE, "addFile");
+		registerCommand(ADD_MULTIPLE_FILES, "addMultipleFiles");
 		registerCommand(BROWSE, "browse");
 	}
 	
@@ -65,6 +67,17 @@ public class FileListController extends FrontController {
 		FileListModel model = FileListModel.getInstance();
 		model.addInputFile(event.getFile());
 	}
+	
+	public void addMultipleFiles(MVCEvent argEvent) {
+		AddMultipleFilesEvent event = (AddMultipleFilesEvent) argEvent;
+		if(event.getFiles() == null || event.getFiles().size()==0){
+			return;
+		}
+		
+		FileListModel model = FileListModel.getInstance();
+		model.addInputFiles(event.getFiles());
+	}
+	
 	
 	public void browse(MVCEvent argEvent) {
 		

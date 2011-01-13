@@ -19,12 +19,24 @@
 package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -36,6 +48,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -73,6 +86,7 @@ public class FileListPanel extends JPanel {
 	private JButton removeAll;
 	private JScrollPane scrollPane;
 	private JTextField fileField;
+	private DropTarget dt;
 	
 	private FileListModel model = FileListModel.getInstance();
 	
@@ -196,6 +210,89 @@ public class FileListPanel extends JPanel {
 			}
 		};
 		
+		
+		// Handle files being dropped onto the file list 
+		DropTargetListener dropListener = new DropTargetListener() {
+			@Override
+			public void drop(DropTargetDropEvent dtde) {
+				setDropGui(false);
+			    try {
+			        // Ok, get the dropped object and try to figure out what it is
+			        Transferable tr = dtde.getTransferable();
+			        DataFlavor[] flavors = tr.getTransferDataFlavors();
+			        for (int i = 0; i < flavors.length; i++) 
+			        {
+				        //log.debug("Possible flavor: " + flavors[i].getMimeType());
+					    // Check for file lists specifically
+					    if (flavors[i].isFlavorJavaFileListType()) 
+					    {
+					      // Great!  Accept copy drops...
+					      dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+					      log.debug("Successful file list drop.\n\n");
+					      
+					      // And add the list of file names to our text area
+					      List list = (List)tr.getTransferData(flavors[i]);
+					      for (int j = 0; j < list.size(); j++) {
+					    	log.debug(list.get(j) + "\n");
+					    	try
+					    	{
+					    		File dragFile = (File) list.get(j);
+					    		if(dragFile.isFile())
+					    		{
+					    			AddFileEvent event = new AddFileEvent(dragFile.getAbsolutePath());
+					    			event.dispatch();
+					    		}
+					    	} catch (Exception e)
+					    	{
+					    		log.debug("Drag and drop failed");
+					    		return;
+					    	}
+					      }
+		
+					      // If we made it this far, everything worked.
+					      dtde.dropComplete(true);
+					      return;
+					    }
+			    
+			        }
+			        
+		        // Hmm, the user must not have dropped a file list
+			    log.debug("Drop failed: " + dtde);
+		        dtde.rejectDrop();
+		      } catch (Exception e) {
+		        e.printStackTrace();
+		        dtde.rejectDrop();
+		      }
+			}
+			
+			@Override
+			public void dropActionChanged(DropTargetDragEvent dtde) { }
+			
+			@Override
+			public void dragOver(DropTargetDragEvent dtde) { 
+				
+				Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+		        setCursor(cursor);
+		        Border border = BorderFactory.createLineBorder(Color.red);
+		     
+		        fileList.setBorder(border);
+
+				
+			}
+			
+			@Override
+			public void dragExit(DropTargetEvent dte) {	
+				setDropGui(false);
+			}
+			
+			@Override
+			public void dragEnter(DropTargetDragEvent dtde) { 
+				setDropGui(true);
+			}
+		};
+		
+		dt = new DropTarget(fileList, dropListener);
+		
 		fileField.addActionListener(addFileListener);
 		addButton.addActionListener(addFileListener);
 		
@@ -214,6 +311,29 @@ public class FileListPanel extends JPanel {
 				event.dispatch();
 			}
 		});
+	}
+	
+	/**
+	 * Change the GUI to show drag and drop of files.  If dropping is false
+	 * then the GUI is reset. 
+	 * 
+	 * @param dropping
+	 */
+	private void setDropGui(Boolean dropping)
+	{
+		Cursor cursor;
+		if(dropping)
+		{
+			cursor = new Cursor(Cursor.HAND_CURSOR);
+	        fileList.setBorder(BorderFactory.createLineBorder(Color.red));
+		}
+		else
+		{
+			cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	        fileList.setBorder(null);
+		}
+		
+		setCursor(cursor);
 	}
 	
 	public void populateLocale() {

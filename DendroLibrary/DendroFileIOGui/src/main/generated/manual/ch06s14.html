@@ -1,0 +1,67 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>TRIMS</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"><link rel="home" href="manual.html" title="TRiCYCLE Manual"><link rel="up" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Descriptions of file formats"><link rel="prev" href="ch06s13.html" title="TRiDaS"><link rel="next" href="ch06s15.html" title="Tucson"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" title="TRIMS"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e3423"></a>TRIMS</h2></div></div></div><div class="table"><a name="d0e3426"></a><p class="title"><b>Table&nbsp;6.18.&nbsp;</b></p><div class="table-contents"><div class="caption"></div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><p><span class="strong"><strong>Format Name</strong></span>              </p></td><td><p> TRIMS</p></td></tr><tr><td><p><span class="strong"><strong>Other names</strong></span>              </p></td><td><p> None known   </p></td></tr><tr><td><p><span class="strong"><strong>Type</strong></span>                     </p></td><td><p> Text file </p></td></tr><tr><td><p><span class="strong"><strong>Extension(s)</strong></span>             </p></td><td><p> Normally .rw</p></td></tr><tr><td><p><span class="strong"><strong>Read/write support</strong></span>       </p></td><td><p> Read and write </p></td></tr><tr><td><p><span class="strong"><strong>Reference implementation</strong></span> </p></td><td><p> Unknown </p></td></tr><tr><td><p><span class="strong"><strong>Data/Metadata</strong></span>            </p></td><td><p> Data only </p></td></tr><tr><td><p><span class="strong"><strong>Single/Multi series</strong></span>      </p></td><td><p> Single </p></td></tr><tr><td><p><span class="strong"><strong>Original designer</strong></span>        </p></td><td><p> Unknown </p></td></tr></tbody></table></div></div><br class="table-break"><p></p><div class="section" title="Description"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3514"></a>Description</h3></div></div></div><p>This is a simple data only text file format.  These files were originally produced using the Henson rotary micrometer measuring stages but have largely been phased out.   </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Line 1 - Initials of user that created the series </li><li class="listitem">Line 2 - Date the file was created in dd/MM/YY format </li><li class="listitem">Line 3 - Year of first data value </li><li class="listitem">Line 4+ - Space character followed by an integer data value in 1/100th mm  </li><li class="listitem">Final line - Space character + 999 denoting end of series. </li></ul></div><p></p></div><div class="section" title="Example file"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3531"></a>Example file</h3></div></div></div><p></p><pre class="screen">ds
+09/10/91
+ 1816 
+ 169 
+ 96 
+ 165 
+ 85 
+ 139 
+ 87 
+ 112 
+ 102 
+ 60 
+ 43 
+ 164 
+ 172 
+ 142 
+ 193 
+ 143 
+ 172 
+ 229 
+ 198 
+ 158 
+ 112 
+ 128 
+ 181 
+ 171 
+ 206 
+ 137 
+ 73 
+ 103 
+ 131 
+ 177 
+ 179 
+ 244 
+ 173 
+ 161 
+ 202 
+ 341 
+ 149 
+ 263 
+ 197 
+ 375 
+ 266 
+ 369 
+ 120 
+ 212 
+ 217 
+ 191 
+ 238 
+ 254 
+ 147 
+ 225 
+ 103 
+ 207 
+ 207 
+ 140 
+ 182 
+ 148 
+ 110 
+ 181 
+ 120 
+ 263 
+ 256 
+ 999 
+</pre></div></div></body></html>
