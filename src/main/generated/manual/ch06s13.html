@@ -1,0 +1,163 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>TRiDaS</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"><link rel="home" href="manual.html" title="TRiCYCLE Manual"><link rel="up" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Descriptions of file formats"><link rel="prev" href="ch06s12.html" title="Topham"><link rel="next" href="ch06s14.html" title="TRIMS"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" title="TRiDaS"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e3270"></a>TRiDaS</h2></div></div></div><div class="table"><a name="d0e3273"></a><p class="title"><b>Table&nbsp;6.17.&nbsp;Summary of the TRiDaS file format</b></p><div class="table-contents"><div class="caption">Summary of the TRiDaS file format</div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><p><span class="strong"><strong>Format Name</strong></span>              </p></td><td><p> TRiDaS</p></td></tr><tr><td><p><span class="strong"><strong>Other names</strong></span>              </p></td><td><p> Tree-Ring Data Standard, TRiDaS XML   </p></td></tr><tr><td><p><span class="strong"><strong>Type</strong></span>                     </p></td><td><p> Text file </p></td></tr><tr><td><p><span class="strong"><strong>Extension(s)</strong></span>             </p></td><td><p> xml </p></td></tr><tr><td><p><span class="strong"><strong>Read/write support</strong></span>       </p></td><td><p> Read and write </p></td></tr><tr><td><p><span class="strong"><strong>Reference implementation</strong></span> </p></td><td><p> TRiCYCLE/DendroFileIOLib </p></td></tr><tr><td><p><span class="strong"><strong>Data/Metadata</strong></span>            </p></td><td><p> Data and structured metadata </p></td></tr><tr><td><p><span class="strong"><strong>Single/Multi series</strong></span>      </p></td><td><p> Multi </p></td></tr><tr><td><p><span class="strong"><strong>Original designers</strong></span>        </p></td><td><p> Esther Jansma, Peter Brewer, Ivo Zandhuis</p></td></tr></tbody></table></div></div><br class="table-break"><p></p><div class="section" title="Description"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3362"></a>Description</h3></div></div></div><p>TRiDaS (Tree-Ring Data Standard see <a class="ulink" href="http://www.tridas.org" target="_top">http://www.tridas.org</a>) is a data format designed by over 80 dendrochronologists and computer scientists as part of the <a class="ulink" href="http://www.dendrochronology.eu" target="_top">DCCD</a> project and the Dendro Data Standard forum.  It is designed to accurately represent any dendro data and metadata and it is hoped over time the dendro community will accept TRiDaS as the de facto standard for all dendro data. </p><p>The format uses extensible markup language (XML) which means the standard can be extended and evolve as future needs change. The format is structured around the eight data entities described below: </p><p><span class="strong"><strong>A project</strong></span> is defined by a laboratory and encompasses dendrochronological research of a particular object or group of objects. Examples include: the dating of a building; the research of forest dynamics in a stand of living trees; the dating of all Rembrandt paintings in a museum. What is considered a &#8220;project&#8221; is up to the laboratory performing the research. It could be the dating of a group of objects, but the laboratory can also decide to define a separate project for each object. Therefore, a project can have one or more objects associated with it. </p><p><span class="strong"><strong>An object</strong></span> is the item to be investigated. Examples include: violin; excavation site; painting on a wooden panel; water well; church; carving; ship; forest. An object could also be more specific, for example: mast of a ship; roof of a church. Depending on the object type various descriptions are made possible. An object can have one or more elements and can also refer to another (sub) object. For instance a single file may contain three objects: an archaeological site object, within which there is a building object, within which there is a beam object. The list of possible object types is extensible and is thus flexible enough to incorporate the diversity of data required by the dendro community. Only information that is essential for dendrochronological research is recorded here. Other related data may be provided in the form of a link to an external database such as a museum catalogue. </p><p><span class="strong"><strong>An element</strong></span> is a piece of wood originating from a single tree. Examples include: one plank of a water well; a single wooden panel in a painting; the left-hand back plate of a violin; one beam in a roof; a tree trunk preserved in the soil; a living tree. The element is a specific part of exactly one object or sub object. An object will often consist of more than one element, e.g., when dealing with the staves (elements) of a barrel (object). One or more samples can be taken from an element and an element may be dated using one or more derivedSeries. </p><p><span class="strong"><strong>A sample</strong></span> is a physical specimen or non-physical representation of an element. Examples include: core from a living tree; core from a rafter in a church roof; piece of charcoal from an archaeological trench; slice from a pile used in a pile foundation; wax imprint of the outer end of a plank; photo of a back plate of a string instrument. Note that a sample always exists and that it can either be physical (e.g. a core) or representative (e.g. a picture). A sample is taken from exactly one element and can be represented by one or more radii. </p><p><span class="strong"><strong>A radius</strong></span> is a line from pith to bark along which the measurements are taken. A radius is derived from exactly one sample. It can be measured more than once resulting in multiple measurementSeries. </p><p><span class="strong"><strong>A measurementSeries</strong></span> is a series of direct, raw measurements along a radius. A single measurementSeries can be standardised or a collection of measurementSeries can be combined into a derived- Series. The measurements themselves are stored separately as values. </p><p><span class="strong"><strong>A derivedSeries</strong></span> is a calculated series of values and is a minor modification of the &#8220;v-series&#8221; concept proposed by Brewer et al. (2009). Examples include: index; average of a collection of measurementSeries such as a chronology. A derivedSeries is derived from one or more measurementSeries and has multiple values associated with it. </p><p><span class="strong"><strong>A value</strong></span> is the result of a single ring measurement. Examples include: total ring width; earlywood width; latewood width. The values are related to a measurementSeries or a derivedSeries. In case of a measurementSeries the variable and its measurement unit (e.g. microns, 1/100th mm etc) are recorded as well. </p><p>For a full description of the standard see Jansma et al. (2010) available online at <a class="ulink" href="http://dx.doi.org/10.1016/j.dendro.2009.06.009" target="_top">Science Direct</a> and the <a class="ulink" href="http://tridas.org/documents/tridas.pdf" target="_top">TRiDaS website</a>. </p><p></p></div><div class="section" title="Example file"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3416"></a>Example file</h3></div></div></div><p></p><pre class="screen">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;tridas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.tridas.org/1.2.1 ../dev/sourceforge/tridas/XMLSchema/1.2.1/tridas-1.2.1.xsd"
+    xmlns="http://www.tridas.org/1.2.1" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;
+    &lt;project&gt;
+        &lt;title&gt;Aegean Dendrochronology Project&lt;/title&gt;
+        &lt;identifier domain="dendro.cornell.edu"&gt;C&lt;/identifier&gt;
+        &lt;createdTimestamp certainty="exact"&gt;1997-02-01T14:13:51.0Z&lt;/createdTimestamp&gt;
+        &lt;lastModifiedTimestamp certainty="exact"&gt;1997-02-01T14:13:51.0Z&lt;/lastModifiedTimestamp&gt;
+        &lt;type&gt;Dating&lt;/type&gt;
+
+        &lt;description&gt;Our key long-range goal is to build long multi-millennial scale tree-ring
+            chronologies in the Aegean and Near East that will extend from the present to the early
+            Holocene to cover, broadly speaking, the last 10,000 years of human and environmental
+            history. Our raison d'&ecirc;tre is to provide a dating method for the study of history and
+            prehistory in the Aegean that is accurate to the year. This kind of precision has, up to
+            now, been lacking in ancient studies of this area. Indeed, few archaeological problems
+            stimulate as much rancor as chronology, especially that of the Eastern Mediterranean.
+            The work of the Aegean and Near Eastern Dendrochronology Project aims to help to bring
+            some kind of rational and neutral order to Aegean and Near Eastern chronology from the
+            Neolithic to the present. &lt;/description&gt;
+        &lt;laboratory&gt;
+            &lt;name&gt;Malcolm and Carolyn Weiner Laboratory for Aegean and Near Eastern Dendrochronology&lt;/name&gt;
+            &lt;address&gt;
+                &lt;addressLine1&gt;B48 Goldwin Smith Hall&lt;/addressLine1&gt;
+                &lt;addressLine2&gt;Cornell University&lt;/addressLine2&gt;
+                &lt;cityOrTown&gt;Ithaca&lt;/cityOrTown&gt;
+
+                &lt;stateProvinceRegion&gt;NY&lt;/stateProvinceRegion&gt;
+                &lt;postalCode&gt;14853&lt;/postalCode&gt;
+                &lt;country&gt;USA&lt;/country&gt;
+            &lt;/address&gt;
+        &lt;/laboratory&gt;
+        &lt;category&gt;Archaeology&lt;/category&gt;
+        &lt;investigator&gt;Peter I Kuniholm&lt;/investigator&gt;
+
+        &lt;period&gt;1976-present&lt;/period&gt;
+        &lt;reference&gt;reference1&lt;/reference&gt;
+        &lt;object&gt;
+            &lt;title&gt;White Tower, Thessaloniki&lt;/title&gt;
+            &lt;identifier domain="dendro.cornell.edu"
+                &gt;28acb483-f337-412f-a063-59d911c37594&lt;/identifier&gt;
+            &lt;createdTimestamp certainty="exact"&gt;1997-02-01T14:13:51.0Z&lt;/createdTimestamp&gt;
+
+            &lt;lastModifiedTimestamp certainty="exact"&gt;1997-02-01T14:13:51.0Z&lt;/lastModifiedTimestamp&gt;
+            &lt;type normalStd="Corina Dictionary" normalId="4" normal="Building"&gt;Building&lt;/type&gt;
+            &lt;description&gt;The White Tower of Thessaloniki was originally constructed by the Ottomans
+                to fortify the city's harbour.&lt;/description&gt;
+            &lt;coverage&gt;
+                &lt;coverageTemporal&gt;Ottoman&lt;/coverageTemporal&gt;
+                &lt;coverageTemporalFoundation&gt;Stylistic&lt;/coverageTemporalFoundation&gt;
+
+            &lt;/coverage&gt;
+            &lt;location&gt;
+                &lt;locationGeometry xmlns:gml="http://www.opengis.net/gml"&gt;
+                    &lt;gml:Point srsName="urn:ogc:def:crs:EPSG:6.6:4326"&gt;
+                        &lt;gml:pos&gt;40.6263 22.9485&lt;/gml:pos&gt;
+                    &lt;/gml:Point&gt;
+                &lt;/locationGeometry&gt;
+                &lt;locationPrecision&gt;20&lt;/locationPrecision&gt;
+
+                &lt;locationComment&gt;Thessaloniki, Greece&lt;/locationComment&gt;
+            &lt;/location&gt;
+            &lt;object&gt;
+                &lt;title&gt;Fourth floor&lt;/title&gt;
+                &lt;type&gt;Floor&lt;/type&gt;
+                &lt;element&gt;
+                    &lt;title&gt;C-TWT-65&lt;/title&gt;
+
+                    &lt;identifier domain="dendro.cornell.edu"
+                        &gt;89dbd409-03a3-42a0-9391-62c6be7009ad&lt;/identifier&gt;
+                    &lt;createdTimestamp certainty="exact"&gt;1997-02-01T14:13:51.0Z&lt;/createdTimestamp&gt;
+                    &lt;lastModifiedTimestamp certainty="exact"
+                        &gt;1997-02-01T14:13:51.0Z&lt;/lastModifiedTimestamp&gt;
+                    &lt;type normalStd="Corina Dictionary" normalId="3" normal="Rafter"&gt;Rafter&lt;/type&gt;
+                    &lt;description&gt;15th Rafter from the south&lt;/description&gt;
+                    &lt;taxon normalStd="Catalogue of Life Annual Checklist 2008" normal="Quercus"
+                        normalId="49139"&gt;Quercus sp.&lt;/taxon&gt;
+
+                    &lt;dimensions&gt;
+                        &lt;unit normalTridas="metres"/&gt;
+                        &lt;height&gt;1&lt;/height&gt;
+                        &lt;width&gt;1&lt;/width&gt;
+                        &lt;depth&gt;1&lt;/depth&gt;
+                    &lt;/dimensions&gt;
+                    &lt;authenticity&gt;Original&lt;/authenticity&gt;
+
+                    &lt;sample&gt;
+                        &lt;title&gt;C-TWT-65-A&lt;/title&gt;
+                        &lt;identifier domain="dendro.cornell.edu"
+                            &gt;ff688357-b2d4-4394-a21a-90696cd4558c&lt;/identifier&gt;
+                        &lt;createdTimestamp certainty="exact"
+                            &gt;1997-02-01T14:13:51.0Z&lt;/createdTimestamp&gt;
+                        &lt;lastModifiedTimestamp certainty="exact"
+                            &gt;1997-02-01T14:13:51.0Z&lt;/lastModifiedTimestamp&gt;
+                        &lt;type normal="Corina Dictionary" normalId="1" normalStd="Section"
+                            &gt;Section&lt;/type&gt;
+
+                        &lt;samplingDate certainty="exact"&gt;1981-07-25&lt;/samplingDate&gt;
+                        &lt;state&gt;Dry&lt;/state&gt;
+                        &lt;radius&gt;
+                            &lt;title&gt;C-TWT-65-A-B&lt;/title&gt;
+                            &lt;identifier domain="dendro.cornell.edu"
+                                &gt;5b7baa8b-cd4e-4b3b-88fa-82939420e544&lt;/identifier&gt;
+                            &lt;createdTimestamp certainty="exact"
+                                &gt;2006-05-04T18:13:51.0Z&lt;/createdTimestamp&gt;
+
+                            &lt;lastModifiedTimestamp certainty="exact"
+                                &gt;2006-05-04T18:13:51.0Z&lt;/lastModifiedTimestamp&gt;
+                            &lt;woodCompleteness&gt;
+                                &lt;pith presence="absent"/&gt;
+                                &lt;heartwood presence="incomplete"/&gt;
+                                &lt;sapwood presence="complete"/&gt;
+                                &lt;bark presence="present"/&gt;
+                            &lt;/woodCompleteness&gt;
+                            &lt;measurementSeries&gt;
+
+                                &lt;title&gt;C-TWT-65-A-B-A&lt;/title&gt;
+                                &lt;identifier domain="dendro.cornell.edu"
+                                    &gt;8c50234e-8eda-41bb-b578-01cc881d1ea1&lt;/identifier&gt;
+                                &lt;createdTimestamp certainty="exact"
+                                    &gt;1997-02-01T14:13:51.0Z&lt;/createdTimestamp&gt;
+                                &lt;lastModifiedTimestamp certainty="exact"
+                                    &gt;1997-02-01T14:13:51.0Z&lt;/lastModifiedTimestamp&gt;
+                                &lt;analyst&gt;Laura Steele&lt;/analyst&gt;
+                                &lt;dendrochronologist&gt;Peter I Kuniholm&lt;/dendrochronologist&gt;
+
+                                &lt;measuringMethod normalStd="Corina Dictionary" normalId="1"
+                                    &gt;Measuring platform&lt;/measuringMethod&gt;
+                                &lt;interpretation&gt;
+                                    &lt;firstYear suffix="AD"&gt;1254&lt;/firstYear&gt;
+                                    &lt;statFoundation&gt;
+                                        &lt;statValue&gt;8.3&lt;/statValue&gt;
+                                        &lt;type&gt;t-score&lt;/type&gt;
+                                        &lt;usedSoftware&gt;Corina 2.10&lt;/usedSoftware&gt;
+
+                                    &lt;/statFoundation&gt;
+                                    &lt;deathYear suffix="AD"&gt;1535&lt;/deathYear&gt;
+                                    &lt;provenance&gt;Possibly from the region of Serres&lt;/provenance&gt;
+                                &lt;/interpretation&gt;
+                                &lt;values&gt;
+                                    &lt;variable normalTridas="Ring width"/&gt;
+                                    &lt;unit normalTridas="1/100th millimetres"/&gt;
+                                    &lt;value value="54"/&gt;
+
+                                    &lt;value value="111"/&gt;
+                                    &lt;value value="71"/&gt;
+                                    &lt;value value="40"/&gt;
+                                    &lt;value value="56"/&gt;
+                                &lt;/values&gt;
+                            &lt;/measurementSeries&gt;
+                        &lt;/radius&gt;
+                    &lt;/sample&gt;
+                &lt;/element&gt;
+
+            &lt;/object&gt;
+        &lt;/object&gt;
+    &lt;/project&gt;
+&lt;/tridas&gt;
+
+</pre><p></p></div></div></body></html>

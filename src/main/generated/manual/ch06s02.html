@@ -1,0 +1,33 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Belfast Archive</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"><link rel="home" href="manual.html" title="TRiCYCLE Manual"><link rel="up" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Descriptions of file formats"><link rel="prev" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Descriptions of file formats"><link rel="next" href="ch06s03.html" title="Besancon"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" title="Belfast Archive"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e392"></a>Belfast Archive</h2></div></div></div><div class="section"><div class="titlepage"></div><div class="table"><a name="d0e396"></a><p class="title"><b>Table&nbsp;6.2.&nbsp;Summary for the Belfast Archive file format</b></p><div class="table-contents"><div class="caption">Summary for the Belfast Archive file format</div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><p><span class="strong"><strong>Format Name</strong></span>              </p></td><td><p> Belfast Archive</p></td></tr><tr><td><p><span class="strong"><strong>Other names</strong></span>              </p></td><td><p> None known   </p></td></tr><tr><td><p><span class="strong"><strong>Type</strong></span>                     </p></td><td><p> Text file </p></td></tr><tr><td><p><span class="strong"><strong>Extension(s)</strong></span>             </p></td><td><p> Various (includes arx, txt and dat)</p></td></tr><tr><td><p><span class="strong"><strong>Read/write support</strong></span>       </p></td><td><p> Read only </p></td></tr><tr><td><p><span class="strong"><strong>Reference implementation</strong></span> </p></td><td><p> No original software is known to exist so TRiCYCLE is proposed as the reference implementation </p></td></tr><tr><td><p><span class="strong"><strong>Data/Metadata</strong></span>            </p></td><td><p> Data with limited metadata </p></td></tr><tr><td><p><span class="strong"><strong>Single/Multi series</strong></span>      </p></td><td><p> Multi </p></td></tr><tr><td><p><span class="strong"><strong>Original designer</strong></span>        </p></td><td><p> Martin Munro </p></td></tr></tbody></table></div></div><br class="table-break"><p></p></div><div class="section" title="Description"><div class="titlepage"><div><div><h3 class="title"><a name="d0e485"></a>Description</h3></div></div></div><p>Belfast Archive is a simple text file format based on the original <a class="ulink" href="/corina-manual/Belfast Apple" target="_top">Belfast Apple</a> format at the Queens University Belfast lab.  It shares the same features as <a class="ulink" href="/corina-manual/Belfast Apple" target="_top">Belfast Apple</a> but with the addition of a number of metadata fields at the end of the file. </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Line 1 contains the name of the site or object the data refers to. </li><li class="listitem">Line 2 contains the identifier for the sample the data refers to. </li><li class="listitem">Line 3 contains the number of data values in the file </li><li class="listitem">Line 4 onwards contain line-feed delimited data values as integers  </li><li class="listitem">The lines "[[ARCHIVE]]" and "[[ END OF TEXT ]]" denote the start and finish of the metadata section </li></ul></div><p>The metadata section contains the following lines: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Line 1 - start year as an integer. </li><li class="listitem">Line 2 - unknown </li><li class="listitem">Line 3 - Double representing the resolution of data values e.g. .1= 1/10ths mm, .01 = 1/100th mm, .001 = microns etc </li><li class="listitem">Line 4 - unknown </li><li class="listitem">Line 5 - unknown </li><li class="listitem">Line 6 - unknown </li><li class="listitem">Line 7 - Title of the data series </li><li class="listitem">Line 8 - unknown </li><li class="listitem">Line 9 - unknown </li></ul></div><p></p></div><div class="section" title="Example file"><div class="titlepage"><div><div><h3 class="title"><a name="d0e529"></a>Example file</h3></div></div></div><p></p><pre class="screen">BELLFRAME
+1
+176
+342
+338
+334
+409
+362
+308
+360
+264
+325
+318
+51
+48
+47
+60
+49
+48
+"[[ARCHIVE]]"
+1277
+9177
+.01
+1.035795
+0.212144
+IAN 21/01/96
+TWYNING CHURCH #01
+Pith F Sap 32
+""
+"[[ END OF TEXT ]]"
+</pre></div></div></body></html>
