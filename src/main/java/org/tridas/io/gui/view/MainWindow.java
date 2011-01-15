@@ -62,10 +62,11 @@ public class MainWindow extends JFrame {
 	public FileListPanel fileList;
 	public ConvertPanel convertPanel;
 	
-	public final TricycleModel model = TricycleModel.getInstance();
+	public final TricycleModel model;
 	
 	/** Creates new form NewJFrame */
-	public MainWindow() {
+	public MainWindow(TricycleModel argModel) {
+		model = argModel;
 		constructComponents();
 		populateLocale();
 		linkModel();
@@ -87,8 +88,8 @@ public class MainWindow extends JFrame {
 		optionsMenuButton = new JMenuItem();
 		logMenuButton = new JMenuItem();
 		
-		fileList = new FileListPanel();
-		convertPanel = new ConvertPanel();
+		fileList = new FileListPanel(TricycleModelLocator.getInstance().getFileListModel());
+		convertPanel = new ConvertPanel(TricycleModelLocator.getInstance().getConvertModel());
 		
 		tabbedPane.addTab(I18n.getText("view.main.fileListTab"), fileList);
 		tabbedPane.addTab(I18n.getText("view.main.convertTab"), convertPanel);
@@ -178,7 +179,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void linkModel() {
-		final FileListModel model = FileListModel.getInstance();
+		final FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 		if(model.getInputFiles().size() == 0){
 			tabbedPane.setEnabledAt(1, false);
 		}else{

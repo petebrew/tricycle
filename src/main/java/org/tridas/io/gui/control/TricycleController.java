@@ -59,7 +59,7 @@ public class TricycleController extends FrontController {
 	
 	public void startup(MVCEvent argEvent) {
 		if(view == null){
-			view = new MainWindow();
+			view = new MainWindow(TricycleModelLocator.getInstance().getTricycleModel());
 			TricycleModelLocator.getInstance().setMainWindow(view);
 			if(argEvent instanceof StartupEvent){
 				if(((StartupEvent) argEvent).exitOnClose){
@@ -102,7 +102,7 @@ public class TricycleController extends FrontController {
 			e.printStackTrace();
 		}
 		if(options == null){
-			options = new OptionsWindow(TricycleModelLocator.getInstance().getMainWindow());
+			options = new OptionsWindow(TricycleModelLocator.getInstance().getMainWindow(), TricycleModelLocator.getInstance().getConfigModel());
 		}
 		options.setVisible(true);
 	}

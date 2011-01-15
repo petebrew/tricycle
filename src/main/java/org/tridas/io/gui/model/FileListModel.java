@@ -32,9 +32,8 @@ import com.dmurph.mvc.model.MVCArrayList;
  */
 @SuppressWarnings("unchecked")
 public class FileListModel extends AbstractModel {
+	
 	private static final long serialVersionUID = 1L;
-
-	private static final FileListModel model = new FileListModel();
 	
 	//private static final SimpleLogger log = new SimpleLogger(FileListModel.class);
 	
@@ -42,7 +41,7 @@ public class FileListModel extends AbstractModel {
 	private String fileField = null;
 	private final MVCArrayList<String> inputFiles = new MVCArrayList<String>();
 	
-	private FileListModel() {}
+	public FileListModel() {}
 	
 	/**
 	 * @param inputFormat
@@ -127,9 +126,5 @@ public class FileListModel extends AbstractModel {
 	
 	public MVCArrayList<String> getInputFiles() {
 		return inputFiles;
-	}
-	
-	public static FileListModel getInstance() {
-		return model;
 	}
 }

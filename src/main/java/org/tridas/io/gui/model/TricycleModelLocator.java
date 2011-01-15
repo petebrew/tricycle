@@ -50,10 +50,15 @@ public class TricycleModelLocator {
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
 	private static final String LAST_DIRECTORY = "LastDirectory";
 	
+	private final ConfigModel configModel = new ConfigModel();
+	private final FileListModel fileListModel = new FileListModel();
+	private final ConvertModel convertModel = new ConvertModel();
+	private final TricycleModel tricycleModel = new TricycleModel();
+	
 	private TricycleController mainWindowController = new TricycleController();
 	private FileListController fileListController = new FileListController();
 	private ConvertController convertController = new ConvertController();
-	private ConfigController configController = new ConfigController();
+	private ConfigController configController = new ConfigController(configModel);
 	
 	private ImageIcon windowIcon;
 	private MainWindow view = null;
@@ -62,6 +67,7 @@ public class TricycleModelLocator {
 	private SavingProgress savingProgress = null;
 	private ConvertProgress convertProgress = null;
 	
+
 	private TricycleModelLocator() {
 		URL windowIconURL = IOUtils.getFileInJarURL("icons/64x64/application.png");
 		if(windowIconURL != null){
@@ -69,6 +75,22 @@ public class TricycleModelLocator {
 		}else{
 			windowIcon = new ImageIcon();
 		}
+	}
+	
+	public TricycleModel getTricycleModel() {
+		return tricycleModel;
+	}
+	
+	public ConfigModel getConfigModel(){
+		return configModel;
+	}
+	
+	public FileListModel getFileListModel(){
+		return fileListModel;
+	}
+	
+	public ConvertModel getConvertModel(){
+		return convertModel;
 	}
 	
 	public Properties getProperties(){

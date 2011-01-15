@@ -44,6 +44,7 @@ import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVCEvent;
 
@@ -62,10 +63,12 @@ public class OptionsWindow extends JDialog {
 	private JButton cancelButton;
 	private JButton okButton;
 		
-	private ConfigModel model = ConfigModel.getInstance();
+	private final ConfigModel model;
+	private final TricycleModelLocator loc = TricycleModelLocator.getInstance();
 	
-	public OptionsWindow(JFrame argOwner) {
+	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
+		model = argModel;
 		initializeComponents();
 		populateLocale();
 		linkModel();
@@ -209,8 +212,8 @@ public class OptionsWindow extends JDialog {
 	 * 
 	 */
 	private void populateLocale() {
-		FileListModel fmodel = FileListModel.getInstance();
-		ConvertModel cmodel = ConvertModel.getInstance();
+		FileListModel fmodel = loc.getFileListModel();
+		ConvertModel cmodel = loc.getConvertModel();
 		setTitle(I18n.getText("view.options.title"));
 		readingDefaults.setText(I18n.getText("view.options.input.defaults", fmodel.getInputFormat()));
 		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
@@ -262,8 +265,8 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
-		FileListModel fmodel = FileListModel.getInstance();
-		ConvertModel cmodel = ConvertModel.getInstance();
+		FileListModel fmodel = loc.getFileListModel();
+		ConvertModel cmodel = loc.getConvertModel();
 		fmodel.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override
@@ -283,7 +286,7 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
-		TricycleModel mwm = TricycleModel.getInstance();
+		TricycleModel mwm = loc.getTricycleModel();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {

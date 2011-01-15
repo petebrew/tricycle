@@ -50,9 +50,10 @@ public class ConfigController extends FrontController {
 	public static final String SET_READING_CHARSET = "TRIYCYCLE_CONFIG_SET_READING_CHARSET";
 	public static final String SET_WRITING_CHARSET = "TRIYCYCLE_CONFIG_SET_WRITING_CHARSET";
 	
-	private ConfigModel model = ConfigModel.getInstance();
+	private final ConfigModel model;
 	
-	public ConfigController() {
+	public ConfigController(ConfigModel argModel) {
+		model = argModel;
 		registerCommand(SET_INPUT_FORMAT, "setInputFormat");
 		registerCommand(SET_OUTPUT_FORMAT, "setOutputFormat");
 		registerCommand(SET_NAMING_CONVENTION, "setNamingConvention");
@@ -65,14 +66,14 @@ public class ConfigController extends FrontController {
 	public void setInputFormat(MVCEvent argEvent) {
 		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setReaderDefaults(null);
-		FileListModel fmodel = FileListModel.getInstance();
+		FileListModel fmodel = TricycleModelLocator.getInstance().getFileListModel();
 		fmodel.setInputFormat(event.getValue());
 	}
 	
 	public void setOutputFormat(MVCEvent argEvent) {
 		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setWriterDefaults(null);
-		ConvertModel cmodel = ConvertModel.getInstance();
+		ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
 		cmodel.setOutputFormat(event.getValue());
 	}
 	
@@ -109,7 +110,7 @@ public class ConfigController extends FrontController {
 		MetadataTableModel tmodel = new MetadataTableModel();
 		
 		if(model.getReaderDefaults() == null){
-			FileListModel fmodel = FileListModel.getInstance();
+			FileListModel fmodel = TricycleModelLocator.getInstance().getFileListModel();
 			AbstractDendroFileReader reader = TridasIO.getFileReader(fmodel.getInputFormat());
 			if(reader == null){
 				Frame parent = TricycleModelLocator.getInstance().getMainWindow();
@@ -133,7 +134,7 @@ public class ConfigController extends FrontController {
 		MetadataTableModel tmodel = new MetadataTableModel();
 		
 		if(model.getWriterDefaults() == null){
-			ConvertModel cmodel = ConvertModel.getInstance();
+			ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
 			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(cmodel.getOutputFormat());
 			if(writer == null){
 				Frame parent = TricycleModelLocator.getInstance().getMainWindow();

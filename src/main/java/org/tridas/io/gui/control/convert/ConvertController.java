@@ -63,11 +63,11 @@ public class ConvertController extends FrontController {
 	}
 	
 	public void cancelConvert(MVCEvent argEvent) {
-		ConvertModel.getInstance().setConvertRunning(false);
+		TricycleModelLocator.getInstance().getConvertModel().setConvertRunning(false);
 	}
 	
 	public void cancelSave(MVCEvent argEvent) {
-		ConvertModel.getInstance().setSaveRunning(false);
+		TricycleModelLocator.getInstance().getConvertModel().setSaveRunning(false);
 	}
 	
 	@SuppressWarnings("unchecked")
