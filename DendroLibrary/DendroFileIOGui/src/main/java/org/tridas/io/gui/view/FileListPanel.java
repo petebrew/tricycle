@@ -64,6 +64,7 @@ import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
 import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.StringEvent;
@@ -88,9 +89,10 @@ public class FileListPanel extends JPanel {
 	private JTextField fileField;
 	private DropTarget dt;
 	
-	private FileListModel model = FileListModel.getInstance();
+	private final FileListModel model;
 	
-	public FileListPanel() {
+	public FileListPanel(FileListModel argModel) {
+		model = argModel;
 		initComponents();
 		populateLocale();
 		linkModel();
@@ -404,7 +406,7 @@ public class FileListPanel extends JPanel {
 			}
 		});
 		
-		TricycleModel mwm = TricycleModel.getInstance();
+		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override

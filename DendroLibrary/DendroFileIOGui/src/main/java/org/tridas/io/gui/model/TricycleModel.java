@@ -25,14 +25,12 @@ import com.dmurph.mvc.model.AbstractModel;
  */
 public class TricycleModel extends AbstractModel {
 	private static final long serialVersionUID = 1L;
-
-	private static final TricycleModel model = new TricycleModel();
 	
 	//private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
 	
 	private boolean lock = false;
 	
-	private TricycleModel() {}
+	public TricycleModel() {}
 	
 	/**
 	 * @param lock
@@ -49,9 +47,5 @@ public class TricycleModel extends AbstractModel {
 	 */
 	public boolean isLock() {
 		return lock;
-	}
-	
-	public static TricycleModel getInstance() {
-		return model;
 	}
 }

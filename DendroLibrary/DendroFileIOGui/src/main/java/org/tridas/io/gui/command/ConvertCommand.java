@@ -78,7 +78,7 @@ public class ConvertCommand implements ICommand {
 			return;
 		}
 		
-		FileListModel fileList = FileListModel.getInstance();
+		FileListModel fileList = TricycleModelLocator.getInstance().getFileListModel();
 		
 		boolean inputFormatFound = false;
 		for (String format : TridasIO.getSupportedReadingFormats()) {
@@ -115,7 +115,7 @@ public class ConvertCommand implements ICommand {
 	private void convertFiles(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
 			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) {
 		
-		TricycleModel mwm = TricycleModel.getInstance();
+		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
 		ConvertProgress storedConvertProgress = null;
 		try {
 			
@@ -136,7 +136,7 @@ public class ConvertCommand implements ICommand {
 					convertProgress.setVisible(true);
 				}
 			});
-			ConvertModel cmodel =ConvertModel.getInstance();
+			ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
 			cmodel.setConvertRunning(true);
 			
 			for (int i = 0; i < argFiles.length; i++) {
@@ -245,7 +245,7 @@ public class ConvertCommand implements ICommand {
 	private void constructNodes(ArrayList<ConvertModel.ReaderWriterObject> list, INamingConvention argNaming) {
 		ArrayList<DefaultMutableTreeNode> nodes = new ArrayList<DefaultMutableTreeNode>();
 		
-		ConvertModel model = ConvertModel.getInstance();
+		ConvertModel model = TricycleModelLocator.getInstance().getConvertModel();
 		model.getConvertedList().clear();
 		model.getConvertedList().addAll(list);
 		

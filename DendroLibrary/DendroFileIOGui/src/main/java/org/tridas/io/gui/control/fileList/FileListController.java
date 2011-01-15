@@ -48,13 +48,13 @@ public class FileListController extends FrontController {
 	}
 	
 	public void removeAll(MVCEvent argEvent){
-		FileListModel model = FileListModel.getInstance();
+		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 		model.clearInputFiles();
 	}
 	
 	public void removeSelected(MVCEvent argEvent) {
 		RemoveSelectedEvent event = (RemoveSelectedEvent) argEvent;
-		FileListModel model = FileListModel.getInstance();
+		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 		
 		model.removeInputFiles(event.getSelectedSet());
 	}
@@ -64,7 +64,7 @@ public class FileListController extends FrontController {
 		if(event.getFile() == null || event.getFile().equals("")){
 			return;
 		}
-		FileListModel model = FileListModel.getInstance();
+		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 		model.addInputFile(event.getFile());
 	}
 	
@@ -74,7 +74,7 @@ public class FileListController extends FrontController {
 			return;
 		}
 		
-		FileListModel model = FileListModel.getInstance();
+		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 		model.addInputFiles(event.getFiles());
 	}
 	
@@ -100,7 +100,7 @@ public class FileListController extends FrontController {
 			return;
 		}
 		
-		FileListModel model = FileListModel.getInstance();
+		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 		
 		HashSet<String> s = new HashSet<String>();
 		for (File file : files) {

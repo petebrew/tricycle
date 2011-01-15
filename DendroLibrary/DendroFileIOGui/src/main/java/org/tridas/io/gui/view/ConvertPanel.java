@@ -55,6 +55,7 @@ import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
+import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
@@ -79,9 +80,10 @@ public class ConvertPanel extends JPanel {
 
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
 	
-	private ConvertModel model = ConvertModel.getInstance();
+	private final ConvertModel model;
 	
-	public ConvertPanel() {
+	public ConvertPanel(ConvertModel argModel) {
+		model = argModel;
 		initializeComponents();
 		populateLocale();
 		linkModel();
@@ -151,8 +153,9 @@ public class ConvertPanel extends JPanel {
 		convertButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ConfigModel config = ConfigModel.getInstance();
-				FileListModel flmodel = FileListModel.getInstance();
+				ConfigModel config = TricycleModelLocator.getInstance().getConfigModel();
+				FileListModel flmodel = TricycleModelLocator.getInstance().getFileListModel();
+				
 				ConvertEvent event = new ConvertEvent(flmodel.getInputFormat(),
 													  model.getOutputFormat(),
 													  config.getNamingConvention(),
@@ -305,7 +308,7 @@ public class ConvertPanel extends JPanel {
 			}
 		});
 		
-		TricycleModel mwm = TricycleModel.getInstance();
+		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override

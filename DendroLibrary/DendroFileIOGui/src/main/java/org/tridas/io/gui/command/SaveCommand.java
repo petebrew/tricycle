@@ -46,11 +46,13 @@ public class SaveCommand implements ICommand {
 			e1.printStackTrace();
 		}
 		
-		TricycleModel mwm = TricycleModel.getInstance();
+		TricycleModelLocator loc = TricycleModelLocator.getInstance();
+		
+		TricycleModel mwm = loc.getTricycleModel();
 		SavingProgress storedSavingProgress = null;
 		final OverwritePopup[] popup = {null}; // have to have it as an array so we can
 												// make it final for bug 213
-		ConvertModel cmodel = ConvertModel.getInstance();
+		ConvertModel cmodel = loc.getConvertModel();
 		// surround it all with try, so no matter what happens we will close the saving
 		// dialog and
 		// unlock the gui

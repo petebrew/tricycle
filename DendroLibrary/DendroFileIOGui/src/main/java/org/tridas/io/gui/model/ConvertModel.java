@@ -36,8 +36,6 @@ import com.dmurph.mvc.model.MVCArrayList;
 public class ConvertModel extends AbstractModel {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final ConvertModel model = new ConvertModel();
 	
 	private String outputFormat = "TRiDaS";
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
@@ -53,7 +51,7 @@ public class ConvertModel extends AbstractModel {
 	
 	private DefaultMutableTreeNode selectedNode = null;
 	
-	private ConvertModel() {}
+	public ConvertModel() {}
 	
 	@SuppressWarnings("unchecked")
 	public void setNodes(List<DefaultMutableTreeNode> argNodes) {
@@ -146,10 +144,6 @@ public class ConvertModel extends AbstractModel {
 	
 	public int getConvWithWarnings() {
 		return convWithWarnings;
-	}
-	
-	public static final ConvertModel getInstance() {
-		return model;
 	}
 	
 	public static class ReaderWriterObject {

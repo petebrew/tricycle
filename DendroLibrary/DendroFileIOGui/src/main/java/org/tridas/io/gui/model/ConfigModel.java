@@ -30,8 +30,6 @@ import com.dmurph.mvc.model.AbstractRevertibleModel;
  */
 public class ConfigModel extends AbstractRevertibleModel {
 	private static final long serialVersionUID = 1L;
-
-	private static final ConfigModel model = new ConfigModel();
 	
 	private String namingConvention = "Numerical";
 	private String writingCharset = TridasIO.getWritingCharset();
@@ -40,7 +38,7 @@ public class ConfigModel extends AbstractRevertibleModel {
 	private IMetadataFieldSet readerDefaults = null;
 	private IMetadataFieldSet writerDefaults = null;
 	
-	private ConfigModel() {}
+	public ConfigModel() {}
 	
 	public void setNamingConvention(String argNamingConvention) {
 		String old = namingConvention;
@@ -111,10 +109,6 @@ public class ConfigModel extends AbstractRevertibleModel {
 
 	public IMetadataFieldSet getWriterDefaults() {
 		return writerDefaults;
-	}
-	
-	public static final ConfigModel getInstance() {
-		return model;
 	}
 
 	/**
