@@ -224,7 +224,8 @@ public class FileListPanel extends JPanel {
 			        DataFlavor[] flavors = tr.getTransferDataFlavors();
 			        for (int i = 0; i < flavors.length; i++) 
 			        {
-				        //log.debug("Possible flavor: " + flavors[i].getMimeType());
+			        	
+				        log.debug("Possible flavor: " + flavors[i].getMimeType());
 					    // Check for file lists specifically
 					    if (flavors[i].isFlavorJavaFileListType()) 
 					    {
@@ -235,7 +236,7 @@ public class FileListPanel extends JPanel {
 					      // And add the list of file names to our text area
 					      List list = (List)tr.getTransferData(flavors[i]);
 					      for (int j = 0; j < list.size(); j++) {
-					    	log.debug(list.get(j) + "\n");
+					    	log.warn(list.get(j) + "\n");
 					    	try
 					    	{
 					    		File dragFile = (File) list.get(j);
@@ -246,7 +247,7 @@ public class FileListPanel extends JPanel {
 					    		}
 					    	} catch (Exception e)
 					    	{
-					    		log.debug("Drag and drop failed");
+					    		log.warn("Drag and drop failed");
 					    		return;
 					    	}
 					      }
@@ -259,7 +260,7 @@ public class FileListPanel extends JPanel {
 			        }
 			        
 		        // Hmm, the user must not have dropped a file list
-			    log.debug("Drop failed: " + dtde);
+			    log.warn("Drop failed: " + dtde);
 		        dtde.rejectDrop();
 		      } catch (Exception e) {
 		        e.printStackTrace();

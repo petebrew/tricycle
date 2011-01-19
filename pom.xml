@@ -70,7 +70,7 @@
 		              <source>
 		                      import java.util.Date
 		                      import java.text.MessageFormat
-		                      def timestamp = MessageFormat.format("{0,date,HH:mm dd-MM-yyyy }", new Date())
+		                      def timestamp = MessageFormat.format("{0,date,dd MMM yyyy, HH:mm }", new Date())
 		                      project.properties['buildtimestamp'] = timestamp
 		              </source>
 		          </configuration>

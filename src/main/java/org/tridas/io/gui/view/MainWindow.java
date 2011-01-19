@@ -35,6 +35,7 @@ import javax.swing.KeyStroke;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.TricycleController;
+import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
@@ -54,6 +55,7 @@ public class MainWindow extends JFrame {
 	private JMenuBar menuBar;
 	private JMenuItem quitMenuButton;
 	private JMenuItem optionsMenuButton;
+	private JMenuItem fileOpenButton;
 	private JMenuItem aboutMenuButton;
 	private JMenuItem helpMenuButton;
 
@@ -85,11 +87,15 @@ public class MainWindow extends JFrame {
 		aboutMenuButton = new JMenuItem();
 		helpMenuButton = new JMenuItem();
 
+		fileOpenButton = new JMenuItem();
+		
 		optionsMenuButton = new JMenuItem();
 		logMenuButton = new JMenuItem();
 		
+
 		fileList = new FileListPanel(TricycleModelLocator.getInstance().getFileListModel());
 		convertPanel = new ConvertPanel(TricycleModelLocator.getInstance().getConvertModel());
+
 		
 		tabbedPane.addTab(I18n.getText("view.main.fileListTab"), fileList);
 		tabbedPane.addTab(I18n.getText("view.main.convertTab"), convertPanel);
@@ -98,10 +104,12 @@ public class MainWindow extends JFrame {
 		
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 		
-		optionsMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		fileMenu.add(fileOpenButton);
 		fileMenu.add(optionsMenuButton);
 		
 		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+		fileMenu.addSeparator();
 		fileMenu.add(quitMenuButton);
 		
 		menuBar.add(fileMenu);
@@ -120,7 +128,8 @@ public class MainWindow extends JFrame {
 	
 	private void populateLocale() {
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
-		optionsMenuButton.setText("Options");
+		fileOpenButton.setText(I18n.getText("view.files.open"));
+		optionsMenuButton.setText(I18n.getText("view.files.options"));
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
 		helpMenuButton.setText("Help");
@@ -134,6 +143,14 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private void addListeners() {
+		fileOpenButton.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				BrowseEvent event = new BrowseEvent();
+				event.dispatch();
+			}
+		});
+		
 		optionsMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {

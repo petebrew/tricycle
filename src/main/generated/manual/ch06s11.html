@@ -1,6 +1,358 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Sheffield</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"><link rel="home" href="manual.html" title="TRiCYCLE Manual"><link rel="up" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Descriptions of file formats"><link rel="prev" href="ch06s10.html" title="PAST4"><link rel="next" href="ch06s12.html" title="Topham"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" title="Sheffield"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e2553"></a>Sheffield</h2></div></div></div><div class="table"><a name="d0e2556"></a><p class="title"><b>Table&nbsp;6.13.&nbsp;Summary of the Sheffield file format</b></p><div class="table-contents"><div class="caption">Summary of the Sheffield file format</div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><p><span class="strong"><strong>Format Name</strong></span>              </p></td><td><p> Sheffield</p></td></tr><tr><td><p><span class="strong"><strong>Other names</strong></span>              </p></td><td><p> D Format </p></td></tr><tr><td><p><span class="strong"><strong>Type</strong></span>                     </p></td><td><p> Text file </p></td></tr><tr><td><p><span class="strong"><strong>Extension(s)</strong></span>             </p></td><td><p> .d </p></td></tr><tr><td><p><span class="strong"><strong>Read/write support</strong></span>       </p></td><td><p> Read and write </p></td></tr><tr><td><p><span class="strong"><strong>Reference implementation</strong></span> </p></td><td><p> Dendro for Windows </p></td></tr><tr><td><p><span class="strong"><strong>Data/Metadata</strong></span>            </p></td><td><p> Data and some structured metadata </p></td></tr><tr><td><p><span class="strong"><strong>Single/Multi series</strong></span>      </p></td><td><p> Single  </p></td></tr><tr><td><p><span class="strong"><strong>Original designer</strong></span>        </p></td><td><p> Ian Tyers </p></td></tr></tbody></table></div></div><br class="table-break"><p></p><div class="section" title="Description"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2645"></a>Description</h3></div></div></div><p>Sheffield format is a dendro specific text file designed by Ian Tyers for his Dendro for Windows application.  It is probably most widely used in the UK but is also used in continental Europe as well as New Zealand. </p><p>The format contains both data and some structured metadata with each field/value stored one per line.  The order of fields is fixed so missing data must be indicated by the use of a question mark. </p><div class="table"><a name="d0e2652"></a><p class="title"><b>Table&nbsp;6.14.&nbsp;</b></p><div class="table-contents"><div class="caption"></div><table border="1"><colgroup><col><col><col><col></colgroup><tbody><tr><td><p> <span class="strong"><strong>Line</strong></span> </p></td><td><p> <span class="strong"><strong>Description</strong></span> </p></td><td><p> <span class="strong"><strong>Details</strong></span> </p></td><td><p> <span class="strong"><strong>Example</strong></span> </p></td></tr><tr><td><p>1 </p></td><td><p>  Site name/sample number </p></td><td><p>      free form text not including , " ( ) up to 64 characters        </p></td><td><p> Fennings Wharf 1080a</p></td></tr><tr><td><p>2 </p></td><td><p>  Number of rings </p></td><td><p>      whole positive number </p></td><td><p>        124</p></td></tr><tr><td><p>3 </p></td><td><p>  Date type </p></td><td><p>    single character; A = absolute date, R = relative date </p></td><td><p>       A</p></td></tr><tr><td><p>4 </p></td><td><p>  Start date </p></td><td><p>   whole number (can be negative) (if absolute 10001 = 1AD) </p></td><td><p>     10943</p></td></tr><tr><td><p>5 </p></td><td><p>  Raw Data type </p></td><td><p>        single character; R = annual raw ring width data (NB earlier versions used some other codes here for species e.g. ABEFPSU these are all interpreted as equivalent to R) </p></td><td><p>      R</p></td></tr><tr><td><p>  </p></td><td><p>  Mean Data type</p></td><td><p>        single character; W=timber mean with signatures, X=chron mean with signatures, T = timber mean, C = chron mean, M = un-weighted master sequence         </p></td><td><p> </p></td></tr><tr><td><p>6 </p></td><td><p>  Raw Sap number  </p></td><td><p>whole positive number or 0 </p></td><td><p> 9 </p></td></tr><tr><td><p>  </p></td><td><p>  Mean Number of timbers/chronologies </p></td><td><p>  whole positive number   </p></td><td><p> </p></td></tr><tr><td><p>7 </p></td><td><p>  Raw Edges inf. </p></td><td><p>       single character; Y = has bark, ! = has ?bark, W = terminal ring probably complete (i.e. possibly Winter Felled), S = terminal ring probably incomplete (i.e. possibly Summer Felled), B = has h/s boundary, ? = has ?h/s boundary, N = has no specific edge, (NB but may have sap), U = sap/bark unknown, C = charred outer edge, P = possibly charred outer edge </p></td><td><p>   Y</p></td></tr><tr><td><p>  </p></td><td><p>  Mean Chronology Type </p></td><td><p> single character; R = raw unfiltered data, 5 = 5 year running mean, I = indexed data, U = unknown mean type     </p></td><td><p> </p></td></tr><tr><td><p>8 </p></td><td><p>  Author and comment </p></td><td><p>   free form text not including , " ( ) up to 64 characters        </p></td><td><p>IGT 4/2/1995</p></td></tr><tr><td><p>9 </p></td><td><p>  UK National grid reference </p></td><td><p>   2 characters +even no of digits up to 14 characters in all, ? = not known       </p></td><td><p>TQ67848675</p></td></tr><tr><td><p>10</p></td><td><p>  Latitude and longitude </p></td><td><p>       NEW e.g. 53.382457;-1.513623 previously e.g. N54<sup>50 W003</sup>50, ? = not known </p></td><td><p>   <code class="code">N51^30 W1^20</code> </p></td></tr><tr><td><p>11 </p></td><td><p> Pith </p></td><td><p> single character; C = centre of tree, V = within 5 years of centre, F = 5-10 years of centre, G = greater than 10, ? = unknown</p></td><td><p>        G</p></td></tr><tr><td><p>12 </p></td><td><p> Cross-section code </p></td><td><p>   Two character code; first character, A = whole roundwood, B = half round, C quartered, D radial/split plank, E tangential/sawn plank. second character, 1 untrimmed, 2 trimmed, X irregularly trimmed. or, X = core /unclassifiable, ? unknown/unrecorded       </p></td><td><p>D1</p></td></tr><tr><td><p>13 </p></td><td><p> major dimension </p></td><td><p>      whole number in mm, 0 if unrecorded or mean </p></td><td><p>  140</p></td></tr><tr><td><p>14 </p></td><td><p> minor dimension </p></td><td><p>      whole number in mm, 0 if unrecorded or mean </p></td><td><p>  50</p></td></tr><tr><td><p>15 </p></td><td><p> unmeasured inner rings </p></td><td><p>       single character+whole number; use pith codes + number of rings or, H = heartwood, N = none </p></td><td><p>  C15</p></td></tr><tr><td><p>16 </p></td><td><p> unmeasured outer rings </p></td><td><p>       single character+whole number; use edges code + number of rings except that S = sapwood with no edge and V is the spring felling equivalent other codes are, H = heartwood with no edge, N = none       </p></td><td><p>Y13</p></td></tr><tr><td><p>17 </p></td><td><p> group/phase </p></td><td><p>  free form text not including , " ( ) up to 14 characters </p></td><td><p>     Well 34</p></td></tr><tr><td><p>18 </p></td><td><p> short title </p></td><td><p>  free form text not including , " ( ) up to 8 characters </p></td><td><p>      1080a</p></td></tr><tr><td><p>19 </p></td><td><p> period </p></td><td><p>       single character; C = modern, P = post medieval, M = medieval, S = Saxon, R = Roman, A = pre Roman, 2 = duplicate e.g. repeat measure, B = multiperiod e.g. long master, ? = unknown </p></td><td><p> M</p></td></tr><tr><td><p>20 </p></td><td><p> ITRDB species code </p></td><td><p>   4 character code - refer to ITRDB species codes </p></td><td><p> QUSP </p></td></tr><tr><td><p>21 </p></td><td><p> Interpretation and anatomical notes </p></td><td><p> ? =no interpretation/notes. The interpretation and the anatomical notes can be in any order but each must consist of three parts, a single character A or I for anatomy or interpretation, a separator ~, for interpretations the date of the start, for anatomy the ringno, a separator ~, for anatomy the anatomical code for interpretations P for plus, 0 for felled and a number for the length of the range, where more than one record is present these are separated by ~, there must not be a terminal separator and each record must consist of the tree parts. The anatomical codings can be anything of a single character but supported usage is based on Hans-Hubert Leuschners anatomical codes; D = Density Band, R = Reaction Wood, L = Light Latewood, H = Dense Latewood, F = Frost Ring, K = Small Earlywood Vessels - oak, G = Great Latewood Vessels - oak, T = Wound Tissue, N = Narrow Latewood, A = Light Latewood End, P = Narrow and Light Latewood, Q = Narrow and Dense Latewood </p></td><td><p> I~11066~0~A~100~S </p></td></tr><tr><td><p>22 </p></td><td><p> data type </p></td><td><p> single character; D = ring widths, E = early-wood widths only, L = late-wood widths only, R = late+early wood widths (i.e. reverse of normal rings), I = minimum density, A = maximum density, S = early, late; (i.e. sequentially &amp; separately), M = mixed (?means of others) </p></td><td><p>  D</p></td></tr><tr><td><p>23+ </p></td><td><p> for each width (equivalent to the value of length) the individual increments etc. if a C X T or W type mean  </p></td><td><p>        no negatives or 0's </p></td><td><p>  etc</p></td></tr><tr><td><p> + </p></td><td><p> check field     </p></td><td><p> single character H   </p></td><td><p>  </p></td></tr><tr><td><p> + </p></td><td><p> for each width the individual weightings of the mean sequences. If an X or W type mean </p></td><td><p> no negatives or 0's   </p></td><td><p> </p></td></tr><tr><td><p> + </p></td><td><p> check field </p></td><td><p>  single character R </p></td><td><p>   </p></td></tr><tr><td><p> + </p></td><td><p> for each width the number of individual series with rising values </p></td><td><p>    no negatives </p></td><td><p> </p></td></tr><tr><td><p> + </p></td><td><p> check field </p></td><td><p>  single character F </p></td><td><p> </p></td></tr><tr><td><p> + </p></td><td><p> for each width the number of individual series with falling values </p></td><td><p>   no negatives </p></td><td><p> </p></td></tr></tbody></table></div></div><br class="table-break"><p></p></div><div class="section" title="Quirks and workarounds"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3108"></a>Quirks and workarounds</h3></div></div></div><p>The format copes with the problem of the non-existent year 0AD/BC by adding 10000 to all year  values.  Therefore: </p><div class="table"><a name="d0e3113"></a><p class="title"><b>Table&nbsp;6.15.&nbsp;</b></p><div class="table-contents"><div class="caption"></div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><p> <span class="strong"><strong>Year</strong></span>    </p></td><td><p> <span class="strong"><strong>Sheffield format</strong></span> </p></td></tr><tr><td><p> 1AD     </p></td><td><p> 10001 </p></td></tr><tr><td><p> 1BC     </p></td><td><p> 10000 </p></td></tr><tr><td><p> 9999BC  </p></td><td><p> 2     </p></td></tr><tr><td><p> 10000BC </p></td><td><p> 1     </p></td></tr></tbody></table></div></div><br class="table-break"><p></p></div><div class="section" title="Example file"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3161"></a>Example file</h3></div></div></div><p></p><pre class="screen">York Hungate Boat 4 timber mean
+   <title>Sheffield</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"><link rel="home" href="manual.html" title="TRiCYCLE Manual"><link rel="up" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Descriptions of file formats"><link rel="prev" href="ch06s10.html" title="PAST4"><link rel="next" href="ch06s12.html" title="Topham"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" title="Sheffield"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e3438"></a>Sheffield</h2></div></div></div><div class="table"><a name="d0e3441"></a><p class="title"><b>Table&nbsp;6.13.&nbsp;Summary of the Sheffield file format</b></p><div class="table-contents"><div class="caption">Summary of the Sheffield file format</div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Format Name</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Sheffield</p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Other names</strong></span>
+                                </p>
+                            </td><td>
+                                <p> D Format </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Type</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Text file </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Extension(s)</strong></span>
+                                </p>
+                            </td><td>
+                                <p> .d </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Read/write support</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Read and write </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Reference implementation</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Dendro for Windows </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Data/Metadata</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Data and some structured metadata </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Single/Multi series</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Single  </p>
+                            </td></tr><tr><td>
+                                <p>
+                                    <span class="strong"><strong>Original designer</strong></span>
+                                </p>
+                            </td><td>
+                                <p> Ian Tyers </p>
+                            </td></tr></tbody></table></div></div><br class="table-break"><p></p><div class="section" title="Description"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3575"></a>Description</h3></div></div></div><p>Sheffield format is a dendro specific text file designed by Ian Tyers for his Dendro for Windows application.  It is probably most widely used in the UK but is also used in continental Europe as well as New Zealand. </p><p>The format contains both data and some structured metadata with each field/value stored one per line.  The order of fields is fixed so missing data must be indicated by the use of a question mark. </p><div class="table"><a name="d0e3582"></a><p class="title"><b>Table&nbsp;6.14.&nbsp;</b></p><div class="table-contents"><div class="caption"></div><table border="1"><colgroup><col><col><col><col></colgroup><tbody><tr><td>
+                                    <p>
+                                        <span class="strong"><strong>Line</strong></span>
+                                    </p>
+                                </td><td>
+                                    <p>
+                                        <span class="strong"><strong>Description</strong></span>
+                                    </p>
+                                </td><td>
+                                    <p>
+                                        <span class="strong"><strong>Details</strong></span>
+                                    </p>
+                                </td><td>
+                                    <p>
+                                        <span class="strong"><strong>Example</strong></span>
+                                    </p>
+                                </td></tr><tr><td>
+                                    <p>1 </p>
+                                </td><td>
+                                    <p>  Site name/sample number </p>
+                                </td><td>
+                                    <p>      free form text not including , " ( ) up to 64 characters        </p>
+                                </td><td>
+                                    <p> Fennings Wharf 1080a</p>
+                                </td></tr><tr><td>
+                                    <p>2 </p>
+                                </td><td>
+                                    <p>  Number of rings </p>
+                                </td><td>
+                                    <p>      whole positive number </p>
+                                </td><td>
+                                    <p>        124</p>
+                                </td></tr><tr><td>
+                                    <p>3 </p>
+                                </td><td>
+                                    <p>  Date type </p>
+                                </td><td>
+                                    <p>    single character; A = absolute date, R = relative date </p>
+                                </td><td>
+                                    <p>       A</p>
+                                </td></tr><tr><td>
+                                    <p>4 </p>
+                                </td><td>
+                                    <p>  Start date </p>
+                                </td><td>
+                                    <p>   whole number (can be negative) (if absolute 10001 = 1AD) </p>
+                                </td><td>
+                                    <p>     10943</p>
+                                </td></tr><tr><td>
+                                    <p>5 </p>
+                                </td><td>
+                                    <p>  Raw Data type </p>
+                                </td><td>
+                                    <p>        single character; R = annual raw ring width data (NB earlier versions used some other codes here for species e.g. ABEFPSU these are all interpreted as equivalent to R) </p>
+                                </td><td>
+                                    <p>      R</p>
+                                </td></tr><tr><td>
+                                    <p> </p>
+                                </td><td>
+                                    <p>  Mean Data type</p>
+                                </td><td>
+                                    <p>        single character; W=timber mean with signatures, X=chron mean with signatures, T = timber mean, C = chron mean, M = un-weighted master sequence         </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p>6 </p>
+                                </td><td>
+                                    <p>  Raw Sap number  </p>
+                                </td><td>
+                                    <p>whole positive number or 0 </p>
+                                </td><td>
+                                    <p> 9 </p>
+                                </td></tr><tr><td>
+                                    <p> </p>
+                                </td><td>
+                                    <p>  Mean Number of timbers/chronologies </p>
+                                </td><td>
+                                    <p>  whole positive number   </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p>7 </p>
+                                </td><td>
+                                    <p>  Raw Edges inf. </p>
+                                </td><td>
+                                    <p>       single character; Y = has bark, ! = has ?bark, W = terminal ring probably complete (i.e. possibly Winter Felled), S = terminal ring probably incomplete (i.e. possibly Summer Felled), B = has h/s boundary, ? = has ?h/s boundary, N = has no specific edge, (NB but may have sap), U = sap/bark unknown, C = charred outer edge, P = possibly charred outer edge </p>
+                                </td><td>
+                                    <p>   Y</p>
+                                </td></tr><tr><td>
+                                    <p> </p>
+                                </td><td>
+                                    <p>  Mean Chronology Type </p>
+                                </td><td>
+                                    <p> single character; R = raw unfiltered data, 5 = 5 year running mean, I = indexed data, U = unknown mean type     </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p>8 </p>
+                                </td><td>
+                                    <p>  Author and comment </p>
+                                </td><td>
+                                    <p>   free form text not including , " ( ) up to 64 characters        </p>
+                                </td><td>
+                                    <p>IGT 4/2/1995</p>
+                                </td></tr><tr><td>
+                                    <p>9 </p>
+                                </td><td>
+                                    <p>  UK National grid reference </p>
+                                </td><td>
+                                    <p>   2 characters +even no of digits up to 14 characters in all, ? = not known       </p>
+                                </td><td>
+                                    <p>TQ67848675</p>
+                                </td></tr><tr><td>
+                                    <p>10</p>
+                                </td><td>
+                                    <p>  Latitude and longitude </p>
+                                </td><td>
+                                    <p>       NEW e.g. 53.382457;-1.513623 previously e.g. N54<sup>50 W003</sup>50, ? = not known </p>
+                                </td><td>
+                                    <p>
+                                        <code class="code">N51^30 W1^20</code>
+                                    </p>
+                                </td></tr><tr><td>
+                                    <p>11 </p>
+                                </td><td>
+                                    <p> Pith </p>
+                                </td><td>
+                                    <p> single character; C = centre of tree, V = within 5 years of centre, F = 5-10 years of centre, G = greater than 10, ? = unknown</p>
+                                </td><td>
+                                    <p>        G</p>
+                                </td></tr><tr><td>
+                                    <p>12 </p>
+                                </td><td>
+                                    <p> Cross-section code </p>
+                                </td><td>
+                                    <p>   Two character code; first character, A = whole roundwood, B = half round, C quartered, D radial/split plank, E tangential/sawn plank. second character, 1 untrimmed, 2 trimmed, X irregularly trimmed. or, X = core /unclassifiable, ? unknown/unrecorded       </p>
+                                </td><td>
+                                    <p>D1</p>
+                                </td></tr><tr><td>
+                                    <p>13 </p>
+                                </td><td>
+                                    <p> major dimension </p>
+                                </td><td>
+                                    <p>      whole number in mm, 0 if unrecorded or mean </p>
+                                </td><td>
+                                    <p>  140</p>
+                                </td></tr><tr><td>
+                                    <p>14 </p>
+                                </td><td>
+                                    <p> minor dimension </p>
+                                </td><td>
+                                    <p>      whole number in mm, 0 if unrecorded or mean </p>
+                                </td><td>
+                                    <p>  50</p>
+                                </td></tr><tr><td>
+                                    <p>15 </p>
+                                </td><td>
+                                    <p> unmeasured inner rings </p>
+                                </td><td>
+                                    <p>       single character+whole number; use pith codes + number of rings or, H = heartwood, N = none </p>
+                                </td><td>
+                                    <p>  C15</p>
+                                </td></tr><tr><td>
+                                    <p>16 </p>
+                                </td><td>
+                                    <p> unmeasured outer rings </p>
+                                </td><td>
+                                    <p>       single character+whole number; use edges code + number of rings except that S = sapwood with no edge and V is the spring felling equivalent other codes are, H = heartwood with no edge, N = none       </p>
+                                </td><td>
+                                    <p>Y13</p>
+                                </td></tr><tr><td>
+                                    <p>17 </p>
+                                </td><td>
+                                    <p> group/phase </p>
+                                </td><td>
+                                    <p>  free form text not including , " ( ) up to 14 characters </p>
+                                </td><td>
+                                    <p>     Well 34</p>
+                                </td></tr><tr><td>
+                                    <p>18 </p>
+                                </td><td>
+                                    <p> short title </p>
+                                </td><td>
+                                    <p>  free form text not including , " ( ) up to 8 characters </p>
+                                </td><td>
+                                    <p>      1080a</p>
+                                </td></tr><tr><td>
+                                    <p>19 </p>
+                                </td><td>
+                                    <p> period </p>
+                                </td><td>
+                                    <p>       single character; C = modern, P = post medieval, M = medieval, S = Saxon, R = Roman, A = pre Roman, 2 = duplicate e.g. repeat measure, B = multiperiod e.g. long master, ? = unknown </p>
+                                </td><td>
+                                    <p> M</p>
+                                </td></tr><tr><td>
+                                    <p>20 </p>
+                                </td><td>
+                                    <p> ITRDB species code </p>
+                                </td><td>
+                                    <p>   4 character code - refer to ITRDB species codes </p>
+                                </td><td>
+                                    <p> QUSP </p>
+                                </td></tr><tr><td>
+                                    <p>21 </p>
+                                </td><td>
+                                    <p> Interpretation and anatomical notes </p>
+                                </td><td>
+                                    <p> ? =no interpretation/notes. The interpretation and the anatomical notes can be in any order but each must consist of three parts, a single character A or I for anatomy or interpretation, a separator ~, for interpretations the date of the start, for anatomy the ringno, a separator ~, for anatomy the anatomical code for interpretations P for plus, 0 for felled and a number for the length of the range, where more than one record is present these are separated by ~, there must not be a terminal separator and each record must consist of the tree parts. The anatomical codings can be anything of a single character but supported usage is based on Hans-Hubert Leuschners anatomical codes; D = Density Band, R = Reaction Wood, L = Light Latewood, H = Dense Latewood, F = Frost Ring, K = Small Earlywood Vessels - oak, G = Great Latewood Vessels - oak, T = Wound Tissue, N = Narrow Latewood, A = Light Latewood End, P = Narrow and Light Latewood, Q = Narrow and Dense Latewood </p>
+                                </td><td>
+                                    <p> I~11066~0~A~100~S </p>
+                                </td></tr><tr><td>
+                                    <p>22 </p>
+                                </td><td>
+                                    <p> data type </p>
+                                </td><td>
+                                    <p> single character; D = ring widths, E = early-wood widths only, L = late-wood widths only, R = late+early wood widths (i.e. reverse of normal rings), I = minimum density, A = maximum density, S = early, late; (i.e. sequentially &amp; separately), M = mixed (?means of others) </p>
+                                </td><td>
+                                    <p>  D</p>
+                                </td></tr><tr><td>
+                                    <p>23+ </p>
+                                </td><td>
+                                    <p> for each width (equivalent to the value of length) the individual increments etc. if a C X T or W type mean  </p>
+                                </td><td>
+                                    <p>        no negatives or 0's </p>
+                                </td><td>
+                                    <p>  etc</p>
+                                </td></tr><tr><td>
+                                    <p> + </p>
+                                </td><td>
+                                    <p> check field     </p>
+                                </td><td>
+                                    <p> single character H   </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p> + </p>
+                                </td><td>
+                                    <p> for each width the individual weightings of the mean sequences. If an X or W type mean </p>
+                                </td><td>
+                                    <p> no negatives or 0's   </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p> + </p>
+                                </td><td>
+                                    <p> check field </p>
+                                </td><td>
+                                    <p>  single character R </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p> + </p>
+                                </td><td>
+                                    <p> for each width the number of individual series with rising values </p>
+                                </td><td>
+                                    <p>    no negatives </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p> + </p>
+                                </td><td>
+                                    <p> check field </p>
+                                </td><td>
+                                    <p>  single character F </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr><tr><td>
+                                    <p> + </p>
+                                </td><td>
+                                    <p> for each width the number of individual series with falling values </p>
+                                </td><td>
+                                    <p>   no negatives </p>
+                                </td><td>
+                                    <p> </p>
+                                </td></tr></tbody></table></div></div><br class="table-break"><p></p></div><div class="section" title="Quirks and workarounds"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4302"></a>Quirks and workarounds</h3></div></div></div><p>The format copes with the problem of the non-existent year 0AD/BC by adding 10000 to all year  values.  Therefore: </p><div class="table"><a name="d0e4307"></a><p class="title"><b>Table&nbsp;6.15.&nbsp;</b></p><div class="table-contents"><div class="caption"></div><table border="1"><colgroup><col><col></colgroup><tbody><tr><td>
+                                    <p>
+                                        <span class="strong"><strong>Year</strong></span>
+                                    </p>
+                                </td><td>
+                                    <p>
+                                        <span class="strong"><strong>Sheffield format</strong></span>
+                                    </p>
+                                </td></tr><tr><td>
+                                    <p> 1AD     </p>
+                                </td><td>
+                                    <p> 10001 </p>
+                                </td></tr><tr><td>
+                                    <p> 1BC     </p>
+                                </td><td>
+                                    <p> 10000 </p>
+                                </td></tr><tr><td>
+                                    <p> 9999BC  </p>
+                                </td><td>
+                                    <p> 2     </p>
+                                </td></tr><tr><td>
+                                    <p> 10000BC </p>
+                                </td><td>
+                                    <p> 1     </p>
+                                </td></tr></tbody></table></div></div><br class="table-break"><p></p></div><div class="section" title="Example file"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4375"></a>Example file</h3></div></div></div><p></p><pre class="screen">York Hungate Boat 4 timber mean
 170
 A
 10784
