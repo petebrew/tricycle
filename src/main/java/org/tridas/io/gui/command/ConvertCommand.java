@@ -129,19 +129,17 @@ public class ConvertCommand implements ICommand {
 			final ConvertProgress convertProgress = new ConvertProgress(TricycleModelLocator.getInstance()
 					.getMainWindow(), model);
 			storedConvertProgress = convertProgress;
+			
 			// i have to do this in a different thread
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					convertProgress.setVisible(true);
-					convertProgress.notify();
 				}
 			});
 			
-			synchronized (convertProgress) {
-				try {
-					convertProgress.wait();
-				} catch (InterruptedException e) {}
+			while(!convertProgress.isVisible()){
+				Thread.sleep(100);
 			}
 			
 			

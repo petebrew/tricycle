@@ -29,7 +29,7 @@ public class ConvertingDialogModel extends AbstractModel {
 	
 	private int convertingPercent = 0;
 	private String convertingFilename = null;
-	
+	private boolean convertCancelled = false;
 	
 	public void setConvertingPercent(int argConvertingPercent) {
 		int old = convertingPercent;
@@ -49,5 +49,15 @@ public class ConvertingDialogModel extends AbstractModel {
 	
 	public String getConvertingFilename() {
 		return convertingFilename;
+	}
+
+	public void setConvertCancelled(boolean argConvertCancelled) {
+		boolean old = convertCancelled;
+		this.convertCancelled = argConvertCancelled;
+		firePropertyChange("convertCancelled", old, convertCancelled);
+	}
+
+	public boolean isConvertCancelled() {
+		return convertCancelled;
 	}
 }
