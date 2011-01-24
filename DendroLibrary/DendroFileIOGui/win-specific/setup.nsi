@@ -68,7 +68,7 @@ FunctionEnd
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "..\target\TRiCYCLE-0.1-SNAPSHOT.exe"
+    File "..\target\TRiCYCLE-0.1-SNAPSHOT.exe"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application

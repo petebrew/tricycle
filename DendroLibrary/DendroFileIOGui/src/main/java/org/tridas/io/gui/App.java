@@ -63,7 +63,7 @@ public class App {
 		// set tracking key
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-7");
 		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
-		MVC.setTracker(tracker);
+		//MVC.setTracker(tracker);
 		
 		(new StartupEvent(true)).dispatch();
 	}
