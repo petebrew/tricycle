@@ -134,8 +134,17 @@ public class ConvertCommand implements ICommand {
 				@Override
 				public void run() {
 					convertProgress.setVisible(true);
+					convertProgress.notify();
 				}
 			});
+			
+			synchronized (convertProgress) {
+				try {
+					convertProgress.wait();
+				} catch (InterruptedException e) {}
+			}
+			
+			
 			ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
 			cmodel.setConvertRunning(true);
 			
