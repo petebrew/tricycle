@@ -32,7 +32,9 @@ more information on http://www.gnu.org/licenses/lgpl.html
 	<xs:simpleType name="normalTridasDatingType">
 		<xs:annotation>
 			<xs:documentation xml:lang="EN">
-				TriDaS specified controlled vocabulary for the type of dating
+				TriDaS specified controlled vocabulary for the type of dating.  When type is specified
+				as 'relative', all dating suffixes should also be set to 'relative'.  Otherwise, 
+				dating suffixes should be set to the appropriate calendar scheme
 			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
@@ -54,7 +56,6 @@ more information on http://www.gnu.org/licenses/lgpl.html
 			<xs:enumeration value="hand lens and graticule"/>
 			<xs:enumeration value="onscreen measuring"/>
 			<xs:enumeration value="visual estimate"/>
-			<xs:enumeration value="other"/>
 		</xs:restriction>
 	</xs:simpleType>	
 	<!-- TRiDaS controlledVoc for shape-->
@@ -84,6 +85,7 @@ more information on http://www.gnu.org/licenses/lgpl.html
 			<xs:enumeration value="small part of section"/>
 			<xs:enumeration value="part of undetermined section"/>
 			<xs:enumeration value="unknown"/>
+			<xs:enumeration value="other"/>
 		</xs:restriction>
 	</xs:simpleType>
 <!-- TRiDaS controlledVoc for LocationType-->
@@ -100,7 +102,6 @@ more information on http://www.gnu.org/licenses/lgpl.html
 			<xs:enumeration value="current location"/>
 			<xs:enumeration value="manufacture location"/>
 			<xs:enumeration value="find location"/>
-			<xs:enumeration value="other"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- TRiDaS controlledVoc for Variable-->
@@ -118,7 +119,6 @@ more information on http://www.gnu.org/licenses/lgpl.html
 			<xs:enumeration value="maximum density"/>
 			<xs:enumeration value="latewood percent"/>
 			<xs:enumeration value="vessel size"/>
-			<xs:enumeration value="other"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- TRiDaS controlledVoc for Units-->
@@ -209,12 +209,14 @@ more information on http://www.gnu.org/licenses/lgpl.html
 	<!-- Dating suffix data type-->
 	<xs:simpleType name="datingSuffix">
 		<xs:annotation>
-			<xs:documentation xml:lang="EN">Suffix to add to a year number</xs:documentation>
+			<xs:documentation xml:lang="EN">Suffix to add to a year number.  The suffix 'relative' should
+			be used when the dating type is set to 'relative'</xs:documentation>
 		</xs:annotation>		
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="AD"/>
 			<xs:enumeration value="BC"/>
 			<xs:enumeration value="BP"/>
+			<xs:enumeration value="relative"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- Presence/Absence enumeration-->
@@ -286,10 +288,11 @@ more information on http://www.gnu.org/licenses/lgpl.html
 	</xs:complexType>
 	<xs:complexType name="year">
 		<xs:annotation>
-			<xs:documentation xml:lang="EN">Data type for storing year.  Includes a separate suffix attribute and optional certainty value</xs:documentation>
+			<xs:documentation xml:lang="EN">Data type for storing year.  Includes a separate suffix attribute and optional certainty value.
+			The actual data value should be a positive integer if suffix BC, AD or BP is used</xs:documentation>
 		</xs:annotation>		
 		<xs:simpleContent>
-			<xs:extension base="xs:positiveInteger">
+			<xs:extension base="xs:int">
 				<xs:attribute name="certainty" type="certainty" use="optional"/>
 				<xs:attribute name="suffix" use="required" type="datingSuffix"/>		
 			</xs:extension>
