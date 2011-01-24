@@ -50,8 +50,7 @@ public class SaveCommand implements ICommand {
 		
 		TricycleModel mwm = loc.getTricycleModel();
 		SavingProgress storedSavingProgress = null;
-		final OverwritePopup[] popup = {null}; // have to have it as an array so we can
-												// make it final for bug 213
+		
 		ConvertModel cmodel = loc.getConvertModel();
 		// surround it all with try, so no matter what happens we will close the saving
 		// dialog and
@@ -106,14 +105,12 @@ public class SaveCommand implements ICommand {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					while (popup[0] != null) { // for bug 213
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {}
-					}
 					savingProgress.setVisible(true);
 				}
 			});
+			while(!savingProgress.isVisible()){
+				Thread.sleep(100);
+			}
 			
 			// waiting for saving dialog window to become visible
 			int slept = 0;
@@ -165,11 +162,9 @@ public class SaveCommand implements ICommand {
 								OverwriteModel om = new OverwriteModel();
 								om.setAll(false);
 								om.setMessage(I18n.getText("control.convert.overwrite", filename, filename + "(1)"));
-								popup[0] = new OverwritePopup(om, TricycleModelLocator.getInstance().getMainWindow());
+								OverwritePopup pop = new OverwritePopup(om, TricycleModelLocator.getInstance().getMainWindow());
 								// this should hang until the window is closed
-								popup[0].setVisible(true);
-								popup[0] = null; // so the saving dialog knows it's ok to
-													// show itself
+								pop.setVisible(true);
 								
 								response = om.getResponse();
 								all = om.isAll();
