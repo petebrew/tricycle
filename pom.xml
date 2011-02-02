@@ -9,7 +9,7 @@
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2</version>
 	<developers>
 		<developer>
 			<id>dmurphy10</id>
