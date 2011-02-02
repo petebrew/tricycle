@@ -19,6 +19,8 @@
 package org.tridas.io.gui.model;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +50,14 @@ public class FileListModel extends AbstractModel {
 	 *            the inputFormat to set
 	 */
 	public void setInputFormat(String argInputFormat) {
+		
+		ArrayList<String> possFormats = new ArrayList<String>(Arrays.asList(InputFormat.getInputFormats()));
+		
+		if(!possFormats.contains(argInputFormat))
+		{
+			return;
+		}
+		
 		String old = inputFormat;
 		inputFormat = argInputFormat;
 		firePropertyChange("inputFormat", old, inputFormat);

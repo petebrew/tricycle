@@ -18,11 +18,17 @@
  */
 package org.tridas.io.gui.control.fileList;
 
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 import javax.swing.JFileChooser;
 
+import org.tridas.io.DendroFileFilter;
+import org.tridas.io.TridasIO;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
@@ -83,18 +89,35 @@ public class FileListController extends FrontController {
 		
 		// custom jfilechooser
 		File[] files = null;
-		JFileChooser fd = new JFileChooser();
-		fd.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fd.setMultiSelectionEnabled(true);
+		String format = null;
+		JFileChooser fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fc.setMultiSelectionEnabled(true);
+
+		// Add file filters
+		ArrayList<DendroFileFilter> filters = TridasIO.getFileFilterArray();
+		Collections.sort(filters);
+		for(DendroFileFilter filter : filters)
+		{
+			fc.addChoosableFileFilter(filter);
+		}
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setAcceptAllFileFilterUsed(true);
+
+		
 		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
-			fd.setCurrentDirectory(lastDirectory);
+			fc.setCurrentDirectory(lastDirectory);
 		}
 		
-		int retValue = fd.showOpenDialog(TricycleModelLocator.getInstance().getMainWindow());
-		TricycleModelLocator.getInstance().setLastDirectory(fd.getCurrentDirectory());
+		int retValue = fc.showOpenDialog(TricycleModelLocator.getInstance().getMainWindow());
+		TricycleModelLocator.getInstance().setLastDirectory(fc.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
-			files = fd.getSelectedFiles();
+			files = fc.getSelectedFiles();
+			String formatDesc = fc.getFileFilter().getDescription();
+			try{
+				format = formatDesc.substring(0, formatDesc.indexOf("(")).trim();
+			} catch (Exception e){}
 		}
 		if (files == null) {
 			return;
@@ -107,5 +130,9 @@ public class FileListController extends FrontController {
 			s.add(file.getAbsolutePath());
 		}
 		model.addInputFiles(s);
+		model.setInputFormat(format);
+
+		
+		
 	}
 }
