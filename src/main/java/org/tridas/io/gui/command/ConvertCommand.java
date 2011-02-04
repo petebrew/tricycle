@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.grlea.log.DebugLevel;
-import org.grlea.log.SimpleLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.IDendroFile;
@@ -50,7 +50,7 @@ import com.dmurph.mvc.control.ICommand;
  *
  */
 public class ConvertCommand implements ICommand {
-	private final static SimpleLogger log = new SimpleLogger(ConvertCommand.class);
+	private final static Logger log = LoggerFactory.getLogger(ConvertCommand.class);
 	
 	public void execute(MVCEvent argEvent) {
 		ConvertEvent event = (ConvertEvent) argEvent;
@@ -237,8 +237,7 @@ public class ConvertCommand implements ICommand {
 			constructNodes(list, argNaming);
 			
 		} catch (Exception e) {
-			log.error("Exception thrown while converting.");
-			log.dbe(DebugLevel.L2_ERROR, e);
+			log.error("Exception thrown while converting.", e);
 			throw new RuntimeException(e);
 		} finally {
 			if (storedConvertProgress != null) {

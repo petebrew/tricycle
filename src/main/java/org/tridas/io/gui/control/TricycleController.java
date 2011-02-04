@@ -112,7 +112,7 @@ public class TricycleController extends FrontController {
 		pmodel.setFilename("TRiCYCLE.log");
 		
 		FileHelper fh = new FileHelper();
-		pmodel.setFileString(StringUtils.join(fh.loadStrings("TRiCYCLE.log"), "\n"));
+		pmodel.setFileString(StringUtils.join(fh.loadStrings("~/.TRiCYCLE.log"), "\n"));
 		
 		MainWindow window = TricycleModelLocator.getInstance().getMainWindow();
 		Dimension size = window.getSize();

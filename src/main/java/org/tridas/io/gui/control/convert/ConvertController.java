@@ -23,8 +23,8 @@ import java.awt.Dimension;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
-import org.grlea.log.DebugLevel;
-import org.grlea.log.SimpleLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.formats.tridas.TridasFile;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.ConvertCommand;
@@ -45,7 +45,7 @@ import com.dmurph.mvc.control.FrontController;
  * @author Daniel Murphy
  */
 public class ConvertController extends FrontController {
-	private static final SimpleLogger log = new SimpleLogger(ConvertController.class);
+	private static final Logger log = LoggerFactory.getLogger(ConvertController.class);
 	
 	public static final String SAVE = "TRIYCYCLE_CONVERT_SAVE";
 	public static final String CONVERT = "TRIYCYCLE_CONVERT_CONVERT";
@@ -91,8 +91,7 @@ public class ConvertController extends FrontController {
 				strings = file.file.saveToString();
 				worked = strings != null;
 			} catch (Exception e) {
-				log.error("Could not convert file '"+file.toString()+"' to strings");
-				log.dbe(DebugLevel.L2_ERROR, e);
+				log.error("Could not convert file '"+file.toString()+"' to strings", e);
 				worked = false;
 			}
 			
