@@ -23,9 +23,6 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.help.CSH;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -57,7 +54,7 @@ public class MainWindow extends JFrame {
 	private JMenuItem optionsMenuButton;
 	private JMenuItem fileOpenButton;
 	private JMenuItem aboutMenuButton;
-	private JMenuItem helpMenuButton;
+	//private JMenuItem helpMenuButton;
 
 	private JMenuItem logMenuButton;
 	private JTabbedPane tabbedPane;
@@ -85,7 +82,7 @@ public class MainWindow extends JFrame {
 		quitMenuButton = new JMenuItem();
 		helpMenu = new JMenu();
 		aboutMenuButton = new JMenuItem();
-		helpMenuButton = new JMenuItem();
+		//helpMenuButton = new JMenuItem();
 
 		fileOpenButton = new JMenuItem();
 		
@@ -115,12 +112,12 @@ public class MainWindow extends JFrame {
 		menuBar.add(fileMenu);
 		
 		
-		helpMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		//helpMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		helpMenu.add(logMenuButton);
 		helpMenu.add(aboutMenuButton);
 		helpMenu.addSeparator();
-		helpMenu.add(helpMenuButton);
+		//helpMenu.add(helpMenuButton);
 		
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
@@ -132,7 +129,7 @@ public class MainWindow extends JFrame {
 		optionsMenuButton.setText(I18n.getText("view.files.options"));
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
-		helpMenuButton.setText("Help");
+		//helpMenuButton.setText("Help");
 
 		logMenuButton.setText(I18n.getText("view.main.log"));
 		fileMenu.setText(I18n.getText("view.main.file"));
@@ -175,7 +172,7 @@ public class MainWindow extends JFrame {
 		});
 		
 
-		HelpSet hs;
+		/*HelpSet hs;
 		try {
 		    hs = new HelpSet(null, IOUtils.getFileInJarURL("manual/jhelpset.hs"));
 		} catch (Exception ee) {
@@ -185,7 +182,7 @@ public class MainWindow extends JFrame {
 		HelpBroker hb = hs.createHelpBroker();
 		
 		helpMenuButton.addActionListener(new CSH.DisplayHelpFromSource(hb));
-	
+		 */
 		logMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
