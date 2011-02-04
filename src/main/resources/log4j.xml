@@ -10,8 +10,8 @@
 		</layout>
 	</appender>
 
-	<appender name="ToFile" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="~/.TRiCYCLE.log" />
+	<appender name="logfile" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="${user.home}/.TRiCYCLE.log" />
 		<param name="MaxFileSize" value="500KB" />
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
