@@ -17,7 +17,8 @@ package org.tridas.io.gui;
 
 import javax.swing.UIManager;
 
-import org.grlea.log.SimpleLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.gui.control.StartupEvent;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
@@ -28,7 +29,7 @@ import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
 
 public class App {
 	
-	private static final SimpleLogger log = new SimpleLogger(App.class);
+	private static final Logger log = LoggerFactory.getLogger(App.class);
 	
 	// here to instantiate controllers
 	protected static final TricycleModelLocator model = TricycleModelLocator.getInstance();

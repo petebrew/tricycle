@@ -9,8 +9,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.grlea.log.DebugLevel;
-import org.grlea.log.SimpleLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.IDendroFile;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.ConvertModel;
@@ -33,7 +33,7 @@ import com.dmurph.mvc.control.ICommand;
  *
  */
 public class SaveCommand implements ICommand {
-	private static final SimpleLogger log = new SimpleLogger(SaveCommand.class);
+	private static final Logger log = LoggerFactory.getLogger(SaveCommand.class);
 
 	@SuppressWarnings("unused")
 	public synchronized void execute(MVCEvent argEvent) {
@@ -200,8 +200,7 @@ public class SaveCommand implements ICommand {
 				}
 			}
 		} catch (Exception e) {
-			log.error("Exception thrown while saving.");
-			log.dbe(DebugLevel.L2_ERROR, e);
+			log.error("Exception thrown while saving.", e);
 			throw new RuntimeException(e);
 		} finally {
 			if (storedSavingProgress != null) {

@@ -52,8 +52,8 @@ import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.grlea.log.DebugLevel;
-import org.grlea.log.SimpleLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
@@ -74,7 +74,7 @@ import com.dmurph.mvc.StringEvent;
  */
 @SuppressWarnings("serial")
 public class FileListPanel extends JPanel {
-	private static final SimpleLogger log = new SimpleLogger(FileListPanel.class);
+	private static final Logger log = LoggerFactory.getLogger(FileListPanel.class);
 	
 	private JLabel fileFieldLabel;
 	private JList fileList;
@@ -379,7 +379,7 @@ public class FileListPanel extends JPanel {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();
-				log.dbo(DebugLevel.L5_DEBUG, "Property change event received: " + prop, evt.getNewValue());
+				log.debug("Property change event received: " + prop, evt.getNewValue());
 				
 				if (prop.equals("inputFiles")) {
 					DefaultListModel model = (DefaultListModel) fileList.getModel();

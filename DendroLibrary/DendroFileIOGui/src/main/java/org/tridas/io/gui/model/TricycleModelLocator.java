@@ -29,9 +29,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import org.grlea.log.DebugLevel;
-import org.grlea.log.SimpleLog;
-import org.grlea.log.SimpleLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.gui.control.TricycleController;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.convert.ConvertController;
@@ -44,7 +43,7 @@ import org.tridas.io.util.IOUtils;
 
 @SuppressWarnings("unused")
 public class TricycleModelLocator {
-	private static final SimpleLogger log = new SimpleLogger(TricycleModelLocator.class);
+	private static final Logger log = LoggerFactory.getLogger(TricycleModelLocator.class);
 	
 	private static final TricycleModelLocator ml = new TricycleModelLocator();
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
@@ -102,11 +101,9 @@ public class TricycleModelLocator {
 				try {
 					properties.loadFromXML(fh.createInput(PROPERTIES_LOCATION));
 				} catch (InvalidPropertiesFormatException e) {
-					log.error("Could not load properties.");
-					log.dbe(DebugLevel.L2_ERROR, e);
+					log.error("Could not load properties.", e);
 				} catch (IOException e) {
-					log.error("Could not load properties.");
-					log.dbe(DebugLevel.L2_ERROR, e);
+					log.error("Could not load properties.", e);
 				}
 			}
 		}
@@ -121,8 +118,7 @@ public class TricycleModelLocator {
 		try {
 			properties.storeToXML(fh.createOutput(PROPERTIES_LOCATION), "Saved on "+DateFormat.getDateTimeInstance().format(new Date()));
 		} catch (IOException e) {
-			log.error("Could not save properties.");
-			log.dbe(DebugLevel.L2_ERROR, e);
+			log.error("Could not save properties.", e);
 		}
 	}
 	
