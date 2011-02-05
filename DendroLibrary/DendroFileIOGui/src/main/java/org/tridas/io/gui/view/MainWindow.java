@@ -55,7 +55,8 @@ public class MainWindow extends JFrame {
 	private JMenuItem fileOpenButton;
 	private JMenuItem aboutMenuButton;
 	//private JMenuItem helpMenuButton;
-
+	private JMenuItem checkForUpdatesButton;
+	
 	private JMenuItem logMenuButton;
 	private JTabbedPane tabbedPane;
 	public FileListPanel fileList;
@@ -83,7 +84,8 @@ public class MainWindow extends JFrame {
 		helpMenu = new JMenu();
 		aboutMenuButton = new JMenuItem();
 		//helpMenuButton = new JMenuItem();
-
+		checkForUpdatesButton = new JMenuItem();
+		
 		fileOpenButton = new JMenuItem();
 		
 		optionsMenuButton = new JMenuItem();
@@ -118,6 +120,7 @@ public class MainWindow extends JFrame {
 		helpMenu.add(aboutMenuButton);
 		helpMenu.addSeparator();
 		//helpMenu.add(helpMenuButton);
+		helpMenu.add(checkForUpdatesButton);
 		
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
@@ -130,6 +133,7 @@ public class MainWindow extends JFrame {
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
 		//helpMenuButton.setText("Help");
+		checkForUpdatesButton.setText(I18n.getText("view.main.checkForUpdates"));
 
 		logMenuButton.setText(I18n.getText("view.main.log"));
 		fileMenu.setText(I18n.getText("view.main.file"));
@@ -170,7 +174,13 @@ public class MainWindow extends JFrame {
 				event.dispatch();
 			}
 		});
-		
+		checkForUpdatesButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MVCEvent event = new MVCEvent(TricycleController.CHECKFORUPDATES);
+				event.dispatch();
+			}
+		});
 
 		/*HelpSet hs;
 		try {

@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang.StringUtils;
+import org.tridas.io.gui.command.CheckForUpdatesCommand;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.view.MainWindow;
@@ -40,7 +41,8 @@ public class TricycleController extends FrontController {
 	public static final String QUIT = "TRIYCYCLE_QUIT";
 	public static final String ABOUT = "TRIYCYCLE_ABOUT";
 	public static final String HELPVIEWER = "TRIYCYCLE_HELP";
-
+	public static final String CHECKFORUPDATES = "TRICYCLE_CHECK_FOR_UPDATES";
+	
 	public static final String OPTIONS = "TRIYCYCLE_OPTIONS";
 	public static final String VIEW_LOG = "TRIYCYCLE_VIEW_LOG";
 	
@@ -55,6 +57,7 @@ public class TricycleController extends FrontController {
 		registerCommand(OPTIONS, "options");
 		registerCommand(VIEW_LOG, "log");
 		registerCommand(HELPVIEWER, "helpViewer");
+		registerCommand(CHECKFORUPDATES, CheckForUpdatesCommand.class);
 	}
 	
 	public void startup(MVCEvent argEvent) {
@@ -126,4 +129,5 @@ public class TricycleController extends FrontController {
 
 		
 	}
+
 }
