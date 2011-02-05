@@ -10,6 +10,15 @@
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
 	<version>0.2.0</version>
+	
+	<!--  These values are written to build.properties -->
+	<properties>
+	   <!-- Copy of version number -->
+	   <version>${version}</version> 
+	   <!-- Manually set build number until SCM repository checked is working -->
+       <buildnumber>556</buildnumber>
+	</properties>
+	
 	<developers>
 		<developer>
 			<id>dmurphy10</id>
@@ -27,6 +36,12 @@
 			<id>codehaus</id>
 			<url>http://repository.codehaus.org/</url>
 		</pluginRepository>
+		<pluginRepository>
+          <id>tlc</id>
+          <name>TLC Repository</name>
+        <url>http://commons.ucalgary.ca/pub/m2</url>
+    </pluginRepository>
+		
 	</pluginRepositories>
 	<dependencies>
 		<dependency>
@@ -36,13 +51,6 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>javax.help</groupId>
-			<artifactId>javahelp</artifactId>
-			<version>2.0.02</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>com.dmurph.mvc</groupId>
 			<artifactId>java-simple-mvc</artifactId>
@@ -65,10 +73,11 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<plugins>
 	
-		
+		<!-- Automatically adds build timestamp to build.properties file -->
 		<plugin>
 		  <groupId>org.codehaus.mojo</groupId>
 		  <artifactId>groovy-maven-plugin</artifactId>
@@ -83,12 +92,14 @@
 		                      import java.util.Date
 		                      import java.text.MessageFormat
 		                      def timestamp = MessageFormat.format("{0,date,dd MMM yyyy, HH:mm }", new Date())
-		                      project.properties['buildtimestamp'] = timestamp
+		                      project.properties['buildtimestamp'] = timestamp   
 		              </source>
 		          </configuration>
 		      </execution>
 		  </executions>
 		</plugin>
+		
+		
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -106,56 +117,16 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.tridas.io.gui.App</mainClass>
+							<mainClass>org.tridas.io.gui.App</mainClass>G
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<manifestEntries>
 							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
-							<Implementation-Version>${buildtimestamp}</Implementation-Version>
 						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
 
-		
-			
-			<!--  Java Help -->
-			<!-- <plugin>
-				<groupId>com.agilejava.docbkx</groupId>
-				<artifactId>docbkx-maven-plugin</artifactId>
-				<version>2.0.10</version>
-				<executions>
-		          <execution>
-		            <goals>
-		              <goal>generate-javahelp</goal>
-		              <goal>generate-pdf</goal>
-		            </goals>
-		            <phase>package</phase>
-		          </execution>
-		        </executions>
-				<dependencies>
-		          <dependency>
-		            <groupId>org.docbook</groupId>
-		            <artifactId>docbook-xml</artifactId>
-		            <version>4.4</version>
-		            <scope>runtime</scope>
-		          </dependency>
-		        </dependencies> 
-		        <configuration>
-		        	<generateToc>1</generateToc>
-		        	<generateIndex>1</generateIndex>
-          			<includes>*.xml</includes>
-          			<targetDirectory>src/main/generated/manual</targetDirectory>
-          			<htmlhelpHhcFoldersInsteadBooks>1</htmlhelpHhcFoldersInsteadBooks>	
-          			<entities>
-			            <entity>
-			              <name>version</name>
-			              <value>${{version}}</value>
-			            </entity>
-			        </entities>
-			        
-        		</configuration>
-			</plugin>	
-			-->
 			
 		  <!--  Use shade to create a single jar with all dependencies -->	
 	      <plugin>
@@ -190,6 +161,26 @@
 	          </execution>
 	        </executions>
 	      </plugin>
+			
+				   <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0-alpha-2</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.outputDirectory}/build.properties
+              </outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+			
 			
 			<!--  Create a Linux native installer -->
 	        <plugin>

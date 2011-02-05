@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.tridas.io.gui.App;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
@@ -95,14 +96,13 @@ public class AboutWindow extends JDialog {
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 		
 		// Extract build timestamp from Manifest
-		String timestamp = "Unknown";
-		if(this.getClass().getPackage().getImplementationVersion()!=null)
-		{
-			timestamp = this.getClass().getPackage().getImplementationVersion();
-			
-		}
+		String timestamp = App.getBuildTimestamp();
+		String version = App.getBuildVersion();
+		String buildrevision = App.getBuildRevision();
+
+
 
 		setTitle(I18n.getText("view.popup.about.title"));
-		info.setText(I18n.getText("view.popup.about.text", timestamp));
+		info.setText(I18n.getText("view.popup.about.text", timestamp, version, buildrevision));
 	}
 }
