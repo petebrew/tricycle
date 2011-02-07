@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.InvalidPropertiesFormatException;
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.prefs.Preferences;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -48,6 +49,9 @@ public class TricycleModelLocator {
 	private static final TricycleModelLocator ml = new TricycleModelLocator();
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
 	private static final String LAST_DIRECTORY = "LastDirectory";
+	private static final String TRACKING = "Tracking";
+	private static final String DONT_ASK_TRACKING = "DontAskTracking";
+
 	
 	private final ConfigModel configModel = new ConfigModel();
 	private final FileListModel fileListModel = new FileListModel();
@@ -62,6 +66,7 @@ public class TricycleModelLocator {
 	private ImageIcon windowIcon;
 	private MainWindow view = null;
 	private Properties properties = null;
+	private Preferences prefs = Preferences.userNodeForPackage(TricycleModelLocator.class);
 	
 	private SavingProgress savingProgress = null;
 	private ConvertProgress convertProgress = null;
@@ -92,50 +97,39 @@ public class TricycleModelLocator {
 		return convertModel;
 	}
 	
-	public Properties getProperties(){
-		if(properties == null){
-			properties = new Properties();
-			FileHelper fh = new FileHelper();
-			InputStream is = fh.createInput(PROPERTIES_LOCATION);
-			if(is != null){
-				try {
-					properties.loadFromXML(fh.createInput(PROPERTIES_LOCATION));
-				} catch (InvalidPropertiesFormatException e) {
-					log.error("Could not load properties.", e);
-				} catch (IOException e) {
-					log.error("Could not load properties.", e);
-				}
-			}
-		}
-		return properties;
+	public Preferences getPreferences(){
+		return prefs;
 	}
 	
-	public void saveProperties(){
-		if(properties == null){
-			getProperties();
-		}
-		FileHelper fh = new FileHelper();
-		try {
-			properties.storeToXML(fh.createOutput(PROPERTIES_LOCATION), "Saved on "+DateFormat.getDateTimeInstance().format(new Date()));
-		} catch (IOException e) {
-			log.error("Could not save properties.", e);
-		}
+	public boolean isTracking(){
+		return prefs.getBoolean(TRACKING, false);
+	}
+	
+	public boolean isDontAskTracking(){
+		return prefs.getBoolean(DONT_ASK_TRACKING, false);
+	}
+	
+	public void setTracking(boolean argBool){
+		prefs.putBoolean(TRACKING, argBool);
+	}
+	
+	public void setDontAskTracking(boolean argBool){
+		prefs.putBoolean(DONT_ASK_TRACKING, argBool);
 	}
 	
 	public File getLastDirectory(){
-		Properties p = getProperties();
-		if(p.containsKey(LAST_DIRECTORY)){
-			return new File(p.getProperty(LAST_DIRECTORY));
+		String dir = prefs.get(LAST_DIRECTORY, null);
+		if(dir != null){
+			return new File(dir);
 		}
 		return null;
 	}
 	
 	public void setLastDirectory(File argLastDirectory){
-		Properties p = getProperties();
-		String path = p.getProperty(LAST_DIRECTORY);
+		String path = argLastDirectory.getAbsolutePath();
+		String lastDir = prefs.get(LAST_DIRECTORY, null);
 		if(path == null || !path.equals(argLastDirectory.getAbsolutePath())){
-			p.setProperty(LAST_DIRECTORY, argLastDirectory.getAbsolutePath());
-			saveProperties();
+			prefs.put(LAST_DIRECTORY, path);
 		}
 	}
 	

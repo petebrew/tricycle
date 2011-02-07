@@ -17,11 +17,15 @@ package org.tridas.io.gui.control;
 
 import java.awt.Dimension;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang.StringUtils;
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.CheckForUpdatesCommand;
+import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
 import org.tridas.io.gui.view.MainWindow;
@@ -29,6 +33,7 @@ import org.tridas.io.gui.view.popup.AboutWindow;
 import org.tridas.io.gui.view.popup.OptionsWindow;
 import org.tridas.io.gui.view.popup.PreviewWindow;
 import org.tridas.io.util.FileHelper;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.IllegalThreadException;
 import com.dmurph.mvc.IncorrectThreadException;
@@ -75,6 +80,33 @@ public class TricycleController extends FrontController {
 			ToolTipManager.sharedInstance().setDismissDelay(10000);
 		}else{
 			view.setVisible(true);
+		}
+		TricycleModel model = TricycleModelLocator.getInstance().getTricycleModel();
+		
+		if(!model.isTracking() && !TricycleModelLocator.getInstance().isDontAskTracking()){
+			String[] options = new String[]{
+					I18n.getText("view.popup.tracking.askLater"),
+					I18n.getText("view.popup.tracking.no"),
+					I18n.getText("view.popup.tracking.yes")
+
+			};
+			ImageIcon aicon = new ImageIcon(IOUtils.getFileInJarURL("icons/128x128/application.png"));
+			
+			int response = JOptionPane.showOptionDialog(view, I18n.getText("view.popup.tracking.question"),  I18n.getText("view.popup.tracking.title"),
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, aicon, options, options[0]);
+			
+			if(response == 2){
+				model.setTracking(true);
+				TricycleModelLocator.getInstance().setDontAskTracking(true);
+			}
+			else if(response == 1){
+				model.setTracking(false);
+				TricycleModelLocator.getInstance().setDontAskTracking(true);
+			}
+			else if(response == 0){
+				model.setTracking(false);
+				TricycleModelLocator.getInstance().setDontAskTracking(false);
+			}	
 		}
 	}
 	

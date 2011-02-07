@@ -26,11 +26,28 @@ import com.dmurph.mvc.model.AbstractModel;
 public class TricycleModel extends AbstractModel {
 	private static final long serialVersionUID = 1L;
 	
-	//private static final SimpleLogger log = new SimpleLogger(MainWindowModel.class);
-	
+	public static final String ANALYTICS_CODE = "UA-17109202-7";
+		
 	private boolean lock = false;
-	
+	private boolean tracking = false;
+
 	public TricycleModel() {}
+	
+	/**
+	 * @return the tracking
+	 */
+	public boolean isTracking() {
+		return tracking;
+	}
+
+	/**
+	 * @param argTracking the tracking to set
+	 */
+	public void setTracking(boolean argTracking) {
+		boolean old = tracking;
+		tracking = argTracking;
+		firePropertyChange("tracking", old, tracking);
+	}
 	
 	/**
 	 * @param lock
