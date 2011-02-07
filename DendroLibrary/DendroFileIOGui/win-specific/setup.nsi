@@ -51,10 +51,8 @@ var ICONS_GROUP
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "German"
-!insertmacro MUI_LANGUAGE "Greek"
-!insertmacro MUI_LANGUAGE "Polish"
 !insertmacro MUI_LANGUAGE "Spanish"
-!insertmacro MUI_LANGUAGE "Turkish"
+
 
 ; MUI end ------
 
@@ -70,6 +68,7 @@ Function .onInit
 FunctionEnd
 
 Section "MainSection" SEC01
+  SetShellVarContext all
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
     File "..\target\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
@@ -84,6 +83,7 @@ Section "MainSection" SEC01
 SectionEnd
 
 Section -AdditionalIcons
+  SetShellVarContext all
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME} Manual.lnk" "$INSTDIR\tricycle-manual.pdf"
   !insertmacro MUI_STARTMENU_WRITE_END
@@ -113,17 +113,17 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
+  SetShellVarContext all
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
-
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk"
-
-  RMDir "$SMPROGRAMS\$ICONS_GROUP"
-  RMDir "$INSTDIR"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME} Manual.lnk"
+  RMDir  "$SMPROGRAMS\$ICONS_GROUP"
+  RMDir  "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
-  SetAutoClose true
+  SetAutoClose false
 SectionEnd
