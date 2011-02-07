@@ -36,10 +36,13 @@ import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
-import org.tridas.io.util.IOUtils;
 
+import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.model.MVCArrayList;
+import com.dmurph.tracking.AnalyticsConfigData;
+import com.dmurph.tracking.JGoogleAnalyticsTracker;
+import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
 
 /**
  * @author daniel
@@ -74,6 +77,7 @@ public class MainWindow extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 		setTitle("TRiCYCLE");
+		
 	}
 	
 	private void constructComponents() {
@@ -219,6 +223,25 @@ public class MainWindow extends JFrame {
 					}
 				}else if(argEvt.getPropertyName().equals(MVCArrayList.ADDED)){
 					tabbedPane.setEnabledAt(1, true);
+				}
+			}
+		});
+		
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent argEvt) {
+				String name = argEvt.getPropertyName();
+				if(name.equals("tracking")){
+					if(MVC.getTracker() == null){
+						AnalyticsConfigData config = new AnalyticsConfigData(TricycleModel.ANALYTICS_CODE);
+						JGoogleAnalyticsTracker t = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
+						MVC.setTracker(t);
+					}
+					
+					boolean tracking = (Boolean)argEvt.getNewValue();
+					MVC.getTracker().setEnabled(tracking);
+					TricycleModelLocator.getInstance().setTracking(tracking);
 				}
 			}
 		});

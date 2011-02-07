@@ -47,6 +47,8 @@ import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVCEvent;
+import javax.swing.JCheckBox;
+import java.awt.Component;
 
 /**
  * @author daniel
@@ -65,6 +67,7 @@ public class OptionsWindow extends JDialog {
 		
 	private final ConfigModel model;
 	private final TricycleModelLocator loc = TricycleModelLocator.getInstance();
+	private JCheckBox chckbxEnableAnonomous;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -129,8 +132,13 @@ public class OptionsWindow extends JDialog {
 		panel.add(readingPanel);
 		panel.add(writingPanel);
 		panel.add(Box.createVerticalGlue());
+		
+		chckbxEnableAnonomous = new JCheckBox("Enable anonymous usage submission.");
+		chckbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		panel.add(chckbxEnableAnonomous);
 		panel.add(buttonPanel);
-		add(panel, "Center");
+		getContentPane().add(panel, "Center");
 	}
 	
 	/**
@@ -206,6 +214,18 @@ public class OptionsWindow extends JDialog {
 				setVisible(false);
 			}
 		});
+		
+		chckbxEnableAnonomous.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				boolean enabled = chckbxEnableAnonomous.isSelected();
+				TricycleModelLocator.getInstance().getTricycleModel().setTracking(enabled);
+				if(enabled){
+					TricycleModelLocator.getInstance().setDontAskTracking(true);
+				}
+			}
+		});
 	}
 	
 	/**
@@ -246,6 +266,8 @@ public class OptionsWindow extends JDialog {
 		namingConvention.setSelectedItem(model.getNamingConvention());
 		readingCharset.setSelectedItem(model.getReadingCharset());
 		writingCharset.setSelectedItem(model.getWritingCharset());
+		chckbxEnableAnonomous.setSelected(TricycleModelLocator.getInstance().getTricycleModel().isTracking());
+		
 		model.saveChanges();
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
@@ -286,7 +308,7 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
-		TricycleModel mwm = loc.getTricycleModel();
+		final TricycleModel mwm = loc.getTricycleModel();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -299,6 +321,7 @@ public class OptionsWindow extends JDialog {
 						writingCharset.setEnabled(false);
 						readingDefaults.setEnabled(false);
 						writingDefaults.setEnabled(false);
+						chckbxEnableAnonomous.setEnabled(false);
 					}
 					else {
 						namingConvention.setEnabled(true);
@@ -306,7 +329,17 @@ public class OptionsWindow extends JDialog {
 						writingCharset.setEnabled(true);
 						readingDefaults.setEnabled(true);
 						writingDefaults.setEnabled(true);
+						chckbxEnableAnonomous.setEnabled(true);
 					}
+				}
+			}
+		});
+		
+		mwm.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent argEvt) {
+				if(argEvt.getPropertyName().equals("tracking")){
+					chckbxEnableAnonomous.setEnabled(mwm.isTracking());
 				}
 			}
 		});

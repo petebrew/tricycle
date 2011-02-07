@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tridas.io.gui.control.StartupEvent;
+import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.MVC;
@@ -71,9 +72,11 @@ public class App {
 //		monitor.setVisible(true);
 		
 		// set tracking key
-		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-7");
-		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
-		//MVC.setTracker(tracker);
+		AnalyticsConfigData config = new AnalyticsConfigData(TricycleModel.ANALYTICS_CODE);
+		JGoogleAnalyticsTracker t = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
+		MVC.setTracker(t);
+		
+		t.setEnabled(model.getTricycleModel().isTracking());
 		
 		(new StartupEvent(true)).dispatch();
 	}
