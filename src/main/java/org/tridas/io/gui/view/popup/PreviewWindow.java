@@ -71,7 +71,7 @@ public class PreviewWindow extends JFrame {
 	}
 	
 	private void populateLocale() {
-		copy.setText("Copy");
+		copy.setText(I18n.getText("general.copy"));
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 	}
 	
