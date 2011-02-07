@@ -132,7 +132,7 @@ public class MainWindow extends JFrame {
 	
 	private void populateLocale() {
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
-		fileOpenButton.setText(I18n.getText("view.files.open"));
+		fileOpenButton.setText(I18n.getText("general.open")+"...");
 		optionsMenuButton.setText(I18n.getText("view.files.options"));
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));

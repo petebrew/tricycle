@@ -245,7 +245,7 @@ public class ConvertPanel extends JPanel {
 		convertButton.setText(I18n.getText("view.convert.convert"));
 		collapseAll.setText(I18n.getText("view.convert.collapse"));
 		expandAll.setText(I18n.getText("view.convert.expand"));
-		previewButton.setText("Preview File");
+		previewButton.setText(I18n.getText("view.convert.previewFile"));
 		
 		for (String out : OutputFormat.getOutputFormats()) {
 			outputFormat.addItem(out);

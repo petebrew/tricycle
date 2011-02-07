@@ -67,21 +67,21 @@ public class App {
 
 			
 		}
-//		EventMonitor monitor = new EventMonitor( null, 400);
-//		MVC.setGlobalEventMonitor(monitor);
-//		monitor.setVisible(true);
 		
-		// set tracking key
+		// Set tracking key
 		AnalyticsConfigData config = new AnalyticsConfigData(TricycleModel.ANALYTICS_CODE);
 		JGoogleAnalyticsTracker t = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 		MVC.setTracker(t);
-		
 		t.setEnabled(model.getTricycleModel().isTracking());
+		
+		// Set Swing widget internationalisation
+		internationliseSwingWidgets();
+		
+		
 		
 		(new StartupEvent(true)).dispatch();
 	}
 	
-
 	
 	static {
 		ResourceBundle bundle;
@@ -172,5 +172,18 @@ public class App {
 		}
 		
 		return buf.toString().trim();
+	}
+	
+	
+	private static void internationliseSwingWidgets()
+	{
+		UIManager.put("FileChooser.cancelButtonText", I18n.getText("general.cancel"));
+		UIManager.put("FileChooser.saveButtonText", I18n.getText("general.save"));
+		UIManager.put("FileChooser.openButtonText", I18n.getText("general.open"));
+		UIManager.put("FileChooser.lookInLabelText", I18n.getText("view.popup.filechooser.lookIn")+":");
+		UIManager.put("FileChooser.fileNameLabelText", I18n.getText("view.popup.filechooser.fileName"));
+		UIManager.put("FileChooser.filesOfTypeLabelText", I18n.getText("view.popup.filechooser.fileType"));
+		
+
 	}
 }

@@ -133,7 +133,7 @@ public class OptionsWindow extends JDialog {
 		panel.add(writingPanel);
 		panel.add(Box.createVerticalGlue());
 		
-		chckbxEnableAnonomous = new JCheckBox("Enable anonymous usage submission.");
+		chckbxEnableAnonomous = new JCheckBox(I18n.getText("view.options.usage"));
 		chckbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		panel.add(chckbxEnableAnonomous);
