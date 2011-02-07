@@ -74,7 +74,7 @@ public class ConvertCommand implements ICommand {
 		}
 		if (!outputFormatFound) {
 			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noOutput", outputFormat),
-					I18n.getText("control.convert.error"), JOptionPane.ERROR_MESSAGE);
+					I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -89,7 +89,7 @@ public class ConvertCommand implements ICommand {
 		}
 		if (!inputFormatFound && !event.getInputFormat().equals(InputFormat.AUTO)) {
 			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noInput", outputFormat),
-					I18n.getText("control.convert.error"), JOptionPane.ERROR_MESSAGE);
+					I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -104,7 +104,7 @@ public class ConvertCommand implements ICommand {
 		}
 		else {
 			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noNaming", event.getNamingConvention()),
-					I18n.getText("control.convert.error"), JOptionPane.ERROR_MESSAGE);
+					I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		

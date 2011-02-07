@@ -238,7 +238,7 @@ public class OptionsWindow extends JDialog {
 		readingDefaults.setText(I18n.getText("view.options.input.defaults", fmodel.getInputFormat()));
 		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
 		okButton.setText(I18n.getText("view.options.ok"));
-		cancelButton.setText(I18n.getText("view.options.cancel"));
+		cancelButton.setText(I18n.getText("general.cancel"));
 
 		for (String conv : NamingConvention.getNamingConventions()) {
 			namingConvention.addItem(conv);

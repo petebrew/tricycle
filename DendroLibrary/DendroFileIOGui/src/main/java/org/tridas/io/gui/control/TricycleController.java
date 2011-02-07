@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.CheckForUpdatesCommand;
 import org.tridas.io.gui.model.TricycleModel;
@@ -95,9 +96,16 @@ public class TricycleController extends FrontController {
 
 			};
 			ImageIcon aicon = new ImageIcon(IOUtils.getFileInJarURL("icons/128x128/application.png"));
+		
 			
-			int response = JOptionPane.showOptionDialog(view, I18n.getText("view.popup.tracking.question"),  I18n.getText("view.popup.tracking.title"),
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, aicon, options, options[0]);
+			int response = JOptionPane.showOptionDialog(view, 
+					WordUtils.wrap(I18n.getText("view.popup.tracking.question"), 50),  
+					I18n.getText("view.popup.tracking.title"),
+					JOptionPane.YES_NO_CANCEL_OPTION, 
+					JOptionPane.QUESTION_MESSAGE, 
+					aicon, 
+					options, 
+					options[0]);
 			
 			if(response == 2){
 				model.setTracking(true);
