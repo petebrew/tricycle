@@ -81,7 +81,11 @@ public class TricycleController extends FrontController {
 		}else{
 			view.setVisible(true);
 		}
+		
 		TricycleModel model = TricycleModelLocator.getInstance().getTricycleModel();
+		if(TricycleModelLocator.getInstance().isTracking()){
+			model.setTracking(true);
+		}
 		
 		if(!model.isTracking() && !TricycleModelLocator.getInstance().isDontAskTracking()){
 			String[] options = new String[]{

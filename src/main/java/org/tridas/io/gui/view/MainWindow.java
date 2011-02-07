@@ -227,8 +227,8 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		model.addPropertyChangeListener(new PropertyChangeListener() {
-			
+		TricycleModel tm = TricycleModelLocator.getInstance().getTricycleModel();
+		tm.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent argEvt) {
 				String name = argEvt.getPropertyName();
