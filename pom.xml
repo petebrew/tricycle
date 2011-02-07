@@ -16,7 +16,7 @@
 	   <!-- Copy of version number -->
 	   <version>${version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-       <buildnumber>556</buildnumber>
+       <buildnumber>569</buildnumber>
 	</properties>
 	
 	<developers>
