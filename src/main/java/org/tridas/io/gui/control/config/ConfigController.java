@@ -115,7 +115,7 @@ public class ConfigController extends FrontController {
 			if(reader == null){
 				Frame parent = TricycleModelLocator.getInstance().getMainWindow();
 				JOptionPane.showMessageDialog(parent, I18n.getText("control.config.inputDefaultsNotFound", fmodel.getInputFormat()),
-											  I18n.getText("control.config.error"), JOptionPane.ERROR_MESSAGE);
+											  I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
 				model.setReaderDefaults(reader.constructDefaultMetadata());
@@ -139,7 +139,7 @@ public class ConfigController extends FrontController {
 			if(writer == null){
 				Frame parent = TricycleModelLocator.getInstance().getMainWindow();
 				JOptionPane.showMessageDialog(parent, I18n.getText("control.config.outputDefaultsNotFound", cmodel.getOutputFormat()),
-						  					  I18n.getText("control.config.error"), JOptionPane.ERROR_MESSAGE);
+						  					  I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
 				model.setWriterDefaults(writer.constructDefaultMetadata());

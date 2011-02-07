@@ -103,7 +103,7 @@ public class ConvertProgress extends JDialog {
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
 		setTitle(I18n.getText("view.popup.convert.title"));
 		setConvertingFilename("");
-		cancelButton.setText(I18n.getText("view.popup.convert.cancel"));
+		cancelButton.setText(I18n.getText("general.cancel"));
 	}
 	
 	private void setConvertingFilename(String argFilename) {
