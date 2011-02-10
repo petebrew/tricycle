@@ -9,7 +9,7 @@
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1-SNAPSHOT</version>
 	
 	<!--  These values are written to build.properties -->
 	<properties>
