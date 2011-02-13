@@ -38,6 +38,7 @@ import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
 import org.tridas.schema.TridasProject;
+import org.tridas.schema.TridasTridas;
 
 import com.dmurph.mvc.IllegalThreadException;
 import com.dmurph.mvc.IncorrectThreadException;
@@ -190,7 +191,7 @@ public class ConvertCommand implements ICommand {
 					struct.errorMessage = e.toString() + " Please report bug.";
 				}
 				
-				TridasProject project = reader.getProject();
+				TridasTridas container = reader.getTridasContainer();
 				
 				AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
 				
@@ -212,10 +213,10 @@ public class ConvertCommand implements ICommand {
 				
 				try {
 					if (argOutputDefaults == null) {
-						writer.loadProject(project);
+						writer.load(container);
 					}
 					else {
-						writer.loadProject(project, (IMetadataFieldSet) argOutputDefaults.clone());
+						writer.load(container, (IMetadataFieldSet) argOutputDefaults.clone());
 					}
 				} catch (IncompleteTridasDataException e) {
 					struct.errorMessage = e.getMessage();
