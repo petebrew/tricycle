@@ -14,9 +14,9 @@
 	<!--  These values are written to build.properties -->
 	<properties>
 	   <!-- Copy of version number -->
-	   <version>${version}</version> 
+	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-       <buildnumber>569</buildnumber>
+	   <buildnumber>576</buildnumber>
 	</properties>
 	
 	<developers>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.tridas.io</groupId>
 			<artifactId>DendroFileIO</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -81,6 +81,7 @@
 		<plugin>
 		  <groupId>org.codehaus.mojo</groupId>
 		  <artifactId>groovy-maven-plugin</artifactId>
+		  <version>1.3</version>
 		  <executions>
 		      <execution>
 		          <phase>generate-resources</phase>
@@ -104,6 +105,7 @@
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -114,6 +116,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
 				<configuration>
 					<archive>
 						<manifest>
