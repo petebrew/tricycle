@@ -31,6 +31,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.control.CheckForUpdateEvent;
 import org.tridas.io.gui.control.TricycleController;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.model.FileListModel;
@@ -181,7 +182,7 @@ public class MainWindow extends JFrame {
 		checkForUpdatesButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MVCEvent event = new MVCEvent(TricycleController.CHECKFORUPDATES);
+				CheckForUpdateEvent event = new CheckForUpdateEvent(true);
 				event.dispatch();
 			}
 		});
@@ -242,6 +243,11 @@ public class MainWindow extends JFrame {
 					boolean tracking = (Boolean)argEvt.getNewValue();
 					MVC.getTracker().setEnabled(tracking);
 					TricycleModelLocator.getInstance().setTracking(tracking);
+				}
+				else if (name.equals("autoupdate"))
+				{
+					boolean autoupdate = (Boolean)argEvt.getNewValue();
+					TricycleModelLocator.getInstance().setAutoUpdate(autoupdate);
 				}
 			}
 		});

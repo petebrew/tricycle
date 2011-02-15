@@ -67,7 +67,8 @@ public class OptionsWindow extends JDialog {
 		
 	private final ConfigModel model;
 	private final TricycleModelLocator loc = TricycleModelLocator.getInstance();
-	private JCheckBox chckbxEnableAnonomous;
+	private JCheckBox cbxEnableAnonomous;
+	private JCheckBox cbxAutoUpdate;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -133,10 +134,15 @@ public class OptionsWindow extends JDialog {
 		panel.add(writingPanel);
 		panel.add(Box.createVerticalGlue());
 		
-		chckbxEnableAnonomous = new JCheckBox(I18n.getText("view.options.usage"));
-		chckbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cbxEnableAnonomous = new JCheckBox(I18n.getText("view.options.usage"));
+		cbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		panel.add(chckbxEnableAnonomous);
+		cbxAutoUpdate = new JCheckBox(I18n.getText("view.options.autoupdate"));
+		cbxAutoUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		panel.add(cbxEnableAnonomous);
+		panel.add(cbxAutoUpdate);
+		
 		panel.add(buttonPanel);
 		getContentPane().add(panel, "Center");
 	}
@@ -215,15 +221,24 @@ public class OptionsWindow extends JDialog {
 			}
 		});
 		
-		chckbxEnableAnonomous.addActionListener(new ActionListener() {
+		cbxEnableAnonomous.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent argE) {
-				boolean enabled = chckbxEnableAnonomous.isSelected();
+				boolean enabled = cbxEnableAnonomous.isSelected();
 				TricycleModelLocator.getInstance().getTricycleModel().setTracking(enabled);
 				if(enabled){
 					TricycleModelLocator.getInstance().setDontAskTracking(true);
 				}
+			}
+		});
+		
+		cbxAutoUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent argE) {
+				boolean enabled = cbxAutoUpdate.isSelected();
+				TricycleModelLocator.getInstance().getTricycleModel().setAutoUpdate(enabled);
 			}
 		});
 	}
@@ -266,8 +281,9 @@ public class OptionsWindow extends JDialog {
 		namingConvention.setSelectedItem(model.getNamingConvention());
 		readingCharset.setSelectedItem(model.getReadingCharset());
 		writingCharset.setSelectedItem(model.getWritingCharset());
-		chckbxEnableAnonomous.setSelected(TricycleModelLocator.getInstance().getTricycleModel().isTracking());
-		
+		cbxEnableAnonomous.setSelected(TricycleModelLocator.getInstance().getTricycleModel().isTracking());
+		cbxAutoUpdate.setSelected(TricycleModelLocator.getInstance().getTricycleModel().isAutoUpdate());
+
 		model.saveChanges();
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
@@ -321,7 +337,8 @@ public class OptionsWindow extends JDialog {
 						writingCharset.setEnabled(false);
 						readingDefaults.setEnabled(false);
 						writingDefaults.setEnabled(false);
-						chckbxEnableAnonomous.setEnabled(false);
+						cbxEnableAnonomous.setEnabled(false);
+						cbxAutoUpdate.setEnabled(false);
 					}
 					else {
 						namingConvention.setEnabled(true);
@@ -329,7 +346,8 @@ public class OptionsWindow extends JDialog {
 						writingCharset.setEnabled(true);
 						readingDefaults.setEnabled(true);
 						writingDefaults.setEnabled(true);
-						chckbxEnableAnonomous.setEnabled(true);
+						cbxEnableAnonomous.setEnabled(true);
+						cbxAutoUpdate.setEnabled(true);
 					}
 				}
 			}
@@ -339,7 +357,10 @@ public class OptionsWindow extends JDialog {
 			@Override
 			public void propertyChange(PropertyChangeEvent argEvt) {
 				if(argEvt.getPropertyName().equals("tracking")){
-					chckbxEnableAnonomous.setEnabled(mwm.isTracking());
+					cbxEnableAnonomous.setSelected(mwm.isTracking());
+				}
+				if(argEvt.getPropertyName().equals("autoupdate")){
+					cbxAutoUpdate.setSelected(mwm.isAutoUpdate());
 				}
 			}
 		});

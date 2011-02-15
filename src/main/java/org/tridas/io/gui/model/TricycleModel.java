@@ -30,7 +30,8 @@ public class TricycleModel extends AbstractModel {
 		
 	private boolean lock = false;
 	private boolean tracking = false;
-
+	private boolean autoUpdate = false;
+	
 	public TricycleModel() {}
 	
 	/**
@@ -47,6 +48,22 @@ public class TricycleModel extends AbstractModel {
 		boolean old = tracking;
 		tracking = argTracking;
 		firePropertyChange("tracking", old, tracking);
+	}
+	
+	/**
+	 * @return the tracking
+	 */
+	public boolean isAutoUpdate() {
+		return autoUpdate;
+	}
+
+	/**
+	 * @param argTracking the tracking to set
+	 */
+	public void setAutoUpdate(boolean arg) {
+		boolean old = autoUpdate;
+		autoUpdate = arg;
+		firePropertyChange("autoupdate", old, autoUpdate);
 	}
 	
 	/**
