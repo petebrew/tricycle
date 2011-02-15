@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 
 import org.tridas.io.gui.App;
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.control.CheckForUpdateEvent;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
 import com.dmurph.mvc.IllegalThreadException;
 import com.dmurph.mvc.IncorrectThreadException;
@@ -32,9 +34,13 @@ public class CheckForUpdatesCommand implements ICommand {
 
 	private static String urlstring = "http://www.tridas.org/update-check/.available-tricycle-build";
 	private static String updateSite = "http://www.tridas.org/tricycle";
-
-	@Override
-	public void execute(MVCEvent event) {
+	private boolean showConfirmation = true;
+	
+	public void execute(MVCEvent ev) {
+		
+		CheckForUpdateEvent event = (CheckForUpdateEvent) ev;
+		showConfirmation = event.showConfirmation;
+		
 		try {
 			MVC.splitOff();
 		} catch (IllegalThreadException e1) {
@@ -47,7 +53,10 @@ public class CheckForUpdatesCommand implements ICommand {
 		String availableVersion = getAvailableVersion();
 		if(availableVersion==null)
 		{
-			JOptionPane.showMessageDialog(null, I18n.getText("view.popup.updateServerIOE"));
+			if(showConfirmation)
+			{
+				JOptionPane.showMessageDialog(null, I18n.getText("view.popup.updateServerIOE"));
+			}
 			return;
 		}
 		
@@ -59,7 +68,10 @@ public class CheckForUpdatesCommand implements ICommand {
 			current = Integer.parseInt(App.getBuildRevision());
 		} catch (NumberFormatException e)
 		{
-			JOptionPane.showMessageDialog(null, I18n.getText("view.popup.updateVersionParseError"));
+			if(showConfirmation)
+			{	
+				JOptionPane.showMessageDialog(null, I18n.getText("view.popup.updateVersionParseError"));
+			}
 			return;
 		}
 
@@ -69,10 +81,24 @@ public class CheckForUpdatesCommand implements ICommand {
 			// Update required, try to open browser
 			if(Desktop.isDesktopSupported())	
 			{
-				int n = JOptionPane.showConfirmDialog
-				(null, I18n.getText("view.popup.updateVersionAvailable"));
+			
+				Object[] options = {"Yes",
+				                    "Maybe later",
+									"No, don't ask again"};
+				
+				int n = JOptionPane.showOptionDialog(null, 
+						I18n.getText("view.popup.updateVersionAvailable"),
+						"Update available",
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						options,
+						options[0]);
 
-				if(n==JOptionPane.CANCEL_OPTION) return;
+				if(n==JOptionPane.CANCEL_OPTION){
+					TricycleModelLocator.getInstance().getTricycleModel().setAutoUpdate(false);
+					return;
+				}
 				if(n==JOptionPane.NO_OPTION) return;
 				
 				Desktop desktop = Desktop.getDesktop();
@@ -94,7 +120,10 @@ public class CheckForUpdatesCommand implements ICommand {
 		else
 		{
 			// Update not required
-			JOptionPane.showMessageDialog(null, I18n.getText("view.popup.upToDate"));
+			if(showConfirmation)
+			{
+				JOptionPane.showMessageDialog(null, I18n.getText("view.popup.upToDate"));
+			}
 			return;
 		}
 	}

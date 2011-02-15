@@ -51,6 +51,7 @@ public class TricycleModelLocator {
 	private static final String LAST_DIRECTORY = "LastDirectory";
 	private static final String TRACKING = "Tracking";
 	private static final String DONT_ASK_TRACKING = "DontAskTracking";
+	private static final String AUTOUPDATE = "AutoUpdate";
 
 	
 	private final ConfigModel configModel = new ConfigModel();
@@ -105,8 +106,16 @@ public class TricycleModelLocator {
 		return prefs.getBoolean(TRACKING, false);
 	}
 	
+	public boolean isAutoUpdate(){
+		return prefs.getBoolean(AUTOUPDATE, true);
+	}
+	
 	public boolean isDontAskTracking(){
 		return prefs.getBoolean(DONT_ASK_TRACKING, false);
+	}
+	
+	public void setAutoUpdate(boolean argBool){
+		prefs.putBoolean(AUTOUPDATE, argBool);
 	}
 	
 	public void setTracking(boolean argBool){

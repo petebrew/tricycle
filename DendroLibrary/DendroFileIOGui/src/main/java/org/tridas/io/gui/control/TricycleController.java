@@ -84,10 +84,22 @@ public class TricycleController extends FrontController {
 		}
 		
 		TricycleModel model = TricycleModelLocator.getInstance().getTricycleModel();
+		
+		// Check to see if we should auto update
+		if(TricycleModelLocator.getInstance().isAutoUpdate())
+		{
+			model.setAutoUpdate(true);
+			CheckForUpdateEvent event = new CheckForUpdateEvent(false);
+			event.dispatch();	
+		}
+		
+		
+		// Check to see if tracking should be set
 		if(TricycleModelLocator.getInstance().isTracking()){
 			model.setTracking(true);
 		}
 		
+		// Check to see if we need to ask permission about tracking
 		if(!model.isTracking() && !TricycleModelLocator.getInstance().isDontAskTracking()){
 			String[] options = new String[]{
 					I18n.getText("view.popup.tracking.askLater"),
