@@ -1,5 +1,7 @@
 package org.tridas.io.gui.command;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,7 +64,11 @@ public class GuessFormatCommand implements ICommand {
 		
 		// Check which readers can open the file
 		String[] possibleReaders = getPossibleReaders(file);
-		if(possibleReaders.length==0)
+		if(possibleReaders==null)
+		{
+			return;
+		}
+		else if(possibleReaders.length==0)
 		{
 			// No matches
 			JOptionPane.showMessageDialog(TricycleModelLocator.getInstance().getMainWindow(), 
@@ -113,11 +119,29 @@ public class GuessFormatCommand implements ICommand {
 	 */
 	private String[] getPossibleReaders(File file)
 	{
-		GuessFormatDialogModel model = new GuessFormatDialogModel();
-		model.setProgressPercent(0);
 		
+		
+		GuessFormatDialogModel model = new GuessFormatDialogModel();
 		final GuessFormatProgress dialog = new GuessFormatProgress(TricycleModelLocator.getInstance()
 				.getMainWindow(), model);
+		
+		
+		model.setProgressPercent(0);
+		
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				String prop = evt.getPropertyName();
+				
+				if (prop.equals("cancelled")) {
+					
+					dialog.setVisible(false);
+				}
+			}
+		});
+		
+
 			
 		// i have to do this in a different thread
 		SwingUtilities.invokeLater(new Runnable() {
@@ -143,6 +167,8 @@ public class GuessFormatCommand implements ICommand {
 		int i = 1;
 		for(String format : supportedFormats)
 		{
+			if(model.isCancelled()) return null;
+			
 			i++;
 			Integer barval = i * 100 / supportedFormats.length;
 			model.setProgressPercent(barval);

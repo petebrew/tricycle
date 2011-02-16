@@ -76,9 +76,7 @@ public class App {
 		
 		// Set Swing widget internationalisation
 		internationliseSwingWidgets();
-		
-		
-		
+
 		(new StartupEvent(true)).dispatch();
 	}
 	
@@ -174,7 +172,9 @@ public class App {
 		return buf.toString().trim();
 	}
 	
-	
+	/**
+	 * Globally internationalise any swing widget text
+	 */
 	private static void internationliseSwingWidgets()
 	{
 		UIManager.put("FileChooser.cancelButtonText", I18n.getText("general.cancel"));
@@ -183,7 +183,5 @@ public class App {
 		UIManager.put("FileChooser.lookInLabelText", I18n.getText("view.popup.filechooser.lookIn")+":");
 		UIManager.put("FileChooser.fileNameLabelText", I18n.getText("view.popup.filechooser.fileName"));
 		UIManager.put("FileChooser.filesOfTypeLabelText", I18n.getText("view.popup.filechooser.fileType"));
-		
-
 	}
 }
