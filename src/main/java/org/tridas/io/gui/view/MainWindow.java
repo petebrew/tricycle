@@ -60,6 +60,7 @@ public class MainWindow extends JFrame {
 	private JMenuItem aboutMenuButton;
 	//private JMenuItem helpMenuButton;
 	private JMenuItem checkForUpdatesButton;
+	private JMenuItem guessFileFormatButton;
 	
 	private JMenuItem logMenuButton;
 	private JTabbedPane tabbedPane;
@@ -90,6 +91,7 @@ public class MainWindow extends JFrame {
 		aboutMenuButton = new JMenuItem();
 		//helpMenuButton = new JMenuItem();
 		checkForUpdatesButton = new JMenuItem();
+		guessFileFormatButton = new JMenuItem();
 		
 		fileOpenButton = new JMenuItem();
 		
@@ -122,10 +124,11 @@ public class MainWindow extends JFrame {
 		//helpMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		helpMenu.add(logMenuButton);
-		helpMenu.add(aboutMenuButton);
+		helpMenu.add(checkForUpdatesButton);
+		helpMenu.add(guessFileFormatButton);
 		helpMenu.addSeparator();
 		//helpMenu.add(helpMenuButton);
-		helpMenu.add(checkForUpdatesButton);
+		helpMenu.add(aboutMenuButton);
 		
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
@@ -137,6 +140,7 @@ public class MainWindow extends JFrame {
 		optionsMenuButton.setText(I18n.getText("view.files.options"));
 		quitMenuButton.setText(I18n.getText("view.main.quit"));
 		aboutMenuButton.setText(I18n.getText("view.main.about"));
+		guessFileFormatButton.setText(I18n.getText("view.main.guessFormat"));
 		//helpMenuButton.setText("Help");
 		checkForUpdatesButton.setText(I18n.getText("view.main.checkForUpdates"));
 
@@ -186,7 +190,14 @@ public class MainWindow extends JFrame {
 				event.dispatch();
 			}
 		});
-
+		
+		guessFileFormatButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MVCEvent event = new MVCEvent(TricycleController.GUESS_FORMAT);
+				event.dispatch();
+			}
+		});
 		/*HelpSet hs;
 		try {
 		    hs = new HelpSet(null, IOUtils.getFileInJarURL("manual/jhelpset.hs"));
