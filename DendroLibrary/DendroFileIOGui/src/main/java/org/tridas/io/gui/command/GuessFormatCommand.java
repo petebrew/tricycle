@@ -1,24 +1,23 @@
 package org.tridas.io.gui.command;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
-import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
-import org.tridas.io.DendroFileFilter;
 import org.tridas.io.TridasIO;
-import org.tridas.io.exceptions.InvalidDendroFileException;
 import org.tridas.io.formats.excelmatrix.ExcelMatrixReader;
 import org.tridas.io.formats.past4.Past4Reader;
 import org.tridas.io.formats.tridas.TridasReader;
+import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
+import org.tridas.io.gui.model.popup.GuessFormatDialogModel;
+import org.tridas.io.gui.view.popup.GuessFormatProgress;
 import org.tridas.schema.TridasProject;
 
 import com.dmurph.mvc.IllegalThreadException;
@@ -26,6 +25,7 @@ import com.dmurph.mvc.IncorrectThreadException;
 import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.ICommand;
+
 
 public class GuessFormatCommand implements ICommand {
 
@@ -40,24 +40,12 @@ public class GuessFormatCommand implements ICommand {
 			e1.printStackTrace();
 		}
 
-		// custom jfilechooser
+		// custom JFileChooser
 		File file = null;
-		String format = null;
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setMultiSelectionEnabled(false);
 
-		// Add file filters
-		ArrayList<DendroFileFilter> filters = TridasIO.getFileFilterArray();
-		Collections.sort(filters);
-		for(DendroFileFilter filter : filters)
-		{
-			fc.addChoosableFileFilter(filter);
-		}
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setAcceptAllFileFilterUsed(true);
-
-		
 		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
 			fc.setCurrentDirectory(lastDirectory);
@@ -67,31 +55,27 @@ public class GuessFormatCommand implements ICommand {
 		TricycleModelLocator.getInstance().setLastDirectory(fc.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
-			String formatDesc = fc.getFileFilter().getDescription();
-			try{
-				format = formatDesc.substring(0, formatDesc.indexOf("(")).trim();
-			} catch (Exception e){}
 		}
 		if (file == null) {
 			return;
 		}
 		
-		
-		
+		// Check which readers can open the file
 		String[] possibleReaders = getPossibleReaders(file);
-		
 		if(possibleReaders.length==0)
 		{
-			JOptionPane.showMessageDialog(null, 
-					"Not a known dendro format",
-					"File format",
+			// No matches
+			JOptionPane.showMessageDialog(TricycleModelLocator.getInstance().getMainWindow(), 
+					I18n.getText("view.popup.unknownFormat"),
+					I18n.getText("view.popup.fileFormat"),
 					JOptionPane.ERROR_MESSAGE);
 		}
 		else if (possibleReaders.length==1)
 		{
-			JOptionPane.showMessageDialog(null,
-				    "This is a "+possibleReaders[0]+ " file.", 
-				    "File format",
+			// One match
+			JOptionPane.showMessageDialog(TricycleModelLocator.getInstance().getMainWindow(),
+					I18n.getText("view.popup.detectedFormat",possibleReaders), 
+					I18n.getText("view.popup.fileFormat"),
 				    JOptionPane.INFORMATION_MESSAGE);
 			
 			// Add this file to the list and set the file type
@@ -103,32 +87,66 @@ public class GuessFormatCommand implements ICommand {
 		}
 		else if (possibleReaders.length>1)
 		{
-			String msg = "This file could be one of several formats:\n";
+			// Multiple matches
+			String msg = I18n.getText("view.popup.ambiguousFormat")+":\n";
 			
 			for(String reader : possibleReaders)
 			{
 				msg+= "  - " + reader + "\n";
 			}
 			
-			msg+= "Please check the TRiCYCLE documentation for more info.";
+			msg+= I18n.getText("view.popup.checkDocs");
 			
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(TricycleModelLocator.getInstance().getMainWindow(),
 				    msg, 
-				    "File format",
+				    I18n.getText("view.popup.fileFormat"),
 				    JOptionPane.WARNING_MESSAGE);
 		}
-		
-
 	}
 	
+	/**
+	 * Attempts to read a file with all the available readers.  Returns an
+	 * array of reader names that opened the file without exceptions.
+	 * 
+	 * @param file
+	 * @return
+	 */
 	private String[] getPossibleReaders(File file)
 	{
+		GuessFormatDialogModel model = new GuessFormatDialogModel();
+		model.setProgressPercent(0);
+		
+		final GuessFormatProgress dialog = new GuessFormatProgress(TricycleModelLocator.getInstance()
+				.getMainWindow(), model);
+			
+		// i have to do this in a different thread
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				dialog.setVisible(true);
+			}
+		});
+		
+		while(!dialog.isVisible()){
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		ArrayList<String> possibleReaders = new ArrayList<String>();
 		
 		String[] supportedFormats = TridasIO.getSupportedReadingFormats();
 		
+		int i = 1;
 		for(String format : supportedFormats)
 		{
+			i++;
+			Integer barval = i * 100 / supportedFormats.length;
+			model.setProgressPercent(barval);
+			
 			AbstractDendroFileReader reader = TridasIO.getFileReader(format);
 			
 			try {
@@ -145,8 +163,10 @@ public class GuessFormatCommand implements ICommand {
 			
 		}
 		
+		dialog.dispose();
+		
 		// Certain readers are guaranteed to be right if present
-		// so if they are override imposters
+		// so if they are, we need to override imposters!
 		TridasReader tridasReader = new TridasReader();
 		ExcelMatrixReader excelReader =new ExcelMatrixReader();
 		Past4Reader pastReader = new Past4Reader();
