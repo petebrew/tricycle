@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.CheckForUpdatesCommand;
+import org.tridas.io.gui.command.GuessFormatCommand;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.PreviewModel;
@@ -48,6 +49,7 @@ public class TricycleController extends FrontController {
 	public static final String ABOUT = "TRIYCYCLE_ABOUT";
 	public static final String HELPVIEWER = "TRIYCYCLE_HELP";
 	public static final String CHECKFORUPDATES = "TRICYCLE_CHECK_FOR_UPDATES";
+	public static final String GUESS_FORMAT = "TRICYCLE_GUESS_FORMAT";
 	
 	public static final String OPTIONS = "TRIYCYCLE_OPTIONS";
 	public static final String VIEW_LOG = "TRIYCYCLE_VIEW_LOG";
@@ -64,6 +66,7 @@ public class TricycleController extends FrontController {
 		registerCommand(VIEW_LOG, "log");
 		registerCommand(HELPVIEWER, "helpViewer");
 		registerCommand(CHECKFORUPDATES, CheckForUpdatesCommand.class);
+		registerCommand(GUESS_FORMAT, GuessFormatCommand.class);
 	}
 	
 	public void startup(MVCEvent argEvent) {
@@ -186,4 +189,6 @@ public class TricycleController extends FrontController {
 		
 	}
 
+
+	
 }
