@@ -25,6 +25,7 @@ import javax.swing.ToolTipManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.command.CancelGuessFormatCommand;
 import org.tridas.io.gui.command.CheckForUpdatesCommand;
 import org.tridas.io.gui.command.GuessFormatCommand;
 import org.tridas.io.gui.model.TricycleModel;
@@ -50,7 +51,7 @@ public class TricycleController extends FrontController {
 	public static final String HELPVIEWER = "TRIYCYCLE_HELP";
 	public static final String CHECKFORUPDATES = "TRICYCLE_CHECK_FOR_UPDATES";
 	public static final String GUESS_FORMAT = "TRICYCLE_GUESS_FORMAT";
-	
+	public static final String CANCEL_FORMAT_GUESS = "TRICYCLE_CANCEL_FORMAT_GUESS";
 	public static final String OPTIONS = "TRIYCYCLE_OPTIONS";
 	public static final String VIEW_LOG = "TRIYCYCLE_VIEW_LOG";
 	
@@ -67,6 +68,7 @@ public class TricycleController extends FrontController {
 		registerCommand(HELPVIEWER, "helpViewer");
 		registerCommand(CHECKFORUPDATES, CheckForUpdatesCommand.class);
 		registerCommand(GUESS_FORMAT, GuessFormatCommand.class);
+		registerCommand(CANCEL_FORMAT_GUESS, CancelGuessFormatCommand.class);
 	}
 	
 	public void startup(MVCEvent argEvent) {
@@ -185,10 +187,7 @@ public class TricycleController extends FrontController {
 	
 	public void helpViewer(MVCEvent argEvent){
 		
-
-		
 	}
 
 
-	
 }

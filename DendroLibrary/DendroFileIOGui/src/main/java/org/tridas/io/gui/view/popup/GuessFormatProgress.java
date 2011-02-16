@@ -15,7 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.control.CancelGuessFormatEvent;
+import org.tridas.io.gui.control.TricycleController;
 import org.tridas.io.gui.model.popup.GuessFormatDialogModel;
+
+import com.dmurph.mvc.MVCEvent;
 
 
 public class GuessFormatProgress extends JDialog {
@@ -33,7 +37,7 @@ public class GuessFormatProgress extends JDialog {
 		addListeners();
 		pack();
 		setLocationRelativeTo(parent);
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	private void initializeComponents() {
@@ -49,17 +53,17 @@ public class GuessFormatProgress extends JDialog {
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new BorderLayout());
 		bottom.add(progress, "Center");
-		//bottom.add(cancelButton, "East");
+		bottom.add(cancelButton, "East");
 		add(bottom);
-		//setPreferredSize(new Dimension(350, 75));
+		setPreferredSize(new Dimension(350, 75));
 	}
 	
 	private void addListeners() {
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//MVCEvent event = new MVCEvent(ConvertController.CANCEL_CONVERT);
-				//event.dispatch();
+				CancelGuessFormatEvent event = new CancelGuessFormatEvent(model);
+				event.dispatch();
 			}
 		});
 	}
