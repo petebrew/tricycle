@@ -31,7 +31,7 @@
 	   <!-- Copy of version number -->
 	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-	   <buildnumber>577</buildnumber>
+	   <buildnumber>587</buildnumber>
 	</properties>
 	
 	<developers>
