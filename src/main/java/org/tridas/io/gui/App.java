@@ -73,6 +73,8 @@ public class App {
 		JGoogleAnalyticsTracker t = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 		MVC.setTracker(t);
 		t.setEnabled(model.getTricycleModel().isTracking());
+		MVC.getTracker().trackPageView(getBuildRevision(), "Startup", "tridas.org");
+		
 		
 		// Set Swing widget internationalisation
 		internationliseSwingWidgets();

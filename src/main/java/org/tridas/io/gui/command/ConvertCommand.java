@@ -54,6 +54,9 @@ public class ConvertCommand implements ICommand {
 	private final static Logger log = LoggerFactory.getLogger(ConvertCommand.class);
 	
 	public void execute(MVCEvent argEvent) {
+		
+		MVC.getTracker().trackEvent("Convert", "execute");
+
 		ConvertEvent event = (ConvertEvent) argEvent;
 		String outputFormat = event.getOutputFormat();
 		INamingConvention naming;
