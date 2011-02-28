@@ -27,10 +27,10 @@
 \title{TRiCYCLE Users Manual}
 \author{Peter Brewer, Daniel Murphy and Esther Jansma}
 \publishers{\footnotesize{Cornell University, Ithaca, New York \\ Cultural Heritage Agency (RCE/OCW), Amersfoort, The Netherlands }}
-\date{Version 0.2}
+\date{Version 0.2.1}
 
+\renewcommand{\bibname}{References}
 
-\usepackage{mdwlist}
 
 \begin{document}
 \maketitle
@@ -131,9 +131,6 @@ automatically and the TRiCYCLE installation fails. If this is the case you will 
 sun-java6-jre first manually.
 \end{description}
 
-On first launch, TRiCYCLE will ask permission to collect anonymous usage data.  This information will help us focus future development efforts, but if you prefer not to submit this data, you can decline.  You can change your mind at any time by going to File > Options.
-
-By default TRiCYCLE also periodically checks for the availability of updates on the tridas.org website.  If you would prefer to check manually you can turn this features off in File > Options, and either use the `Check for updates' entry in the Help menu, or visit the TRiDaS website with your normal web browser.
 
 \chapter{How to use TRiCYCLE}
 
@@ -280,6 +277,11 @@ This convention is therefore more appropriate when converting from TRiDaS to oth
 formats.
  \end{description}
 
+\section{Privacy options}
+
+On first launch, TRiCYCLE will ask permission to collect anonymous usage data.  This information will help us focus future development efforts, but if you prefer not to submit this data, you can decline.  You can change your mind at any time by checking or unchecking the tick box in the options dialog.
+
+By default TRiCYCLE also periodically checks for the availability of updates on the tridas.org website.  If you would prefer to check manually you can turn this features and either use the `Check for updates' entry in the Help menu, or visit the TRiDaS website with your normal web browser.
 
 \chapter{Help and more information}
 
@@ -292,13 +294,22 @@ like to assist in its development. This obviously includes programmers, but also
 with documentation and translations too. To find out more information please contact Peter Brewer
 (\href{mailto:p.brewer@cornell.edu}{p.brewer@cornell.edu}).
 
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{DendroTech}
+\addcontentsline{toc}{chapter}{\hspace{5.5mm}References}
+
+
 \part*{Appendix - File format descriptions}
 
 \appendix
 \include{format-descriptions}
 
 
-\bibliographystyle{elsarticle-harv}
-\bibliography{tricycle}
+\chapter{License}
+
+TRiCYCLE and the underlying libraries developed by the authors is released as free and open source software under the Apache 2.0 license.
+
+
 
 \end{document}          
