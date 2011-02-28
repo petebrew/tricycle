@@ -103,7 +103,7 @@ public class GuessFormatCommand implements ICommand {
 			FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
 			HashSet<String> s = new HashSet<String>();
 			s.add(file.getAbsolutePath());
-			model.addInputFiles(s);
+			model.addInputFiles(s.toArray(new String[0]));
 			model.setInputFormat(possibleReaders[0]);
 		}
 		else if (possibleReaders.length>1)

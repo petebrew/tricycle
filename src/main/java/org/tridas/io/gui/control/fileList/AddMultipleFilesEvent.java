@@ -18,6 +18,8 @@
  */
 package org.tridas.io.gui.control.fileList;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Set;
 
 import com.dmurph.mvc.MVCEvent;
@@ -28,20 +30,27 @@ import com.dmurph.mvc.MVCEvent;
 @SuppressWarnings("serial")
 public class AddMultipleFilesEvent extends MVCEvent {
 	
-	private final Set<String> files;
+	private final File[] files;
 	
 	/**
 	 * @param argKey
 	 */
-	public AddMultipleFilesEvent(Set<String> argFiles) {
+	public AddMultipleFilesEvent(File[] files2) {
 		super(FileListController.ADD_MULTIPLE_FILES);
-		files = argFiles;
+		files = files2;
 	}
 	
 	/**
 	 * @return the file
 	 */
-	public Set<String> getFiles() {
-		return files;
+	public String[] getFiles() {
+		ArrayList<String> fileList = new ArrayList<String>();
+		for(File file : files)
+		{
+			fileList.add(file.getAbsolutePath());
+		}
+		
+		return fileList.toArray(new String[0]);
+		
 	}
 }

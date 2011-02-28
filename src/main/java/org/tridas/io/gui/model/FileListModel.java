@@ -97,12 +97,16 @@ public class FileListModel extends AbstractModel {
 		firePropertyChange("inputFiles", old, inputFiles.clone());
 	}
 	
-	public void addInputFiles(Set<String> argFiles) {
+	public void addInputFiles(String[] strings) {
 		MVCArrayList<File> old = (MVCArrayList<File>) inputFiles.clone();
 		HashSet<String> notCommon = new HashSet<String>();
 		
 		notCommon.addAll(inputFiles);
-		notCommon.addAll(argFiles);
+		
+		for(String filename : strings)
+		{
+			notCommon.add(filename);
+		}
 		
 		inputFiles.clear();
 		for(String s : notCommon){

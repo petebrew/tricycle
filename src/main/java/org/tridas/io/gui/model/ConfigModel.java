@@ -34,6 +34,7 @@ public class ConfigModel extends AbstractRevertibleModel {
 	private String namingConvention = "Numerical";
 	private String writingCharset = TridasIO.getWritingCharset();
 	private String readingCharset = TridasIO.isCharsetDetection() ? Charsets.AUTO : TridasIO.getReadingCharset();;
+	public Boolean warnedAboutMatrixStyle = false;
 	
 	private IMetadataFieldSet readerDefaults = null;
 	private IMetadataFieldSet writerDefaults = null;

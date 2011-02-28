@@ -52,7 +52,7 @@ public class TricycleModelLocator {
 	private static final String TRACKING = "Tracking";
 	private static final String DONT_ASK_TRACKING = "DontAskTracking";
 	private static final String AUTOUPDATE = "AutoUpdate";
-
+	private static final String WARN_ABOUT_MATRIX_STYLE = "WarnAboutMatrixStyle";
 	
 	private final ConfigModel configModel = new ConfigModel();
 	private final FileListModel fileListModel = new FileListModel();
@@ -114,6 +114,10 @@ public class TricycleModelLocator {
 		return prefs.getBoolean(DONT_ASK_TRACKING, false);
 	}
 	
+	public boolean isWarnAboutMatrixStyle(){
+		return prefs.getBoolean(WARN_ABOUT_MATRIX_STYLE, true);
+	}
+	
 	public void setAutoUpdate(boolean argBool){
 		prefs.putBoolean(AUTOUPDATE, argBool);
 	}
@@ -125,6 +129,10 @@ public class TricycleModelLocator {
 	public void setDontAskTracking(boolean argBool){
 		prefs.putBoolean(DONT_ASK_TRACKING, argBool);
 	}
+	
+	public void setWarnAboutMatrixStyle(boolean argBool){
+		prefs.putBoolean(WARN_ABOUT_MATRIX_STYLE, argBool);
+	}	
 	
 	public File getLastDirectory(){
 		String dir = prefs.get(LAST_DIRECTORY, null);

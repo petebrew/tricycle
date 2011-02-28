@@ -19,24 +19,12 @@
 package org.tridas.io.gui.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -48,7 +36,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -58,6 +45,7 @@ import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.control.fileList.AddFileEvent;
+import org.tridas.io.gui.control.fileList.AddMultipleFilesEvent;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
@@ -65,9 +53,9 @@ import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
+import org.tridas.io.gui.util.FileDrop;
 
 import com.dmurph.mvc.MVCEvent;
-import com.dmurph.mvc.StringEvent;
 
 /**
  * @author Daniel
@@ -87,7 +75,6 @@ public class FileListPanel extends JPanel {
 	private JButton removeAll;
 	private JScrollPane scrollPane;
 	private JTextField fileField;
-	private DropTarget dt;
 	
 	private final FileListModel model;
 	
@@ -212,90 +199,16 @@ public class FileListPanel extends JPanel {
 			}
 		};
 		
-		
 		// Handle files being dropped onto the file list 
-		DropTargetListener dropListener = new DropTargetListener() {
-			@Override
-			public void drop(DropTargetDropEvent dtde) {
-				setDropGui(false);
-			    try {
-			        // Ok, get the dropped object and try to figure out what it is
-			        Transferable tr = dtde.getTransferable();
-			        DataFlavor[] flavors = tr.getTransferDataFlavors();
-			        for (int i = 0; i < flavors.length; i++) 
-			        {
-			        	
-				        log.debug("Possible flavor: " + flavors[i].getMimeType());
-					    // Check for file lists specifically
-					    if (flavors[i].isFlavorJavaFileListType()) 
-					    {
-					      // Great!  Accept copy drops...
-					      dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-					      log.debug("Successful file list drop.\n\n");
-					      
-					      // And add the list of file names to our text area
-					      List list = (List)tr.getTransferData(flavors[i]);
-					      for (int j = 0; j < list.size(); j++) {
-					    	log.warn(list.get(j) + "\n");
-					    	try
-					    	{
-					    		File dragFile = (File) list.get(j);
-					    		if(dragFile.isFile())
-					    		{
-					    			AddFileEvent event = new AddFileEvent(dragFile.getAbsolutePath());
-					    			event.dispatch();
-					    		}
-					    	} catch (Exception e)
-					    	{
-					    		log.warn("Drag and drop failed");
-					    		return;
-					    	}
-					      }
-		
-					      // If we made it this far, everything worked.
-					      dtde.dropComplete(true);
-					      return;
-					    }
-			    
-			        }
-			        
-		        // Hmm, the user must not have dropped a file list
-			    log.warn("Drop failed: " + dtde);
-		        dtde.rejectDrop();
-		      } catch (Exception e) {
-		        e.printStackTrace();
-		        dtde.rejectDrop();
-		      }
-			}
-			
-			@Override
-			public void dropActionChanged(DropTargetDragEvent dtde) { }
-			
-			@Override
-			public void dragOver(DropTargetDragEvent dtde) { 
-				
-				Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
-		        setCursor(cursor);
-		        Border border = BorderFactory.createLineBorder(Color.red);
-		     
-		        fileList.setBorder(border);
+	    new  FileDrop( fileList, new FileDrop.Listener()
+	    {   public void  filesDropped( java.io.File[] files )
+	        {   
+	    		AddMultipleFilesEvent event = new AddMultipleFilesEvent(files);
+	    		event.dispatch();
+	    	
+	        }   // end filesDropped
+	    }); // end FileDrop.Listener
 
-				
-			}
-			
-			@Override
-			public void dragExit(DropTargetEvent dte) {	
-				setDropGui(false);
-			}
-			
-			@Override
-			public void dragEnter(DropTargetDragEvent dtde) { 
-				setDropGui(true);
-			}
-		};
-		
-		dt = new DropTarget(fileList, dropListener);
-		
 		fileField.addActionListener(addFileListener);
 		addButton.addActionListener(addFileListener);
 		
@@ -316,28 +229,6 @@ public class FileListPanel extends JPanel {
 		});
 	}
 	
-	/**
-	 * Change the GUI to show drag and drop of files.  If dropping is false
-	 * then the GUI is reset. 
-	 * 
-	 * @param dropping
-	 */
-	private void setDropGui(Boolean dropping)
-	{
-		Cursor cursor;
-		if(dropping)
-		{
-			cursor = new Cursor(Cursor.HAND_CURSOR);
-	        fileList.setBorder(BorderFactory.createLineBorder(Color.red));
-		}
-		else
-		{
-			cursor = new Cursor(Cursor.DEFAULT_CURSOR);
-	        fileList.setBorder(null);
-		}
-		
-		setCursor(cursor);
-	}
 	
 	public void populateLocale() {
 		fileFieldLabel.setText(I18n.getText("view.files.fileLabel"));
@@ -360,7 +251,7 @@ public class FileListPanel extends JPanel {
 		ArrayList<String> files = model.getInputFiles();
 		listModel.clear();
 		
-		// swing is doing weird stuff, so we spcae it out
+		// swing is doing weird stuff, so we space it out
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {}
