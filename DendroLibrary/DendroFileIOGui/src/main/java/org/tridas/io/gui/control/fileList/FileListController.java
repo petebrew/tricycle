@@ -76,7 +76,7 @@ public class FileListController extends FrontController {
 	
 	public void addMultipleFiles(MVCEvent argEvent) {
 		AddMultipleFilesEvent event = (AddMultipleFilesEvent) argEvent;
-		if(event.getFiles() == null || event.getFiles().size()==0){
+		if(event.getFiles() == null || event.getFiles().length==0){
 			return;
 		}
 		
@@ -129,7 +129,7 @@ public class FileListController extends FrontController {
 		for (File file : files) {
 			s.add(file.getAbsolutePath());
 		}
-		model.addInputFiles(s);
+		model.addInputFiles(s.toArray(new String[0]));
 		model.setInputFormat(format);
 
 		

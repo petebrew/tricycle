@@ -21,6 +21,7 @@ package org.tridas.io.gui.control.config;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.WordUtils;
 import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.TridasIO;
@@ -35,7 +36,6 @@ import org.tridas.io.gui.model.popup.MetadataTableModel;
 import org.tridas.io.gui.view.popup.MetadataEditor;
 
 import com.dmurph.mvc.MVCEvent;
-import com.dmurph.mvc.StringEvent;
 import com.dmurph.mvc.control.FrontController;
 
 /**
@@ -66,6 +66,40 @@ public class ConfigController extends FrontController {
 	public void setInputFormat(MVCEvent argEvent) {
 		ConfigEvent event = (ConfigEvent) argEvent;
 		model.setReaderDefaults(null);
+		String xls = org.tridas.io.I18n.getText("excelmatrix.about.shortName");
+		String odf = org.tridas.io.I18n.getText("odfmatrix.about.shortName");
+		String csv = org.tridas.io.I18n.getText("csv.about.shortName");
+
+		// If this is a matrix format then we may need to warn users that it's
+		// not magical
+		if((event.getValue().equals(xls) || 
+				event.getValue().equals(odf) ||
+				event.getValue().equals(csv)) && 
+				model.warnedAboutMatrixStyle==false &&
+				TricycleModelLocator.getInstance().isWarnAboutMatrixStyle())
+		{
+			Object[] options = {I18n.getText("view.popup.dontWarnAgain"), "OK"};
+			
+			int n  = JOptionPane.showOptionDialog(null,
+				    WordUtils.wrap(I18n.getText("view.popup.warnAboutMatrixStyle"), 60),
+				    I18n.getText("view.popup.spreadsheetFiles"),
+				    JOptionPane.YES_NO_OPTION,
+				    JOptionPane.INFORMATION_MESSAGE,
+				    null,
+				    options,
+				    options[1]);
+
+			if(n==0)
+			{
+				TricycleModelLocator.getInstance().setWarnAboutMatrixStyle(false);
+			}
+			
+			model.warnedAboutMatrixStyle = true;
+			
+		}
+		
+		
+		
 		FileListModel fmodel = TricycleModelLocator.getInstance().getFileListModel();
 		fmodel.setInputFormat(event.getValue());
 	}
