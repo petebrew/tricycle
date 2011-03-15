@@ -1,20 +1,9 @@
 
-\lstset{ %
-basicstyle=\footnotesize,
-numbers=left, 
-numberstyle=\tiny,
-breaklines=true, 
-frame=single,
-showspaces=false,               % show spaces adding particular underscores
-showstringspaces=false,         % underline spaces within strings
-showtabs=false,                 % show tabs within strings adding particular underscores
-backgroundcolor=\color{lgrey},  % choose the background color. You must add \usepackage{color}
-}
-
-
-
 \chapter{Belfast Apple}
+\label{txt:fileFormatsStart}
+\index{File formats|(}
 
+\index{File formats!Belfast Apple|(}
 \begin{table*}[htbp]
 \label{summary:belfastApple}
 \begin{center}
@@ -126,11 +115,12 @@ A1805
 COMMENT -   PB 15-NOV-99
 
 \end{lstlisting}
-
+\index{File formats!Belfast Apple|)}
 
 
 
 \chapter{Belfast Archive}
+\index{File formats!Belfast Archive|(}
 
 \begin{table*}[htbp]
 \label{summary:belfastArchive}
@@ -217,10 +207,12 @@ Pith F Sap 32
 ""
 "[[ END OF TEXT ]]"
 \end{lstlisting}
+\index{File formats!Belfast Archive|)}
 
 
 \chapter{Besan\c{c}on}
-
+\index{File formats!Besan\c{c}on|(}
+\index{File formats!SYLPHE|see{Besan\c{c}on}}
 \begin{table*}[htbp]
 \label{summary:besancon}
 \begin{center}
@@ -301,11 +293,11 @@ valeurs
   113  119   95  127   88  104    ,    ,    ,    ,
     ,    ,    ,    ,    ,    ,    ,    ,    ; 
 \end{lstlisting}
-
+\index{File formats!Besan\c{c}on|)}
 
 
 \chapter{CATRAS}
-
+\index{File formats!CATRAS|(}
 \begin{table*}[htbp]
 \label{summary:catras}
 \begin{center}
@@ -334,7 +326,7 @@ Original designer	 & Roland Aniol \\
 \section{Background}
 The CATRAS format \citep{catras} is the only known binary dendro data format. As such it can't be read by a simple text editor, and can't be imported by spreadsheet or database programs. The format was designed by Roland Aniol for use in his program of the same name. The binary nature of the format means the files are typically much smaller than text files containing similar data. The closed nature of the format originally meant that users were tied to the application.  The fact that users can't manually edit the file means that the validity of files is not a problem like it is with most other dendro formats.
 
-CATRAS is a closed format with no documentation. The format was originally decoded in the early 1990's and permission was granted by Aniol for a converter to be included in Henri Grissino-Mayer's CONVERT5 application on the condition that the format remained closed source. Subsequently others have independently released application and code that can read ring width data from CATRAS files to a greater or lesser extent.
+CATRAS is a closed format with no documentation. The format was originally decoded in the early 1990's and permission was granted by Aniol for a converter to be included in Henri Grissino-Mayer's CONVERT5 application on the condition that the format remained closed source. Subsequently others have independently released application and code that can read ring-width data from CATRAS files to a greater or lesser extent.
 
 \section{Reading byte code}
 
@@ -392,7 +384,7 @@ Dates are stored as three single bytes, one for day, one for month, one for year
 
 \section{Metadata}
 
-The first 128 bytes contain the file header information and the remainder of the file contains the ring width data and sample depth data. Our current understanding of the header bytes is as follows but I'm not convinced that these are all correct. Deciphering these requires painstaking work because we must try to ascertain how each byte is being used (e.g. as a byte pair, single byte or as a string): 
+The first 128 bytes contain the file header information and the remainder of the file contains the ring-width data and sample depth data. Our current understanding of the header bytes is as follows but I'm not convinced that these are all correct. Deciphering these requires painstaking work because we must try to ascertain how each byte is being used (e.g. as a byte pair, single byte or as a string): 
 
 \begin{itemize*}
  \item 1-32 - Series name
@@ -424,7 +416,7 @@ The first 128 bytes contain the file header information and the remainder of the
 
 The remaining bytes in the file contain the actual data values stored as integer byte pairs. It appears that older version of CATRAS included one or more padding values of -1. These values should be ignored. The end of the data values are indicated by a stop value of 999.
 
-Following the ring width data values there are 42 bytes of unknown meaning. These are then followed by byte pairs representing the counts/sample depth for each ring if the series is a chronology. 
+Following the ring-width data values there are 42 bytes of unknown meaning. These are then followed by byte pairs representing the counts/sample depth for each ring if the series is a chronology. 
 
 \section{Unknown bytes}
 There are a number of bytes in both the header and data sections that are are unaccounted for and are therefore likely to contain data that we are ignoring. For this reason although we could attempt to create CATRAS files from what we know we can't be sure they would be valid: 
@@ -441,10 +433,11 @@ There are a number of bytes in both the header and data sections that are are un
     \item 0-42 following end of data marker    
    \end{itemize*}
 \end{itemize*}
-
+\index{File formats!CATRAS|)}
 
 \chapter{Comma Separated Values}
-
+\index{File formats!CSV|(}
+\index{File formats!Comma Separated Values|see{CSV}}
 \begin{table*}[htbp]
 \label{summary:csv}
 \begin{center}
@@ -502,10 +495,10 @@ Year,MySample1,MySample2
 512,0.33,
 513,0.22,
 \end{lstlisting}
-
+\index{File formats!CSV|)}
 
 \chapter{Corina Legacy}
-
+\index{File formats!Corina Legacy|(}
 
 \begin{table*}[htbp]
 \label{summary:corina}
@@ -536,7 +529,7 @@ Original designer	 & Robert `Mecki' Pohl\\
 
 The Corina Legacy format is the file format used by the Corina software prior to version 2, when it transferred to using TRiDaS. The format was originally designed for use with the MS-DOS version of Corina but was also used as the native file format in the later Java versions (up to and including v1.1).
 
-A Corina file contains yearly data (ring width and number of samples for that year), some fixed metadata, and optionally weiserjahre data and a listing of element samples (for summed samples).
+A Corina file contains yearly data (ring-width and number of samples for that year), some fixed metadata, and optionally weiserjahre data and a listing of element samples (for summed samples).
 
 The title comes first, on a line by itself, followed by a blank line. The title is repeated later, so this is only to make it easier for people or external programs to read the title.
 
@@ -579,7 +572,7 @@ Following the data block there is a blank line and two option blocks of data tha
 
 The next block of information in a chronology file is denoted by a line ;ELEMENTS. The following lines contain the file names of the data files that have contributed to the creation of the chronology.
 
-Following this is an optional block denoted by the line ;weiserjahre followed by the weiserjahre data. Each weiserjahre data line begins with a space followed by a integer year value for the first year in the line. The weiserjahre value is left padded with spaces to fill 6 characters and the value itself is written as X/Y where X is the number of samples that show an upward trend in width; and Y is the number of samples that show a downward trend in width. The weiserjahre value is forward facing so the value for ring 1001 shows the trend between ring 1001 and 1002. There is therefore one less weiserjahre value in the final row than there are ring widths.
+Following this is an optional block denoted by the line ;weiserjahre followed by the weiserjahre data. Each weiserjahre data line begins with a space followed by a integer year value for the first year in the line. The weiserjahre value is left padded with spaces to fill 6 characters and the value itself is written as X/Y where X is the number of samples that show an upward trend in width; and Y is the number of samples that show a downward trend in width. The weiserjahre value is forward facing so the value for ring 1001 shows the trend between ring 1001 and 1002. There is therefore one less weiserjahre value in the final row than there are ring-widths.
 
 The final line of Corina data files contains the author's name preceded by a tilde. 
 
@@ -631,11 +624,13 @@ G:\DATA\TRB\TRB1B.REC
  1080   0/1      0/1      0/1   
 ~ Unknown User
 \end{lstlisting}
+\index{File formats!Corina Legacy|)}
 
 
 
 
 \chapter{DendroDB}
+\index{File formats!DendroDB|(}
 
 \begin{table*}[htbp]
 \label{summary:dendrodb}
@@ -702,52 +697,13 @@ Tree Core Year Latewood width
 ...
 \end{lstlisting}
 
-
-\chapter{Excel Spreadsheet}
-
-\begin{table*}[htbp]
-\label{summary:excel}
-\begin{center}
-\begin{tabular*}{15cm}{ l @{\extracolsep{\fill}} p{9cm} }
-  \toprule
-
-Format name     	 & Microsoft Excel (97/2000/XP) \\
-Other name(s)      	 & Binary Interchange File Format, BIFF\\
-Type      	 	 & Binary file\\
-Extension(s)      	 & xls\\
-Read/write support     	 & Read and write \\
-Reference implementation & Microsoft Excel\\
-Data / metadata      	 & Data only\\
-Calendar type		 & Gregorian\\
-Absolute dating support	 & Yes\\
-Undated series support   & No\\
-Relative dating support  & No\\
-Multi series support	 & Yes\\
-Original designer	 & Microsoft\\
-
-\bottomrule
-\end{tabular*}
-\end{center}
-\end{table*}
-
-\section{Description}
-The Excel file format is a widely used format for storing spreadsheet data. It is a proprietary binary format created by Microsoft but suppported by many spreadsheet and statistical applications.  It is not to be confused with the Office Open XML format which was introduced by Microsoft with MS Office 2007 and typically has the file extension xlsx.
-
-Although Excel files can contain multiple sheets in a workbook, only the first sheet is considered.  Like the CSV and ODF Spreadsheet formats, support for Excel files is limited to a particular layout or style of spreadsheet. The layout of the data sheet should be as follows:
-
-\begin{itemize*}
- \item Row 1 - Header names for each column
- \item Column A - Year values
- \item Column B+ - One column for each series containing values in millimetres. Cells are left empty if no data is available for a series because it does not extend to a particular year. Data must be continuous for each series, so missing/unmeasured rings should be included as zero.
-\end{itemize*}
-
-\section{Example file}
-
-\includegraphics[width=4cm]{excel.png}
+\index{File formats!DendroDB|)}
 
 
 \chapter{Heidelberg}
-
+\index{File formats!Heidelberg|(}
+\index{File formats!TSAP|see{Heidelberg}}
+\index{File formats!FH|see{Heidelberg}}
 \begin{table*}[htbp]
 \label{summary:heidelberg}
 \begin{center}
@@ -934,11 +890,11 @@ The meaning of many of these keywords is fairly self-explanatory but others are 
 The header section is followed by a data section denoted by a line containing the keyword DATA: followed by the type of data present which can be one of Tree; HalfChrono; Chrono; Single; Double; Quad. Tree, HalfChrono and Chrono are the original keywords supported by early versions of TSAP but these are now deprecated in preferences of the more generic Single, Double and Quad terms. The terms Single, Double and Quad are largely interchangeable with Tree, HalfChrono and Chrono respectively, but not completely. Double can refer to both Tree and HalfChrono format data. When the newer terms are used, the header keyword DataFormat is used to record whether the data is equivalent to Tree, HalfChrono or Chrono.
 
 \begin{description}
-\item[Single format] - data is typically used for storing raw measurement series. Each data line contains 10 data values each being a left space padded integer taking up 6 characters. Any spare data values in the final data line are filled with zeros. Alternatively it appears that TSAP-Win also accepts this data section as single integer values one per line with not padding.
+\item[Single format] - data is typically used for storing raw measurement series. Each data line contains 10 data values each being a left space padded integer taking up 6 characters. Any spare data values in the final data line are filled with zeros. Alternatively it appears that TSAP-Win also accepts this data section as single integer values one per line.
 
-\item[Double format] - data is for storing data with sample depth information - typically chronologies. Like the single format section, data is stored as 10 integer values, each taking up 6 characters and left padded with spaces. The values are in pairs of ring widths and sample depths, therefore five rings are stored per line.
+\item[Double format] - data is for storing data with sample depth information - typically chronologies. Like the single format section, data is stored as 10 integer values, each taking up 6 characters and left padded with spaces. The values are in pairs of ring-widths and sample depths, therefore five rings are stored per line.
 
-\item[Quad format] - data is for storing chronologies with sample depth as well as data on how many of the constituent series increase and decrease. This format therefore requires four numbers for each data point: ring width; sample depth; increasing series; decreasing series. Numbers are stored as integers, left space padded as before, but this time only using 5 characters not 6. Four data points are included on each line, therefore this means there are 16 numbers per row and each row is 80 characters long. 
+\item[Quad format] - data is for storing chronologies with sample depth as well as data on how many of the constituent series increase and decrease. This format therefore requires four numbers for each data point: ring-width; sample depth; increasing series; decreasing series. Numbers are stored as integers, left space padded as before, but this time only using 5 characters not 6. Four data points are included on each line, therefore this means there are 16 numbers per row and each row is 80 characters long. 
 \end{description}
 
 \newpage
@@ -1009,10 +965,103 @@ DATA:Double
     41     3    39     3    52     3    53     3    43     3
     48     3    32     3    32     3    48     3    59     3
 \end{lstlisting}
+\index{File formats!Heidelberg|)}
+
+
+\chapter{Microsoft Excel 97/2000/XP}
+\index{File formats!Microsoft Excel 97/2000/XP|(}
+\index{File formats!Binary Interchange Format|see{Microsoft Excel 97/2000/XP}}
+\begin{table*}[htbp]
+\label{summary:excel}
+\begin{center}
+\begin{tabular*}{15cm}{ l @{\extracolsep{\fill}} p{9cm} }
+  \toprule
+
+Format name     	 & Microsoft Excel 97/2000/XP \\
+Other name(s)      	 & Binary Interchange File Format, BIFF\\
+Type      	 	 & Binary file\\
+Extension(s)      	 & xls\\
+Read/write support     	 & Read and write \\
+Reference implementation & Microsoft Excel\\
+Data / metadata      	 & Data only\\
+Calendar type		 & Gregorian\\
+Absolute dating support	 & Yes\\
+Undated series support   & No\\
+Relative dating support  & No\\
+Multi series support	 & Yes\\
+Original designer	 & Microsoft\\
+
+\bottomrule
+\end{tabular*}
+\end{center}
+\end{table*}
+
+\section{Description}
+The Excel file format is a widely used format for storing spreadsheet data. It is a proprietary binary format created by Microsoft but suppported by many spreadsheet and statistical applications.  It is not to be confused with the Office Open XML format which was introduced by Microsoft with MS Office 2007 and typically has the file extension xlsx.
+
+Although Excel files can contain multiple sheets in a workbook, only the first sheet is considered.  Like the CSV and ODF Spreadsheet formats, support for Excel files is limited to a particular layout or style of spreadsheet. The layout of the data sheet should be as follows:
+
+\begin{itemize*}
+ \item Row 1 - Header names for each column
+ \item Column A - Year values
+ \item Column B+ - One column for each series containing values in millimetres. Cells are left empty if no data is available for a series because it does not extend to a particular year. Data must be continuous for each series, so missing/unmeasured rings should be included as zero.
+\end{itemize*}
+
+\section{Example file}
+
+\includegraphics[width=4cm]{excel.png}
+\index{File formats!Microsoft Excel 97/2000/XP|)}
+
+
+
+\chapter{Microsoft Excel 2007}
+\index{File formats!Microsoft Excel 2007|(}
+\index{File formats!Office Open XML Spreadsheet|see{Microsoft Excel 2007}}
+\index{File formats!OOXML|see{Microsoft Excel 2007}}
+\index{File formats!OpenXML Spreadsheet|see{Microsoft Excel 2007}}
+\begin{table*}[htbp]
+\label{summary:ooxml}
+\begin{center}
+\begin{tabular*}{15cm}{ l @{\extracolsep{\fill}} p{9cm} }
+  \toprule
+
+Format name     	 & Microsoft Excel 2007 \\
+Other name(s)      	 & Office Open XML Spreadsheet, OOXML, OpenXML\\
+Type      	 	 & XML file\\
+Extension(s)      	 & xlsx\\
+Read/write support     	 & Read and write \\
+Reference implementation & ISO 29500\\
+Data / metadata      	 & Data only\\
+Calendar type		 & Gregorian\\
+Absolute dating support	 & Yes\\
+Undated series support   & No\\
+Relative dating support  & No\\
+Multi series support	 & Yes\\
+Original designer	 & Microsoft\\
+
+\bottomrule
+\end{tabular*}
+\end{center}
+\end{table*}
+
+\section{Description}
+This is the new XML file format introduced by Microsoft with Excel 2007. Unlike the binary format used by the previous version of Excel, this format is an open standard. However, it should not be confused with the OpenDocument Format standard that was developed by the OASIS consortium.
+
+The layout of the data sheet should be just as for the Excel 97/2000/XP format:
+
+\begin{itemize*}
+ \item Row 1 - Header names for each column
+ \item Column A - Year values
+ \item Column B+ - One column for each series containing values in millimetres. Cells are left empty if no data is available for a series because it does not extend to a particular year. Data must be continuous for each series, so missing/unmeasured rings should be included as zero.
+\end{itemize*}
+
+See the screenshot in the Microsoft Excel 97/2000/XP format to see how an example of how the spreadsheet should look.
+\index{File formats!Microsoft Excel 2007|)}
+
 
 
 \chapter{Nottingham}
-
+\index{File formats!Nottingham|(}
 \begin{table*}[htbp]
 \label{summary:nottingham}
 \begin{center}
@@ -1061,10 +1110,12 @@ There is no known reference implementation for this format and few known example
   96 106  71  89  50  65 133  89  88  50  60  95  95  91 102 158  83  55  98  70
   45  46  40  36  64  58  52  58  56  94  51  48  47  60  49  48
 \end{lstlisting}
-
+\index{File formats!Nottingham|)}
 
 \chapter{ODF Spreadsheet}
-
+\index{File formats!ODF Spreadsheet|(}
+\index{File formats!OpenDocument Format|see{ODF Spreadsheet}}
+\index{File formats!OpenOffice.org Format|see{ODF Spreadsheet}}
 \begin{table*}[htbp]
 \label{summary:odfmatrix}
 \begin{center}
@@ -1103,9 +1154,12 @@ Support for ODF spreadsheets in TRiCYCLE is necessarily limited to a particular 
 \end{itemize*}
 
 Please see the Excel section for a screenshot of how an ODF spreadsheet should look.
+\index{File formats!ODF Spreadsheet|)}
+
+
 
 \chapter{Oxford}
-
+\index{File formats!Oxford|(}
 \begin{table*}[htbp]
 \label{summary:oxford}
 \begin{center}
@@ -1172,7 +1226,7 @@ The file is terminated with 0, 1 or 2 free-text comment lines. A number of Oxfor
 \section{Limitations}
 
 \begin{itemize*}
- \item Only holds whole ring width data
+ \item Only holds whole ring-width data
  \item Does not cope with data values >999 1/100th mm
  \item Does not cope with chronologies of >99 samples
  \item Does not allow dates before 1AD
@@ -1202,11 +1256,11 @@ The file is terminated with 0, 1 or 2 free-text comment lines. A number of Oxfor
   2  2  2  2  2  2  2  2  2  2
   2  2  2  2  1
 \end{lstlisting}
-
+\index{File formats!Oxford|)}
 
 
 \chapter{PAST4}
-
+\index{File formats!PAST4|(}
 \begin{table*}[htbp]
 \label{summary:past4}
 \begin{center}
@@ -1314,14 +1368,14 @@ The final tag type in the file is the \verb|<RECORDS>| tag. These contain the ac
 \end{itemize*}
 The record tag then contains a \verb|<HEADER>| tag with a \verb|<![CDATA[| section which includes additional free-text header information. There are no requirements as to how information should be laid out in this field however many users seem to adopt the Heidelberg style of keyword=value.
 
-Next comes the \verb|<DATA>| tag which is empty except another \verb|<![CDATA[| section. This is where the actual ring width data is stored. Each data value is recorded on a separate line (using CR LR line breaks). Each line contains the following six tab delimited fields:
+Next comes the \verb|<DATA>| tag which is empty except another \verb|<![CDATA[| section. This is where the actual ring-width data is stored. Each data value is recorded on a separate line (using CR LR line breaks). Each line contains the following six tab delimited fields:
 
 \begin{itemize*}
     \item  Ring width as a floating point number
     \item  Sample depth
     \item  Number of sample increasing
     \item  Latewood percentage as a floating point value 0-1 (0 if not known)
-    \item  Duplicate/backup ring width value using to store the original ring width value. If an index is applied the ring with value in column 1 is altered.
+    \item  Duplicate/backup ring-width value to store the original ring-width value. If an index is applied the ring-width value in column 1 is altered.
     \item  Comment string about this particular ring 
 \end{itemize*}
 
@@ -1386,10 +1440,11 @@ PAST4 contains an option for enabling/disabling the year 0 but it does not recor
     </RECORD>
 </PAST_4_PROJECT_FILE>
 \end{lstlisting}
-
+\index{File formats!PAST4|)}
 
 \chapter{Sheffield}
-
+\index{File formats!Sheffield|(}
+\index{File formats!D Format|see{Sheffield}}
 \begin{table*}[htbp]
 \label{summary:sheffield}
 \begin{center}
@@ -1428,7 +1483,7 @@ The format contains both data and some structured metadata with each field/value
  \item Start date - Whole number (can be negative).  If absolute year then add 10000 to value so 1AD = 10001
  \item Raw data type \emph{or} Mean data type 
       \begin{itemize*}   
-       \item Single character; R = annual raw ring width data (NB earlier versions used some other codes here for species e.g. ABEFPSU these are all interpreted as equivalent to R) 
+       \item Single character; R = annual raw ring-width data (NB earlier versions used some other codes here for species e.g. ABEFPSU these are all interpreted as equivalent to R) 
        \item Single character; W=timber mean with signatures, X=chron mean with signatures, T = timber mean, C = chron mean, M = un-weighted master sequence 
       \end{itemize*} 
  \item Raw sapwood number \emph{or} mean number of timbers/chronologies
@@ -1538,11 +1593,11 @@ D
 177
 ...
 \end{lstlisting}
-
+\index{File formats!Sheffield|)}
 
 
 \chapter{Topham}
-
+\index{File formats!Topham|(}
 \begin{table*}[htbp]
 \label{summary:topham}
 \begin{center}
@@ -1592,7 +1647,8 @@ The Topham format is probably the most simplistic of formats consisting of just 
 
 
 \chapter{TRiDaS}
-
+\index{File formats!TRiDaS|(}
+\index{TRiDaS|(}
 \begin{table*}[htbp]
 \label{summary:tridas}
 \begin{center}
@@ -1620,7 +1676,7 @@ Original designer	 & Esther Jansma, Peter Brewer and Ivo Zandhuis\\
 
 \section{Description}
 
-TRiDaS (Tree-Ring Data Standard see \url{http://www.tridas.org}) is a data format designed by over 80 dendrochronologists and computer scientists as part of the DCCD project and the Dendro Data Standard forum. It is designed to accurately represent any dendro data and metadata and it is hoped over time the dendro community will accept TRiDaS as the de facto standard for all dendro data.
+TRiDaS (Tree-Ring Data Standard see \url{http://www.tridas.org}) is a data format designed by over 80 dendrochronologists, computer scientists and users of dendrochronological data from a variety of associated fields as part of the DCCD project and the Dendro Data Standard forum. It is designed to accurately represent any dendro data and metadata and it is hoped over time the dendro community will accept TRiDaS as the de facto standard for all dendro data.
 
 The format uses extensible markup language (XML) which means the standard can be extended and evolve as future needs change. The format is structured around the eight data entities described below: 
 
@@ -1792,10 +1848,12 @@ For a full description of the standard see \citet{tridas}.
 </tridas>
 
 \end{lstlisting}
+\index{TRiDaS|)}
+\index{File formats!TRiDaS|)}
 
 
 \chapter{TRIMS}
-
+\index{File formats!TRIMS|(}
 \begin{table*}[htbp]
 \label{summary:trims}
 \begin{center}
@@ -1846,10 +1904,17 @@ pb
  ... 
  999
 \end{lstlisting}
+\index{File formats!TRIMS|)}
 
 
 \chapter{Tucson}
-
+\index{File formats!Tucson|(}
+\index{File formats!RWL|see{Tucson}}
+\index{File formats!CRN|see{Tucson}}
+\index{File formats!Decadal|see{Tucson}}
+\index{File formats!TSF|see{Tucson}}
+\index{File formats!Time series format|see{Tucson}}
+\index{File formats!ITRDB|see{Tucson}}
 \begin{table*}[htbp]
 \label{summary:tucson}
 \begin{center}
@@ -1878,7 +1943,7 @@ Original designer	 & Richard Holmes\\
 \section{Description}
 The Tucson format is perhaps the most widely used dendro data format. Unfortunately it seems there was never definitive documentation. Support for the format has been incorporated into a number of dendro applications but without format documentation there are variations in these implementations resulting in quite a lot of subtle differences in files. The often tight association between the Dendro Program Library (DPL) and the ITRDB means that perhaps the most definitive documentation for the format is the ITRDB website.
 
-The Tucson format is best considered as covering two different sub-formats which are often referred to by their file extensions (RWL and CRN). RWL files are used for storing ring width data, whereas CRN files are used for storing chronologies.
+The Tucson format is best considered as covering two different sub-formats which are often referred to by their file extensions (RWL and CRN). RWL files are used for storing ring-width data, whereas CRN files are used for storing chronologies.
 
 The ITRDB website includes detailed information on how to include structured metadata in Tucson format files. Unfortunately there are no tools for creating and/or validating Tucson files so the vast majority of files circulating in the community today (including those in the ITRDB) do not adhere to these standards. 
 
@@ -2045,11 +2110,11 @@ The stop marker in a CRN file should be 9990.
 1070001970 963 231095 231368 231069 231084 21 936 191146 191362 191288 191572 19
 10700019801034 19 870 191186 191047 19 968 191089 191272 191231 191083 189990  0
 \end{lstlisting}
-
+\index{File formats!Tucson|)}
 
 
 \chapter{Tucson Compact}
-
+\index{File formats!Tucson Compact|(}
 \begin{table*}[htbp]
 \label{summary:tucsoncompact}
 \begin{center}
@@ -2114,10 +2179,13 @@ The example below therefore means there are 26 data values per line each consist
 129123160117129121 88 69 97 77 96106 71 89 50 65133 89 88 50 60 95 95 91102158
  83 55 98 70 45 46 40 36 64 58 52 58 56 94 51 48 47 60 49 48
 \end{lstlisting}
+\index{File formats!Tucson Compact|)}
+
 
 
 \chapter{VFormat}
-
+\index{File formats!VFormat|(}
+\index{File formats!OJ Format|see{VFormat}}
 \begin{table*}[htbp]
 \label{summary:vformat}
 \begin{center}
@@ -2136,7 +2204,7 @@ Absolute dating support	 & Yes\\
 Undated series support   & No \\
 Relative dating support  & No \\
 Multi series support	 & Yes\\
-Original designer	 & Tommy Reimers and Hans-Hubert Leuschner\\
+Original designer	 & Thomas Reimer and Hans-Hubert Leuschner\\
 
 \bottomrule
 \end{tabular*}
@@ -2242,10 +2310,12 @@ G1101050.!OJ/S20105_0.!OJ/_
      174     113     112      89      99     130     111     104     164     110
      139
 \end{lstlisting}
+\index{File formats!VFormat|)}
 
 
 \chapter{WinDENDRO}
-
+\index{File formats!WinDENDRO|(}
+\label{txt:fileFormatsLast}
 \begin{table*}[htbp]
 \label{summary:windendro}
 \begin{center}
@@ -2382,3 +2452,7 @@ PathLength - Length of radius measured
 \end{itemize*}
 
 Lines 3+ contain the actual data and metadata, one line for each series. Following the 13 or 36 columns of metadata (depending on file version) there are $x$ number of columns containing ring values. The values are recorded as floating point data. The units for these data values are: mm for widths; \% for percentages; g/cm$^3$ for densities; radians for angles. 
+
+\label{txt:fileFormatsEnd}
+\index{File formats!WinDENDRO|)}
+\index{File formats|)}
