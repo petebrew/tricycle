@@ -24,14 +24,14 @@
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.2.1</version>
 	
 	<!--  These values are written to build.properties -->
 	<properties>
 	   <!-- Copy of version number -->
 	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-	   <buildnumber>590</buildnumber>
+	   <buildnumber>605</buildnumber>
 	</properties>
 	
 	<developers>
@@ -179,8 +179,9 @@
 	          </execution>
 	        </executions>
 	      </plugin>
+		
 			
-				   <plugin>
+	   <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
         <version>1.0-alpha-2</version>

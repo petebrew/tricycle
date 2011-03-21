@@ -23,6 +23,26 @@
 \widowpenalty=10000
 \clubpenalty=10000
 
+
+%% Set up code listings
+\lstset{ %
+basicstyle=\footnotesize,
+numbers=left, 
+numberstyle=\tiny,
+breaklines=true, 
+frame=single,
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+backgroundcolor=\color{lgrey},  % choose the background color. You must add \usepackage{color}
+}
+
+%% Define colours
+\definecolor{lgrey}{gray}{0.98}
+\definecolor{dgrey}{gray}{0.6}
+\definecolor{dgreen}{RGB}{0,60,0}
+\definecolor{greygreen}{RGB}{237,243,237}
+
 % Title Page
 \title{TRiCYCLE Users Manual}
 \author{Peter Brewer, Daniel Murphy and Esther Jansma}
@@ -34,11 +54,15 @@
 
 \begin{document}
 \maketitle
-
+\pagenumbering{roman}
+\setcounter{page}{1}
 
 \tableofcontents
 
+
 \chapter{Acknowledgements}
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 Funding for the development of TRiCYCLE has been provided by NWO section Humanities through the
 DCCD project and through the various patrons of the Malcolm and Carolyn Wiener Laboratory for Aegean
@@ -64,27 +88,7 @@ writing 21 different file formats:
  Format & Read support & Write support\\
  \midrule
 
-Belfast Apple      	 & \checkmark  & \checkmark \\
-Belfast Archive   	 & \checkmark  &            \\
-Besan\c{c}on		 & \checkmark  & \checkmark \\
-CATRAS			 & \checkmark  &            \\
-Comma Separated Values	 & \checkmark  & \checkmark \\
-Corina Legacy		 & \checkmark  & \checkmark \\
-DendroDB		 & \checkmark  &            \\
-Excel			 & \checkmark  & \checkmark \\
-Heidelberg		 & \checkmark  & \checkmark \\
-Nottingham		 & \checkmark  & \checkmark \\
-ODF Spreadsheet		 & \checkmark  & \checkmark \\
-Oxford			 & \checkmark  & \checkmark \\
-PAST4			 & \checkmark  & \checkmark \\
-Sheffield		 & \checkmark  & \checkmark \\
-Topham			 & \checkmark  & \checkmark \\
-TRiDaS			 & \checkmark  & \checkmark \\
-TRIMS			 & \checkmark  & \checkmark \\
-Tucson			 & \checkmark  & \checkmark \\
-Tucson Compact		 & \checkmark  & \checkmark \\
-VFormat			 & \checkmark  & \checkmark \\
-WinDENDRO		 & \checkmark  &            \\
+
 
 \bottomrule
 \end{tabular*}
