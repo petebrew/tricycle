@@ -77,7 +77,7 @@ formats implemented.
 \chapter{What is TRiCYCLE?}
 
 TRiCYCLE is a universal dendrochronology file format converter. It currently has support for reading and
-writing 21 different file formats:
+writing 22 different file formats:
 
 \begin{table*}[htbp]
 \label{tbl:supportedFormats}
@@ -88,7 +88,28 @@ writing 21 different file formats:
  Format & Read support & Write support\\
  \midrule
 
-
+Belfast Apple      	 & \checkmark  & \checkmark \\
+Belfast Archive   	 & \checkmark  &            \\
+Besan\c{c}on		 & \checkmark  & \checkmark \\
+CATRAS			 & \checkmark  &            \\
+Comma Separated Values	 & \checkmark  & \checkmark \\
+Corina Legacy		 & \checkmark  & \checkmark \\
+DendroDB		 & \checkmark  &            \\
+Heidelberg		 & \checkmark  & \checkmark \\
+Microsoft Excel 97/XP/2000 & \checkmark  & \checkmark \\
+Microsoft Excel 2007 	 & \checkmark  & \checkmark \\
+Nottingham		 & \checkmark  & \checkmark \\
+ODF Spreadsheet		 & \checkmark  & \checkmark \\
+Oxford			 & \checkmark  & \checkmark \\
+PAST4			 & \checkmark  & \checkmark \\
+Sheffield		 & \checkmark  & \checkmark \\
+Topham			 & \checkmark  & \checkmark \\
+TRiDaS			 & \checkmark  & \checkmark \\
+TRIMS			 & \checkmark  & \checkmark \\
+Tucson			 & \checkmark  & \checkmark \\
+Tucson Compact		 & \checkmark  & \checkmark \\
+VFormat			 & \checkmark  & \checkmark \\
+WinDENDRO		 & \checkmark  &            \\
 
 \bottomrule
 \end{tabular*}
@@ -104,7 +125,7 @@ Key features of TRiCYCLE are:
 \begin{itemize*}
  \item Seamless support for units where possible
  \item Interpretation of all metadata
- \item Handling of different charactersets and line feeds from different operating systems
+ \item Handling of different character sets and line feeds from different operating systems
  \item Comprehensive warning and exception system which provides detailed feedback when errors are
 detected in files
 \end{itemize*}
@@ -139,7 +160,9 @@ sun-java6-jre first manually.
 \chapter{How to use TRiCYCLE}
 
 The first step is to specify the format of your input file(s). Choose your input file format from the pull
-down list on the File List page. Then you need to specifiy the file(s) that you would like to convert. This
+down list on the File List page.  If you are uncertain what format your file is in, you can use Identify file format option in the help menu. Due to the fact that some formats are very similar, Corina may suggest the file is one of several formats.  If this is the case you will need to either check the file format descriptions in the appendices, or try each format in turn.
+
+The next stage is to specify the file(s) that you would like to convert. This
 can be done in a variety of ways:
 
 \begin{itemize*}
@@ -151,11 +174,10 @@ Windows or Nautilus, Dolphin, Konqueror etc on Linux).
 
 Once you have your list of files prepared you can then go to the Convert tab.
 
-
 On the Convert page, the next thing you need to do is select the desired output format from the drop down
 list. Next, press the convert button and after a short delay your files should appear in the list below. At the
 bottom of the window, you'll see a summary showing how many files were processed, how many of the
-convertions failed and how many were converted successfully but with warnings.
+conversions failed and how many were converted successfully but with warnings.
 
 
 The results of the conversion are shown in a tree view on the convert tab. Files that failed to convert are
@@ -167,7 +189,7 @@ output files as some formats can store just one series while others can store mu
 
 \begin{figure}
 \includegraphics[width=\textwidth]{screenshot1.png}
-\caption{Screenshot showing the conversion of three TRiDaS files into Sheffield
+\caption{Screen shot showing the conversion of three TRiDaS files into Sheffield
 format. The second and third files both include warnings that the Sheffield format
 is unable to fully represent all the data in the input files.} 
 \label{fig:screenshot}
@@ -177,7 +199,7 @@ If there were warnings produced during the conversion process, then the file wil
 exclamation icon. Warnings can be associated with either the process of reading the input file, or writing
 the output file. They can also be related to a single series within the file or the input file as a whole. The
 warning messages are displayed to illustrate the context of the warning. Longer warnings will scroll of the
-edge of the window, but if you hover your mouse over the warning a tooltip will show the entire message.
+edge of the window, but if you hover your mouse over the warning a tool-tip will show the entire message.
 
 If you would like to preview the result of the conversion process you can double click on the output files
 and they will be displayed in a text viewer. This option is not, however, available for binary formats such
@@ -195,7 +217,7 @@ config.
 \section{Character sets}
 
 The character set can be set for both the file being read and the file being written. The character set is
-the system for pairing computer character codes with the character glyphes that we read. The widely
+the system for pairing computer character codes with the character glyphs that we read. The widely
 used standard was originally ASCII, but this does not include diacritic characters, and characters specific
 to certain languages. There have since been many character encodings proposed (e.g ISO 8859-1 for
 Western Europe and ISO 8859-7 for Greece) as well as some that are specific to Windows and Mac
@@ -242,7 +264,7 @@ fields that will be set automatically by TRiCYCLE along with their current value
 of these with the exception of those that are required to be a controlled vocabulary. These will require a 
 more complicated interface which we haven't had time to implement yet. The third column in the editor is
 a tick box to specify whether the value is overriding or not. If ticked, the value specified in this editor will
-be used regardless of whether a value can be extracted by TRiCYCLE from the input datafiles.
+be used regardless of whether a value can be extracted by TRiCYCLE from the input data files.
 
 An identical editor is available for the writer. These are the default values used by the writer code for
 your chosen output format. For instance, TRiDaS does not require that a start year field be set (as in the
@@ -263,7 +285,7 @@ chosen (e.g. Heidelberg files are .fh and TRiDaS files are .xml).
  \item[Numerical] - This is the default naming convention. It uses the name of the input data file and
 appends an incrementing number if more than one output file is produced.
  \item[UUID] - This gives all output files a random named based on Universally Unique Identifiers
-(UUIDs). This is a 36 character hexidecimal code which due to the astronomically
+(UUIDs). This is a 36 character hexadecimal code which due to the astronomically
 large number of possible combinations is guaranteed to be universally unique. A
 typical filename will look like: 550e8400-e29b-41d4-a716-446655440000.
  \item[Hierarchical] - This uses the hierarchical structure of the TRiDaS data model to provide a meaningful

@@ -24,7 +24,7 @@ Changes from 0.2.0 to 0.2.1:
 - Support added for writing:
    - MS Excel 2007
    - ODF Spreadsheet
-   - Oxford Writer
+   - Oxford 
 
 
 
