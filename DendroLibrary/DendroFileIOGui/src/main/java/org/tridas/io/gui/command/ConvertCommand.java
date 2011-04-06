@@ -37,7 +37,6 @@ import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
-import org.tridas.schema.TridasProject;
 import org.tridas.schema.TridasTridas;
 
 import com.dmurph.mvc.IllegalThreadException;

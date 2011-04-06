@@ -20,7 +20,6 @@ package org.tridas.io.gui.control.fileList;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Set;
 
 import com.dmurph.mvc.MVCEvent;
 

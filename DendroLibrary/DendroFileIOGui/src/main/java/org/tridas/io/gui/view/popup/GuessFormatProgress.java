@@ -31,10 +31,7 @@ import javax.swing.JProgressBar;
 
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.CancelGuessFormatEvent;
-import org.tridas.io.gui.control.TricycleController;
 import org.tridas.io.gui.model.popup.GuessFormatDialogModel;
-
-import com.dmurph.mvc.MVCEvent;
 
 
 public class GuessFormatProgress extends JDialog {

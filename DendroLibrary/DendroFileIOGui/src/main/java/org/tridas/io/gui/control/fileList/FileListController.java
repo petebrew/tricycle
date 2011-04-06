@@ -18,9 +18,7 @@
  */
 package org.tridas.io.gui.control.fileList;
 
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

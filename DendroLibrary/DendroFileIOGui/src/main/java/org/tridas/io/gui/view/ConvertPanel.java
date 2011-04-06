@@ -59,7 +59,6 @@ import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
-import com.dmurph.mvc.StringEvent;
 
 /**
  * @author Daniel
