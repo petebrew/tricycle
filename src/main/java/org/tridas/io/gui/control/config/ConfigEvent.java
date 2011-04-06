@@ -3,7 +3,6 @@
  */
 package org.tridas.io.gui.control.config;
 
-import com.dmurph.mvc.ObjectEvent;
 import com.dmurph.mvc.StringEvent;
 import com.dmurph.mvc.tracking.ITrackable;
 

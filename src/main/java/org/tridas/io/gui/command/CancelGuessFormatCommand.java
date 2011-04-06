@@ -26,7 +26,6 @@ public class CancelGuessFormatCommand implements ICommand {
 	@Override
 	public void execute(MVCEvent argEvent) {
 		
-		CancelGuessFormatEvent event = (CancelGuessFormatEvent) argEvent;
 		CancelGuessFormatEvent.model.setCancelled(true);
 		
 		

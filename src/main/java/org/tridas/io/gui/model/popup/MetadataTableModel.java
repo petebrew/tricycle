@@ -20,6 +20,7 @@ package org.tridas.io.gui.model.popup;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.swing.table.AbstractTableModel;
 
 import org.tridas.io.defaults.AbstractDefaultValue;
@@ -30,13 +31,14 @@ import com.dmurph.mvc.ICloneable;
 /**
  * @author Daniel Murphy
  */
-@SuppressWarnings("rawtypes")
 public class MetadataTableModel extends AbstractTableModel implements ICloneable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String[] columns = {"Property", "Value", "Overriding"};
+	@SuppressWarnings("unchecked")
 	private final HashMap<Enum, AbstractDefaultValue> map = new HashMap<Enum, AbstractDefaultValue>();
 		
+	@SuppressWarnings("unchecked")
 	public void setMetadataSet(IMetadataFieldSet argSet){
 		map.clear();
 		for(Enum e : argSet.keySet()){
@@ -121,6 +123,7 @@ public class MetadataTableModel extends AbstractTableModel implements ICloneable
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Enum getKeyAt(int argRow) {
 		Iterator<Enum> it = map.keySet().iterator();
 		for (int i = 0; i < argRow; i++) {
