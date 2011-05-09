@@ -326,7 +326,9 @@ Original designer	 & Roland Aniol \\
 \section{Background}
 The CATRAS format \citep{catras} is the only known binary dendro data format. As such it can't be read by a simple text editor, and can't be imported by spreadsheet or database programs. The format was designed by Roland Aniol for use in his program of the same name. The binary nature of the format means the files are typically much smaller than text files containing similar data. The closed nature of the format originally meant that users were tied to the application.  The fact that users can't manually edit the file means that the validity of files is not a problem like it is with most other dendro formats.
 
-CATRAS is a closed format with no documentation. The format was originally decoded in the early 1990's and permission was granted by Aniol for a converter to be included in Henri Grissino-Mayer's CONVERT5 application on the condition that the format remained closed source. Subsequently others have independently released application and code that can read ring-width data from CATRAS files to a greater or lesser extent.
+The format was originally decoded in the early 1990's and permission was granted by Aniol for a converter to be included in Henri Grissino-Mayer's CONVERT5 application. Subsequently others have independently released application and code that can read CATRAS files to a greater or lesser extent. 
+
+Following its original release in 1983, CATRAS was updated several times, the most recent version (v4.42) was released in 2010. The code in DendroFileIOLib is based on Matlab, Fortran and C code of Ronald Visser, Henri Grissino-Mayer and Ian Tyers. 
 
 \section{Reading byte code}
 
@@ -334,7 +336,7 @@ Reading byte code is more complicated than reading text files. Each byte is 8-bi
 
 \subsection{Strings} Some of the bytes in CATRAS files contain character information. In this case each byte represents a letter. In java an array of bytes can be directly decoded into a string. 
 
-\subsection{Integers} As a byte can only represent 256 values, whenever an integer is required, CATRAS stores them as byte pairs. Each byte pair consists of a least significant byte (LSB) and a most significant byte (MSB). The order that they appear in files typically varies between platforms and is known as 'endianness'. As CATRAS solely runs of Microsoft (x86) processors we can safely assume that all CATRAS files will be using little-endian (i.e. LSB MSB). The counting in a byte pair therefore works as follows: 
+\subsection{Integers} As a byte can only represent 256 values, whenever an integer is required it is stored as a byte pair. Each byte pair consists of a least significant byte (LSB) and a most significant byte (MSB). The order that they appear in files typically varies between platforms and is known as 'endianness'. As CATRAS solely runs on Microsoft (x86) processors we can safely assume that all CATRAS files will be using little-endian (i.e. LSB MSB). The counting in a byte pair therefore works as follows: 
 
 \begin{table*}[htbp]
 \begin{center}
@@ -355,7 +357,7 @@ Value & LSB & MSB\\
 \end{center}
 \end{table*}
 
-A byte pair can therefore store 256x256=65536 values (more than enough for most number fields). Matters are complicated though by the need to store negative numbers. In CATRAS pairs with an MSB<=128 are positive, while pairs with an MSB ranging from 255 to 128 (counting backwards) represent negative values:
+A byte pair can therefore store 256x256=65536 values (more than enough for most number fields). Matters are complicated though by the need to store negative numbers. Pairs with an MSB<=128 are positive, while pairs with an MSB ranging from 255 to 128 (counting backwards) represent negative values:
 
 \begin{table*}[htbp]
 \begin{center}
@@ -373,66 +375,113 @@ Value & LSB & MSB\\
 \end{center}
 \end{table*}
 
+\subsection{Real numbers}
+
+Statistics like arithmetic mean, standard deviation, first-order autocorrelation, and mean sensitivity are given for both all the ring widths and the ring widths in an optional restricted part of the series. The real numbers are given in standard format defined by the IEEE 754 Standard for Floating-Point Arithmetic.
 
 \subsection{Categories}
 
-Categories are typically recorded as single bytes as most categories have just a few possible values. They can therefore be conceptualised as being integers where 0=first option, 1=second option etc. The exception to this is for species because there are more than 256 species. In this case, a byte pair is used in exactly the same way as described for integers above. The only problem for species is that the codes are unique to each laboratory and refer to values enumerated in a separate '.wnm' file. Without this dictionary the species code is of little use. 
+Categories are typically recorded as single bytes as most categories have just a few possible values. They can therefore be conceptualized as being integers where 0=first option, 1=second option etc. The exception to this is for species because there are more than 256 species. In this case, a byte pair is used in exactly the same way as described for integers above. The only problem for species is that the codes are unique to each laboratory and refer to values enumerated in a separate '.wnm' file. Without this dictionary the species code is of little use. 
 
 \subsection{Dates}
-
-Dates are stored as three single bytes, one for day, one for month, one for year. With only 256 values available for 'year', all dates are stored with 2 digit years e.g. 25/12/84. When reading CATRAS files all years >70 are therefore treated as 20th century, whereas years <70 are treated as 21st century. This is an arbitrary decision for use in this library as CATRAS does not care either way. 
+The date of the creation of the series and the date of the last amendment to the series are stored as three single bytes each, one for day, one for month, and one for year. The year is stored with an offset of 1900. Therefore numbers from 1 to 100 belong to the 20th century (calendar year 1901 to 2000) and numbers from 101 to 200 belong to the 21th century (calendar year 2001 to 2100). 
 
 \section{Metadata}
 
-The first 128 bytes contain the file header information and the remainder of the file contains the ring-width data and sample depth data. Our current understanding of the header bytes is as follows but I'm not convinced that these are all correct. Deciphering these requires painstaking work because we must try to ascertain how each byte is being used (e.g. as a byte pair, single byte or as a string): 
+The first 128 bytes contain the file header information and the remainder of the file contains the ring-width data and sample depth data (if series is a chronology). If a series is only partly suitable for further analysis then this indicated in bytes 49--52. The quality code at position 58 is an overall rating for the series. This helps to exclude poor series from analyses other than dating. 
 
-\begin{itemize*}
- \item 1-32 - Series name
-\item  33-40 - Series code
-\item  41-44 - File extension
-\item  45-46 - Series length
-\item  47-48 - Sapwood length
-\item  49-50 - Start year
-\item  51-52 - End year
-\item  53 - 1=pith 2=waldkante 3=pith to waldkante
-\item  54 - 1 = ew only last ring
-\item  55-56 - Start year
-\item  59-60 species also needs a catras.wnm file
-\item  61-63 - Creation date
-\item  64-66 - Amended date
-\item  67 - Sapwood
-\item  68 - 1=valid stats
-\item  69-75 - dated?
-\item  84 - 0=raw 1=treecurve 2=chronology
-\item  85-86 - User id
-\item  89-92 - Average width
-\item  93-95 - Standard deviation
-\item  96-100 - Autocorrelation
-\item  101-104 - Sensitivity 
-\end{itemize*}
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular*}{\textwidth}{r c l p{8cm} }
+  \toprule
+Bytes & Data type & Field & Description \\
+\midrule
+1--32	& C & Series name & \\
+33--40 & C &  Series code & \\
+41--44 & C &File extension & \\
+45--46 & I & Series length & \\
+47--48 & I & Sapwood length &\\
+49--50 & I & First valid ring & Used if a portion of the series is unreliable \\
+51--52 & I & Last valid ring & Used if a portion of the series is unreliable \\
+53       & B & & 1=pith; 2=waldkante; 3=pith to waldkante; 4=bark; 5=pith to bark \\
+54       & B & State of last ring & 0=last ring complete; 1=last ring only early wood \\
+55--56 & I & First ring & Calendar year of first ring: 0=not dated; <0=B.C.; >0=A.D. \\
+57       & B &  & Number of valid characters in series name\\
+58       & B & Quality code& 0=not known; 1=very good \ldots 5=uncertain \\
+59--60 & I & Species code & Requires an associated catras.wnm file \\
+61--63 & D & Creation date & DMY, Y offset 1900 \\
+64--66 & D & Last updated & DMY, Y offset 1900 \\
+67       & B & Real number format & normally 1=IEEE \\
+68       & B & Type of series & 0=ring widths; 1=early wood widths; 2=late wood widths\\
+69--81 &  &  & Reserved \\
+82       & C & Special sources & A=averaged; D=digitized; E=extern; H=manual input \\
+83       & B & Protection & 0=no protection; 1=not to be deleted; 2=not to be amended \\
+84       & B & File type & 0=raw; 1=tree curve; 2=chronology \\
+85--88 & C & Creator & Initials of creator\\
+\midrule
+\multicolumn{4}{l}{\textit{Statistics for total series}} \\
+89--92 & R & &Arithmetic mean  \\
+93--95 & R & &Standard deviation  \\
+96--100 & R & &First-order autocorrelation \\
+101--104 & R & &Mean sensitivity  \\
+105--106 & I & &Number of rings for mean  \\
+107--108 & I & &Number of rings for autocorrelation  \\
+\midrule
+\multicolumn{4}{l}{\textit{Statistics for restricted part of series}} \\
+109--112 & R & &Arithmetic mean  \\
+113--116 & R & &Standard deviation  \\
+117--120 & R & &First-order autocorrelation \\
+121--124 & R & &Mean sensitivity  \\
+125--126 & I & &Number of rings for mean  \\
+127--128 & I & &Number of rings for autocorrelation  \\
+\bottomrule
+\end{tabular*}
+\end{center}
+\label{tbl:catrasMetadata}
+\caption{Summary of the metadata portion of CATRAS files.  Data types are: strings (C); integers (I); real numbers (R); binary categories (B); and dates (D).  Bytes 89--128 contain descriptive statistics for the file, bytes 89--108 concerning the entire series, and bytes 109--128 a subset of the series where some poor quality data have been excluded.}
+\end{table}
+
+
+%\begin{itemize*}
+%\item 1-32 - Series name
+%\item  33-40 - Series code
+%\item  41-44 - File extension
+%\item  45-46 - Series length
+%\item  47-48 - Sapwood length
+%\item  49-50 - Start year
+%\item  51-52 - End year
+%\item  53 - 1=pith 2=waldkante 3=pith to waldkante
+%\item  54 - 1 = ew only last ring
+%\item  55-56 - Start year
+%\item  59-60 species also needs a catras.wnm file
+%\item  61-63 - Creation date
+%\item  64-66 - Amended date
+%\item  67 - Sapwood
+%\item  68 - 1=valid stats
+%\item  69-75 - dated?
+%\item  84 - 0=raw 1=treecurve 2=chronology
+%\item  85-86 - User id
+%\item  89-92 - Average width
+%\item  93-95 - Standard deviation
+%\item  96-100 - Autocorrelation
+%\item  101-104 - Sensitivity 
+%\end{itemize*}
 
 
 \section{Data}
 
-The remaining bytes in the file contain the actual data values stored as integer byte pairs. It appears that older version of CATRAS included one or more padding values of -1. These values should be ignored. The end of the data values are indicated by a stop value of 999.
+The remaining bytes in the file contain the actual data values stored as integer byte pairs. All data are stored in multiples of 128 bytes. If the number of data bytes given in the header at position 45--46 is not a multiple of 128 the file is padded with extra bytes accordingly. Padded bytes should be ignored. 
 
-Following the ring-width data values there are 42 bytes of unknown meaning. These are then followed by byte pairs representing the counts/sample depth for each ring if the series is a chronology. 
+\subsection{Ring widths}
 
-\section{Unknown bytes}
-There are a number of bytes in both the header and data sections that are are unaccounted for and are therefore likely to contain data that we are ignoring. For this reason although we could attempt to create CATRAS files from what we know we can't be sure they would be valid: 
+Ring widths are stored in hundredths of a millimetre in the same order as the tree had been grown. When working with archaeological or geological wood it might occur that a particular ring is damaged and therefore its width cannot be determined precisely. To indicate that fact and to exclude this particular ring from further calculations its measured width is stored negative. In the CATRAS program a negative ring width will be taken into account neither in the calculation of tree curves and chronologies nor in the statistics or in comparisons with other series.
 
-\begin{itemize*}
- \item Header
-   \begin{itemize*}
-   \item 57-58
-   \item 69-82
-   \item 105-128
-   \end{itemize*}
-  \item Data
-   \begin{itemize*}
-    \item 0-42 following end of data marker    
-   \end{itemize*}
-\end{itemize*}
+\subsection{Chronologies}
+
+Chronology files are indicated at position 84 in the file header and contain additional data in respect to raw data files. After the block of ring width data three additional data blocks follow. Firstly the number of ring widths averaged at a particular position follows (the sample depth). Then the number of series with the same trend between subsequent ring widths at a particular position follows. Then the number of series with the opposite trend between subsequent ring widths at a particular position follows. All data blocks are stored in multiples of 128 bytes. If the number of data bytes given in the header at position 45-46 is not a multiple of 128 each block is padded with extra bytes accordingly. Padded bytes should be ignored. 
+
+
+
 \index{File formats!CATRAS|)}
 
 \chapter{Comma Separated Values}
