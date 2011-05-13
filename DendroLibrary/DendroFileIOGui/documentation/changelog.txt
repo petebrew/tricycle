@@ -1,0 +1,39 @@
+TRiCYCLE Changelog:
+
+Changes from 0.2.2 to 0.2.3
+- Fixed Heidelberg output problem where all data was being written as 5 padded chars (like QUAD format) instead of 6 padded chars. 
+
+Changes from 0.2.1 to 0.2.2
+
+- Fixed error in handling BC dates in Tucson reader
+- Fixed problem with VFormat writer 
+- Added missing library dependency to Maven pom.xml
+- Tidied code removing all Eclipse warnings
+- Fixed error in Heidelberg writer when all series are of an unrepresentable variable
+- Fixed Corina reader to handle files with empty 2nd line
+
+Changes from 0.2.0 to 0.2.1:
+
+- Add automatic check for available updates.
+- Added Help > Identify file format feature for when you have a file in an unknown format.
+- Various updates to the documentation
+- Bug fix for drag and drop adding of files on Windows
+- Updated translations
+- Warning dialog when reading spreadsheet files
+- Fixed identifier bug in Tucson writer 
+- Fixed last year bug in Tucson writer
+- Fixed logging bugs
+- Added file format filter to file dialog
+- Altered spreadsheet readers/writers to handle and report units as 'unknown' rather than force mm
+- Support added for reading:
+   - CSV  
+   - DendroDB 
+   - MS Excel 97/XP/2000 
+   - MS Excel 2007 
+   - ODF Spreadsheet 
+   - Oxford 
+- Support added for writing:
+   - MS Excel 2007
+   - ODF Spreadsheet
+   - Oxford 
+

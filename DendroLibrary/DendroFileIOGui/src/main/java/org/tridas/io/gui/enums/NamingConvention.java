@@ -23,6 +23,12 @@ package org.tridas.io.gui.enums;
  */
 public class NamingConvention {
 	public static final String[] getNamingConventions() {
-		return new String[]{"Numerical", "UUID", "Hierarchical"};
+		return new String[]{
+				org.tridas.io.I18n.getText("general.default"),
+				org.tridas.io.I18n.getText("namingconvention.numerical"),
+				org.tridas.io.I18n.getText("namingconvention.uuid"),
+				org.tridas.io.I18n.getText("namingconvention.hierarchical"),
+				org.tridas.io.I18n.getText("namingconvention.seriescode"),
+				org.tridas.io.I18n.getText("namingconvention.seriescode8char")};
 	}
 }

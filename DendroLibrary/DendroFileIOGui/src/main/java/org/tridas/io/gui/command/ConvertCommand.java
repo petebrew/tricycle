@@ -36,6 +36,8 @@ import org.tridas.io.gui.view.popup.ConvertProgress;
 import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
+import org.tridas.io.naming.SeriesCode8CharNamingConvention;
+import org.tridas.io.naming.SeriesCodeNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
 import org.tridas.schema.TridasTridas;
 
@@ -95,15 +97,26 @@ public class ConvertCommand implements ICommand {
 					I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
-		if (event.getNamingConvention().equals("UUID")) {
+
+		if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("general.default"))) {
+			 naming = null;
+		}
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.uuid"))) {
 			naming = new UUIDNamingConvention();
 		}
-		else if (event.getNamingConvention().equals("Hierarchical")) {
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.hierarchical"))) {
 			naming = new HierarchicalNamingConvention();
 		}
-		else if (event.getNamingConvention().equals("Numerical")) {
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.numerical"))) {
 			naming = new NumericalNamingConvention();
+		}
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.seriescode")))
+		{
+			naming = new SeriesCodeNamingConvention();
+		}
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.seriescode8char")))
+		{
+			naming = new SeriesCode8CharNamingConvention();
 		}
 		else {
 			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noNaming", event.getNamingConvention()),
@@ -197,6 +210,12 @@ public class ConvertCommand implements ICommand {
 				
 				AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
 				
+				// If no naming convention was passed, set to default from writer.
+				if (argNaming == null)
+				{
+					argNaming = writer.getNamingConvention();
+				}
+				
 				if (argNaming instanceof NumericalNamingConvention) {
 					if (file.contains(".")) {
 						String justFile = file.substring(file.lastIndexOf(File.separatorChar) + 1,
@@ -207,7 +226,12 @@ public class ConvertCommand implements ICommand {
 						((NumericalNamingConvention) argNaming).setBaseFilename(file);
 					}
 				}
+				
+				// Set naming
 				writer.setNamingConvention(argNaming);
+				
+				// Get naming again in case writer has overriden request
+				argNaming = writer.getNamingConvention();
 				
 				if (struct.errorMessage != null) {
 					continue;
