@@ -397,13 +397,13 @@ The first 128 bytes contain the file header information and the remainder of the
 Bytes & Data type & Field & Description \\
 \midrule
 1--32	& C & Series name & \\
-33--40 & C &  Series code & \\
+33--40 & C &  Series code. Must be upper case and match file name.& \\
 41--44 & C &File extension & \\
 45--46 & I & Series length & \\
 47--48 & I & Sapwood length &\\
 49--50 & I & First valid ring & Used if a portion of the series is unreliable \\
 51--52 & I & Last valid ring & Used if a portion of the series is unreliable \\
-53       & B & & 1=pith; 2=waldkante; 3=pith to waldkante; 4=bark; 5=pith to bark \\
+53       & B & Scope & 1=pith; 2=waldkante; 3=pith to waldkante; 4=bark; 5=pith to bark \\
 54       & B & State of last ring & 0=last ring complete; 1=last ring only early wood \\
 55--56 & I & First ring & Calendar year of first ring: 0=not dated; <0=B.C.; >0=A.D. \\
 57       & B &  & Number of valid characters in series name\\
