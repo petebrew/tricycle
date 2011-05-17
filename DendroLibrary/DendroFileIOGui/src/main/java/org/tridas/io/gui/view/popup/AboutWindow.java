@@ -21,11 +21,11 @@ package org.tridas.io.gui.view.popup;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -40,6 +40,9 @@ import org.tridas.io.gui.App;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.JButton;
 
 /**
  * @author Daniel Murphy
@@ -65,61 +68,70 @@ public class AboutWindow extends JDialog {
 	 * 
 	 */
 	private void initComponents() {
+		getContentPane().setLayout(new MigLayout("", "[497px,grow]", "[][296px,grow][]"));
 		
-		Box box = Box.createHorizontalBox();
-		box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.setBackground(Color.WHITE);
+		getContentPane().add(panel_1, "cell 0 0,growx,aligny center");
+		panel_1.setLayout(new MigLayout("", "[383px,grow][]", "[19px]"));
+		
+		JLabel lblTitle = new JLabel(I18n.getText("view.popup.about.header"));
+		panel_1.add(lblTitle, "cell 0 0,alignx left,aligny center");
+		lblTitle.setFont(new Font("Dialog", Font.BOLD, 16));
+		
+		JLabel llogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/64x64/application.png")));
+		panel_1.add(llogo, "cell 1 0");
+		
+		//Box box = Box.createHorizontalBox();
+		//box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		
+		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		box.add(tabbedPane);
+		getContentPane().add(tabbedPane, "cell 0 1,grow");
 		
 		JPanel panelAbout = new JPanel();
 		tabbedPane.addTab(I18n.getText("view.popup.about"), null, panelAbout, null);
-		panelAbout.setLayout(new MigLayout("", "[171.00px,grow][grow][]", "[][][][][][][][][][109.00px,grow,fill]"));
-		
-		JLabel lblTitle = new JLabel(I18n.getText("view.popup.about.header"));
-		lblTitle.setFont(new Font("Dialog", Font.BOLD, 16));
-		panelAbout.add(lblTitle, "cell 0 0 3 1,alignx center");
-		
-		JLabel llogo = new JLabel(new ImageIcon(IOUtils.getFileInJarURL("icons/64x64/application.png")));
-		panelAbout.add(llogo, "cell 2 1 1 5,alignx center,aligny top");
+		panelAbout.setLayout(new MigLayout("", "[171.00px,grow][grow]", "[][][][][][][][109.00px,grow,fill]"));
 		
 		JLabel lblVersion = new JLabel(I18n.getText("view.popup.about.version")+":");
-		panelAbout.add(lblVersion, "cell 0 2,alignx right");
+		panelAbout.add(lblVersion, "cell 0 0,alignx right");
 		
 		txtVersion = new JLabel("x.x.x");
 		txtVersion.setFont(new Font("Dialog", Font.PLAIN, 12));
-		panelAbout.add(txtVersion, "cell 1 2");
+		panelAbout.add(txtVersion, "cell 1 0");
 		
 		JLabel lblBuildRevision = new JLabel(I18n.getText("view.popup.about.revision")+":");
-		panelAbout.add(lblBuildRevision, "cell 0 3,alignx right");
+		panelAbout.add(lblBuildRevision, "cell 0 1,alignx right");
 		
 		txtRevision = new JLabel("xxx");
 		txtRevision.setFont(new Font("Dialog", Font.PLAIN, 12));
-		panelAbout.add(txtRevision, "cell 1 3");
+		panelAbout.add(txtRevision, "cell 1 1");
 		
 		JLabel lblBuildTimestamp = new JLabel(I18n.getText("view.popup.about.timestamp")+":");
-		panelAbout.add(lblBuildTimestamp, "cell 0 4,alignx right");
+		panelAbout.add(lblBuildTimestamp, "cell 0 2,alignx right");
 		
 		txtTimestamp = new JLabel("xx Xxx 20XX, xx:xx");
 		txtTimestamp.setFont(new Font("Dialog", Font.PLAIN, 12));
-		panelAbout.add(txtTimestamp, "cell 1 4");
+		panelAbout.add(txtTimestamp, "cell 1 2");
 		
 		JLabel lblDendroiolibraryBy = new JLabel(I18n.getText("view.popup.about.libby")+":");
-		panelAbout.add(lblDendroiolibraryBy, "cell 0 6,alignx right");
+		panelAbout.add(lblDendroiolibraryBy, "cell 0 4,alignx right");
 		
 		JLabel txtLibAuthors = new JLabel(I18n.getText("view.popup.about.libauthors"));
 		txtLibAuthors.setFont(new Font("Dialog", Font.PLAIN, 12));
-		panelAbout.add(txtLibAuthors, "cell 1 6 2 1");
+		panelAbout.add(txtLibAuthors, "cell 1 4");
 		
 		JLabel lblGraphicalInterfaceBy = new JLabel(I18n.getText("view.popup.about.guiby")+":");
-		panelAbout.add(lblGraphicalInterfaceBy, "cell 0 7,alignx right");
+		panelAbout.add(lblGraphicalInterfaceBy, "cell 0 5,alignx right");
 		
 		JLabel txtGUIAuthors = new JLabel(I18n.getText("view.popup.about.guiauthors"));
 		txtGUIAuthors.setFont(new Font("Dialog", Font.PLAIN, 12));
-		panelAbout.add(txtGUIAuthors, "cell 1 7 2 1");
+		panelAbout.add(txtGUIAuthors, "cell 1 5");
 		
 		JPanel panel = new JPanel();
-		panelAbout.add(panel, "cell 0 9 3 1,grow");
+		panelAbout.add(panel, "cell 0 7 2 1,grow");
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JTextArea txtAcknowledgements = new JTextArea();
@@ -145,7 +157,17 @@ public class AboutWindow extends JDialog {
 		txtLicense.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		txtLicense.setEditable(false);
 		panelLicense.add(txtLicense, BorderLayout.CENTER);
-		getContentPane().add(box, "Center");
+		
+		JButton btnOk = new JButton("OK");
+		getContentPane().add(btnOk, "cell 0 2,alignx right");
+		btnOk.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();				
+			}		
+		});
+
 	}
 	
 	
