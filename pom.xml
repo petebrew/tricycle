@@ -31,7 +31,7 @@
 	   <!-- Copy of version number -->
 	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-	   <buildnumber>607</buildnumber>
+	   <buildnumber>618</buildnumber>
 	</properties>
 	
 	<developers>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.tridas.io</groupId>
 			<artifactId>DendroFileIO</artifactId>
-			<version>0.1.1</version>
+			<version>0.1.2</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

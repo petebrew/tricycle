@@ -1,7 +1,13 @@
 TRiCYCLE Changelog:
 
 Changes from 0.2.2 to 0.2.3
-- Fixed Heidelberg output problem where all data was being written as 5 padded chars (like QUAD format) instead of 6 padded chars. 
+- Fixed Heidelberg output problem where all data was being written as 5 padded chars (like QUAD format) instead of 6 padded chars.
+- Added CATRAS writer support
+- Updated CATRAS reader to include support for metadata fields that were previously unclear.
+- Added two new file naming conventions
+- Implemented support for default naming conventions for each format writer. 
+- Switched writers to use 'identifier' style links for chronologies rather than 'idref'.  IDRef will be deprecated in TRiDaS soon.
+
 
 Changes from 0.2.1 to 0.2.2
 
