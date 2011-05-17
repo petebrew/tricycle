@@ -344,10 +344,10 @@ Reading byte code is more complicated than reading text files. Each byte is 8-bi
   \toprule
 Value & LSB & MSB\\
 \midrule
-0 & 0 & 0\\
 1 & 1 & 0\\
+2 & 2 & 0\\
+3 & 3 & 0\\
 \dots & \dots & \dots\\
-255 & 255 & 0\\
 256 & 0 & 1\\
 257 & 1 & 1\\
 258 & 2 & 1\\
@@ -357,23 +357,7 @@ Value & LSB & MSB\\
 \end{center}
 \end{table*}
 
-A byte pair can therefore store 256x256=65536 values (more than enough for most number fields). Matters are complicated though by the need to store negative numbers. Pairs with an MSB<=128 are positive, while pairs with an MSB ranging from 255 to 128 (counting backwards) represent negative values:
-
-\begin{table*}[htbp]
-\begin{center}
-\begin{tabular*}{5cm}{@{\extracolsep{\fill}} r r r }
-  \toprule
-Value & LSB & MSB\\
-\midrule
--1 & 255 & 255 \\
--2 & 254 & 255 \\
--3 & 253 & 255 \\
--4 & 252 & 255 \\
-\dots & \dots & \dots\\
-\bottomrule
-\end{tabular*}
-\end{center}
-\end{table*}
+A byte pair can therefore store 256x256=65536 values (more than enough for most number fields). 
 
 \subsection{Real numbers}
 
