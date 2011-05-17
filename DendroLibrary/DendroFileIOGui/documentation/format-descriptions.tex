@@ -308,7 +308,7 @@ Format name     	 & CATRAS\\
 Other name(s)      	 & None known\\
 Type      	 	 & Binary\\
 Extension(s)      	 & cat\\
-Read/write support     	 & Read only\\
+Read/write support     	 & Read and write\\
 Reference implementation & CATRAS\\
 Data / metadata      	 & Data and some structured metadata\\
 Calendar type		 & Gregorian\\
@@ -328,7 +328,7 @@ The CATRAS format \citep{catras} is the only known binary dendro data format. As
 
 The format was originally decoded in the early 1990's and permission was granted by Aniol for a converter to be included in Henri Grissino-Mayer's CONVERT5 application. Subsequently others have independently released application and code that can read CATRAS files to a greater or lesser extent. 
 
-Following its original release in 1983, CATRAS was updated several times, the most recent version (v4.42) was released in 2010. The code in DendroFileIOLib is based on Matlab, Fortran and C code of Ronald Visser, Henri Grissino-Mayer and Ian Tyers. 
+Following its original release in 1983, CATRAS was updated several times, the most recent version (v4.42) was released in 2010. The code in DendroFileIOLib is based in part on Matlab, Fortran and C code of Ronald Visser, Henri Grissino-Mayer and Ian Tyers. 
 
 \section{Reading byte code}
 
@@ -377,7 +377,7 @@ Value & LSB & MSB\\
 
 \subsection{Real numbers}
 
-Statistics like arithmetic mean, standard deviation, first-order autocorrelation, and mean sensitivity are given for both all the ring widths and the ring widths in an optional restricted part of the series. The real numbers are given in standard format defined by the IEEE 754 Standard for Floating-Point Arithmetic.
+Statistical values--such as arithmetic mean, standard deviation, first-order autocorrelation, and mean sensitivity--are given for all the ring widths and optionally for the ring widths in a restricted part of the series. The real numbers are given in standard format defined by the IEEE 754 Standard for Floating-Point Arithmetic.
 
 \subsection{Categories}
 
@@ -397,7 +397,7 @@ The first 128 bytes contain the file header information and the remainder of the
 Bytes & Data type & Field & Description \\
 \midrule
 1--32	& C & Series name & \\
-33--40 & C &  Series code. Must be upper case and match file name.& \\
+33--40 & C &  Series code. & Must be upper case and match file name. \\
 41--44 & C &File extension & \\
 45--46 & I & Series length & \\
 47--48 & I & Sapwood length &\\
@@ -438,7 +438,7 @@ Bytes & Data type & Field & Description \\
 \end{tabular*}
 \end{center}
 \label{tbl:catrasMetadata}
-\caption{Summary of the metadata portion of CATRAS files.  Data types are: strings (C); integers (I); real numbers (R); binary categories (B); and dates (D).  Bytes 89--128 contain descriptive statistics for the file, bytes 89--108 concerning the entire series, and bytes 109--128 a subset of the series where some poor quality data have been excluded.}
+\caption{Summary of the metadata portion of CATRAS files.  Data types are: strings (C); integers (I); real numbers (R); binary categories (B); and dates (D).  Bytes 89--128 contain descriptive statistics for the file, bytes 89--108 concerning the entire series, and bytes 109--128 a subset of the series where some poor quality data (defined in bytes 49--52) have been excluded.}
 \end{table}
 
 

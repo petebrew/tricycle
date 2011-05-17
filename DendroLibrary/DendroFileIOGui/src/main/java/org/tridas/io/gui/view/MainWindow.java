@@ -198,17 +198,7 @@ public class MainWindow extends JFrame {
 				event.dispatch();
 			}
 		});
-		/*HelpSet hs;
-		try {
-		    hs = new HelpSet(null, IOUtils.getFileInJarURL("manual/jhelpset.hs"));
-		} catch (Exception ee) {
-		    System.out.println ("HelpSet not found");
-		    return;
-		}
-		HelpBroker hb = hs.createHelpBroker();
-		
-		helpMenuButton.addActionListener(new CSH.DisplayHelpFromSource(hb));
-		 */
+
 		logMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
