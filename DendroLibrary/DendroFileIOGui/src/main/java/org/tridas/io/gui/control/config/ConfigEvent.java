@@ -1,6 +1,3 @@
-/**
- * Created at Nov 22, 2010, 7:37:50 AM
- */
 package org.tridas.io.gui.control.config;
 
 import com.dmurph.mvc.StringEvent;

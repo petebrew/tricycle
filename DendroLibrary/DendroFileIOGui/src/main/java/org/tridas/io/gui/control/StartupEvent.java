@@ -1,6 +1,3 @@
-/**
- * Created at Nov 22, 2010, 7:44:36 AM
- */
 package org.tridas.io.gui.control;
 
 import com.dmurph.mvc.MVCEvent;

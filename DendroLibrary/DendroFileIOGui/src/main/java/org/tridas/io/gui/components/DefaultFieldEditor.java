@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Created at Jun 15, 2010, 10:38:52 PM
- */
+
 package org.tridas.io.gui.components;
 
 import java.awt.Component;
