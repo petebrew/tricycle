@@ -40,7 +40,6 @@ import org.tridas.io.gui.App;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
 
