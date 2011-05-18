@@ -151,6 +151,6 @@ public class OverwritePopup extends JDialog {
 		ignore.setText(I18n.getText("view.popup.overwrite.ignore"));
 		overwrite.setText(I18n.getText("view.popup.overwrite.overwrite"));
 		rename.setText(I18n.getText("view.popup.overwrite.rename"));
-		setTitle(I18n.getText("view.popup.overwrite.title"));
+		setTitle(I18n.getText("view.popup.overwrite.overwrite"));
 	}
 }

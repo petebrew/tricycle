@@ -1,5 +1,9 @@
 TRiCYCLE Changelog:
 
+Changes from 0.2.3 to 0.2.4
+- Added coordinate reference system to TRiDaS output files
+
+
 Changes from 0.2.2 to 0.2.3
 - Fixed Heidelberg output problem where all data was being written as 5 padded chars (like QUAD format) instead of 6 padded chars.
 - Added CATRAS writer support
