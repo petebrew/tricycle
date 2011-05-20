@@ -65,7 +65,7 @@ public class App {
 			System.setProperty("com.apple.macos.use-file-dialog-packages", "false"); // for AWT
 			System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
 			UIManager.put("JFileChooser.packageIsTraversable", "never"); // for swing
-
+			new MacOSMods();
 			
 		}
 		

@@ -16,6 +16,7 @@
 
 package org.tridas.io.gui.view;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -111,11 +112,11 @@ public class MainWindow extends JFrame {
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 		
 		
-		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, getAccelerator()));
+		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		fileMenu.add(fileOpenButton);
 		fileMenu.add(optionsMenuButton);
 		
-		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, getAccelerator()));
+		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		
 		if(!System.getProperty("os.name").startsWith("Mac")){
 			fileMenu.addSeparator();
@@ -138,17 +139,6 @@ public class MainWindow extends JFrame {
 		
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
-	}
-	
-	public static int getAccelerator()
-	{
-		if(!System.getProperty("os.name").startsWith("Mac")){
-			return InputEvent.CTRL_MASK;
-		}
-		else
-		{
-			return InputEvent.META_MASK;
-		}
 	}
 	
 	private void populateLocale() {
