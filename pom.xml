@@ -24,14 +24,14 @@
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.2.3</version>
+	<version>0.2.4-SNAPSHOT</version>
 	
 	<!--  These values are written to build.properties -->
 	<properties>
 	   <!-- Copy of version number -->
 	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-	   <buildnumber>634</buildnumber>
+	   <buildnumber>636</buildnumber>
 	</properties>
 	
 	<developers>
@@ -46,6 +46,15 @@
 			<email>p.brewer@cornell.edu</email>
 		</developer>
 	</developers>
+	
+	<repositories>
+        <repository>
+            <id>JBOSS</id>
+            <name>JBoss Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>codehaus</id>
@@ -56,9 +65,16 @@
           <name>TLC Repository</name>
         <url>http://commons.ucalgary.ca/pub/m2</url>
     </pluginRepository>
+    
 		
 	</pluginRepositories>
 	<dependencies>
+		<dependency>
+  			<groupId>com.apple</groupId>
+  			<artifactId>AppleJavaExtensions</artifactId>
+ 			<version>1.4</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.tridas.io</groupId>
 			<artifactId>DendroFileIO</artifactId>
