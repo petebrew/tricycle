@@ -19,7 +19,8 @@ public class MacOSMods extends Application {
 	@SuppressWarnings("deprecation")
 	public MacOSMods(){
 		addApplicationListener(new AboutBoxHandler());
-		
+		addApplicationListener(new PreferencesHandler());
+		setEnabledPreferencesMenu(true);
 	}
 	
 	class AboutBoxHandler extends ApplicationAdapter{
