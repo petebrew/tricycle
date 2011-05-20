@@ -63,8 +63,9 @@ public class App {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Corina");
 			System.setProperty("com.apple.macos.use-file-dialog-packages", "false"); // for AWT
+			System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
 			UIManager.put("JFileChooser.packageIsTraversable", "never"); // for swing
-
+			new MacOSAboutHandler();
 			
 		}
 		

@@ -110,13 +110,17 @@ public class MainWindow extends JFrame {
 		
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 		
-		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		
+		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, getAccelerator()));
 		fileMenu.add(fileOpenButton);
 		fileMenu.add(optionsMenuButton);
 		
-		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
-		fileMenu.addSeparator();
-		fileMenu.add(quitMenuButton);
+		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, getAccelerator()));
+		
+		if(!System.getProperty("os.name").startsWith("Mac")){
+			fileMenu.addSeparator();
+			fileMenu.add(quitMenuButton);
+		}
 		
 		menuBar.add(fileMenu);
 		
@@ -126,12 +130,25 @@ public class MainWindow extends JFrame {
 		helpMenu.add(logMenuButton);
 		helpMenu.add(checkForUpdatesButton);
 		helpMenu.add(guessFileFormatButton);
-		helpMenu.addSeparator();
 		//helpMenu.add(helpMenuButton);
-		helpMenu.add(aboutMenuButton);
+		if(!System.getProperty("os.name").startsWith("Mac")){
+			helpMenu.addSeparator();
+			helpMenu.add(aboutMenuButton);
+		}
 		
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
+	}
+	
+	public static int getAccelerator()
+	{
+		if(!System.getProperty("os.name").startsWith("Mac")){
+			return InputEvent.CTRL_MASK;
+		}
+		else
+		{
+			return InputEvent.META_MASK;
+		}
 	}
 	
 	private void populateLocale() {
