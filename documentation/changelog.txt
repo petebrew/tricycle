@@ -2,6 +2,18 @@ TRiCYCLE Changelog:
 
 Changes from 0.2.3 to 0.2.4
 - Added coordinate reference system to TRiDaS output files
+- Remember last folder used in file dialog boxes
+- Remember last input/export format used
+- Improved support for extracting metadata from Heidelberg files
+- Added support for TSAP-DOS subtype of Heidelberg files
+- Added support for reading Heidelberg ring remarks in Single, Double and Quad files
+- Fixed NullPointerException in Sheffield writer
+- Fixed NullPointerException in CATRAS writer
+- Improved 'About' dialog
+- Added natural language parsing of date/time strings in Heidelberg reader
+- Changed handling of keycodes in Heidelberg and Tucson writers
+- Improved interpretation of 'woodCompleteness' fields when reading Heidelberg files
+- Better integration for Mac so application performs more like native Mac apps
 
 
 Changes from 0.2.2 to 0.2.3

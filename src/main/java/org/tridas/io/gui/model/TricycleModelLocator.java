@@ -49,6 +49,8 @@ public class TricycleModelLocator {
 	private static final TricycleModelLocator ml = new TricycleModelLocator();
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
 	private static final String LAST_DIRECTORY = "LastDirectory";
+	private static final String LAST_INPUT_FORMAT = "LastInputFormat";
+	private static final String LAST_OUTPUT_FORMAT = "LastOutputFormat";
 	private static final String TRACKING = "Tracking";
 	private static final String DONT_ASK_TRACKING = "DontAskTracking";
 	private static final String AUTOUPDATE = "AutoUpdate";
@@ -141,13 +143,29 @@ public class TricycleModelLocator {
 		}
 		return null;
 	}
-	
+		
 	public void setLastDirectory(File argLastDirectory){
 		String path = argLastDirectory.getAbsolutePath();
 		String lastDir = prefs.get(LAST_DIRECTORY, null);
-		if(path == null || !path.equals(argLastDirectory.getAbsolutePath())){
+		if(lastDir == null || !path.equals(lastDir)){
 			prefs.put(LAST_DIRECTORY, path);
 		}
+	}
+	
+	public String getLastUsedInputFormat(){
+		return prefs.get(LAST_INPUT_FORMAT, null);				
+	}
+	
+	public void setLastUsedInputFormat(String format){
+		prefs.put(LAST_INPUT_FORMAT, format);
+	}
+	
+	public String getLastUsedOutputFormat(){
+		return prefs.get(LAST_OUTPUT_FORMAT, null);				
+	}
+	
+	public void setLastUsedOutputFormat(String format){
+		prefs.put(LAST_OUTPUT_FORMAT, format);
 	}
 	
 	public ImageIcon getWindowIcon(){

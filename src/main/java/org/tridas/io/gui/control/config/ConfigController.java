@@ -98,10 +98,9 @@ public class ConfigController extends FrontController {
 			
 		}
 		
-		
-		
 		FileListModel fmodel = TricycleModelLocator.getInstance().getFileListModel();
 		fmodel.setInputFormat(event.getValue());
+		
 	}
 	
 	public void setOutputFormat(MVCEvent argEvent) {

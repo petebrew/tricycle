@@ -245,7 +245,18 @@ public class FileListPanel extends JPanel {
 	}
 	
 	public void linkModel() {
-		inputFormat.setSelectedItem(model.getInputFormat());
+	
+		// Try to remember last used format
+		if(TricycleModelLocator.getInstance().getLastUsedInputFormat()!=null)
+		{
+			inputFormat.setSelectedItem(TricycleModelLocator.getInstance().getLastUsedInputFormat());
+			model.setInputFormat(TricycleModelLocator.getInstance().getLastUsedInputFormat());
+		}
+		else
+		{
+			inputFormat.setSelectedItem(model.getInputFormat());
+		}
+
 		// first set all values from model
 		DefaultListModel listModel = (DefaultListModel) fileList.getModel();
 		ArrayList<String> files = model.getInputFiles();

@@ -258,7 +258,17 @@ public class ConvertPanel extends JPanel {
 			treeModel.insertNodeInto(node, rootNode, rootNode.getChildCount());
 		}
 		expandToFiles();
-		outputFormat.setSelectedItem(model.getOutputFormat());
+		
+		// Try to remember last used format
+		if(TricycleModelLocator.getInstance().getLastUsedOutputFormat()!=null)
+		{
+			outputFormat.setSelectedItem(TricycleModelLocator.getInstance().getLastUsedOutputFormat());
+			model.setOutputFormat(TricycleModelLocator.getInstance().getLastUsedOutputFormat());
+		}
+		else
+		{
+			outputFormat.setSelectedItem(model.getOutputFormat());
+		}
 		
 		if(model.getConvertedList().isEmpty()){
 			saveButton.setEnabled(false); // for issue 233
