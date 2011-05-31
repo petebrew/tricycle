@@ -24,14 +24,14 @@
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.2.4-SNAPSHOT</version>
+	<version>0.2.4</version>
 	
 	<!--  These values are written to build.properties -->
 	<properties>
 	   <!-- Copy of version number -->
 	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-	   <buildnumber>636</buildnumber>
+	   <buildnumber>647</buildnumber>
 	</properties>
 	
 	<developers>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>org.tridas.io</groupId>
 			<artifactId>DendroFileIO</artifactId>
-			<version>0.1.2</version>
+			<version>0.1.3</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
