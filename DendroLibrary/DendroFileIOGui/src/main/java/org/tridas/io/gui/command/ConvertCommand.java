@@ -87,6 +87,7 @@ public class ConvertCommand implements ICommand {
 			if (format.equalsIgnoreCase(outputFormat)) {
 				outputFormat = format;
 				outputFormatFound = true;
+				TricycleModelLocator.getInstance().setLastUsedOutputFormat(outputFormat);
 			}
 		}
 		if (!outputFormatFound) {
@@ -102,6 +103,7 @@ public class ConvertCommand implements ICommand {
 			if (format.equalsIgnoreCase(event.getInputFormat())) {
 				fileList.setInputFormat(format);
 				inputFormatFound = true;
+				TricycleModelLocator.getInstance().setLastUsedInputFormat(format);
 			}
 		}
 		if (!inputFormatFound && !event.getInputFormat().equals(InputFormat.AUTO)) {
