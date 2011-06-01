@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar /usr/share/tricycle/TRiCYCLE-0.2.1.jar
+java -jar /usr/share/tricycle/TRiCYCLE-${version}.jar

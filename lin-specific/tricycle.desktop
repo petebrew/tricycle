@@ -1,5 +1,5 @@
 [Desktop Entry]
-Version=0.2.1
+Version=${version}
 Type=Application
 Name=TRiCYCLE
 Comment=Dendrochronology data file converter

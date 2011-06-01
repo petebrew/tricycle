@@ -13,7 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -24,16 +25,16 @@
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.2.4</version>
-	
+	<version>0.2.5-SNAPSHOT</version>
+
 	<!--  These values are written to build.properties -->
 	<properties>
-	   <!-- Copy of version number -->
-	   <version>${project.version}</version> 
-	   <!-- Manually set build number until SCM repository checked is working -->
-	   <!-- <buildnumber>647</buildnumber>-->
+		<!-- Copy of version number -->
+		<version>${project.version}</version>
 	</properties>
-	
+
+	<!-- Details about the developers -->
+	<url>http://www.tridas.org/tricycle</url>
 	<developers>
 		<developer>
 			<id>dmurphy10</id>
@@ -46,35 +47,36 @@
 			<email>p.brewer@cornell.edu</email>
 		</developer>
 	</developers>
-	
+
+	<!-- Additional Repositories required for the build process -->
 	<repositories>
-        <repository>
-            <id>JBOSS</id>
-            <name>JBoss Repository</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public</url>
-        </repository>
+		<repository>
+			<id>JBOSS</id>
+			<name>JBoss Repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
 	</repositories>
-	
+
+	<!-- Repositories for the plugins-->
 	<pluginRepositories>
 		<pluginRepository>
 			<id>codehaus</id>
 			<url>http://repository.codehaus.org/</url>
 		</pluginRepository>
 		<pluginRepository>
-          <id>tlc</id>
-          <name>TLC Repository</name>
-        <url>http://commons.ucalgary.ca/pub/m2</url>
-    </pluginRepository>
-    
-		
+			<id>tlc</id>
+			<name>TLC Repository</name>
+			<url>http://commons.ucalgary.ca/pub/m2</url>
+		</pluginRepository>
 	</pluginRepositories>
+	
+	<!-- Packages that TRiCYCLE depends upon-->
 	<dependencies>
 		<dependency>
-  			<groupId>com.apple</groupId>
-  			<artifactId>AppleJavaExtensions</artifactId>
- 			<version>1.4</version>
+			<groupId>com.apple</groupId>
+			<artifactId>AppleJavaExtensions</artifactId>
+			<version>1.4</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.tridas.io</groupId>
 			<artifactId>DendroFileIO</artifactId>
@@ -110,59 +112,114 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		        <dependency>
+            <groupId>jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
-	
+
 	<!--  Subversion info -->
 	<scm>
 		<connection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas</connection>
 		<developerConnection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas</developerConnection>
+		<tag>trunk</tag>
 		<url>http://tridas.sf.net</url>
 	</scm>
-	
+
 	<build>
+	
+	
+
+	
 		<plugins>
 	
-		<!-- Automatically adds build timestamp to build.properties file -->
-		<plugin>
-		  <groupId>org.codehaus.mojo</groupId>
-		  <artifactId>groovy-maven-plugin</artifactId>
-		  <version>1.3</version>
-		  <executions>
-		      <execution>
-		          <phase>generate-resources</phase>
-		          <goals>
-		              <goal>execute</goal>
-		          </goals>
-		          <configuration>
-		              <source>
-		                      import java.util.Date
+			<!-- Calculate the build timestamp and add to a project property -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>groovy-maven-plugin</artifactId>
+				<version>1.3</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<source> 
+							  import java.util.Date
 		                      import java.text.MessageFormat
 		                      def timestamp = MessageFormat.format("{0,date,dd MMM yyyy, HH:mm }", new Date())
 		                      project.properties['buildtimestamp'] = timestamp   
-		              </source>
-		          </configuration>
-		      </execution>
-		  </executions>
-		</plugin>
-		
-		
-		<plugin>
-		  <groupId>org.codehaus.mojo</groupId>
-		  <artifactId>buildnumber-maven-plugin</artifactId>
-		  <executions>
-		    <execution>
-		      <phase>validate</phase>
-		      <goals>
-		        <goal>create</goal>
-		      </goals>
-		    </execution>
-		  </executions>
-		  <configuration>
-		    <doCheck>false</doCheck>
-		    <doUpdate>true</doUpdate>
-		  </configuration>
-		</plugin>
-		
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Ask Subversion for the latest build number -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>true</doUpdate>
+				</configuration>
+			</plugin>
+			
+			<!-- Write project properties into a build properties file -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>write-project-properties</goal>
+						</goals>
+						<configuration>
+							<outputFile> ${project.build.outputDirectory}/build.properties
+							</outputFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Create the java manifest file-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.tridas.io.gui.App</mainClass>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
+							<SCM-Revision>${buildNumber}</SCM-Revision>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- Compile application -->
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -175,171 +232,237 @@
 					<debug>true</debug>
 				</configuration>
 			</plugin>
-			
+
+			<!--  Use shade to create a single jar containing all the dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.3.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>org.tridas.io.gui.App</mainClass>
+								</transformer>
+							</transformers>
+							<filters>
+								<!-- Remove signatures from other jars-->
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+	           <groupId>com.google.code.maven-replacer-plugin</groupId>
+	           <artifactId>maven-replacer-plugin</artifactId>
+	           <version>1.3.8</version>
+	           <executions>
+	               <execution>
+	                   <phase>prepare-package</phase>
+	                   <goals>
+	                       <goal>replace</goal>
+	                   </goals>                   
+	               </execution>
+	           </executions>
+	           <configuration>
+	               <file>lin-specific/tricycle</file>
+	               <replacements>
+	                   <replacement>
+	                       <token>%%VERSION%%</token>
+	                       <value>${version}</value>
+	                   </replacement>         
+	               </replacements>
+	           </configuration>
+	       </plugin>
+			
+
+			<!--  Create a Linux Ubuntu debian native installer -->
+			<plugin>
+				<artifactId>jdeb</artifactId>
+				<groupId>org.vafer</groupId>
+				<version>0.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jdeb</goal>
+						</goals>
+						<configuration>
+							<dataSet>
+								<data>
+									<src>${project.build.directory}/${project.build.finalName}.jar</src>
+									<type>file</type>
+									<mapper>
+										<type>perm</type>
+										<prefix>/usr/share/tricycle</prefix>
+									</mapper>
+								</data>
+								<data>
+									<src>target/classes/tricycle</src>
+									<type>file</type>
+									<mapper>
+										<type>perm</type>
+										<prefix>/usr/bin/</prefix>
+										<filemode>755</filemode>
+									</mapper>
+								</data>
+								<data>
+									<src>target/classes/tricycle.desktop</src>
+									<type>file</type>
+									<mapper>
+										<type>perm</type>
+										<prefix>/usr/share/applications/</prefix>
+										<filemode>755</filemode>
+									</mapper>
+								</data>
+								<data>
+									<src>src/main/resources/icons/48x48/tricycle.png</src>
+									<type>file</type>
+									<mapper>
+										<type>perm</type>
+										<prefix>/usr/share/pixmaps/</prefix>
+									</mapper>
+								</data>
+								<data>
+									<src>src/main/resources/icons/32x32/tricycle.xpm</src>
+									<type>file</type>
+									<mapper>
+										<type>perm</type>
+										<prefix>/usr/share/pixmaps/</prefix>
+									</mapper>
+								</data>
+							</dataSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!--  Create a Linux RPM installer 
+			      n.b. Requires rpmbuild to function -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<version>2.1-alpha-1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>rpm</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>org.tridas.io.gui.App</mainClass>G
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
-							<SCM-Revision>${buildNumber}</SCM-Revision>
-						</manifestEntries>
-					</archive>
+					<copyright>Apache 2.0</copyright>
+					<distribution>TRiCYCLE</distribution>
+					<group>Applications/File</group>
+					<icon>/usr/share/pixmaps/tricycle.xpm</icon>
+					<packager>TRiDaS</packager>
+					<prefix>/usr/local</prefix>
+					<!-- <changelogFile>documentation/changelog.txt</changelogFile>-->
+					<requires>
+    					<require>jre.i586</require>
+					</requires>
+					<mappings>					
+						<mapping>
+							<directory>/usr/share/tricycle</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>${project.build.directory}/${project.build.finalName}.jar</location>
+								</source>
+							</sources>
+						</mapping>				
+						<mapping>
+							<directory>/usr/bin/</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>${project.build.directory}/classes/tricycle</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/usr/share/applications/</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>${project.build.directory}/classes/tricycle.desktop</location>
+								</source>
+							</sources>
+						</mapping>		
+						<mapping>
+							<directory>/usr/share/pixmaps/</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>src/main/resources/icons/32x32/tricycle.xpm</location>
+								</source>
+							</sources>
+						</mapping>					
+					</mappings>
+					<preinstallScriptlet>
+						<script>echo "Installing TRiCYCLE now"</script>
+					</preinstallScriptlet>
 				</configuration>
 			</plugin>
 
-			
-		  <!--  Use shade to create a single jar with all dependencies -->	
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-shade-plugin</artifactId>
-	        <version>1.3.3</version>
-	        <executions>
-	          <execution>
-	            <phase>package</phase>
-	            <goals>
-	              <goal>shade</goal>
-	            </goals>
-	            <configuration>  
-	              <transformers>
-	                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-	                  <mainClass>org.tridas.io.gui.App</mainClass>
-	                </transformer>
-	              </transformers>
-	              <filters>
-	              	  <!-- Remove signatures from other jars-->
-		              <filter>
-		                  <artifact>*:*</artifact>
-		                  <excludes>
-		                    <exclude>META-INF/*.SF</exclude>
-		                    <exclude>META-INF/*.DSA</exclude>
-		                    <exclude>META-INF/*.RSA</exclude>
-		                  </excludes>
-	                  </filter>
-                  </filters>
-	              
-	            </configuration>
-	          </execution>
-	        </executions>
-	      </plugin>
-		
-			
-	   <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>1.0-alpha-2</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>write-project-properties</goal>
-            </goals>
-            <configuration>
-              <outputFile>
-                ${project.build.outputDirectory}/build.properties
-              </outputFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-			
-			
-			<!--  Create a Linux native installer -->
-	        <plugin>
-	            <artifactId>jdeb</artifactId>
-	            <groupId>org.vafer</groupId>
-	            <version>0.8</version>
-	            <executions>
-	                <execution>
-	                    <phase>package</phase>
-	                    <goals>
-	                        <goal>jdeb</goal>
-	                    </goals>
-	                    <configuration>
-	                        <dataSet>
-	                            <data>
-	                                <src>${project.build.directory}/${project.build.finalName}.jar</src>
-	                                <type>file</type>
-	                                <mapper>
-	                                  <type>perm</type>
-	                                  <prefix>/usr/share/tricycle</prefix>
-	                                </mapper>
-	                            </data>
-	                            <data>
-	                            	<src>lin-specific/tricycle</src>
-	                            	<type>file</type>
-	                            	<mapper>
-	                            		<type>perm</type>
-	                            		<prefix>/usr/bin/</prefix>
-	                            		<filemode>755</filemode>
-	                            	</mapper>
-	                            </data>
-	                           <data>
-	                            	<src>lin-specific/tricycle.desktop</src>
-	                            	<type>file</type>
-	                            	<mapper>
-	                            		<type>perm</type>
-	                            		<prefix>/usr/share/applications/</prefix>
-	                            		<filemode>755</filemode>
-	                            	</mapper>
-	                            </data>
-	                            <data>
-	                            	<src>src/main/resources/icons/48x48/tricycle.png</src>
-	                            	<type>file</type>
-	                            	<mapper>
-	                            		<type>perm</type>
-	                            		<prefix>/usr/share/pixmaps/</prefix>
-	                            	</mapper>
-	                            </data>
-	                            <data>
-	                            	<src>src/main/resources/icons/32x32/tricycle.xpm</src>
-	                            	<type>file</type>
-	                            	<mapper>
-	                            		<type>perm</type>
-	                            		<prefix>/usr/share/pixmaps/</prefix>
-	                            	</mapper>
-	                            </data>
-	                        </dataSet>
-	                    </configuration>
-	                </execution>
-	            </executions>
-	        </plugin>
-	        
-	        <!--  Windows native executable -->
-	        <plugin>
-		      <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
-		      <artifactId>launch4j-plugin</artifactId>
-		      <version>1.5.0.0</version>
-		      <executions>
-		        <execution>
-		          <id>launch4j</id>
-		          <phase>package</phase>
-		          <goals>
-		            <goal>launch4j</goal>
-		          </goals>
-		          <configuration>
-		            <dontWrapJar>false</dontWrapJar>
-		            <headerType>gui</headerType>
-		            <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
-		            <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
-		            <icon>src/main/resources/icons/application.ico</icon>
-		            <errTitle>TRiCYCLE</errTitle>
-		            <jre>
-		              <minVersion>1.6.0</minVersion>
-		            </jre>
-		          </configuration>
-		        </execution>
-		      </executions>
-		    </plugin>
-	        
-	        
-	        <!-- Create MacOSX native executable -->
+
+			<!--  Create a Windows native executable 
+			      n.b. this creates a raw executable, not an installer. To
+			      create the installer you will need to run the NSIS script 
+			      outside of Maven -->
+			<plugin>
+				<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
+				<artifactId>launch4j-plugin</artifactId>
+				<version>1.5.0.0</version>
+				<executions>
+					<execution>
+						<id>launch4j</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<dontWrapJar>false</dontWrapJar>
+							<headerType>gui</headerType>
+							<outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
+							<jar>${project.build.directory}/${project.build.finalName}.jar</jar>
+							<icon>src/main/resources/icons/application.ico</icon>
+							<errTitle>TRiCYCLE</errTitle>
+							<jre>
+								<minVersion>1.6.0</minVersion>
+							</jre>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- Create a MacOSX native executable 
+			     n.b. on Linux and Windows this will create an *app.zip file
+			          on MacOSX it will also create a DMG file -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>osxappbundle-maven-plugin</artifactId>
@@ -362,7 +485,7 @@
 					<bundleName>TRiCYCLE</bundleName>
 					<zipFile>${project.build.directory}/${project.build.finalName}-app.zip</zipFile>
 					<mainClass>org.tridas.io.gui.App</mainClass>
-					<jvmVersion>1.5+</jvmVersion>
+					<jvmVersion>1.6+</jvmVersion>
 					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
 					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
 				</configuration>
@@ -375,7 +498,7 @@
 					</execution>
 				</executions>
 			</plugin>
-	        
+
 		</plugins>
 	</build>
 </project>

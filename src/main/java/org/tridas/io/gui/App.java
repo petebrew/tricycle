@@ -124,7 +124,7 @@ public class App {
 	
 	public static String getBuildRevision()
 	{
-		return getBuildInfo("buildnumber");
+		return getBuildInfo("buildNumber");
 	}
 	
 	public static String getBuildVersion()
