@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "TRiCYCLE"
-!define PRODUCT_VERSION "0.2.4-SNAPSHOT"
+!define PRODUCT_VERSION "0.2.4"
 !define PRODUCT_PUBLISHER "TRiDaS Team"
 !define PRODUCT_WEB_SITE "http://www.tridas.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
@@ -57,8 +57,8 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-;OutFile "..\target\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
-OutFile "c:\temp\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
+OutFile "..\target\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
+;OutFile "c:\temp\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show

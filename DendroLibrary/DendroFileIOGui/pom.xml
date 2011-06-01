@@ -31,7 +31,7 @@
 	   <!-- Copy of version number -->
 	   <version>${project.version}</version> 
 	   <!-- Manually set build number until SCM repository checked is working -->
-	   <buildnumber>647</buildnumber>
+	   <!-- <buildnumber>647</buildnumber>-->
 	</properties>
 	
 	<developers>
@@ -112,6 +112,13 @@
 		</dependency>
 	</dependencies>
 	
+	<!--  Subversion info -->
+	<scm>
+		<connection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas</connection>
+		<developerConnection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas</developerConnection>
+		<url>http://tridas.sf.net</url>
+	</scm>
+	
 	<build>
 		<plugins>
 	
@@ -139,6 +146,23 @@
 		</plugin>
 		
 		
+		<plugin>
+		  <groupId>org.codehaus.mojo</groupId>
+		  <artifactId>buildnumber-maven-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <phase>validate</phase>
+		      <goals>
+		        <goal>create</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		  <configuration>
+		    <doCheck>false</doCheck>
+		    <doUpdate>true</doUpdate>
+		  </configuration>
+		</plugin>
+		
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -151,6 +175,7 @@
 					<debug>true</debug>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -163,6 +188,7 @@
 						</manifest>
 						<manifestEntries>
 							<SplashScreen-Image>icons/splash/splash.png</SplashScreen-Image>
+							<SCM-Revision>${buildNumber}</SCM-Revision>
 						</manifestEntries>
 					</archive>
 				</configuration>
