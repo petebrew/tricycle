@@ -47,6 +47,7 @@ import org.tridas.io.gui.model.popup.ConvertingDialogModel;
 import org.tridas.io.gui.view.popup.ConvertProgress;
 import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
+import org.tridas.io.naming.KeycodeNamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.SeriesCode8CharNamingConvention;
 import org.tridas.io.naming.SeriesCodeNamingConvention;
@@ -131,6 +132,10 @@ public class ConvertCommand implements ICommand {
 		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.seriescode8char")))
 		{
 			naming = new SeriesCode8CharNamingConvention();
+		}
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.keycode")))
+		{
+			naming = new KeycodeNamingConvention();
 		}
 		else {
 			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noNaming", event.getNamingConvention()),
