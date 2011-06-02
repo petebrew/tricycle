@@ -20,12 +20,12 @@
 	<parent>
 		<artifactId>DendroLibrary</artifactId>
 		<groupId>org.tridas</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</parent>
 	<name>TRiCYCLE</name>
 	<groupId>org.tridas.io.gui</groupId>
 	<artifactId>TRiCYCLE</artifactId>
-	<version>0.2.5-SNAPSHOT</version>
+	<version>0.2.5-SNAPSHOT-ESTHER-SPECIAL</version>
 
 	<!--  These values are written to build.properties -->
 	<properties>
@@ -112,7 +112,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		        <dependency>
+		<dependency>
             <groupId>jmock</groupId>
             <artifactId>jmock</artifactId>
             <version>1.0.1</version>
@@ -133,13 +133,20 @@
 		<url>http://tridas.sf.net</url>
 	</scm>
 
+
 	<build>
 	
+	<!-- Create launch scripts for Linux builds with correct version number -->
+	<resources>
+	  <resource>
+        <directory>lin-specific</directory>
+        <filtering>true</filtering>
+      </resource>
+	</resources>
 	
-
 	
 		<plugins>
-	
+		
 			<!-- Calculate the build timestamp and add to a project property -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -193,7 +200,8 @@
 							<goal>write-project-properties</goal>
 						</goals>
 						<configuration>
-							<outputFile> ${project.build.outputDirectory}/build.properties
+							<outputFile>
+								${project.build.outputDirectory}/build.properties
 							</outputFile>
 						</configuration>
 					</execution>
@@ -266,7 +274,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+<!-- 			
 			<plugin>
 	           <groupId>com.google.code.maven-replacer-plugin</groupId>
 	           <artifactId>maven-replacer-plugin</artifactId>
@@ -288,7 +296,7 @@
 	                   </replacement>         
 	               </replacements>
 	           </configuration>
-	       </plugin>
+	       </plugin>-->
 			
 
 			<!--  Create a Linux Ubuntu debian native installer -->
@@ -373,9 +381,9 @@
 					<packager>TRiDaS</packager>
 					<prefix>/usr/local</prefix>
 					<!-- <changelogFile>documentation/changelog.txt</changelogFile>-->
-					<requires>
+					<!-- <requires>
     					<require>jre.i586</require>
-					</requires>
+					</requires>-->
 					<mappings>					
 						<mapping>
 							<directory>/usr/share/tricycle</directory>
@@ -462,7 +470,10 @@
 
 			<!-- Create a MacOSX native executable 
 			     n.b. on Linux and Windows this will create an *app.zip file
-			          on MacOSX it will also create a DMG file -->
+			          on MacOSX it will also create a DMG file. Also not that
+			          on Linux and Windows computers the App will not include
+			          the Apple integration portions therefore they will have
+			          an ugly menu bar. -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>osxappbundle-maven-plugin</artifactId>

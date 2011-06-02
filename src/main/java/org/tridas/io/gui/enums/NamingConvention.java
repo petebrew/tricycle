@@ -29,6 +29,7 @@ public class NamingConvention {
 				org.tridas.io.I18n.getText("namingconvention.uuid"),
 				org.tridas.io.I18n.getText("namingconvention.hierarchical"),
 				org.tridas.io.I18n.getText("namingconvention.seriescode"),
-				org.tridas.io.I18n.getText("namingconvention.seriescode8char")};
+				org.tridas.io.I18n.getText("namingconvention.seriescode8char"),
+				org.tridas.io.I18n.getText("namingconvention.keycode")};
 	}
 }

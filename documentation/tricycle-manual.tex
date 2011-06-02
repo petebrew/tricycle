@@ -304,6 +304,7 @@ This convention is therefore more appropriate when converting from TRiDaS to oth
 formats.
 \item[Series code] -- This convention is only applicable to formats that contain just one series.  The file is named according to the series code.
 \item[Series code (8 characters)] -- Same as `Series code', however the file name is truncated to 8 characters if the series code is longer.  
+\item[Keycode] -- Similar to `Series code' but preferentially uses a keycode (supplied by some file formats) if available.  If a keycode is not provided, then it falls back to using the series code.
  \end{description}
 
 Not that some formats (e.g. CATRAS) require the file name to be the same as a field within the file.  In this case the naming convention is overidden, so no matter what convention you specify the filename will be the same.  If you manually rename a CATRAS file you will come across errors when loading it in the CATRAS application.

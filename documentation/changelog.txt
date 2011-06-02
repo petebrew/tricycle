@@ -1,5 +1,9 @@
 TRiCYCLE Changelog:
 
+Changes from 0.2.4 to 0.2.5
+- Added Keycode naming convention
+
+
 Changes from 0.2.3 to 0.2.4
 - Added coordinate reference system to TRiDaS output files
 - Remember last folder used in file dialog boxes
