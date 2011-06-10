@@ -7,6 +7,8 @@ Changes from 0.2.4 to 0.2.5
 - Added warnings when reading coordinates from legacy formats that they are assumed to be using the WGS84 coordinate reference system.
 - Handles coordinate axis order correctly according to the EPSG CRS registry
 - Updated Oxford, Sheffield, VFormat and Heidelberg writers to use the new coordinate projection handling routines
+- Writes TRiDaS files using srsName EPSG:4326 rather than full URN.  This provides temporary support for TRiDaBASE users until TRiDaBASE is upgraded
+- Support reading of comments from Heidelberg files
 
 Changes from 0.2.3 to 0.2.4
 - Added coordinate reference system to TRiDaS output files

@@ -18,23 +18,31 @@
  */
 package org.tridas.io.gui.view.popup;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Map;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
+import net.miginfocom.swing.MigLayout;
+
+import org.tridas.io.TridasIO;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
@@ -45,10 +53,10 @@ import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
+import org.tridas.io.util.AutoCompleteJComboBoxer;
+import org.tridas.spatial.CoordinateReferenceSystem;
 
 import com.dmurph.mvc.MVCEvent;
-import javax.swing.JCheckBox;
-import java.awt.Component;
 
 /**
  * @author daniel
@@ -69,6 +77,11 @@ public class OptionsWindow extends JDialog {
 	private final TricycleModelLocator loc = TricycleModelLocator.getInstance();
 	private JCheckBox cbxEnableAnonomous;
 	private JCheckBox cbxAutoUpdate;
+	private JPanel privacyPanel;
+	private JComboBox cboReaderCRS;
+	private JLabel lblReaderCRS;
+	private JComboBox cboWriterCRS;
+	private JLabel lblWriterCRS;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -85,66 +98,84 @@ public class OptionsWindow extends JDialog {
 	 * 
 	 */
 	private void initializeComponents() {
-		namingConvention = new JComboBox();
-		writingCharset = new JComboBox();
-		readingCharset = new JComboBox();
+		getContentPane().setLayout(new MigLayout("", "[451.00px,grow]", "[][][][19.00,grow,fill][]"));
 		readingDefaults = new JButton();
-		writingDefaults = new JButton();
-		cancelButton = new JButton();
-		okButton = new JButton();
-		
-		Box panel = Box.createVerticalBox();
 		
 		JPanel readingPanel = new JPanel();
-		readingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.options.readingPanel")));
-		readingPanel.setLayout(new GridLayout(0, 1, 5, 5));
-				
+		getContentPane().add(readingPanel, "cell 0 0,growx");
+		readingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Reading Config", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		readingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][25px][25px]"));
+		JLabel lblInputCharacterSet = new JLabel("Input character set:");
+		readingPanel.add(lblInputCharacterSet, "cell 0 0,alignx right");
+		readingCharset = new JComboBox();
+		readingPanel.add(readingCharset, "cell 1 0");
+		
 		
 		readingCharset.setEditable(false);
-		Box rcBox = Box.createHorizontalBox();
-		rcBox.add(new JLabel(I18n.getText("view.options.input.charset")));
-		rcBox.add(readingCharset);
 		
-		readingPanel.add(rcBox);
-		readingPanel.add(readingDefaults);
-				
+		lblReaderCRS = new JLabel("Coordinate reference system:");
+		readingPanel.add(lblReaderCRS, "cell 0 1,alignx right,growy");
+		
+		cboReaderCRS = new JComboBox();
+		cboReaderCRS.setModel(new DefaultComboBoxModel(new String[] {"Default for format"}));
+		lblReaderCRS.setLabelFor(cboReaderCRS);
+		readingPanel.add(cboReaderCRS, "cell 1 1,grow");
+		readingPanel.add(readingDefaults, "cell 0 2 2 1,alignx right,growy");
+		writingDefaults = new JButton();
+		
 		JPanel writingPanel = new JPanel();
-		writingPanel.setBorder(BorderFactory.createTitledBorder(I18n.getText("view.options.writerPanel")));
-		writingPanel.setLayout(new GridLayout(0, 1, 5, 5));
+		getContentPane().add(writingPanel, "cell 0 1,growx");
+		writingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Writer Config", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		writingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][][25px][25px]"));
+		JLabel lblNamingConvention = new JLabel("Naming convention:");
+		writingPanel.add(lblNamingConvention, "cell 0 0,alignx right");
+		namingConvention = new JComboBox();
+		writingPanel.add(namingConvention, "cell 1 0");
 		
 		namingConvention.setEditable(false);
-		Box ncBox = Box.createHorizontalBox();
-		ncBox.add(new JLabel(I18n.getText("view.options.output.naming")));
-		ncBox.add(namingConvention);
+		JLabel lblWritingCharacterSet = new JLabel("Writing character set:");
+		writingPanel.add(lblWritingCharacterSet, "cell 0 1,alignx right");
+		writingCharset = new JComboBox();
+		writingPanel.add(writingCharset, "cell 1 1");
 		
 		writingCharset.setEditable(false);
-		Box ocBox = Box.createHorizontalBox();
-		ocBox.add(new JLabel(I18n.getText("view.options.output.charset")));
-		ocBox.add(writingCharset);
 		
-		writingPanel.add(ncBox);
-		writingPanel.add(ocBox);
-		writingPanel.add(writingDefaults);
+		lblWriterCRS = new JLabel("Coordinate reference system:");
+		writingPanel.add(lblWriterCRS, "cell 0 2,alignx trailing");
 		
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonPanel.add(okButton);
-		buttonPanel.add(cancelButton);
+		cboWriterCRS = new JComboBox();
+		cboWriterCRS.setModel(new DefaultComboBoxModel(new String[] {"WGS84 [EPSG:4326]"}));
+		writingPanel.add(cboWriterCRS, "cell 1 2,growx");
+		writingPanel.add(writingDefaults, "cell 0 3 2 1,alignx right,growy");
 		
-		panel.add(readingPanel);
-		panel.add(writingPanel);
-		panel.add(Box.createVerticalGlue());
+		privacyPanel = new JPanel();
+		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Privacy and Updates", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		getContentPane().add(privacyPanel, "cell 0 2,growx");
+		privacyPanel.setLayout(new MigLayout("", "[670px]", "[23px][23px]"));
 		
 		cbxEnableAnonomous = new JCheckBox(I18n.getText("view.options.usage"));
+		privacyPanel.add(cbxEnableAnonomous, "cell 0 0,grow");
 		cbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		cbxAutoUpdate = new JCheckBox(I18n.getText("view.options.autoupdate"));
+		privacyPanel.add(cbxAutoUpdate, "cell 0 1,grow");
 		cbxAutoUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cancelButton = new JButton();
+		okButton = new JButton();
 		
-		panel.add(cbxEnableAnonomous);
-		panel.add(cbxAutoUpdate);
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPanel, "cell 0 4,alignx right");
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
 		
-		panel.add(buttonPanel);
-		getContentPane().add(panel, "Center");
+		// Wire up autocomplete on SRS name combos
+		new AutoCompleteJComboBoxer(cboWriterCRS);
+		new AutoCompleteJComboBoxer(cboReaderCRS);
+		
+		// Disable CRS combos until we've wired them up
+		cboWriterCRS.setEnabled(false);
+		cboReaderCRS.setEnabled(false);
+
 	}
 	
 	/**
@@ -246,6 +277,7 @@ public class OptionsWindow extends JDialog {
 	/**
 	 * 
 	 */
+	@SuppressWarnings({ "unchecked"})
 	private void populateLocale() {
 		FileListModel fmodel = loc.getFileListModel();
 		ConvertModel cmodel = loc.getConvertModel();
@@ -272,6 +304,15 @@ public class OptionsWindow extends JDialog {
 		for (String s : Charsets.getWritingCharsets()) {
 			writingCharset.addItem(s);
 		}
+		
+	    Iterator it = TridasIO.crsMap.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) pairs.getValue();
+	        cboReaderCRS.addItem(crs.toString());
+	    }
+		
+		
 	}
 	
 	/**
