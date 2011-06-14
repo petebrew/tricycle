@@ -2,13 +2,16 @@ TRiCYCLE Changelog:
 
 Changes from 0.2.4 to 0.2.5
 - Added Keycode naming convention.
-- Added support for reading and projecting UK Grid coordinates into WGS84 lat/long for Sheffield format files.
-- Added support for projecting coordinates to WGS84 in TRiDaS file reader.  Coordinates from national grids are therefore standardised to WGS84 longitude/latitudes.
-- Added warnings when reading coordinates from legacy formats that they are assumed to be using the WGS84 coordinate reference system.
-- Handles coordinate axis order correctly according to the EPSG CRS registry
-- Updated Oxford, Sheffield, VFormat and Heidelberg writers to use the new coordinate projection handling routines
-- Writes TRiDaS files using srsName EPSG:4326 rather than full URN.  This provides temporary support for TRiDaBASE users until TRiDaBASE is upgraded
+- Implementation of support for Coordinate Reference Systems (see documentation) including:
+   - Added support for reading and projecting UK Grid coordinates into WGS84 lat/long for Sheffield format files.
+   - Added support for projecting coordinates to WGS84 in TRiDaS file reader.  Coordinates from national grids are therefore standardised to WGS84 longitude/latitudes.
+   - Added warnings when reading coordinates from legacy formats that they are assumed to be using the WGS84 coordinate reference system.
+   - Handles coordinate axis order correctly according to the EPSG CRS registry
+   - Updated Oxford, Sheffield, VFormat and Heidelberg writers to use the new coordinate projection handling routines
+   - Writes TRiDaS files using srsName EPSG:4326 rather than full URN.  This provides temporary support for TRiDaBASE users until TRiDaBASE is upgraded
 - Support reading of comments from Heidelberg files
+- Added missing 999 terminator to TRIMS file output
+- Fixed erroneous start year when writing multiple TRIMS files from a single input file
 
 Changes from 0.2.3 to 0.2.4
 - Added coordinate reference system to TRiDaS output files
