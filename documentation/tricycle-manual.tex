@@ -212,8 +212,8 @@ the save button. It will offer you the option of specifying which folder to save
 
 \chapter{Advanced options}
 
-The options panel is available from the file menu (in Windows and Linux) or in the Application menu (Mac). It is split into two sections: Reader config and Writer
-config.
+The options panel is available from the file menu (in Windows and Linux) or in the Application menu (Mac). It is split into three sections: Reader config, Writer
+config and a third for setting privacy an update preferences.
 
 \section{Character sets}
 
@@ -250,6 +250,15 @@ out files, TRiCYCLE will use the default line feed for the operating system you 
 choose a platform specific character set. For instance if you run TRiCYCLE on Windows and choose a
 MacRoman writing charset, TRiCYCLE will use Mac style line feeds.
 
+
+\section{Coordinate reference systems}
+The standard coordinate reference system (CRS) used by most people is WGS84 (also known as EPSG:4326).  This is the CRS used by standard GPS handsets and is represented by some type of latitude/longitude coordinate.  This CRS is useful for mapping locations on the globe in software such as Google Earth.  It is not however suitable for plotting points on projected maps and in systems that work with projected map data.  For instance in the UK, the Ordnance Survey uses the British Natiional Grid (a specific type of Mercator projection) for all its maps.  Some users may therefore prefer to store coordinates in their national grid system.  To cope with this, TRiCYCLE contains routines for handling the projection of coordinates between different CRS.
+
+The only `legacy' file format to specifically use coordinates in a CRS other than WGS84 is the Sheffield format.  This format has two fields, one for storing standard WGS84 coordinates and another to store British National Grid tile information.  TRiCYCLE will preferentially use the WGS84 coordinates, but if only British National Grid data is supplied it will read this and project into WGS84 so that when exporting to other formats these coordinates are valid.
+
+TRiDaS files include an attribute that describes the coordinate system that the coordinates are supplied in.  If the coordinates are in a CRS other than WGS84 TRiCYCLE will attempt to project these.  The library used by TRiCYCLE to perform the projection is fairly new port of the standard PROJ4 library used by many GIS applications.  As such there are still a number of CRS that are not yet supported.  If TRiCYCLE does not support the CRS specified, then it will warn the user and continue without projecting.
+
+In future versions of TRiCYCLE you will be able to specify the CRS for legacy formats that do not currently include such information.  This will enable you to convert (and project) coordinate data from a wide variety of grid systems without the use of separate GIS software.
 
 \section{Metadata editor}
 
