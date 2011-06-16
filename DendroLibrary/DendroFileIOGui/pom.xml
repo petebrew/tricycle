@@ -17,51 +17,133 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<name>TRiCYCLE</name>
 	<groupId>org.tridas</groupId>
 	<artifactId>org.tridas.tricycle</artifactId>
-	<version>0.2.5-SNAPSHOT</version>
-
-	<!--  These values are written to build.properties -->
+	<version>0.2.4</version>
+	<name>TRiCYCLE</name>
+	<description>Universal dendro data file converter</description>
+	<licenses>
+		<license>
+		    <name>The Apache Software License, Version 2.0</name>
+      		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      		<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Peter Brewer</name>
+			<email>p.brewer@cornell.edu</email>
+			<organization>The Malcolm and Carolyn Wiener Laboratory for Aegean and Near Eastern Dendrochronology</organization>
+			<organizationUrl>http://dendro.cornell.edu</organizationUrl>
+		</developer>
+		<developer>
+			<name>Daniel Murphy</name>
+			<email>daniel@dmurph.com</email>
+			<organization>The Malcolm and Carolyn Wiener Laboratory for Aegean and Near Eastern Dendrochronology</organization>
+			<organizationUrl>http://dendro.cornell.edu</organizationUrl>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Esther Jansma</name>
+		</contributor>
+	</contributors>
+	<scm>
+		<connection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas/DendroLibrary/DendroFileIOGui</connection>
+		<developerConnection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas/DendroLibrary/DendroFileIOGui</developerConnection>
+		<tag>trunk</tag>
+		<url>http://tridas.sf.net</url>
+	</scm>
+	<organization>
+		<name>TRiDaS</name>
+		<url>http://www.tridas.org</url>
+	</organization>
 	<properties>
-		<!-- Copy of version number -->
 		<version>${project.version}</version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<!-- Details about the developers -->
-	<url>http://www.tridas.org/tricycle</url>
-	<developers>
-		<developer>
-			<id>dmurphy10</id>
-			<name>Daniel Murphy</name>
-			<email>daniel@dmurph.com</email>
-		</developer>
-		<developer>
-			<id>sbr00pwb</id>
-			<name>Peter Brewer</name>
-			<email>p.brewer@cornell.edu</email>
-		</developer>
-	</developers>
+	 <!--  Repository to deploy to.  When deploying make sure your .m2/settings.xml
+	 file contains the correct username and password for the repository server -->
+	<distributionManagement>
+	    <repository>
+	      <id>tridas-releases</id>
+	      <url>http://maven.tridas.org/repository/tridas-releases/</url>
+	    </repository>
+	    <snapshotRepository>
+	      <id>tridas-snapshots</id>
+	      <url>http://maven.tridas.org/repository/tridas-snapshots/</url>
+	    </snapshotRepository>
+	</distributionManagement>
 
 	<!-- Additional Repositories required for the build process -->
 	<repositories>
+		<!--  JBOSS -->
 		<repository>
 			<id>JBOSS</id>
 			<name>JBoss Repository</name>
 			<url>https://repository.jboss.org/nexus/content/groups/public</url>
 		</repository>
+		
+		<!-- TRiDaS -->
 	    <repository>
-	      <id>maven.tridas.org</id>
-	      <name>TRiDaS Maven Repository</name>
-	      <url>http://www.tridas.org:8080/archiva/repository/maven.tridas.org/</url>
+	      <id>tridas-releases</id>
+	      <name>TRiDaS Maven Releases Repository</name>
+	      <url>http://maven.tridas.org/repository/tridas-releases/</url>
 	      <releases>
 	        <enabled>true</enabled>
+	      </releases>
+	      <snapshots>
+	        <enabled>false</enabled>
+	      </snapshots>
+	    </repository>
+	    <repository>
+	      <id>tridas-snapshots</id>
+	      <name>TRiDaS Maven Snapshots Repository</name>
+	      <url>http://maven.tridas.org/repository/tridas-snapshots/</url>
+	      <releases>
+	        <enabled>false</enabled>
 	      </releases>
 	      <snapshots>
 	        <enabled>true</enabled>
 	      </snapshots>
 	    </repository>
+	    
+	    <!-- Codehaus -->
+        <repository>
+            <id>codehaus</id>
+            <name>Codehaus repository</name>
+            <url>http://repository.codehaus.org</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+
+       <repository>
+            <id>java.net</id>
+            <url>http://download.java.net/maven/1</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
     </repositories>
 
 	<!-- Repositories for the plugins-->
@@ -125,20 +207,13 @@
         </dependency>
         <dependency>
         	<groupId>org.tridas</groupId>
-        	<artifactId>org.tridas.dendrofileio</artifactId>
+        	<artifactId>dendrofileio</artifactId>
         	<version>0.1.4</version>
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
 	</dependencies>
 
-	<!--  Subversion info -->
-	<scm>
-		<connection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas</connection>
-		<developerConnection>scm:svn:svn+ssh://tridas.sf.net/svnroot/tridas</developerConnection>
-		<tag>trunk</tag>
-		<url>http://tridas.sf.net</url>
-	</scm>
 
 
 	<build>
@@ -181,6 +256,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0</version>
 				<executions>
 					<execution>
 						<phase>validate</phase>
