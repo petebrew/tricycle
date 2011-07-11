@@ -89,7 +89,7 @@ public class App {
 		try {
 			bundle = ResourceBundle.getBundle("build");
 		} catch (MissingResourceException mre) {
-			System.out.println("Could not find build properties file.");
+			log.error("Could not find build properties file.");
 			mre.printStackTrace();
 			bundle = new ResourceBundle() {
 				
@@ -146,7 +146,7 @@ public class App {
 		try {
 			value = build.getString(key);
 		} catch (MissingResourceException e) {
-			System.err.println("Unable to find the entry for the key: " + key);
+			log.error("Unable to find translation entry for the key: " + key);
 			return I18n.getText("???");
 		};
 		
