@@ -43,11 +43,11 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.tridas.io.TridasIO;
+import org.tridas.io.enums.Charsets;
+import org.tridas.io.enums.NamingConvention;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
-import org.tridas.io.gui.enums.Charsets;
-import org.tridas.io.gui.enums.NamingConvention;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;

@@ -50,7 +50,7 @@ import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.control.convert.ConvertController;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
-import org.tridas.io.gui.enums.OutputFormat;
+import org.tridas.io.enums.OutputFormat;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;

@@ -41,6 +41,7 @@ import javax.swing.event.DocumentListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tridas.io.enums.InputFormat;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
@@ -49,7 +50,6 @@ import org.tridas.io.gui.control.fileList.AddMultipleFilesEvent;
 import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.control.fileList.FileListController;
 import org.tridas.io.gui.control.fileList.RemoveSelectedEvent;
-import org.tridas.io.gui.enums.InputFormat;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;

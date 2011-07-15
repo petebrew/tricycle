@@ -26,7 +26,7 @@ import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.TridasIO;
 import org.tridas.io.gui.I18n;
-import org.tridas.io.gui.enums.Charsets;
+import org.tridas.io.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
