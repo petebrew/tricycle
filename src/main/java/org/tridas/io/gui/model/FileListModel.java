@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.tridas.io.gui.enums.InputFormat;
+import org.tridas.io.enums.InputFormat;
 
 import com.dmurph.mvc.model.AbstractModel;
 import com.dmurph.mvc.model.MVCArrayList;

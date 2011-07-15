@@ -20,7 +20,7 @@ package org.tridas.io.gui.model;
 
 import org.tridas.io.TridasIO;
 import org.tridas.io.defaults.IMetadataFieldSet;
-import org.tridas.io.gui.enums.Charsets;
+import org.tridas.io.enums.Charsets;
 
 import com.dmurph.mvc.ICloneable;
 import com.dmurph.mvc.model.AbstractRevertibleModel;

@@ -38,7 +38,7 @@ import org.tridas.io.exceptions.IncorrectDefaultFieldsException;
 import org.tridas.io.exceptions.InvalidDendroFileException;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertEvent;
-import org.tridas.io.gui.enums.InputFormat;
+import org.tridas.io.enums.InputFormat;
 import org.tridas.io.gui.model.ConvertModel;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
