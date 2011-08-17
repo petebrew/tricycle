@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "TRiCYCLE"
-!define PRODUCT_VERSION "0.2.5-SNAPSHOT"
+!define PRODUCT_VERSION "0.2.6-SNAPSHOT"
 !define PRODUCT_PUBLISHER "TRiDaS Team"
 !define PRODUCT_WEB_SITE "http://www.tridas.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
