@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -40,6 +41,7 @@ import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.enums.InputFormat;
 import org.tridas.io.gui.model.ConvertModel;
+import org.tridas.io.gui.model.ConvertModel.TreatFilesAsOption;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
@@ -52,6 +54,10 @@ import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.SeriesCode8CharNamingConvention;
 import org.tridas.io.naming.SeriesCodeNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
+import org.tridas.io.util.TridasUtils;
+import org.tridas.schema.TridasElement;
+import org.tridas.schema.TridasObject;
+import org.tridas.schema.TridasProject;
 import org.tridas.schema.TridasTridas;
 
 import com.dmurph.mvc.IllegalThreadException;
@@ -143,12 +149,385 @@ public class ConvertCommand implements ICommand {
 			return;
 		}
 		
-		convertFiles(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
-				event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
+
+		if(event.getTreatFilesAs().equals(TreatFilesAsOption.ONE_PROJECT))
+		{
+			
+			// Treat files as one project
+			convertFilesIntoSingleProject(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
+					event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
+		}
+		else if(event.getTreatFilesAs().equals(TreatFilesAsOption.ONE_OBJECT))
+		{
+			
+			// Treat files as one project
+			convertFilesIntoSingleObject(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
+					event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
+		}
+		else
+		{
+			
+
+			// Treat files separately
+			convertFiles(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
+					event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
+		}
+	}
+	
+	
+	private void convertFilesIntoSingleProject(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
+			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) 
+	{
+		
+		log.debug("Converting files to one project");
+		
+		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
+		ConvertProgress storedConvertProgress = null;
+		try {
+			
+			mwm.setLock(true);
+			ArrayList<ConvertModel.ReaderWriterObject> list = new ArrayList<ConvertModel.ReaderWriterObject>();
+			
+			ConvertingDialogModel model = new ConvertingDialogModel();
+			model.setConvertingFilename("");
+			model.setConvertingPercent(0);
+			
+			final ConvertProgress convertProgress = new ConvertProgress(TricycleModelLocator.getInstance()
+					.getMainWindow(), model);
+			storedConvertProgress = convertProgress;
+			
+			// i have to do this in a different thread
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					convertProgress.setVisible(true);
+				}
+			});
+			
+			while(!convertProgress.isVisible()){
+				Thread.sleep(100);
+			}
+			
+			
+			ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
+			cmodel.setConvertRunning(true);
+			
+			ConvertModel.ReaderWriterObject struct = new ConvertModel.ReaderWriterObject();
+			list.add(struct);
+			
+			if(argFiles.length>1)
+			{
+				// Need to create a substitute for file name as we have many
+				struct.file = argFiles.length + " files combined";
+			}
+			else
+			{
+				struct.file = argFiles[0];
+			}
+			
+			TridasTridas combinedContainer = new TridasTridas();
+			AbstractDendroFileReader reader = null;
+			for (int i = 0; i < argFiles.length; i++) 
+			{
+				if (!cmodel.isConvertRunning()) 
+				{
+					break;
+				}
+				String file = argFiles[i];
+				
+				model.setConvertingFilename("Several files");
+				
+				
+				if (argInputFormat.equals(InputFormat.AUTO)) {
+					String extension = file.substring(file.lastIndexOf(".") + 1);
+					log.debug("extention: " + extension);
+					reader = TridasIO.getFileReaderFromExtension(extension);
+				}
+				else {
+					reader = TridasIO.getFileReader(argInputFormat);
+				}
+				
+
+				
+				if (reader == null) {
+					struct.errorMessage = I18n.getText("control.convert.readerNull");
+					continue;
+				}
+				
+				try {
+					if (argInputDefaults == null) {
+						reader.loadFile(file);
+					}
+					else {
+						reader.loadFile(file, (IMetadataFieldSet) argInputDefaults.clone());
+					}
+				} catch (IOException e) {
+					struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
+					continue;
+				} catch (InvalidDendroFileException e) {
+					struct.errorMessage = e.getLocalizedMessage();
+					continue;
+				} catch (IncorrectDefaultFieldsException e) {
+					struct.errorMessage = e.toString() + " Please report bug.";
+				}
+				
+				TridasTridas container = reader.getTridasContainer();
+				
+				combinedContainer.getProjects().addAll(container.getProjects());
+				model.setConvertingPercent(i * 100 / argFiles.length);
+				
+			}
+			
+			if (struct.errorMessage != null) {
+				return;
+			}
+
+			combinedContainer = mergeProjectsIntoOne(combinedContainer);
+			
+			
+			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
+			
+			// If no naming convention was passed, set to default from writer.
+			if (argNaming == null)
+			{
+				argNaming = writer.getNamingConvention();
+			}
+			
+			if (argNaming instanceof NumericalNamingConvention) {
+				if (argFiles[0].contains(".")) {
+					String justFile = argFiles[0].substring(argFiles[0].lastIndexOf(File.separatorChar) + 1,
+							argFiles[0].lastIndexOf('.'));
+					((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
+				}
+				else {
+					((NumericalNamingConvention) argNaming).setBaseFilename(argFiles[0]);
+				}
+			}
+			
+			// Set naming
+			writer.setNamingConvention(argNaming);
+			
+			// Get naming again in case writer has overriden request
+			argNaming = writer.getNamingConvention();
+			
+
+			
+			try {
+				if (argOutputDefaults == null) {
+					writer.load(combinedContainer);
+				}
+				else {
+					writer.load(combinedContainer, (IMetadataFieldSet) argOutputDefaults.clone());
+				}
+			} catch (IncompleteTridasDataException e) {
+				struct.errorMessage = e.getMessage();
+			} catch (ConversionWarningException e) {
+				struct.errorMessage = e.getLocalizedMessage();
+			} catch (IncorrectDefaultFieldsException e) {
+				struct.errorMessage = e.getLocalizedMessage();
+			}
+
+			if (struct.errorMessage==null && writer.getFiles().length == 0) {
+				struct.errorMessage = I18n.getText("control.convert.noFilesWritten");
+			}
+			
+			
+			
+			struct.reader = reader;
+			struct.writer = writer;
+			constructNodes(list, argNaming);
+			
+		} catch (Exception e) {
+			log.error("Exception thrown while converting.", e);
+			throw new RuntimeException(e);
+		} finally {
+			if (storedConvertProgress != null) {
+				storedConvertProgress.setVisible(false);
+			}
+			
+			mwm.setLock(false);
+		}
+	}
+	
+	private void convertFilesIntoSingleObject(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
+			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) 
+	{
+		
+		log.debug("Converting files to one object");
+		
+		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
+		ConvertProgress storedConvertProgress = null;
+		try {
+			
+			mwm.setLock(true);
+			ArrayList<ConvertModel.ReaderWriterObject> list = new ArrayList<ConvertModel.ReaderWriterObject>();
+			
+			ConvertingDialogModel model = new ConvertingDialogModel();
+			model.setConvertingFilename("");
+			model.setConvertingPercent(0);
+			
+			final ConvertProgress convertProgress = new ConvertProgress(TricycleModelLocator.getInstance()
+					.getMainWindow(), model);
+			storedConvertProgress = convertProgress;
+			
+			// i have to do this in a different thread
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					convertProgress.setVisible(true);
+				}
+			});
+			
+			while(!convertProgress.isVisible()){
+				Thread.sleep(100);
+			}
+			
+			
+			ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
+			cmodel.setConvertRunning(true);
+			
+			ConvertModel.ReaderWriterObject struct = new ConvertModel.ReaderWriterObject();
+			list.add(struct);
+			
+			if(argFiles.length>1)
+			{
+				// Need to create a substitute for file name as we have many
+				struct.file = argFiles.length + " files combined";
+			}
+			else
+			{
+				struct.file = argFiles[0];
+			}
+			
+			TridasTridas combinedContainer = new TridasTridas();
+			AbstractDendroFileReader reader = null;
+			for (int i = 0; i < argFiles.length; i++) 
+			{
+				if (!cmodel.isConvertRunning()) 
+				{
+					break;
+				}
+				String file = argFiles[i];
+				
+				model.setConvertingFilename("Several files");
+				
+				
+				if (argInputFormat.equals(InputFormat.AUTO)) {
+					String extension = file.substring(file.lastIndexOf(".") + 1);
+					log.debug("extention: " + extension);
+					reader = TridasIO.getFileReaderFromExtension(extension);
+				}
+				else {
+					reader = TridasIO.getFileReader(argInputFormat);
+				}
+				
+
+				
+				if (reader == null) {
+					struct.errorMessage = I18n.getText("control.convert.readerNull");
+					continue;
+				}
+				
+				try {
+					if (argInputDefaults == null) {
+						reader.loadFile(file);
+					}
+					else {
+						reader.loadFile(file, (IMetadataFieldSet) argInputDefaults.clone());
+					}
+				} catch (IOException e) {
+					struct.errorMessage = I18n.getText("control.convert.ioException", e.toString());
+					continue;
+				} catch (InvalidDendroFileException e) {
+					struct.errorMessage = e.getLocalizedMessage();
+					continue;
+				} catch (IncorrectDefaultFieldsException e) {
+					struct.errorMessage = e.toString() + " Please report bug.";
+				}
+				
+				TridasTridas container = reader.getTridasContainer();
+				
+				combinedContainer.getProjects().addAll(container.getProjects());
+				model.setConvertingPercent(i * 100 / argFiles.length);
+				
+			}
+			
+			if (struct.errorMessage != null) {
+				return;
+			}
+
+			combinedContainer = mergeObjectsIntoOne(combinedContainer);
+			
+			
+			AbstractDendroCollectionWriter writer = TridasIO.getFileWriter(argOutputFormat);
+			
+			// If no naming convention was passed, set to default from writer.
+			if (argNaming == null)
+			{
+				argNaming = writer.getNamingConvention();
+			}
+			
+			if (argNaming instanceof NumericalNamingConvention) {
+				if (argFiles[0].contains(".")) {
+					String justFile = argFiles[0].substring(argFiles[0].lastIndexOf(File.separatorChar) + 1,
+							argFiles[0].lastIndexOf('.'));
+					((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
+				}
+				else {
+					((NumericalNamingConvention) argNaming).setBaseFilename(argFiles[0]);
+				}
+			}
+			
+			// Set naming
+			writer.setNamingConvention(argNaming);
+			
+			// Get naming again in case writer has overriden request
+			argNaming = writer.getNamingConvention();
+			
+
+			
+			try {
+				if (argOutputDefaults == null) {
+					writer.load(combinedContainer);
+				}
+				else {
+					writer.load(combinedContainer, (IMetadataFieldSet) argOutputDefaults.clone());
+				}
+			} catch (IncompleteTridasDataException e) {
+				struct.errorMessage = e.getMessage();
+			} catch (ConversionWarningException e) {
+				struct.errorMessage = e.getLocalizedMessage();
+			} catch (IncorrectDefaultFieldsException e) {
+				struct.errorMessage = e.getLocalizedMessage();
+			}
+
+			if (struct.errorMessage==null && writer.getFiles().length == 0) {
+				struct.errorMessage = I18n.getText("control.convert.noFilesWritten");
+			}
+			
+			
+			
+			struct.reader = reader;
+			struct.writer = writer;
+			constructNodes(list, argNaming);
+			
+		} catch (Exception e) {
+			log.error("Exception thrown while converting.", e);
+			throw new RuntimeException(e);
+		} finally {
+			if (storedConvertProgress != null) {
+				storedConvertProgress.setVisible(false);
+			}
+			
+			mwm.setLock(false);
+		}
 	}
 	
 	private void convertFiles(String[] argFiles, String argInputFormat, IMetadataFieldSet argInputDefaults,
-			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) {
+			String argOutputFormat, IMetadataFieldSet argOutputDefaults, INamingConvention argNaming) 
+	{
+		
+		log.debug("Converting files to multiple projects");
 		
 		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
 		ConvertProgress storedConvertProgress = null;
@@ -306,7 +685,11 @@ public class ConvertCommand implements ICommand {
 		int failed = 0;
 		int convWWarnings = 0;
 		
-		for (ConvertModel.ReaderWriterObject s : list) {
+		log.debug("Struct list has "+list.size()+" items");
+		for (ConvertModel.ReaderWriterObject s : list) 
+		{
+		
+			
 			DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new StructWrapper(s));
 			nodes.add(leaf);
 			
@@ -421,6 +804,64 @@ public class ConvertCommand implements ICommand {
 		@Override
 		public String toString() {
 			return convention.getFilename(file) + "." + file.getExtension();
+		}
+	}
+	
+	
+	private static TridasTridas mergeProjectsIntoOne(TridasTridas container)
+	{
+		if(container == null) return null;		
+		if(container.getProjects()==null) return null;
+		if(container.getProjects().size()==0) return null;
+		if(container.getProjects().size()==1) return container;
+		
+		TridasTridas newContainer = new TridasTridas();
+		newContainer.getProjects().add(container.getProjects().get(0));
+
+		for(int i=1; i<container.getProjects().size(); i++)
+		{
+			List<TridasObject> objlist = container.getProjects().get(i).getObjects();
+			newContainer.getProjects().get(0).getObjects().addAll(objlist);
+		}
+		
+		return newContainer;
+	}
+	
+	private static TridasTridas mergeObjectsIntoOne(TridasTridas container)
+	{
+		if(container == null) return null;		
+		if(container.getProjects()==null) return null;
+		if(container.getProjects().size()==0) return null;
+	
+		try{
+		TridasTridas newContainer = new TridasTridas();
+		TridasProject project = container.getProjects().get(0);
+		TridasObject object = TridasUtils.getObjectList(project).get(0);
+		project.getObjects().clear();
+
+		ArrayList<TridasElement> ellist = new ArrayList<TridasElement>();
+		
+		for(TridasProject p: container.getProjects())
+		{
+			for(TridasObject o : TridasUtils.getObjectList(p))
+			{
+				ellist.addAll(o.getElements());
+			}
+			
+			project.getDerivedSeries().addAll(p.getDerivedSeries());
+		}
+		
+		object.getElements().addAll(ellist);
+		project.getObjects().add(object);
+			
+		newContainer.getProjects().add(project);
+		return newContainer;
+		
+		} catch (Exception e)
+		{
+			log.error("Exception caught when trying to merge objects into one");
+			e.printStackTrace();
+			return container;
 		}
 	}
 }

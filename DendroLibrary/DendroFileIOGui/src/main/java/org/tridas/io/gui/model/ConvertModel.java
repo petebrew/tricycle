@@ -23,10 +23,13 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.defaults.IMetadataFieldSet;
 
+import org.tridas.io.gui.I18n;
 import com.dmurph.mvc.model.AbstractModel;
 import com.dmurph.mvc.model.MVCArrayList;
 
@@ -35,9 +38,12 @@ import com.dmurph.mvc.model.MVCArrayList;
  */
 public class ConvertModel extends AbstractModel {
 
+	private static final Logger log = LoggerFactory.getLogger(ConvertModel.class);
+
 	private static final long serialVersionUID = 1L;
 	
 	private String outputFormat = "TRiDaS";
+	private TreatFilesAsOption treatFilesAs = TreatFilesAsOption.SEPARATE;
 	private MVCArrayList<DefaultMutableTreeNode> nodes = new MVCArrayList<DefaultMutableTreeNode>();
 	
 	private final MVCArrayList<ConvertModel.ReaderWriterObject> structList = new MVCArrayList<ConvertModel.ReaderWriterObject>();
@@ -52,6 +58,33 @@ public class ConvertModel extends AbstractModel {
 	private DefaultMutableTreeNode selectedNode = null;
 	
 	public ConvertModel() {}
+			
+	public enum TreatFilesAsOption {
+		SEPARATE(I18n.getText("view.files.treatas.separate")), 
+		ONE_PROJECT(I18n.getText("view.files.treatas.oneproject")),
+		ONE_OBJECT(I18n.getText("view.files.treatas.oneobject"));
+		
+		private String str;
+		
+		TreatFilesAsOption(String c) {
+			str = c;
+		}
+		
+		@Override
+		public final String toString() {
+			return str;
+		}
+		
+		public static TreatFilesAsOption fromStr(String strng) {
+			for (TreatFilesAsOption val : TreatFilesAsOption.values()) {				
+				if (val.toString().equalsIgnoreCase(strng)) {
+					return val;
+				}
+			}
+			return null;
+		}
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public void setNodes(List<DefaultMutableTreeNode> argNodes) {
@@ -107,6 +140,18 @@ public class ConvertModel extends AbstractModel {
 		String old = outputFormat;
 		outputFormat = argOutputFormat;
 		firePropertyChange("outputFormat", old, outputFormat);
+	}
+	
+
+	public void setTreatFilesAs(TreatFilesAsOption tfao) {
+		TreatFilesAsOption old = treatFilesAs;
+		treatFilesAs = tfao;
+		firePropertyChange("treatFilesAs", old, treatFilesAs);
+	}
+	
+	public TreatFilesAsOption getTreatFilesAs()
+	{
+		return treatFilesAs;
 	}
 	
 	/**

@@ -154,10 +154,12 @@ public class ConvertPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ConfigModel config = TricycleModelLocator.getInstance().getConfigModel();
 				FileListModel flmodel = TricycleModelLocator.getInstance().getFileListModel();
+				ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
 				
 				ConvertEvent event = new ConvertEvent(flmodel.getInputFormat(),
 													  model.getOutputFormat(),
 													  config.getNamingConvention(),
+													  cmodel.getTreatFilesAs(),													  
 													  config.getReaderDefaults(),
 													  config.getWriterDefaults());
 				event.dispatch();

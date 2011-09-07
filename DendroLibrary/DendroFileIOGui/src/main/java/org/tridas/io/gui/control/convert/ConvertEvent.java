@@ -19,6 +19,7 @@
 package org.tridas.io.gui.control.convert;
 
 import org.tridas.io.defaults.IMetadataFieldSet;
+import org.tridas.io.gui.model.ConvertModel.TreatFilesAsOption;
 
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.tracking.ITrackable;
@@ -32,15 +33,17 @@ public class ConvertEvent extends MVCEvent implements ITrackable{
 	private final String inputFormat;
 	private final String namingConvention;
 	private final String outputFormat;
+	private final TreatFilesAsOption treatFilesAs;
 	private final IMetadataFieldSet readerDefaults;
 	private final IMetadataFieldSet writerDefaults;
 	
-	public ConvertEvent(String argInputFormat, String argOutputFormat, String argNamingConvention,
+	public ConvertEvent(String argInputFormat, String argOutputFormat, String argNamingConvention, TreatFilesAsOption argTreatFilesAs,
 						IMetadataFieldSet argReaderDefaults, IMetadataFieldSet argWriterDefaults) {
 		super(ConvertController.CONVERT);
 		namingConvention = argNamingConvention;
 		outputFormat = argOutputFormat;
 		inputFormat = argInputFormat;
+		treatFilesAs = argTreatFilesAs;
 		readerDefaults = argReaderDefaults;
 		writerDefaults = argWriterDefaults;
 	}
@@ -55,6 +58,11 @@ public class ConvertEvent extends MVCEvent implements ITrackable{
 
 	public String getInputFormat() {
 		return inputFormat;
+	}
+	
+	public TreatFilesAsOption getTreatFilesAs()
+	{
+		return treatFilesAs;
 	}
 
 	public IMetadataFieldSet getReaderDefaults() {
