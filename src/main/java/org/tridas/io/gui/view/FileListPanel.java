@@ -18,7 +18,7 @@
  */
 package org.tridas.io.gui.view;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -26,9 +26,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -38,6 +38,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +56,7 @@ import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.util.FileDrop;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.MVCEvent;
 
@@ -62,9 +65,9 @@ import com.dmurph.mvc.MVCEvent;
  */
 @SuppressWarnings("serial")
 public class FileListPanel extends JPanel {
-	private static final Logger log = LoggerFactory.getLogger(FileListPanel.class);
-	
-	private JLabel fileFieldLabel;
+	private static final Logger log = LoggerFactory
+			.getLogger(FileListPanel.class);
+	private static final String iconSize = "16x16";
 	private JList fileList;
 	private JComboBox inputFormat;
 	private JButton addButton;
@@ -75,9 +78,16 @@ public class FileListPanel extends JPanel {
 	private JButton removeAll;
 	private JScrollPane scrollPane;
 	private JTextField fileField;
-	
+
 	private final FileListModel model;
-	
+	private JComboBox cboTreatAs;
+	private JLabel lblFormat;
+	private JLabel lblFiles;
+	private JLabel lblTreatFilesAs;
+	private JPanel selectPanel;
+	private JButton btnSelectInvert;
+	private JPanel panel;
+
 	public FileListPanel(FileListModel argModel) {
 		model = argModel;
 		initComponents();
@@ -85,60 +95,105 @@ public class FileListPanel extends JPanel {
 		linkModel();
 		addListeners();
 	}
-	
+
 	public void initComponents() {
-		addButton = new JButton();
-		fileFieldLabel = new JLabel();
-		fileField = new JTextField();
-		browseButton = new JButton();
-		fileList = new JList();
-		removeSelectedButton = new JButton();
-		selectAllButton = new JButton();
-		selectNoneButton = new JButton();
-		removeAll = new JButton();
-		scrollPane = new JScrollPane();
+		setLayout(new MigLayout("", "[85.00,right][0:0:0][264.00px,grow][][]",
+				"[12.00px][][230px,grow,fill][]"));
+
+		lblFormat = new JLabel(I18n.getText("view.options.input.format"));
+		add(lblFormat, "cell 0 0");
 		inputFormat = new JComboBox();
-		
-		setLayout(new BorderLayout());
-		
-		Box topBox = Box.createHorizontalBox();
-		topBox.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-		topBox.add(inputFormat);
-		topBox.add(fileFieldLabel);
-		topBox.add(fileField);
-		topBox.add(browseButton);
-		topBox.add(addButton);
-		
-		add(topBox, java.awt.BorderLayout.PAGE_START);
-		
+		add(inputFormat, "cell 2 0 3 1,alignx left");
+
+		lblFiles = new JLabel(I18n.getText("view.main.file") + ":");
+		add(lblFiles, "cell 0 1,aligny bottom");
+		ImageIcon saIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+				+ iconSize + "/selectall.png"));
+		ImageIcon snIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+				+ iconSize + "/selectnone.png"));
+		ImageIcon rsIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+				+ iconSize + "/delete.png"));
+		ImageIcon isIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+				+ iconSize + "/selectinvert.png"));
+		ImageIcon raIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+				+ iconSize + "/delete2.png"));
+
+		btnSelectInvert = new JButton();
+		btnSelectInvert.setIcon(isIcon);
+		btnSelectInvert.setPreferredSize(new Dimension(25, 25));
+		btnSelectInvert.setMaximumSize(new Dimension(25, 25));
+		fileField = new JTextField();
+		add(fileField, "cell 2 1,growx,aligny bottom");
+		browseButton = new JButton();
+		add(browseButton, "cell 3 1");
+		addButton = new JButton();
+		add(addButton, "cell 4 1");
+
+		panel = new JPanel();
+		add(panel, "cell 1 2 4 1,grow");
+		panel.setLayout(new MigLayout("", "[grow][]", "[grow,fill]"));
+		fileList = new JList();
+		scrollPane = new JScrollPane();
+		panel.add(scrollPane, "cell 0 0,growx");
+
 		fileList.setModel(new DefaultListModel());
 		scrollPane.setViewportView(fileList);
-		
-		add(scrollPane, java.awt.BorderLayout.CENTER);
-		
-		Box bottomBox = Box.createHorizontalBox();
-		bottomBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-		
-		selectAllButton.putClientProperty( "JButton.buttonType", "segmentedTextured" );
-		selectAllButton.putClientProperty( "JButton.segmentPosition", "middle" );
-		selectNoneButton.putClientProperty( "JButton.buttonType", "segmentedTextured" );
-		selectNoneButton.putClientProperty( "JButton.segmentPosition", "last" );
-		removeSelectedButton.putClientProperty( "JButton.buttonType", "segmentedTextured" );
-		removeSelectedButton.putClientProperty( "JButton.segmentPosition", "first" );
-		
-		removeAll.putClientProperty("JButton.buttonType", "textured");
-		
-		bottomBox.add(removeSelectedButton);
-		bottomBox.add(selectAllButton);
-		bottomBox.add(selectNoneButton);
-		bottomBox.add(Box.createHorizontalGlue());
-		bottomBox.add(removeAll);
-		
-		add(bottomBox, java.awt.BorderLayout.PAGE_END);
+
+		selectPanel = new JPanel();
+		panel.add(selectPanel, "cell 1 0");
+		selectPanel.setLayout(new MigLayout("", "[22px,left]",
+				"[22px][][][grow][]"));
+
+		selectAllButton = new JButton();
+		selectPanel.add(selectAllButton, "cell 0 0,alignx left,aligny center");
+		selectAllButton.setIcon(saIcon);
+		selectAllButton.setPreferredSize(new Dimension(25, 25));
+		selectAllButton.setMaximumSize(new Dimension(25, 25));
+		selectAllButton.putClientProperty("JButton.buttonType",
+				"segmentedTextured");
+		selectAllButton.putClientProperty("JButton.segmentPosition", "middle");
+
+		selectNoneButton = new JButton();
+		selectPanel.add(selectNoneButton, "cell 0 1,alignx left,aligny center");
+		selectNoneButton.setIcon(snIcon);
+		selectNoneButton.setPreferredSize(new Dimension(25, 25));
+		selectNoneButton.setMaximumSize(new Dimension(25, 25));
+		selectNoneButton.putClientProperty("JButton.buttonType",
+				"segmentedTextured");
+		selectNoneButton.putClientProperty("JButton.segmentPosition", "last");
+
+		removeSelectedButton = new JButton();
+		selectPanel.add(removeSelectedButton,
+				"cell 0 2,alignx left,aligny center");
+		removeSelectedButton.setIcon(rsIcon);
+		removeSelectedButton.setPreferredSize(new Dimension(25, 25));
+		removeSelectedButton.setMaximumSize(new Dimension(25, 25));
+		removeSelectedButton.putClientProperty("JButton.buttonType",
+				"segmentedTextured");
+		removeSelectedButton.putClientProperty("JButton.segmentPosition",
+				"last");
+
+		removeAll = new JButton();
+		selectPanel.add(removeAll, "cell 0 4");
+		removeAll.setIcon(raIcon);
+		removeAll.setPreferredSize(new Dimension(25, 25));
+		removeAll.setMaximumSize(new Dimension(25, 25));
+		removeAll.putClientProperty("JButton.buttonType", "segmentedTextured");
+		removeAll.putClientProperty("JButton.segmentPosition", "last");
+
+		lblTreatFilesAs = new JLabel(I18n.getText("view.files.treatas"));
+		add(lblTreatFilesAs, "cell 0 3,alignx trailing");
+
+		cboTreatAs = new JComboBox();
+		add(cboTreatAs, "cell 2 3 3 1,alignx left");
+		cboTreatAs.setModel(new DefaultComboBoxModel(new String[] {
+				I18n.getText("view.files.treatas.separate"),
+				I18n.getText("view.files.treatas.oneproject"),
+				I18n.getText("view.files.treatas.oneobject") }));
 	}
-	
+
 	private void addListeners() {
-		
+
 		selectAllButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -163,34 +218,48 @@ public class FileListPanel extends JPanel {
 				event.dispatch();
 			}
 		});
-		
+
 		inputFormat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String input = inputFormat.getSelectedItem().toString();
-				ConfigEvent event = new ConfigEvent(ConfigController.SET_INPUT_FORMAT, input);
+				ConfigEvent event = new ConfigEvent(
+						ConfigController.SET_INPUT_FORMAT, input);
 				event.dispatch();
 			}
 		});
-		
+
+		cboTreatAs.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String treatAs = cboTreatAs.getSelectedItem().toString();
+				ConfigEvent event = new ConfigEvent(
+						ConfigController.SET_TREAT_FILES_AS, treatAs);
+				event.dispatch();
+			}
+
+		});
+
 		fileField.getDocument().addDocumentListener(new DocumentListener() {
-			
+
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				// skip event to controller
 				model.setFileField(fileField.getText());
 			}
-			
+
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				// skip event to controller
 				model.setFileField(fileField.getText());
 			}
-			
+
 			@Override
-			public void changedUpdate(DocumentEvent e) {}
+			public void changedUpdate(DocumentEvent e) {
+			}
 		});
-		
+
 		ActionListener addFileListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -198,20 +267,19 @@ public class FileListPanel extends JPanel {
 				event.dispatch();
 			}
 		};
-		
-		// Handle files being dropped onto the file list 
-	    new  FileDrop( fileList, new FileDrop.Listener()
-	    {   public void  filesDropped( java.io.File[] files )
-	        {   
-	    		AddMultipleFilesEvent event = new AddMultipleFilesEvent(files);
-	    		event.dispatch();
-	    	
-	        }   // end filesDropped
-	    }); // end FileDrop.Listener
+
+		// Handle files being dropped onto the file list
+		new FileDrop(fileList, new FileDrop.Listener() {
+			public void filesDropped(java.io.File[] files) {
+				AddMultipleFilesEvent event = new AddMultipleFilesEvent(files);
+				event.dispatch();
+
+			} // end filesDropped
+		}); // end FileDrop.Listener
 
 		fileField.addActionListener(addFileListener);
 		addButton.addActionListener(addFileListener);
-		
+
 		browseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -219,7 +287,7 @@ public class FileListPanel extends JPanel {
 				event.dispatch();
 			}
 		});
-		
+
 		removeAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
@@ -228,32 +296,35 @@ public class FileListPanel extends JPanel {
 			}
 		});
 	}
-	
-	
+
 	public void populateLocale() {
-		fileFieldLabel.setText(I18n.getText("view.files.fileLabel"));
+		// ImageIcon snIcon = new
+		// ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/selectnone.png"));
+
 		browseButton.setText(I18n.getText("view.files.browse"));
 		addButton.setText(I18n.getText("view.files.add"));
-		selectAllButton.setText(I18n.getText("view.files.selectAll"));
-		selectNoneButton.setText(I18n.getText("view.files.selectNone"));
-		removeSelectedButton.setText(I18n.getText("view.files.removeSelected"));
-		removeAll.setText(I18n.getText("view.files.removeAll"));
-		
+
+		selectAllButton.setToolTipText(I18n.getText("view.files.selectAll"));
+		selectNoneButton.setToolTipText(I18n.getText("view.files.selectNone"));
+		btnSelectInvert.setToolTipText(I18n.getText("view.files.selectInvert"));
+		this.removeAll.setToolTipText(I18n.getText("view.files.removeAll"));
+		removeSelectedButton.setToolTipText(I18n
+				.getText("view.files.removeSelected"));
+
 		for (String s : InputFormat.getInputFormats()) {
 			inputFormat.addItem(s);
 		}
 	}
-	
+
 	public void linkModel() {
-	
+
 		// Try to remember last used format
-		if(TricycleModelLocator.getInstance().getLastUsedInputFormat()!=null)
-		{
-			inputFormat.setSelectedItem(TricycleModelLocator.getInstance().getLastUsedInputFormat());
-			model.setInputFormat(TricycleModelLocator.getInstance().getLastUsedInputFormat());
-		}
-		else
-		{
+		if (TricycleModelLocator.getInstance().getLastUsedInputFormat() != null) {
+			inputFormat.setSelectedItem(TricycleModelLocator.getInstance()
+					.getLastUsedInputFormat());
+			model.setInputFormat(TricycleModelLocator.getInstance()
+					.getLastUsedInputFormat());
+		} else {
 			inputFormat.setSelectedItem(model.getInputFormat());
 		}
 
@@ -261,60 +332,68 @@ public class FileListPanel extends JPanel {
 		DefaultListModel listModel = (DefaultListModel) fileList.getModel();
 		ArrayList<String> files = model.getInputFiles();
 		listModel.clear();
-		
+
 		// swing is doing weird stuff, so we space it out
 		try {
 			Thread.sleep(100);
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+		}
 		for (String file : files) {
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+			}
 			listModel.addElement(file);
 		}
 		fileField.setText(model.getFileField());
-		
+
 		// then listen for changes
 		model.addPropertyChangeListener(new PropertyChangeListener() {
-			
+
 			@SuppressWarnings("unchecked")
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				String prop = evt.getPropertyName();
-				log.debug("Property change event received: " + prop, evt.getNewValue());
-				
+				log.debug("Property change event received: " + prop,
+						evt.getNewValue());
+
 				if (prop.equals("inputFiles")) {
-					DefaultListModel model = (DefaultListModel) fileList.getModel();
-					ArrayList<String> files = (ArrayList<String>) evt.getNewValue();
+					DefaultListModel model = (DefaultListModel) fileList
+							.getModel();
+					ArrayList<String> files = (ArrayList<String>) evt
+							.getNewValue();
 					model.clear();
 					try {
 						Thread.sleep(100);
-					} catch (InterruptedException e) {}
+					} catch (InterruptedException e) {
+					}
 					for (String file : files) {
 						try {
 							Thread.sleep(10);
-						} catch (InterruptedException e) {}
+						} catch (InterruptedException e) {
+						}
 						model.addElement(file);
 					}
 					// fileList.setModel(model);
-				}
-				else if (prop.equals("fileField")) {
-					if (!fileField.getText().equals(evt.getNewValue().toString())) {
+				} else if (prop.equals("fileField")) {
+					if (!fileField.getText().equals(
+							evt.getNewValue().toString())) {
 						fileField.setText(evt.getNewValue().toString());
 					}
-				}else if (prop.equals("inputFormat")) {
+				} else if (prop.equals("inputFormat")) {
 					inputFormat.setSelectedItem(evt.getNewValue());
 				}
 				repaint();
 			}
 		});
-		
-		TricycleModel mwm = TricycleModelLocator.getInstance().getTricycleModel();
+
+		TricycleModel mwm = TricycleModelLocator.getInstance()
+				.getTricycleModel();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {
-			
+
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				
+
 				if (evt.getPropertyName().equals("lock")) {
 					boolean lock = (Boolean) evt.getNewValue();
 					if (lock) {
@@ -324,8 +403,7 @@ public class FileListPanel extends JPanel {
 						removeSelectedButton.setEnabled(false);
 						selectAllButton.setEnabled(false);
 						selectNoneButton.setEnabled(false);
-					}
-					else {
+					} else {
 						browseButton.setEnabled(true);
 						addButton.setEnabled(true);
 						fileField.setEnabled(true);
@@ -337,5 +415,5 @@ public class FileListPanel extends JPanel {
 			}
 		});
 	}
-	
+
 }

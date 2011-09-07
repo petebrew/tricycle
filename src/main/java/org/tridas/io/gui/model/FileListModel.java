@@ -42,6 +42,8 @@ public class FileListModel extends AbstractModel {
 	private String inputFormat = InputFormat.getInputFormats()[0];
 	private String fileField = null;
 	private final MVCArrayList<String> inputFiles = new MVCArrayList<String>();
+	private String treatAs = null;
+	
 	
 	public FileListModel() {}
 	
@@ -63,11 +65,23 @@ public class FileListModel extends AbstractModel {
 		firePropertyChange("inputFormat", old, inputFormat);
 	}
 	
+	public void setFilesTreatAs(String arg)
+	{
+		String old = treatAs;
+		treatAs = arg;
+		firePropertyChange("treatAs", old, treatAs);
+	}
+	
 	/**
 	 * @return the inputFormat
 	 */
 	public String getInputFormat() {
 		return inputFormat;
+	}
+	
+	public String getFilesTreatAs()
+	{
+		return treatAs;
 	}
 	
 	

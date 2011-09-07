@@ -22,6 +22,8 @@ import java.awt.Frame;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.WordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.AbstractDendroCollectionWriter;
 import org.tridas.io.AbstractDendroFileReader;
 import org.tridas.io.TridasIO;
@@ -29,6 +31,7 @@ import org.tridas.io.gui.I18n;
 import org.tridas.io.enums.Charsets;
 import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
+import org.tridas.io.gui.model.ConvertModel.TreatFilesAsOption;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.model.popup.MetadataEditorModel;
@@ -49,7 +52,9 @@ public class ConfigController extends FrontController {
 	public static final String SET_NAMING_CONVENTION = "TRIYCYCLE_CONFIG_SET_NAMING_CONVENTION";
 	public static final String SET_READING_CHARSET = "TRIYCYCLE_CONFIG_SET_READING_CHARSET";
 	public static final String SET_WRITING_CHARSET = "TRIYCYCLE_CONFIG_SET_WRITING_CHARSET";
-	
+	public static final String SET_TREAT_FILES_AS = "TRICYCLE_SET_TREAT_FILES_AS";
+	private static final Logger log = LoggerFactory.getLogger(ConfigController.class);
+
 	private final ConfigModel model;
 	
 	public ConfigController(ConfigModel argModel) {
@@ -61,6 +66,22 @@ public class ConfigController extends FrontController {
 		registerCommand(SET_WRITING_CHARSET, "setWritingCharset");
 		registerCommand(INPUT_DEFAULTS_PRESSED, "displayInputDefaults");
 		registerCommand(OUTPUT_DEFAULTS_PRESSED, "displayOutputDefaults");
+		registerCommand(SET_TREAT_FILES_AS, "setTreatFilesAs");
+	}
+	
+	public void setTreatFilesAs(MVCEvent argEvent){
+		
+		ConfigEvent event = (ConfigEvent) argEvent;
+		ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
+		
+		try{
+			log.debug("Event value = "+event.getValue());
+			log.debug("TreatFilesAsOption value = "+TreatFilesAsOption.fromStr(event.getValue()));
+			cmodel.setTreatFilesAs(TreatFilesAsOption.fromStr(event.getValue()));
+		} catch (Exception e)
+		{
+			log.error("Unable to interpret TreatFileAs from string: '" +event.getValue()+"'");
+		}
 	}
 	
 	public void setInputFormat(MVCEvent argEvent) {
