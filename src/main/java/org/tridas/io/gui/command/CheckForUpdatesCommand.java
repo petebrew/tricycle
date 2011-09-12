@@ -78,9 +78,20 @@ public class CheckForUpdatesCommand implements ICommand {
 		// Parse string version numbers into Integers
 		Integer available = 0;
 		Integer current = 0;
+		String currentVersion;
 		try{
+			// strip off snapshot from version if present
+			if(App.getBuildRevision().endsWith("-SNAPSHOT"))
+			{
+				currentVersion = App.getBuildRevision().substring(0, -9);
+			}
+			else
+			{
+				currentVersion = App.getBuildRevision();
+			}
+			
 			available = Integer.parseInt(availableVersion);
-			current = Integer.parseInt(App.getBuildRevision());
+			current = Integer.parseInt(currentVersion);
 		} catch (NumberFormatException e)
 		{
 			if(showConfirmation)
