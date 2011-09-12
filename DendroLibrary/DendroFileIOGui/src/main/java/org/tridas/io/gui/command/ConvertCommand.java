@@ -166,8 +166,6 @@ public class ConvertCommand implements ICommand {
 		}
 		else
 		{
-			
-
 			// Treat files separately
 			convertFiles(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
 					event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);

@@ -82,6 +82,9 @@ public class OptionsWindow extends JDialog {
 	private JLabel lblReaderCRS;
 	private JComboBox cboWriterCRS;
 	private JLabel lblWriterCRS;
+	private JPanel readingPanel;
+	private JLabel lblInputCharacterSet;
+	private JLabel lblWritingCharacterSet;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -101,11 +104,11 @@ public class OptionsWindow extends JDialog {
 		getContentPane().setLayout(new MigLayout("", "[451.00px,grow]", "[][][][19.00,grow,fill][]"));
 		readingDefaults = new JButton();
 		
-		JPanel readingPanel = new JPanel();
+		readingPanel = new JPanel();
 		getContentPane().add(readingPanel, "cell 0 0,growx");
-		readingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Reading Config", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		readingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.readingPanel"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		readingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][25px][25px]"));
-		JLabel lblInputCharacterSet = new JLabel("Input character set:");
+		lblInputCharacterSet = new JLabel("Input character set:");
 		readingPanel.add(lblInputCharacterSet, "cell 0 0,alignx right");
 		readingCharset = new JComboBox();
 		readingPanel.add(readingCharset, "cell 1 0");
@@ -125,7 +128,7 @@ public class OptionsWindow extends JDialog {
 		
 		JPanel writingPanel = new JPanel();
 		getContentPane().add(writingPanel, "cell 0 1,growx");
-		writingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Writer Config", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		writingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.writerPanel"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		writingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][][25px][25px]"));
 		JLabel lblNamingConvention = new JLabel("Naming convention:");
 		writingPanel.add(lblNamingConvention, "cell 0 0,alignx right");
@@ -133,7 +136,7 @@ public class OptionsWindow extends JDialog {
 		writingPanel.add(namingConvention, "cell 1 0");
 		
 		namingConvention.setEditable(false);
-		JLabel lblWritingCharacterSet = new JLabel("Writing character set:");
+		lblWritingCharacterSet = new JLabel("Writing character set:");
 		writingPanel.add(lblWritingCharacterSet, "cell 0 1,alignx right");
 		writingCharset = new JComboBox();
 		writingPanel.add(writingCharset, "cell 1 1");
@@ -149,7 +152,7 @@ public class OptionsWindow extends JDialog {
 		writingPanel.add(writingDefaults, "cell 0 3 2 1,alignx right,growy");
 		
 		privacyPanel = new JPanel();
-		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Privacy and Updates", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.privacyandupdates"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		getContentPane().add(privacyPanel, "cell 0 2,growx");
 		privacyPanel.setLayout(new MigLayout("", "[670px]", "[23px][23px]"));
 		
@@ -282,6 +285,13 @@ public class OptionsWindow extends JDialog {
 		FileListModel fmodel = loc.getFileListModel();
 		ConvertModel cmodel = loc.getConvertModel();
 		setTitle(I18n.getText("view.options.title"));
+				
+		
+		lblInputCharacterSet.setText(I18n.getText("view.options.input.charset"));
+		lblWritingCharacterSet.setText(I18n.getText("view.options.output.charset"));
+		lblReaderCRS.setText(I18n.getText("view.options.crs")+":");
+		lblWriterCRS.setText(I18n.getText("view.options.crs")+":");
+
 		readingDefaults.setText(I18n.getText("view.options.input.defaults", fmodel.getInputFormat()));
 		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
 		okButton.setText(I18n.getText("view.options.ok"));
