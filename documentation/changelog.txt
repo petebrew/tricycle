@@ -1,5 +1,13 @@
 TRiCYCLE Changelog:
 
+Changes from 0.2.5 to 0.2.6
+- Updated translations for Dutch, Spanish and French
+- Added ability to force files to be read as single project or object
+- Added genericField containing original filename.  Useful for DCCD/TRiDaBASE users
+- Fixed bug in BC year handling in Tucson writer
+- Fixed handling of undated series in WinDendro reader
+- Added handling for byte order markers at the beginning of XML files
+
 Changes from 0.2.4 to 0.2.5
 - Added Keycode naming convention.
 - Implementation of support for Coordinate Reference Systems (see documentation) including:
