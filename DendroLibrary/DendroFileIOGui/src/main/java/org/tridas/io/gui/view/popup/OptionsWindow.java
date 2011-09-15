@@ -85,6 +85,7 @@ public class OptionsWindow extends JDialog {
 	private JPanel readingPanel;
 	private JLabel lblInputCharacterSet;
 	private JLabel lblWritingCharacterSet;
+	private JLabel lblNamingConvention;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -130,7 +131,7 @@ public class OptionsWindow extends JDialog {
 		getContentPane().add(writingPanel, "cell 0 1,growx");
 		writingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.writerPanel"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		writingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][][25px][25px]"));
-		JLabel lblNamingConvention = new JLabel("Naming convention:");
+		lblNamingConvention = new JLabel("Naming convention:");
 		writingPanel.add(lblNamingConvention, "cell 0 0,alignx right");
 		namingConvention = new JComboBox();
 		writingPanel.add(namingConvention, "cell 1 0");
@@ -291,7 +292,7 @@ public class OptionsWindow extends JDialog {
 		lblWritingCharacterSet.setText(I18n.getText("view.options.output.charset"));
 		lblReaderCRS.setText(I18n.getText("view.options.crs")+":");
 		lblWriterCRS.setText(I18n.getText("view.options.crs")+":");
-
+		lblNamingConvention.setText(I18n.getText("view.options.output.naming")+":");
 		readingDefaults.setText(I18n.getText("view.options.input.defaults", fmodel.getInputFormat()));
 		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
 		okButton.setText(I18n.getText("view.options.ok"));
