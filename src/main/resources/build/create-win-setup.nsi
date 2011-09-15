@@ -2,7 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "TRiCYCLE"
-!define PRODUCT_VERSION "0.2.6-SNAPSHOT"
+!define PRODUCT_NAME_LC "tricycle"
+!define PRODUCT_VERSION "${project.version}"
 !define PRODUCT_PUBLISHER "TRiDaS Team"
 !define PRODUCT_WEB_SITE "http://www.tridas.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
@@ -15,7 +16,7 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "../src/main/resources/icons/application.ico"
+!define MUI_ICON "../../../src/main/resources/icons/application.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Language Selection Dialog Settings
@@ -26,7 +27,7 @@
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "..\package-includes\LICENSE.txt"
+!insertmacro MUI_PAGE_LICENSE "..\license\LICENSE.txt"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Start menu page
@@ -40,7 +41,7 @@ var ICONS_GROUP
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+!define MUI_FINISHPAGE_RUN "..\..\..\target\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -57,7 +58,7 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\target\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
+OutFile "..\..\..\target\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}-setup.exe"
 ;OutFile "c:\temp\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
@@ -72,14 +73,14 @@ Section "MainSection" SEC01
   SetShellVarContext all
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-    File "..\target\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
-    File "..\documentation\tricycle-manual.pdf"
+    File "..\..\..\target\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
+    File "..\..\..\documentation\tricycle-manual.pdf"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
-  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
+  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -92,10 +93,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -117,7 +118,7 @@ Section Uninstall
   SetShellVarContext all
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   Delete "$INSTDIR\uninst.exe"
-  Delete "$INSTDIR\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+  Delete "$INSTDIR\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}.exe"
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME} Manual.lnk"

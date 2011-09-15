@@ -3,6 +3,7 @@ TRiCYCLE Changelog:
 Changes from 0.2.5 to 0.2.6
 - Updated translations for Dutch, Spanish and French
 - Added ability to force files to be read as single project or object
+- Altered file selection GUI to cope with above
 - Added genericField containing original filename.  Useful for DCCD/TRiDaBASE users
 - Fixed bug in BC year handling in Tucson writer
 - Fixed handling of undated series in WinDendro reader

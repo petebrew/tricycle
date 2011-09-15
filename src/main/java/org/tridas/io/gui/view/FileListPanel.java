@@ -85,7 +85,6 @@ public class FileListPanel extends JPanel {
 	private JLabel lblFiles;
 	private JLabel lblTreatFilesAs;
 	private JPanel selectPanel;
-	private JButton btnSelectInvert;
 	private JPanel panel;
 
 	public FileListPanel(FileListModel argModel) {
@@ -113,15 +112,11 @@ public class FileListPanel extends JPanel {
 				+ iconSize + "/selectnone.png"));
 		ImageIcon rsIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 				+ iconSize + "/delete.png"));
-		ImageIcon isIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
-				+ iconSize + "/selectinvert.png"));
+		//ImageIcon isIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+		//		+ iconSize + "/selectinvert.png"));
 		ImageIcon raIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 				+ iconSize + "/delete2.png"));
 
-		btnSelectInvert = new JButton();
-		btnSelectInvert.setIcon(isIcon);
-		btnSelectInvert.setPreferredSize(new Dimension(25, 25));
-		btnSelectInvert.setMaximumSize(new Dimension(25, 25));
 		fileField = new JTextField();
 		add(fileField, "cell 2 1,growx,aligny bottom");
 		browseButton = new JButton();
@@ -306,7 +301,6 @@ public class FileListPanel extends JPanel {
 
 		selectAllButton.setToolTipText(I18n.getText("view.files.selectAll"));
 		selectNoneButton.setToolTipText(I18n.getText("view.files.selectNone"));
-		btnSelectInvert.setToolTipText(I18n.getText("view.files.selectInvert"));
 		this.removeAll.setToolTipText(I18n.getText("view.files.removeAll"));
 		removeSelectedButton.setToolTipText(I18n
 				.getText("view.files.removeSelected"));
