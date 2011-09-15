@@ -48,7 +48,7 @@ backgroundcolor=\color{lgrey},  % choose the background color. You must add \use
 \title{TRiCYCLE Users Manual}
 \author{Peter Brewer, Daniel Murphy and Esther Jansma}
 \publishers{\footnotesize{Cornell University, Ithaca, New York \\ Cultural Heritage Agency (RCE/OCW), Amersfoort, The Netherlands }}
-\date{Version 0.2.4}
+\date{Version 0.2.6}
 
 \renewcommand{\bibname}{References}
 
@@ -146,15 +146,11 @@ tridas.sf.net} website.
  \item[Windows] - Run the setup program and follow the steps. The program will be installed to your hard disk
 and shortcuts added to your start menu. If you do not have Java installed on your system or
 you do not have the required version the installer will provide you with assistance to do so.
- \item[Mac OSX] - Open the .dmg file in Finder. Drag the TRiCYCLE.app file into your Applications folder, or
+ \item[Mac OSX] - Open the .zip file in Finder. Drag the TRiCYCLE.app file into your Applications folder, or
 wherever you'd like it installed. MacOSX comes pre-installed with Java so there is no need
 to install it separately.
- \item[Linux] - An Ubuntu deb package is provided for TRiCYCLE. Install this package with your standard
-package manager (e.g. sudo dpkg --install TRiCYCLE\_X.X.deb). It includes information
-on the required dependencies therefore it should install everything you need if you are
-running Ubuntu. On other distributions you may find that the dependencies do not install
-automatically and the TRiCYCLE installation fails. If this is the case you will have to install
-sun-java6-jre first manually.
+ \item[Linux] - There are TRiCYCLE packages for both deb and rpm based distributions. The deb package has been tested on Ubuntu and Debian, and the RPM package has been tested on Fedora and SuSE.  Install the correct package for your distribution using your preferred package manager.  On Ubuntu for instance you can instance TRiCYCLE with GDebi or on the command line with \verb|sudo dpkg --install tricycle\_X.X.deb|. The packages include information
+on the required dependencies therefore they should install everything you need. However, if this does not happen on your distribution you may need to install Java 6 (either Sun or OpenJDK) manually first.
 \end{description}
 
 
@@ -173,12 +169,9 @@ can be done in a variety of ways:
 Windows or Nautilus, Dolphin, Konqueror etc on Linux).
 \end{itemize*}
 
-Once you have your list of files prepared you can then go to the Convert tab.
+The pull down box at the bottom of the page gives you the option of forcing TRiCYCLE to treat the selected files as multiple projects, one project or one object.  Many of the legacy formats do not contain enough metadata to determine if they are from one or more projects/objects, therefore this option enables you to override the default behaviour.  Please note that the `one project' and `one object' options are still experimental.  You may find that warning information is limited when selecting one of these options.   
 
-On the Convert page, the next thing you need to do is select the desired output format from the drop down
-list. Next, press the convert button and after a short delay your files should appear in the list below. At the
-bottom of the window, you'll see a summary showing how many files were processed, how many of the
-conversions failed and how many were converted successfully but with warnings.
+Once you have your list of files prepared you can then go to the Convert tab. On the Convert page, the next thing you need to do is select the desired output format from the drop down list. Next, press the convert button and after a short delay your files should appear in the list below. At the bottom of the window, you'll see a summary showing how many files were processed, how many of the conversions failed and how many were converted successfully but with warnings.
 
 
 The results of the conversion are shown in a tree view on the convert tab. Files that failed to convert are
