@@ -219,13 +219,14 @@
 	
 	<!-- Create launch scripts for Linux builds with correct version number -->
 	<resources>
-	  <resource>
+	  <!-- <resource>
         <directory>lin-specific</directory>
         <filtering>true</filtering>
-      </resource>
+      </resource>-->
 
   	<resource>
   		<directory>src/main/resources</directory>
+  		<filtering>true</filtering>
   	</resource>
 
 	</resources>
@@ -437,7 +438,7 @@
 									</mapper>
 								</data>
 								<data>
-									<src>target/classes/tricycle</src>
+									<src>target/classes/build/tricycle</src>
 									<type>file</type>
 									<mapper>
 										<type>perm</type>
@@ -446,7 +447,7 @@
 									</mapper>
 								</data>
 								<data>
-									<src>target/classes/tricycle.desktop</src>
+									<src>target/classes/build/tricycle.desktop</src>
 									<type>file</type>
 									<mapper>
 										<type>perm</type>
@@ -478,7 +479,7 @@
 
 			<!--  Create a Linux RPM installer 
 			      n.b. Requires rpmbuild to function -->
-			<plugin>
+			 <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>rpm-maven-plugin</artifactId>
 				<version>2.1-alpha-1</version>
@@ -496,10 +497,11 @@
 					<icon>/usr/share/pixmaps/tricycle.xpm</icon>
 					<packager>TRiDaS</packager>
 					<prefix>/usr/local</prefix>
-					<!-- <changelogFile>documentation/changelog.txt</changelogFile>-->
+					<!-- <changelogFile>documentation/changelog.txt</changelogFile> -->
 					<!-- <requires>
     					<require>jre.i586</require>
 					</requires>-->
+					 
 					<mappings>					
 						<mapping>
 							<directory>/usr/share/tricycle</directory>
@@ -519,7 +521,7 @@
 							<groupname>root</groupname>
 							<sources>
 								<source>
-									<location>${project.build.directory}/classes/tricycle</location>
+									<location>${project.build.directory}/classes/build/tricycle</location>
 								</source>
 							</sources>
 						</mapping>
@@ -530,7 +532,7 @@
 							<groupname>root</groupname>
 							<sources>
 								<source>
-									<location>${project.build.directory}/classes/tricycle.desktop</location>
+									<location>${project.build.directory}/classes/build/tricycle.desktop</location>
 								</source>
 							</sources>
 						</mapping>		
@@ -544,7 +546,7 @@
 									<location>src/main/resources/icons/32x32/tricycle.xpm</location>
 								</source>
 							</sources>
-						</mapping>					
+						</mapping>				
 					</mappings>
 					<preinstallScriptlet>
 						<script>echo "Installing TRiCYCLE now"</script>
@@ -597,15 +599,10 @@
 				<configuration>
 					<additionalResources>
 						<fileSet>
-							<directory>${basedir}/package-includes</directory>
-							<includes>
-								<include>**</include>
-							</includes>
-						</fileSet>
-						<fileSet>
 							<directory>${basedir}/documentation/</directory>
 							<includes>
 								<include>tricycle-manual.pdf</include>
+								<include>changelog.txt</include>
 							</includes>
 						</fileSet>
 					</additionalResources>
@@ -614,7 +611,7 @@
 					<mainClass>org.tridas.io.gui.App</mainClass>
 					<jvmVersion>1.6+</jvmVersion>
 					<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
-					<javaApplicationStub>${basedir}/mac-specific/JavaApplicationStub</javaApplicationStub>
+					<javaApplicationStub>${basedir}/src/main/resources/build/JavaApplicationStub</javaApplicationStub>
 				</configuration>
 				<executions>
 					<execution>
@@ -623,6 +620,57 @@
 							<goal>bundle</goal>
 						</goals>
 					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- Nasty kludge fixes.  Tasks that Maven can 
+			not perform are	done by running Ant instead-->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					
+					<!-- Run Makensis to create the windows installer -->
+					<execution>
+						<id>RunNSIS</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
+									classpathref="maven.plugin.classpath"/>
+								  <!-- <trycatch>
+									<try>-->
+								      <exec dir="target/classes/build" executable="makensis">  
+								        <arg value="create-win-setup.nsi"/>  
+								      </exec>   
+								    <!-- </try>
+								    <catch>
+										<echo message="Unable to create Windows setup executable"/>
+									</catch>
+								</trycatch>-->
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>					
+					</execution>
+					
+					<!--  Copy the RPM into the target folder -->
+					<execution>
+						<id>CopyRPMFile</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
+									classpathref="maven.plugin.classpath"/>
+							      <copy file="${project.build.directory}/rpm/tricycle/RPMS/noarch/${project.build.finalName}-1.noarch.rpm" tofile="${project.build.directory}/${project.build.finalName}-1.noarch.rpm" failonerror="false"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>					
+					</execution>
+					
 				</executions>
 			</plugin>
 
