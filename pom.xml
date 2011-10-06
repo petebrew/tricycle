@@ -209,7 +209,7 @@
         <dependency>
         	<groupId>org.tridas</groupId>
         	<artifactId>dendrofileio</artifactId>
-        	<version>1.0.3</version>
+        	<version>1.0.4</version>
         </dependency>
 	</dependencies>
 
@@ -359,6 +359,7 @@
 			</plugin>
 
 			<!--  Use shade to create a single jar containing all the dependencies --> 
+			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -390,6 +391,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			
 <!-- 			
 			<plugin>
