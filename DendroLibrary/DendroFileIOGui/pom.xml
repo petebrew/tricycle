@@ -496,7 +496,7 @@
 					<copyright>Apache 2.0</copyright>
 					<distribution>TRiCYCLE</distribution>
 					<group>Applications/File</group>
-					<icon>/usr/share/pixmaps/tricycle.xpm</icon>
+					<icon>src/main/resources/icons/32x32/tricycle.xpm</icon>
 					<packager>TRiDaS</packager>
 					<prefix>/usr/local</prefix>
 					<!-- <changelogFile>documentation/changelog.txt</changelogFile> -->
@@ -665,7 +665,15 @@
 							<tasks>
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
 									classpathref="maven.plugin.classpath"/>
-							      <copy file="${project.build.directory}/rpm/tricycle/RPMS/noarch/${project.build.finalName}-1.noarch.rpm" tofile="${project.build.directory}/${project.build.finalName}-1.noarch.rpm" failonerror="false"/>
+									<!--  <copy file="${project.build.directory}/rpm/tricycle/RPMS/noarch/${project.build.finalName}*.noarch.rpm" tofile="${project.build.directory}/${project.build.finalName}-1.noarch.rpm" failonerror="false"/>-->
+									<copy todir="${project.build.directory}">
+									   <fileset dir="${project.build.directory}/rpm/tricycle/RPMS/noarch/">
+		
+									   </fileset>
+									   
+									   
+									</copy>
+									
 							</tasks>
 						</configuration>
 						<goals>
