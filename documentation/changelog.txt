@@ -1,5 +1,14 @@
 TRiCYCLE Changelog:
 
+Changes from 0.2.6 to 0.2.7
+- Added Danish translation
+- Added Cracow-reader support
+- Fixed bug for detecting missing ring values in Tucson format 
+- Auto select file filter in browse dialog depending on the format specified in the main file list window
+- Fixed bug in calculating DateEnd in Heidelberg writer 
+- Implemented 'stacked' Heidelberg writing
+
+
 Changes from 0.2.5 to 0.2.6
 - Updated translations for Dutch, Spanish and French
 - Added ability to force files to be read as single project or object

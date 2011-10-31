@@ -468,6 +468,57 @@ Chronology files are indicated at position 84 in the file header and contain add
 
 \index{File formats!CATRAS|)}
 
+
+\chapter{Cracow Binary Format}
+\index{File formats!Cracow|(}
+\begin{table*}[htbp]
+\label{summary:csv}
+\begin{center}
+\begin{tabular*}{15cm}{ l @{\extracolsep{\fill}} p{9cm} }
+  \toprule
+
+Format name     	 & Cracow Binary Format\\
+Other name(s)      	 & Cracow \\
+Type      	 	 & Binary file\\
+Extension(s)      	 & AVR and AVS\\
+Read/write support     	 & Read  \\
+Reference implementation & Unknown\\
+Data / metadata      	 & Data only\\
+Calendar type		 & n/a\\
+Absolute dating support	 & No\\
+Undated series support   & Yes\\
+Relative dating support  & No\\
+Multi series support	 & No\\
+Original designer	 & Unknown\\
+
+\bottomrule
+\end{tabular*}
+\end{center}
+\end{table*}
+
+\section{Description}
+
+This is a binary format used primarily in Polish labs (e.g. AGH-UST in Cracow,
+Universities in Szczecin, Torun and Katowice).  It is a simple data-only format with no support for calendars or dating.  There are two types of file (AVR and AVS) but the format for them is identical, the only difference being that the AVR extension indicates the file is a measurement series file and AVS extension indicates a chronology file.
+
+The file begins with a six character header:
+
+\begin{enumerate*}
+ \item Zero
+ \item Ring number where sapwood begins
+ \item Zero
+ \item Ring number where sapwood ends (also length of sample)
+ \item Zero
+ \item Zero
+\end{enumerate*}
+
+If there is no sapwood recorded, then bytes 2 and 4 will both be zero.  The zero bytes at positions 1, 3, 5 and 6 can be used as a signature to check the file is in Cracow format.
+
+Following the six header bytes, there comes the ring width values.   Each ring value is stored in two bytes, the second containing the values from 0 to 99 and the first contains the values >100.  For instance the ring value 345 would be stored in two values, 3 and 45.  
+
+
+\index{File formats!Cracow|)}
+
 \chapter{Comma Separated Values}
 \index{File formats!CSV|(}
 \index{File formats!Comma Separated Values|see{CSV}}
