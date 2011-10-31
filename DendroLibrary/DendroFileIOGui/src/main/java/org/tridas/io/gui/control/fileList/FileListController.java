@@ -91,18 +91,28 @@ public class FileListController extends FrontController {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setMultiSelectionEnabled(true);
-
-		// Add file filters
+		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
+		
+		// Add 'all files' file filter and set to default
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setAcceptAllFileFilterUsed(true);
+		fc.setFileFilter(fc.getAcceptAllFileFilter());
+		
+		// Loop through formats and create filters for each
 		ArrayList<DendroFileFilter> filters = TridasIO.getFileFilterArray();
 		Collections.sort(filters);
 		for(DendroFileFilter filter : filters)
 		{
 			fc.addChoosableFileFilter(filter);
+			
+			// If this is the format set in the main GUI then select it
+			if(filter.getFormatName().equals(model.getInputFormat()))
+			{
+				fc.setFileFilter(filter);
+			}
 		}
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setAcceptAllFileFilterUsed(true);
 
-		
+		// Pick the last used directory by default
 		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
 			fc.setCurrentDirectory(lastDirectory);
@@ -120,9 +130,7 @@ public class FileListController extends FrontController {
 		if (files == null) {
 			return;
 		}
-		
-		FileListModel model = TricycleModelLocator.getInstance().getFileListModel();
-		
+				
 		HashSet<String> s = new HashSet<String>();
 		for (File file : files) {
 			s.add(file.getAbsolutePath());
