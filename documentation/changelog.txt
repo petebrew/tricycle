@@ -1,12 +1,16 @@
 TRiCYCLE Changelog:
 
+- Added check for stray characters in Heidelberg format
+
 Changes from 0.2.6 to 0.2.7
 - Added Danish translation
 - Added Cracow-reader support
 - Fixed bug for detecting missing ring values in Tucson format 
 - Auto select file filter in browse dialog depending on the format specified in the main file list window
 - Fixed bug in calculating DateEnd in Heidelberg writer 
-- Implemented 'stacked' Heidelberg writing
+- Implemented 'stacked' and 'unstacked' Heidelberg writing
+- Improved logic for naming output files when they contain multiple series
+- Warn and skip if writing a file with just metadata and no data values
 
 
 Changes from 0.2.5 to 0.2.6
