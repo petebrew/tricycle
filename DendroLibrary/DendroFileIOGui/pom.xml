@@ -68,11 +68,11 @@
 	<distributionManagement>
 	    <repository>
 	      <id>tridas-releases</id>
-	      <url>http://maven.tridas.org/repository/tridas-releases/</url>
+	      <url>http://www.tridas.org:8080/archiva/repository/tridas-releases/</url>
 	    </repository>
 	    <snapshotRepository>
 	      <id>tridas-snapshots</id>
-	      <url>http://maven.tridas.org/repository/tridas-snapshots/</url>
+	      <url>http://www.tridas.org:8080/archiva/repository/tridas-snapshots/</url>
 	    </snapshotRepository>
 	</distributionManagement>
 
@@ -86,28 +86,28 @@
 		</repository>
 		
 		<!-- TRiDaS -->
-	    <repository>
-	      <id>tridas-releases</id>
-	      <name>TRiDaS Maven Releases Repository</name>
-	      <url>http://maven.tridas.org/repository/tridas-releases/</url>
-	      <releases>
-	        <enabled>true</enabled>
-	      </releases>
-	      <snapshots>
-	        <enabled>false</enabled>
-	      </snapshots>
-	    </repository>
-	    <repository>
-	      <id>tridas-snapshots</id>
-	      <name>TRiDaS Maven Snapshots Repository</name>
-	      <url>http://maven.tridas.org/repository/tridas-snapshots/</url>
-	      <releases>
-	        <enabled>false</enabled>
-	      </releases>
-	      <snapshots>
-	        <enabled>true</enabled>
-	      </snapshots>
-	    </repository>
+		<repository>
+			<id>tridas-releases</id>
+			<name>TRiDaS Maven Releases Repository</name>
+			<url>http://www.tridas.org:8080/archiva/repository/tridas-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>tridas-snapshots</id>
+			<name>TRiDaS Maven Snapshots Repository</name>
+			<url>http://www.tridas.org:8080/archiva/repository/tridas-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 	    
 	    <!-- Codehaus -->
         <repository>

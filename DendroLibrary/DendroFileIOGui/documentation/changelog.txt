@@ -11,6 +11,7 @@ Changes from 0.2.6 to 0.2.7
 - Implemented 'stacked' and 'unstacked' Heidelberg writing
 - Improved logic for naming output files when they contain multiple series
 - Warn and skip if writing a file with just metadata and no data values
+- Handle blank lines in Heidelberg reader
 
 
 Changes from 0.2.5 to 0.2.6
