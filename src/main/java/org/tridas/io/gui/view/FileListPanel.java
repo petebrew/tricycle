@@ -106,16 +106,28 @@ public class FileListPanel extends JPanel {
 
 		lblFiles = new JLabel(I18n.getText("view.main.file") + ":");
 		add(lblFiles, "cell 0 1,aligny bottom");
-		ImageIcon saIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+		
+		ImageIcon saIcon = null;
+		ImageIcon snIcon = null;
+		ImageIcon rsIcon = null;
+		ImageIcon raIcon = null;
+		
+		try{
+		 saIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 				+ iconSize + "/selectall.png"));
-		ImageIcon snIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+		 snIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 				+ iconSize + "/selectnone.png"));
-		ImageIcon rsIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+		 rsIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 				+ iconSize + "/delete.png"));
 		//ImageIcon isIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 		//		+ iconSize + "/selectinvert.png"));
-		ImageIcon raIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
+		 raIcon = new ImageIcon(IOUtils.getFileInJarURL("icons/"
 				+ iconSize + "/delete2.png"));
+		} catch (NullPointerException e)
+		{
+			log.error("Failed to find icon for icon size " +iconSize);
+			e.printStackTrace();
+		}
 
 		fileField = new JTextField();
 		add(fileField, "cell 2 1,growx,aligny bottom");
