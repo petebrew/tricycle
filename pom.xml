@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.tridas</groupId>
 	<artifactId>tricycle</artifactId>
-	<version>0.2.7-SNAPSHOT</version>
+	<version>0.2.7</version>
 	<name>TRiCYCLE</name>
 	<description>Universal dendro data file converter</description>
 	<licenses>
@@ -68,11 +68,11 @@
 	<distributionManagement>
 	    <repository>
 	      <id>tridas-releases</id>
-	      <url>http://www.tridas.org:8080/archiva/repository/tridas-releases/</url>
+	      <url>http://maven.tridas.org/repository/tridas-releases/</url>
 	    </repository>
 	    <snapshotRepository>
 	      <id>tridas-snapshots</id>
-	      <url>http://www.tridas.org:8080/archiva/repository/tridas-snapshots/</url>
+	      <url>http://maven.tridas.org/repository/tridas-snapshots/</url>
 	    </snapshotRepository>
 	</distributionManagement>
 
@@ -89,7 +89,7 @@
 		<repository>
 			<id>tridas-releases</id>
 			<name>TRiDaS Maven Releases Repository</name>
-			<url>http://www.tridas.org:8080/archiva/repository/tridas-releases/</url>
+			<url>http://maven.tridas.org/repository/tridas-releases/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -100,7 +100,7 @@
 		<repository>
 			<id>tridas-snapshots</id>
 			<name>TRiDaS Maven Snapshots Repository</name>
-			<url>http://www.tridas.org:8080/archiva/repository/tridas-snapshots/</url>
+			<url>http://maven.tridas.org/repository/tridas-snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -170,7 +170,7 @@
 			<groupId>com.dmurph.mvc</groupId>
 			<artifactId>java-simple-mvc</artifactId>
 			<!-- <version>1.4.0.1</version>-->
-			<version>1.3.3</version>
+			<version>1.4.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
