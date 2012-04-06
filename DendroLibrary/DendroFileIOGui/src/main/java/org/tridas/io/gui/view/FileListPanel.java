@@ -194,6 +194,7 @@ public class FileListPanel extends JPanel {
 		cboTreatAs = new JComboBox();
 		add(cboTreatAs, "cell 2 3 3 1,alignx left");
 		cboTreatAs.setModel(new DefaultComboBoxModel(new String[] {
+				I18n.getText("view.files.treatas.readerDefault"),
 				I18n.getText("view.files.treatas.separate"),
 				I18n.getText("view.files.treatas.oneproject"),
 				I18n.getText("view.files.treatas.oneobject") }));
