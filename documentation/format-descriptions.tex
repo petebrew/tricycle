@@ -1052,6 +1052,140 @@ DATA:Double
 \index{File formats!Heidelberg|)}
 
 
+\chapter{KINSYS-KS}
+\index{File formats!KINSYS|(}
+\begin{table*}[htbp]
+\label{summary:kinsys}
+\begin{center}
+\begin{tabular*}{15cm}{ l @{\extracolsep{\fill}} p{9cm} }
+  \toprule
+
+Format name     	 & KINSYS-KS \\
+Other name(s)      	 & KINSYS, KINSYS/KS-Sauvala, MIT \\
+Type      	 	 & Text file \\
+Extension(s)      	 & .MIT \\
+Read/write support     	 & Read \\
+Reference implementation & KINSYS-KS \\
+Data / metadata      	 & Data and structured metadata \\
+Calendar type		 & Gregorian \\
+Absolute dating support	 & Yes \\
+Undated series support   & No \\
+Relative dating support  & No \\
+Multi series support	 & Yes \\
+Original designer	 & Unknown \\
+
+\bottomrule
+\end{tabular*}
+\end{center}
+\end{table*}
+
+
+\section{Description}
+The KINSYS-KS format was designed for use with the application of the same name at the Finnish Forest Research Institute -- Metla.  The format is for raw measurement series and contains both data and structured metadata.  The primary focus of the metadata fields included are for forestry sampling.
+
+The format allows for multiple data series within a single file, with each series beginning with a 14 line header, followed by multiple data lines, and finishing with the line \verb|*** DATA END ***|.  
+
+The first line of the header contains the date and time the file was created.  All subsequent header lines are numbered \#0, \#1, \#2 etc and contain one or more metadata fields delimited with a backslash as shown below:
+
+\begin{itemize*}
+ \item Measurement timestamp
+ \item \#0 - Project code / Project name / Responsible person
+ \item \#1 - Sampling date
+ \item \#2 - Ycoord / Xcoord / Elevation 
+ \item \#3 - Experiment / Period of measurement / Location
+ \item \#4 - Plot / Subplot
+ \item \#5 - Measurement series code / ID Code
+ \item \#6 - Tree species code
+ \item \#7 - Last measurement year / Subsample code
+ \item \#8 - Incomplete growth / estimated age increase / Last ring type
+ \item \#9 - Sampling azimuth / measurement direction / Sample height / Sample height code
+ \item \#10 - User defined parameters
+ \item \#11 - Number of tree rings in sample / Data type / Columns / Number of decimals
+ \item \#12 - Number of tree rings measured
+\end{itemize*}
+
+The meanings and formats of these fields are as follows:
+
+\begin{description*}
+ \item[Measurement timestamp] - This is the date and time that the file was created.  It is in the format dd-mm-yy hh:mm:ss
+ \item[Project code] - Administrative code for the project
+ \item[Project name] - Administrative name for the project
+ \item[Responsible person] - Person responsible for the project
+ \item[Sampling date] - Date the sample was taken formated dd.mm.yy
+ \item[Ycoord] - Y coordinate of the location of the site in Finnish KKJ Uniform Grid coordinates
+ \item[Xcoord]- X coordinate of the location of the site in Finnish KKJ Uniform Grid coordinates
+ \item[Elevation] - Elevation of the site in metres
+ \item[Experiment] - 
+ \item[Period of measurement] - 
+ \item[Location] - Name of site
+ \item[Plot] - Code number for the plot being sampled
+ \item[Subplot] - Code number of the sub-plot being sampled
+ \item[Measurement series code] - Code for the measurement series
+ \item[ID Code] - 
+ \item[Tree species code] - Species code using either the ITRDB or VMI Finnish National Forest Inventory schemes
+ \item[Last measurement year] - Calendar year for the last measurement 
+ \item[Subsample code] - Code for if the sample is broken into pieces - marked a,b,c etc.  `x' marks a problematic samples where there are difficulties in analysis
+ \item[Incomplete growth] - If the last incomplete growth ring is measured that this is set to `1', otherwise it is `0'
+ \item[Estimated age increase] - Estimate for the number of tree-rings between the birth of the tree and the pith at the sample height.  Taken from VMI correction tables produced on a site and regional basis
+ \item[Last ring type] - If the last incomplete ring is earlywood then this is marked as '1', otherwise it is marked as `2'
+ \item[Sampling azimuth] - Either a letter code for the radii measured, or an angle in degrees of the azimuth along the measurement radius
+ \item[Measurement direction] - Pith-to-bark = 0, Bark-to-pith = 1
+ \item[Sample height] - Height at which sample was taken
+ \item[Height code] - 
+ \item[User defined parameters] - Free-text information
+ \item[Number of tree rings in sample] - Number of rings in sample including those not measured.  If all rings were measured then this is indicated with a full-stop
+ \item[Data type] - Coded as: 90=ring-width, 91=height shoots, 92=volume growths, 93=earlywood, 94=latewood.  Defaults to 90=ring-width.
+ \item[Column with] - Number of digits the data is stored in. Default=3.
+ \item[Number of decimals] - Number of decimal places the values are stored in.  Default=2;
+ \item[Number of tree rings measured] - Number of rings that have been measured.
+\end{description*}
+
+\section{Example file}
+
+\begin{lstlisting}
+30-05-09 11:09:05
+# 0 Project Index/Timonen
+# 1 30.05.2009
+# 2 4905692/7596282/365
+# 3 100//Kalmankaltio
+# 4 110/1
+# 5 19/6787
+# 6 1
+# 7 2008
+# 8 0
+# 9 a
+# 10 Fire scars
+# 11 .
+# 12 25
+57
+57
+74
+76
+57
+51
+59
+90
+82
+95
+67
+78
+99
+79
+87
+112
+87
+88
+81
+77
+94
+110
+81
+108
+129
+*** DATA END ***
+\end{lstlisting}
+
+
 \chapter{Microsoft Excel 97/2000/XP}
 \index{File formats!Microsoft Excel 97/2000/XP|(}
 \index{File formats!Binary Interchange Format|see{Microsoft Excel 97/2000/XP}}

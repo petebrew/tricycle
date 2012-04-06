@@ -61,8 +61,10 @@ public class ConvertModel extends AbstractModel {
 			
 	public enum TreatFilesAsOption {
 		SEPARATE(I18n.getText("view.files.treatas.separate")), 
+		READER_DEFAULT(I18n.getText("view.files.treatas.readerDefault")),
 		ONE_PROJECT(I18n.getText("view.files.treatas.oneproject")),
 		ONE_OBJECT(I18n.getText("view.files.treatas.oneobject"));
+		
 		
 		private String str;
 		

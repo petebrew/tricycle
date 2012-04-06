@@ -164,6 +164,12 @@ public class ConvertCommand implements ICommand {
 			convertFilesIntoSingleObject(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
 					event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
 		}
+		else if(event.getTreatFilesAs().equals(TreatFilesAsOption.READER_DEFAULT))
+		{
+			// Let the file reader determine how to treat files
+			convertFiles(fileList.getInputFiles().toArray(new String[0]), fileList.getInputFormat(),
+					event.getReaderDefaults(), outputFormat, event.getWriterDefaults(), naming);
+		}
 		else
 		{
 			// Treat files separately

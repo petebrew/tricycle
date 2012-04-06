@@ -1,6 +1,12 @@
 TRiCYCLE Changelog:
 
 - Added check for stray characters in Heidelberg format
+- Intercept 'Weiserjahre' values from Corina/Tellervo in Heidelberg, Tucson and Bescancon writers
+- Improved metadata handling in Tucson reader
+- Added basic support for optional 'type' column in Tucson reader  
+- Implemented KINSYS reader
+- Implemented 'consolidation' routine for merging TRiDaS entities with the same title
+
 
 Changes from 0.2.6 to 0.2.7
 - Added Danish translation
