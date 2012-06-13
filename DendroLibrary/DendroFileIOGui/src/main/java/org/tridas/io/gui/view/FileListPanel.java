@@ -271,8 +271,25 @@ public class FileListPanel extends JPanel {
 		ActionListener addFileListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AddFileEvent event = new AddFileEvent(fileField.getText());
-				event.dispatch();
+				
+				if(fileField.getText()==null)
+				{
+					return;
+				}
+	
+				if(fileField.getText().contains(";"))
+				{
+					// If text field contains delimited files then split and add all
+					String[] files = fileField.getText().split(";");
+					AddMultipleFilesEvent event = new AddMultipleFilesEvent(files);
+					event.dispatch();
+				}
+				else
+				{				
+					// Else just add the one file
+					AddFileEvent event = new AddFileEvent(fileField.getText());
+					event.dispatch();
+				}
 			}
 		};
 
