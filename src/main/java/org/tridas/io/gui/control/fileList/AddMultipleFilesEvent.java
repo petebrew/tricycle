@@ -37,6 +37,20 @@ public class AddMultipleFilesEvent extends MVCEvent {
 	public AddMultipleFilesEvent(File[] files2) {
 		super(FileListController.ADD_MULTIPLE_FILES);
 		files = files2;
+			
+	}
+	
+	public AddMultipleFilesEvent(String[] files2)
+	{
+		super(FileListController.ADD_MULTIPLE_FILES);
+		
+		ArrayList<File> fileList = new ArrayList<File>();
+		for(String f : files2)
+		{
+			fileList.add(new File(f.trim()));
+		}
+		
+		files = fileList.toArray(new File[0]);
 	}
 	
 	/**
