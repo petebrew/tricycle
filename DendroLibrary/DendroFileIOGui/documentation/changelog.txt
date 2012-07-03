@@ -10,6 +10,8 @@ TRiCYCLE Changelog:
 - Added recursive reading of files in Corina reader so that file references are followed
 - Fixed issues with Corina 'sum' support
 - Fixed writing of relatively dated series in Bescancon writer
+- Added support for arbitrary comment lines in Heidelberg reader (same as TSAP-Win)
+- Changed Heidelberg reader to default to 'dated' when the dating type is not specified (same as TSAP-Win)
 
 Changes from 0.2.6 to 0.2.7
 - Added Danish translation
