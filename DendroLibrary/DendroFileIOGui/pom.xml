@@ -209,7 +209,7 @@
         <dependency>
         	<groupId>org.tridas</groupId>
         	<artifactId>dendrofileio</artifactId>
-        	<version>1.0.5-SNAPSHOT</version>
+        	<version>1.0.6-SNAPSHOT</version>
         </dependency>
 	</dependencies>
 
@@ -234,6 +234,25 @@
 	
 		<plugins>
 		
+					<!-- Ask Subversion for the latest build number -->
+		 	  <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>buildnumber-maven-plugin</artifactId>
+		        <version>1.1</version>
+		        <executions>
+		          <execution>
+		            <phase>validate</phase>
+		            <goals>
+		              <goal>create</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		        <configuration>
+		          <doCheck>false</doCheck>
+		          <doUpdate>false</doUpdate>
+		        </configuration>
+		      </plugin>
+				
 			<!-- Calculate the build timestamp and add to a project property -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -257,24 +276,7 @@
 				</executions>
 			</plugin>
 
-			<!-- Ask Subversion for the latest build number -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doCheck>false</doCheck>
-					<doUpdate>true</doUpdate>
-				</configuration>
-			</plugin>
+
 			
 			<!-- Write project properties into a build properties file -->
 			<plugin>
