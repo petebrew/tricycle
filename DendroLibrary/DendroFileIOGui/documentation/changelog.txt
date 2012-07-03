@@ -8,6 +8,8 @@ TRiCYCLE Changelog:
 - Implemented 'consolidation' routine for merging TRiDaS entities with the same title
 - Added ability to enter files as a semi-colon delimited list to help with converting many files as once
 - Added recursive reading of files in Corina reader so that file references are followed
+- Fixed issues with Corina 'sum' support
+- Fixed writing of relatively dated series in Bescancon writer
 
 Changes from 0.2.6 to 0.2.7
 - Added Danish translation
