@@ -12,6 +12,15 @@ TRiCYCLE Changelog:
 - Fixed writing of relatively dated series in Bescancon writer
 - Added support for arbitrary comment lines in Heidelberg reader (same as TSAP-Win)
 - Changed Heidelberg reader to default to 'dated' when the dating type is not specified (same as TSAP-Win)
+- Added optional EOF indicator to Bescancon output
+- Fixed handling of zero width rings in middle of sequence for Heidelberg reader
+- Fixed problem with TER field in Bescancon writer
+- Handle Byte Order Mark (BOM) at beginning of text files.  This fixes problems when reading Tucson files written by MeasureJ2X
+- Fixed comment handling in Heidelberg reader
+- Fixed DateOfSampling month offset in Heidelberg reader
+- Improved natural language parsing of dates from Heidelberg metadata fields 
+- Fixed error in interpreting the end year when reading from TRIMS files
+
 
 Changes from 0.2.6 to 0.2.7
 - Added Danish translation
