@@ -330,7 +330,18 @@ public class OptionsWindow extends JDialog {
 	 * 
 	 */
 	private void linkModel() {
-		namingConvention.setSelectedItem(model.getNamingConvention());
+		
+		// Try to remember last used format
+		if(TricycleModelLocator.getInstance().getLastUsedOutputFormat()!=null)
+		{
+			namingConvention.setSelectedItem(TricycleModelLocator.getInstance().getLastNamingConvention());
+			model.setNamingConvention(TricycleModelLocator.getInstance().getLastNamingConvention());
+		}
+		else
+		{
+			namingConvention.setSelectedItem(model.getNamingConvention());
+		}
+		
 		readingCharset.setSelectedItem(model.getReadingCharset());
 		writingCharset.setSelectedItem(model.getWritingCharset());
 		cbxEnableAnonomous.setSelected(TricycleModelLocator.getInstance().getTricycleModel().isTracking());

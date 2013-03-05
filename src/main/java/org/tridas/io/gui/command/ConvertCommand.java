@@ -75,7 +75,7 @@ public class ConvertCommand implements ICommand {
 	
 	public void execute(MVCEvent argEvent) {
 		
-		MVC.getTracker().trackEvent("Convert", "execute");
+		//MVC.getTracker().trackEvent("Convert", "execute");
 
 		ConvertEvent event = (ConvertEvent) argEvent;
 		String outputFormat = event.getOutputFormat();
@@ -148,6 +148,10 @@ public class ConvertCommand implements ICommand {
 					I18n.getText("general.error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		
+		
+		TricycleModelLocator.getInstance().setLastNamingConvention(event.getNamingConvention());
+
 		
 
 		if(event.getTreatFilesAs().equals(TreatFilesAsOption.ONE_PROJECT))
