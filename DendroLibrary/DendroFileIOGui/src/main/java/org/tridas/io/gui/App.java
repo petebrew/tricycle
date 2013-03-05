@@ -72,10 +72,10 @@ public class App {
 		// Set tracking key
 		AnalyticsConfigData config = new AnalyticsConfigData(TricycleModel.ANALYTICS_CODE);
 		JGoogleAnalyticsTracker t = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
-		MVC.setTracker(t);
+		//MVC.setTracker(t);
 		//MVC.showEventMonitor();
 		t.setEnabled(model.getTricycleModel().isTracking());
-		MVC.getTracker().trackPageView(getBuildRevision(), "Startup", "tridas.org");
+		//MVC.getTracker().trackPageView(getBuildRevision(), "Startup", "tridas.org");
 		
 		
 		// Set Swing widget internationalisation

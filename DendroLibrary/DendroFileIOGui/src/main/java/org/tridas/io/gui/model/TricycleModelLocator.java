@@ -55,6 +55,8 @@ public class TricycleModelLocator {
 	private static final String DONT_ASK_TRACKING = "DontAskTracking";
 	private static final String AUTOUPDATE = "AutoUpdate";
 	private static final String WARN_ABOUT_MATRIX_STYLE = "WarnAboutMatrixStyle";
+	private static final String LAST_NAMING_CONVENTION = "LastNamingConvention";
+	
 	
 	private final ConfigModel configModel = new ConfigModel();
 	private final FileListModel fileListModel = new FileListModel();
@@ -166,6 +168,14 @@ public class TricycleModelLocator {
 	
 	public void setLastUsedOutputFormat(String format){
 		prefs.put(LAST_OUTPUT_FORMAT, format);
+	}
+	
+	public String getLastNamingConvention(){
+		return prefs.get(LAST_NAMING_CONVENTION, null);				
+	}
+	
+	public void setLastNamingConvention(String format){
+		prefs.put(LAST_NAMING_CONVENTION, format);
 	}
 	
 	public ImageIcon getWindowIcon(){
