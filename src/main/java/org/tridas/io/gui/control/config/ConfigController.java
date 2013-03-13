@@ -53,6 +53,7 @@ public class ConfigController extends FrontController {
 	public static final String SET_READING_CHARSET = "TRIYCYCLE_CONFIG_SET_READING_CHARSET";
 	public static final String SET_WRITING_CHARSET = "TRIYCYCLE_CONFIG_SET_WRITING_CHARSET";
 	public static final String SET_TREAT_FILES_AS = "TRICYCLE_SET_TREAT_FILES_AS";
+	public static final String SET_LOCALE = "TRICYCLE_SET_LOCALE";
 	private static final Logger log = LoggerFactory.getLogger(ConfigController.class);
 
 	private final ConfigModel model;
@@ -67,6 +68,7 @@ public class ConfigController extends FrontController {
 		registerCommand(INPUT_DEFAULTS_PRESSED, "displayInputDefaults");
 		registerCommand(OUTPUT_DEFAULTS_PRESSED, "displayOutputDefaults");
 		registerCommand(SET_TREAT_FILES_AS, "setTreatFilesAs");
+		registerCommand(SET_LOCALE, "setLocale");
 	}
 	
 	public void setTreatFilesAs(MVCEvent argEvent){
@@ -150,6 +152,11 @@ public class ConfigController extends FrontController {
 		}
 		
 		TridasIO.setReadingCharset(event.getValue());
+	}
+	
+	public void setLocale(MVCEvent argEvent){
+		ConfigEvent event = (ConfigEvent) argEvent;
+		model.setLocale(event.getValue());
 	}
 	
 	public void setWritingCharset(MVCEvent argEvent) {

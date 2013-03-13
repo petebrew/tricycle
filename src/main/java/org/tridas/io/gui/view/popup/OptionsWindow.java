@@ -46,6 +46,7 @@ import org.tridas.io.TridasIO;
 import org.tridas.io.enums.Charsets;
 import org.tridas.io.enums.NamingConvention;
 import org.tridas.io.gui.I18n;
+import org.tridas.io.gui.components.LocaleComboRenderer;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.model.ConfigModel;
@@ -55,6 +56,8 @@ import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.AutoCompleteJComboBoxer;
 import org.tridas.spatial.CoordinateReferenceSystem;
+
+import sun.util.logging.resources.logging;
 
 import com.dmurph.mvc.MVCEvent;
 
@@ -86,6 +89,8 @@ public class OptionsWindow extends JDialog {
 	private JLabel lblInputCharacterSet;
 	private JLabel lblWritingCharacterSet;
 	private JLabel lblNamingConvention;
+	private JComboBox cboLocale;
+	private JLabel lblLocale;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -153,17 +158,33 @@ public class OptionsWindow extends JDialog {
 		writingPanel.add(writingDefaults, "cell 0 3 2 1,alignx right,growy");
 		
 		privacyPanel = new JPanel();
-		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.privacyandupdates"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Miscellaneous options", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		getContentPane().add(privacyPanel, "cell 0 2,growx");
-		privacyPanel.setLayout(new MigLayout("", "[670px]", "[23px][23px]"));
+		privacyPanel.setLayout(new MigLayout("", "[][][670px]", "[23px][23px][]"));
 		
 		cbxEnableAnonomous = new JCheckBox(I18n.getText("view.options.usage"));
-		privacyPanel.add(cbxEnableAnonomous, "cell 0 0,grow");
+		privacyPanel.add(cbxEnableAnonomous, "cell 2 0,grow");
 		cbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		cbxAutoUpdate = new JCheckBox(I18n.getText("view.options.autoupdate"));
-		privacyPanel.add(cbxAutoUpdate, "cell 0 1,grow");
+		privacyPanel.add(cbxAutoUpdate, "flowy,cell 2 1,grow");
 		cbxAutoUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		/*String country = App.prefs.getPref(PrefKey.LOCALE_COUNTRY_CODE, "xxx");
+		String language = App.prefs.getPref(PrefKey.LOCALE_LANGUAGE_CODE, "xxx");
+		
+		LocaleComboRenderer.TricycleLocale loc = I18n.getTellervoLocale(country, language);
+		cboLocale.setSelectedItem(loc);*/
+		
+		lblLocale = new JLabel("Locale:");
+		privacyPanel.add(lblLocale, "cell 1 2");
+		
+		cboLocale = new JComboBox();
+		cboLocale.setModel(new DefaultComboBoxModel(LocaleComboRenderer.TricycleLocale.values()));
+		
+		cboLocale.setRenderer(new LocaleComboRenderer());
+		
+		privacyPanel.add(cboLocale, "cell 2 2");
 		cancelButton = new JButton();
 		okButton = new JButton();
 		
@@ -189,10 +210,11 @@ public class OptionsWindow extends JDialog {
 		namingConvention.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String naming = namingConvention.getSelectedItem().toString();
 				ConfigEvent event = new ConfigEvent(ConfigController.SET_NAMING_CONVENTION, naming);
-				event.dispatch();
+				//event.dispatch();
 			}
 		});
 		

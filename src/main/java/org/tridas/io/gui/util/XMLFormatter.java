@@ -23,12 +23,14 @@ import org.apache.xml.serialize.XMLSerializer;
  * @author Daniel
  *
  */
+@SuppressWarnings("deprecation")
 public class XMLFormatter {
 	public static String format(String unformattedXml) {
         try {
             final Document document = parseXmlFile(unformattedXml);
 
-            OutputFormat format = new OutputFormat(document);
+            
+			OutputFormat format = new OutputFormat(document);
             format.setLineWidth(65);
             format.setIndenting(true);
             format.setIndent(2);
