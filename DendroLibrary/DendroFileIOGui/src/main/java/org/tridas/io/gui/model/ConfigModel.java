@@ -34,6 +34,7 @@ public class ConfigModel extends AbstractRevertibleModel {
 	private String namingConvention = "Numerical";
 	private String writingCharset = TridasIO.getWritingCharset();
 	private String readingCharset = TridasIO.isCharsetDetection() ? Charsets.AUTO : TridasIO.getReadingCharset();;
+	private String locale;
 	public Boolean warnedAboutMatrixStyle = false;
 	
 	private IMetadataFieldSet readerDefaults = null;
@@ -69,6 +70,17 @@ public class ConfigModel extends AbstractRevertibleModel {
 		String old = writingCharset;
 		writingCharset = argCharset;
 		firePropertyChange("writingCharset", old, writingCharset);
+	}
+	
+	public void setLocale(String argLocale){
+		String old = locale;
+		locale = argLocale;
+		firePropertyChange("locale", old, locale);
+	}
+	
+	public String getLocale()
+	{
+		return locale;
 	}
 	
 	public String getWritingCharset() {

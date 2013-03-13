@@ -32,9 +32,9 @@
 	<developers>
 		<developer>
 			<name>Peter Brewer</name>
-			<email>p.brewer@cornell.edu</email>
-			<organization>The Malcolm and Carolyn Wiener Laboratory for Aegean and Near Eastern Dendrochronology</organization>
-			<organizationUrl>http://dendro.cornell.edu</organizationUrl>
+			<email>p.brewer@ltrr.arizona.edu</email>
+			<organization>Laboratory of Tree-Ring Research, University of Arizona</organization>
+			<organizationUrl>http://ltrr.arizona.edu</organizationUrl>
 		</developer>
 		<developer>
 			<name>Daniel Murphy</name>
