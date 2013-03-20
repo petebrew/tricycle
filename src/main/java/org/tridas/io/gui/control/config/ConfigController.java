@@ -45,13 +45,13 @@ import com.dmurph.mvc.control.FrontController;
  * @author Daniel Murphy
  */
 public class ConfigController extends FrontController {
-	public static final String SET_INPUT_FORMAT = "TRIYCYCLE_CONFIG_SET_INPUT_FORMAT";
-	public static final String SET_OUTPUT_FORMAT = "TRIYCYCLE_CONFIG_SET_OUTPUT_FORMAT";
-	public static final String INPUT_DEFAULTS_PRESSED = "TRIYCYCLE_CONFIG_INPUT_DEFAULTS_PRESSED";
-	public static final String OUTPUT_DEFAULTS_PRESSED = "TRIYCYCLE_CONFIG_OUTPUT_DEFAULTS_PRESSED";
-	public static final String SET_NAMING_CONVENTION = "TRIYCYCLE_CONFIG_SET_NAMING_CONVENTION";
-	public static final String SET_READING_CHARSET = "TRIYCYCLE_CONFIG_SET_READING_CHARSET";
-	public static final String SET_WRITING_CHARSET = "TRIYCYCLE_CONFIG_SET_WRITING_CHARSET";
+	public static final String SET_INPUT_FORMAT = "TRICYCLE_CONFIG_SET_INPUT_FORMAT";
+	public static final String SET_OUTPUT_FORMAT = "TRICYCLE_CONFIG_SET_OUTPUT_FORMAT";
+	public static final String INPUT_DEFAULTS_PRESSED = "TRICYCLE_CONFIG_INPUT_DEFAULTS_PRESSED";
+	public static final String OUTPUT_DEFAULTS_PRESSED = "TRICYCLE_CONFIG_OUTPUT_DEFAULTS_PRESSED";
+	public static final String SET_NAMING_CONVENTION = "TRICYCLE_CONFIG_SET_NAMING_CONVENTION";
+	public static final String SET_READING_CHARSET = "TRICYCLE_CONFIG_SET_READING_CHARSET";
+	public static final String SET_WRITING_CHARSET = "TRICYCLE_CONFIG_SET_WRITING_CHARSET";
 	public static final String SET_TREAT_FILES_AS = "TRICYCLE_SET_TREAT_FILES_AS";
 	public static final String SET_LOCALE = "TRICYCLE_SET_LOCALE";
 	private static final Logger log = LoggerFactory.getLogger(ConfigController.class);
