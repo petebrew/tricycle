@@ -214,7 +214,7 @@ public class OptionsWindow extends JDialog {
 				getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
 				String naming = namingConvention.getSelectedItem().toString();
 				ConfigEvent event = new ConfigEvent(ConfigController.SET_NAMING_CONVENTION, naming);
-				//event.dispatch();
+				event.dispatch();
 			}
 		});
 		

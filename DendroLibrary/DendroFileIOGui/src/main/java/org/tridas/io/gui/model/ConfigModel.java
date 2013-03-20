@@ -45,7 +45,7 @@ public class ConfigModel extends AbstractRevertibleModel {
 	public void setNamingConvention(String argNamingConvention) {
 		String old = namingConvention;
 		namingConvention = argNamingConvention;
-		firePropertyChange("namingConvention", old, namingConvention);
+		//firePropertyChange("namingConvention", old, namingConvention);
 	}
 	
 	public String getNamingConvention() {
