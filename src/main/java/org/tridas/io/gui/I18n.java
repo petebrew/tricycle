@@ -39,43 +39,6 @@ public class I18n {
 	// the resource bundle to use
 	private final static ResourceBundle msg;
 	
-/*	static {
-		ResourceBundle bundle;
-		try {
-			bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
-		} catch (MissingResourceException mre) {
-			try {
-				bundle = ResourceBundle.getBundle("DendroFileIOGUI");
-			} catch (MissingResourceException mre2) {
-				System.out.println("Could not find locale file.");
-				mre2.printStackTrace();
-				bundle = new ResourceBundle() {
-					
-					@Override
-					protected Object handleGetObject(String key) {
-						return key;
-					}
-					
-					@Override
-					public Enumeration<String> getKeys() {
-						return EMPTY_ENUMERATION;
-					}
-					
-					private final Enumeration<String> EMPTY_ENUMERATION = new Enumeration<String>() {
-						public boolean hasMoreElements() {
-							return false;
-						}
-						
-						public String nextElement() {
-							throw new NoSuchElementException();
-						}
-					};
-				};
-			}
-		}
-		msg = bundle;
-	}*/
-	
 	static {
 		ResourceBundle bundle;
 		try {
@@ -84,7 +47,6 @@ public class I18n {
 			String country = localeprefs.get("countrycode", "xxx"); 
 			String language =localeprefs.get("languagecode", "xxx");
 			
-			log.debug("pref path"+localeprefs.absolutePath());
 			
 			if(country.equals("xxx") || language.equals("xxx"))
 			{
