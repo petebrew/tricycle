@@ -19,6 +19,7 @@ import java.util.Enumeration;
 import java.util.MissingResourceException;
 import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import javax.swing.UIManager;
 
@@ -42,7 +43,7 @@ public class App {
 	
 	// resource bundle containing build details
 	private final static ResourceBundle build;
-	
+
 	
 	/**
 	 * @param args
@@ -73,7 +74,7 @@ public class App {
 		AnalyticsConfigData config = new AnalyticsConfigData(TricycleModel.ANALYTICS_CODE);
 		JGoogleAnalyticsTracker t = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 		MVC.setTracker(t);
-		MVC.showEventMonitor();
+		//MVC.showEventMonitor();
 		t.setEnabled(model.getTricycleModel().isTracking());
 		MVC.getTracker().trackPageView(getBuildRevision(), "Startup", "tridas.org");
 		

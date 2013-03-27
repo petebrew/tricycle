@@ -27,6 +27,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
@@ -42,11 +43,14 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tridas.io.TridasIO;
 import org.tridas.io.enums.Charsets;
 import org.tridas.io.enums.NamingConvention;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.components.LocaleComboRenderer;
+import org.tridas.io.gui.components.LocaleComboRenderer.TricycleLocale;
 import org.tridas.io.gui.control.config.ConfigController;
 import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.model.ConfigModel;
@@ -57,16 +61,16 @@ import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.AutoCompleteJComboBoxer;
 import org.tridas.spatial.CoordinateReferenceSystem;
 
-import sun.util.logging.resources.logging;
-
 import com.dmurph.mvc.MVCEvent;
 
 /**
  * @author daniel
  *
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("rawtypes")
 public class OptionsWindow extends JDialog {
+	private final static Logger log = LoggerFactory.getLogger(OptionsWindow.class);
+
 	private JComboBox readingCharset;
 	private JButton readingDefaults;
 	
@@ -91,6 +95,8 @@ public class OptionsWindow extends JDialog {
 	private JLabel lblNamingConvention;
 	private JComboBox cboLocale;
 	private JLabel lblLocale;
+	private JLabel lblAutomaticallyCheckFor;
+	private JLabel lblEnableAnonymousUsage;
 	
 	public OptionsWindow(JFrame argOwner, ConfigModel argModel) {
 		super(argOwner, true);
@@ -113,7 +119,7 @@ public class OptionsWindow extends JDialog {
 		readingPanel = new JPanel();
 		getContentPane().add(readingPanel, "cell 0 0,growx");
 		readingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.readingPanel"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		readingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][25px][25px]"));
+		readingPanel.setLayout(new MigLayout("", "[320px:320.00px][grow,left]", "[25px][25px][25px]"));
 		lblInputCharacterSet = new JLabel("Input character set:");
 		readingPanel.add(lblInputCharacterSet, "cell 0 0,alignx right");
 		readingCharset = new JComboBox();
@@ -128,24 +134,24 @@ public class OptionsWindow extends JDialog {
 		cboReaderCRS = new JComboBox();
 		cboReaderCRS.setModel(new DefaultComboBoxModel(new String[] {"Default for format"}));
 		lblReaderCRS.setLabelFor(cboReaderCRS);
-		readingPanel.add(cboReaderCRS, "cell 1 1,grow");
+		readingPanel.add(cboReaderCRS, "cell 1 1,alignx left,growy");
 		readingPanel.add(readingDefaults, "cell 0 2 2 1,alignx right,growy");
 		writingDefaults = new JButton();
 		
 		JPanel writingPanel = new JPanel();
 		getContentPane().add(writingPanel, "cell 0 1,growx");
 		writingPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.writerPanel"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		writingPanel.setLayout(new MigLayout("", "[220px:220.00px][grow,fill]", "[25px][][25px][25px]"));
+		writingPanel.setLayout(new MigLayout("", "[320px:320.00px][grow,fill]", "[25px][][25px][25px]"));
 		lblNamingConvention = new JLabel("Naming convention:");
 		writingPanel.add(lblNamingConvention, "cell 0 0,alignx right");
 		namingConvention = new JComboBox();
-		writingPanel.add(namingConvention, "cell 1 0");
+		writingPanel.add(namingConvention, "cell 1 0,alignx left");
 		
 		namingConvention.setEditable(false);
 		lblWritingCharacterSet = new JLabel("Writing character set:");
 		writingPanel.add(lblWritingCharacterSet, "cell 0 1,alignx right");
 		writingCharset = new JComboBox();
-		writingPanel.add(writingCharset, "cell 1 1");
+		writingPanel.add(writingCharset, "cell 1 1,alignx left");
 		
 		writingCharset.setEditable(false);
 		
@@ -154,37 +160,98 @@ public class OptionsWindow extends JDialog {
 		
 		cboWriterCRS = new JComboBox();
 		cboWriterCRS.setModel(new DefaultComboBoxModel(new String[] {"WGS84 [EPSG:4326]"}));
-		writingPanel.add(cboWriterCRS, "cell 1 2,growx");
+		writingPanel.add(cboWriterCRS, "cell 1 2,alignx left");
 		writingPanel.add(writingDefaults, "cell 0 3 2 1,alignx right,growy");
 		
 		privacyPanel = new JPanel();
 		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Miscellaneous options", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		getContentPane().add(privacyPanel, "cell 0 2,growx");
-		privacyPanel.setLayout(new MigLayout("", "[][][670px]", "[23px][23px][]"));
+		privacyPanel.setLayout(new MigLayout("", "[][320px:320px][670px]", "[23px][23px][]"));
 		
-		cbxEnableAnonomous = new JCheckBox(I18n.getText("view.options.usage"));
-		privacyPanel.add(cbxEnableAnonomous, "cell 2 0,grow");
-		cbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		cbxAutoUpdate = new JCheckBox(I18n.getText("view.options.autoupdate"));
-		privacyPanel.add(cbxAutoUpdate, "flowy,cell 2 1,grow");
-		cbxAutoUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		/*String country = App.prefs.getPref(PrefKey.LOCALE_COUNTRY_CODE, "xxx");
-		String language = App.prefs.getPref(PrefKey.LOCALE_LANGUAGE_CODE, "xxx");
-		
-		LocaleComboRenderer.TricycleLocale loc = I18n.getTellervoLocale(country, language);
-		cboLocale.setSelectedItem(loc);*/
-		
-		lblLocale = new JLabel("Locale:");
-		privacyPanel.add(lblLocale, "cell 1 2");
+		lblLocale = new JLabel("Locale (restart required):");
+		privacyPanel.add(lblLocale, "cell 1 0,alignx right");
 		
 		cboLocale = new JComboBox();
 		cboLocale.setModel(new DefaultComboBoxModel(LocaleComboRenderer.TricycleLocale.values()));
-		
 		cboLocale.setRenderer(new LocaleComboRenderer());
 		
-		privacyPanel.add(cboLocale, "cell 2 2");
+		boolean localechosen = false;
+		for(int i=0; i<cboLocale.getItemCount(); i++)
+		{
+			// Try setting from preferred language and country code
+			TricycleLocale l = (TricycleLocale) cboLocale.getItemAt(i);
+			if(l.getLanguageCode().equals(I18n.localeprefs.get("languagecode", "xxx")) && l.getCountryCode().equals(I18n.localeprefs.get("countrycode", "xxx"))) 
+			{
+				cboLocale.setSelectedIndex(i);
+				localechosen = true;
+				break;
+			}
+		}
+
+		for(int i=0; i<cboLocale.getItemCount(); i++)
+		{
+			// Failed so try setting just from preferred language code
+			TricycleLocale l = (TricycleLocale) cboLocale.getItemAt(i);
+			if(l.getLanguageCode().equals(I18n.localeprefs.get("languagecode", "xxx"))) 
+			{
+				cboLocale.setSelectedIndex(i);
+				localechosen = true;
+				break;
+			}
+		}
+		
+		if(localechosen==false)
+		{
+			// Still failed so try setting from default for system
+			for(int i=0; i<cboLocale.getItemCount(); i++)
+			{
+				TricycleLocale l = (TricycleLocale) cboLocale.getItemAt(i);
+				if(l.getLocale().equals(Locale.getDefault())) 
+				{
+					cboLocale.setSelectedIndex(i);
+					localechosen = true;
+					break;
+				}
+			}			
+		}
+		
+		if(localechosen==false)
+		{
+			// *STILL* failed so default to English
+			for(int i=0; i<cboLocale.getItemCount(); i++)
+			{
+				TricycleLocale l = (TricycleLocale) cboLocale.getItemAt(i);
+				
+				if(l.getLocale().equals(Locale.ENGLISH)) 
+				{
+					cboLocale.setSelectedIndex(i);
+					localechosen = true;
+					break;
+				}
+			}	
+		}
+		
+		if(localechosen==false)
+		{
+			// Oh I give up!
+			log.error("Locale not set correctly");
+		}
+		
+		privacyPanel.add(cboLocale, "flowx,cell 2 0,alignx left");
+		
+		lblAutomaticallyCheckFor = new JLabel("Automatically check for updates:");
+		privacyPanel.add(lblAutomaticallyCheckFor, "cell 1 1,alignx right");
+		
+		cbxAutoUpdate = new JCheckBox("");
+		privacyPanel.add(cbxAutoUpdate, "flowy,cell 2 1,grow");
+		cbxAutoUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		lblEnableAnonymousUsage = new JLabel("Enable anonymous usage data submission:");
+		privacyPanel.add(lblEnableAnonymousUsage, "cell 1 2,alignx right");
+		
+		cbxEnableAnonomous = new JCheckBox("");
+		privacyPanel.add(cbxEnableAnonomous, "cell 2 2,grow");
+		cbxEnableAnonomous.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cancelButton = new JButton();
 		okButton = new JButton();
 		
@@ -298,6 +365,15 @@ public class OptionsWindow extends JDialog {
 				TricycleModelLocator.getInstance().getTricycleModel().setAutoUpdate(enabled);
 			}
 		});
+		
+		cboLocale.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				TricycleLocale locale = (TricycleLocale) cboLocale.getSelectedItem();
+				I18n.localeprefs.put("countrycode", locale.getCountryCode());
+				I18n.localeprefs.put("languagecode", locale.getLanguageCode());
+			}
+		});
 	}
 	
 	/**
@@ -314,7 +390,6 @@ public class OptionsWindow extends JDialog {
 		lblWritingCharacterSet.setText(I18n.getText("view.options.output.charset"));
 		lblReaderCRS.setText(I18n.getText("view.options.crs")+":");
 		lblWriterCRS.setText(I18n.getText("view.options.crs")+":");
-		lblNamingConvention.setText(I18n.getText("view.options.output.naming")+":");
 		readingDefaults.setText(I18n.getText("view.options.input.defaults", fmodel.getInputFormat()));
 		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
 		okButton.setText(I18n.getText("view.options.ok"));
@@ -363,7 +438,7 @@ public class OptionsWindow extends JDialog {
 		{
 			namingConvention.setSelectedItem(model.getNamingConvention());
 		}
-		
+				
 		readingCharset.setSelectedItem(model.getReadingCharset());
 		writingCharset.setSelectedItem(model.getWritingCharset());
 		cbxEnableAnonomous.setSelected(TricycleModelLocator.getInstance().getTricycleModel().isTracking());
@@ -408,6 +483,8 @@ public class OptionsWindow extends JDialog {
 				}
 			}
 		});
+		
+	
 		
 		final TricycleModel mwm = loc.getTricycleModel();
 		mwm.addPropertyChangeListener(new PropertyChangeListener() {

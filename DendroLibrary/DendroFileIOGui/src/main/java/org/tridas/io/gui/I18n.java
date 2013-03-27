@@ -16,9 +16,15 @@
 package org.tridas.io.gui;
 
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tridas.io.gui.model.TricycleModelLocator;
 
 /**
  * Simple localization
@@ -26,12 +32,14 @@ import java.util.ResourceBundle;
  *
  */
 public class I18n {
-	
-	
+	private final static Logger log = LoggerFactory.getLogger(I18n.class);
+
+	public static Preferences localeprefs = Preferences.userNodeForPackage(App.class);
+
 	// the resource bundle to use
 	private final static ResourceBundle msg;
 	
-	static {
+/*	static {
 		ResourceBundle bundle;
 		try {
 			bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
@@ -40,6 +48,60 @@ public class I18n {
 				bundle = ResourceBundle.getBundle("DendroFileIOGUI");
 			} catch (MissingResourceException mre2) {
 				System.out.println("Could not find locale file.");
+				mre2.printStackTrace();
+				bundle = new ResourceBundle() {
+					
+					@Override
+					protected Object handleGetObject(String key) {
+						return key;
+					}
+					
+					@Override
+					public Enumeration<String> getKeys() {
+						return EMPTY_ENUMERATION;
+					}
+					
+					private final Enumeration<String> EMPTY_ENUMERATION = new Enumeration<String>() {
+						public boolean hasMoreElements() {
+							return false;
+						}
+						
+						public String nextElement() {
+							throw new NoSuchElementException();
+						}
+					};
+				};
+			}
+		}
+		msg = bundle;
+	}*/
+	
+	static {
+		ResourceBundle bundle;
+		try {
+			
+			// Grab overriding language prefs if available
+			String country = localeprefs.get("countrycode", "xxx"); 
+			String language =localeprefs.get("languagecode", "xxx");
+			
+			log.debug("pref path"+localeprefs.absolutePath());
+			
+			if(country.equals("xxx") || language.equals("xxx"))
+			{
+				// No prefs specified so just go with the default from the system
+				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
+			}
+			else
+			{
+				// Prefs specified so use these instead
+				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI", new Locale(language, country));
+			}
+			
+		} catch (MissingResourceException mre) {
+			try {
+				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
+			} catch (MissingResourceException mre2) {
+				log.error("Could not find locale file.");
 				mre2.printStackTrace();
 				bundle = new ResourceBundle() {
 					

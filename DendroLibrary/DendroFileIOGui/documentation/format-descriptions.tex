@@ -784,6 +784,155 @@ Tree Core Year Latewood width
 \index{File formats!DendroDB|)}
 
 
+
+\chapter{FHX2 / FHAES}
+\index{File formats!FHX2|(}
+\index{File formats!FHAES|(}
+
+\begin{table*}[htbp]
+\label{summary:fhx2}
+\begin{center}
+\begin{tabular*}{15cm}{ l @{\extracolsep{\fill}} p{9cm} }
+  \toprule
+
+Format name     	 & FHX2  \\
+Other name(s)      	 & FIRE2, Fire History Format, FHAES\\
+Type      	 	 & Text file\\
+Extension(s)      	 & fhx \\
+Read/write support     	 & Write only\\
+Reference implementation & FHAES \\
+Data / metadata      	 & Data and some basic metadata\\
+Calendar type		 & Astronomical\\
+Absolute dating support	 & Yes\\
+Undated series support   & No\\
+Relative dating support  & No\\
+Multi series support	 & Yes\\
+Original designer	 & Henri Grissino-Mayer\\
+
+\bottomrule
+\end{tabular*}
+\end{center}
+\end{table*}
+
+\section{Description}
+
+The FHX2 file format is an unusual dendro format in that it doesn't contain ring with data.   It does, however, enable the user to accurately record a variety of ring features for fire history research.  The format was originally designed by Henri Grissino-Mayer for use in his FHX2 software.  It is also used in the FHAES software.
+
+FHX2 files begin with a line confirming that it's an FHX2 FORMAT file.  The second line contains three fields: the first year in the sequence; the number of series in the file, and the maximum number of characters in the series titles.  The remainder of the file contains columns of data, one column for each series.  The columns start with the series code which is followed by a space and then the data itself.  Each row of the data portion of the file contains the fire history features for a particular year.  The fire history features are encoded with a variety of ASCII characters:
+
+\begin{itemize}
+ \item $[$ - pith date, the very inside date possible on the tree
+ \item $]$ - bark date, the very outside date possible on the tree
+ \item \{ - the innermost date possible on the tree – pith is not present
+ \item \} - the outermost date possible on the tree – bark is not present
+ \item . - a ``null'' year – a dated tree ring for which no information on firehistory is available, e.g., the ring formed prior to the initial scarring event
+ \item $|$ - a ``recorder'' year – a dated tree ring that formed after the initial scarring event, but contains no scar
+ \item D,d - a fire scar (uppercase) or injury (lowercase) situated in the dormant position, between the previous years’s latewood and the current year’s earlywood
+ \item E,e - a fire scar (uppercase) or injury (lowercase) situated in the early (one-third) portion of the earlywood
+ \item M,m - a fire scar (uppercase) or injury (lowercase) situated in the middle (one-third) portion of the earlywood
+ \item L,l - a fire scar (uppercase) or injury (lowercase) situated in the latter (one-third) portion of the earlywood
+ \item A,a - a fire scar (uppercase) or injury (lowercase) situated in the latewood
+ \item U,u - a fire scar (uppercase) or injury (lowercase) for which the position could not be determined
+\end{itemize}
+
+\section{Example file (truncated)}
+
+\begin{lstlisting}
+FHX2 FORMAT
+1553 13 5
+BBBBBBBBBBBBB
+MMMMMMMMMMMMM
+AAAPPBBBCCCDD
+0000000000000
+1231212312312
+
+...........[. 1553
+............. 1554
+............. 1555
+............. 1556
+............. 1557
+............. 1558
+............. 1559
+............. 1560
+............. 1561
+............[ 1562
+............. 1563
+............. 1564
+..........{.. 1565
+............. 1566
+............. 1567
+............. 1568
+............. 1569
+............. 1570
+............. 1571
+............. 1572
+............. 1573
+...{......... 1574
+............. 1575
+............. 1576
+............. 1577
+............. 1578
+............. 1579
+............. 1580
+............. 1581
+............. 1582
+............. 1583
+............. 1584
+............. 1585
+............. 1586
+............. 1587
+............. 1588
+............. 1589
+............. 1590
+............. 1591
+......{...... 1592
+............. 1593
+............. 1594
+............. 1595
+............. 1596
+...U......... 1597
+...|......... 1598
+...|......... 1599
+...|......... 1600
+...|......... 1601
+...|..U...... 1602
+...|..|...... 1603
+...|..|...... 1604
+...|..|...... 1605
+...|..|...... 1606
+...|..|...... 1607
+...|..|...... 1608
+...|..|...... 1609
+...|..|...... 1610
+...|..|...... 1611
+...|..|...... 1612
+{..|..|...... 1613
+...|..|...... 1614
+...|..|...... 1615
+...|..|...... 1616
+...|..|...... 1617
+...|..|...... 1618
+.{.|..|...... 1619
+...|..|...... 1620
+...|{.|...... 1621
+...|..|...... 1622
+...|..|...... 1623
+U..|..|...... 1624
+|..|..|...... 1625
+
+...
+
+\end{lstlisting}
+
+\index{File formats!FHX2|)}
+\index{File formats!FHAES|)}
+
+
+
+
+
+
+
 \chapter{Heidelberg}
 \index{File formats!Heidelberg|(}
 \index{File formats!TSAP|see{Heidelberg}}

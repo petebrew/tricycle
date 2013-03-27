@@ -62,18 +62,18 @@ public class LocaleComboRenderer extends JLabel implements ListCellRenderer {
 	}
 
 	public enum TricycleLocale{
+		DEFAULT		  ("Default",      "xx", "unknown" ),		
+		DANISH		  ("Dansk", 	   "da", "DK" ),
 		GERMAN        ("Deutsch",      "de", "DE" ), 
-		ENGLISH_PROPER("English (UK)", "en", "GB" ),
-		ENGLISH_US    ("English (US)", "en", "US"),
-		FRENCH        ("Français",     "fr", "FR"),
-		DUTCH         ("Nederlands",   "nl", "NL"),
-		POLISH        ("Polski",       "pl", "PL"),
-		TURKISH       ("Türk",         "tr", "TR");
-		//danish
-		//spanish
-		//greek
-	
-		
+		ENGLISH_PROPER("English (British)", "en", "GB" ),
+		ENGLISH_US    ("English (American)", "en", "US" ),
+		SPANISH		  ("Español", 	   "es", "ES" ),
+		GREEK		  ("ελληνικά", 	   "el", "GR" ),
+		FRENCH        ("Français",     "fr", "FR" ),
+		DUTCH         ("Nederlands",   "nl", "NL" ),
+		POLISH        ("Polski",       "pl", "PL" ),
+		TURKISH       ("Türk",         "tr", "TR" );
+
 		private String country;
 		private String language;
 		private String name;
@@ -88,6 +88,26 @@ public class LocaleComboRenderer extends JLabel implements ListCellRenderer {
 		
 		public String getName()
 		{
+			TricycleLocale def = TricycleLocale.DEFAULT;
+			if(this.equals(def))
+			{
+				Locale loc = Locale.getDefault();
+				
+				for(TricycleLocale l:TricycleLocale.values())
+				{
+					if(l.equals(TricycleLocale.DEFAULT)) continue;
+					if(l.getCountryCode().equals(loc.getCountry()) && l.getLanguageCode().equals(loc.getLanguage()))
+					{
+						return "System default - "+l.name;
+					}
+				}
+				
+
+				return "System default - "+TricycleLocale.ENGLISH_PROPER.name;
+				
+			}
+			
+			
 			return name;
 		}
 		
@@ -98,12 +118,26 @@ public class LocaleComboRenderer extends JLabel implements ListCellRenderer {
 		
 		public String getCountryCode()
 		{
+			TricycleLocale def = TricycleLocale.DEFAULT;
+			if(this.equals(def))
+			{
+				Locale locale = Locale.getDefault();
+				return locale.getCountry();
+			}
+			
 			return country;
 		
 		}
 		
 		public String getLanguageCode()
 		{
+			TricycleLocale def = TricycleLocale.DEFAULT;
+			if(this.equals(def))
+			{
+				Locale locale = Locale.getDefault();
+				return locale.getLanguage();
+			}
+			
 			return language;
 		}
 		
@@ -115,18 +149,39 @@ public class LocaleComboRenderer extends JLabel implements ListCellRenderer {
 		
 		public Icon getFlag()
 		{
+			TricycleLocale def = TricycleLocale.DEFAULT;
+			if(this.equals(def))
+			{
+				Locale loc = Locale.getDefault();
+				
+				for(TricycleLocale l:TricycleLocale.values())
+				{
+					if(l.equals(TricycleLocale.DEFAULT)) continue;
+					if(l.getCountryCode().equals(loc.getCountry()) && l.getLanguageCode().equals(loc.getLanguage()))
+					{
+						return getIcon(l.country, 16);
+					}
+				}
+
+				return getIcon(TricycleLocale.ENGLISH_PROPER.country, 16);				
+			}
+			
+			
 			return getIcon(country, 16);
 		}
 		
 		public static Icon getIcon(String name, int size) {
 			
-			String filename = "icons/"+size+"x"+size+"/"+name+".png";
-			log.debug("Loading icon: "+filename);
+			try{
+				String filename = "icons/"+size+"x"+size+"/"+name+".png";
+				ImageIcon aicon = new ImageIcon(IOUtils.getFileInJarURL(filename));
+				return aicon;
+			} catch (Exception e)
+			{
+				
+			}
 			
-			ImageIcon aicon = new ImageIcon(IOUtils.getFileInJarURL(filename));
-			
-			return aicon;
-			
+			return null;
 		}	
 		
 	};
