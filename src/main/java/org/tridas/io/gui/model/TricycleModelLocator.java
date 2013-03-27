@@ -51,6 +51,8 @@ public class TricycleModelLocator {
 	private static final String LAST_DIRECTORY = "LastDirectory";
 	private static final String LAST_INPUT_FORMAT = "LastInputFormat";
 	private static final String LAST_OUTPUT_FORMAT = "LastOutputFormat";
+	private static final String LAST_LOCALE_COUNTRY = "LastLocaleCountry";
+	private static final String LAST_LOCALE_LANGUAGE = "LastLocaleLanguage";
 	private static final String TRACKING = "Tracking";
 	private static final String DONT_ASK_TRACKING = "DontAskTracking";
 	private static final String AUTOUPDATE = "AutoUpdate";
@@ -176,6 +178,22 @@ public class TricycleModelLocator {
 	
 	public void setLastNamingConvention(String format){
 		prefs.put(LAST_NAMING_CONVENTION, format);
+	}
+	
+	public String getLastLocaleCountry(){
+		return prefs.get(LAST_LOCALE_COUNTRY, null);				
+	}
+	
+	public void setLastLocaleCountry(String locale){
+		prefs.put(LAST_LOCALE_COUNTRY, locale);
+	}
+	
+	public String getLastLocaleLanguage(){
+		return prefs.get(LAST_LOCALE_LANGUAGE, null);				
+	}
+	
+	public void setLastLocaleLanguage(String locale){
+		prefs.put(LAST_LOCALE_LANGUAGE, locale);
 	}
 	
 	public ImageIcon getWindowIcon(){
