@@ -1,5 +1,12 @@
 TRiCYCLE Changelog:
 
+Changes from 0.2.6 to 0.2.8
+- Various improvements to Sheffield support
+- Fixes to handling of Bescancon 'comma' year handling
+- Added support for overriding language of interface
+- Fixed crashing cause by MVC library
+- Added FHX2 writer 
+- Added 'data only' variant of Tucson file writer 
 - Added check for stray characters in Heidelberg format
 - Intercept 'Weiserjahre' values from Corina/Tellervo in Heidelberg, Tucson and Bescancon writers
 - Improved metadata handling in Tucson reader
@@ -20,9 +27,6 @@ TRiCYCLE Changelog:
 - Fixed DateOfSampling month offset in Heidelberg reader
 - Improved natural language parsing of dates from Heidelberg metadata fields 
 - Fixed error in interpreting the end year when reading from TRIMS files
-
-
-Changes from 0.2.6 to 0.2.7
 - Added Danish translation
 - Added Cracow-reader support
 - Fixed bug for detecting missing ring values in Tucson format 
@@ -32,7 +36,6 @@ Changes from 0.2.6 to 0.2.7
 - Improved logic for naming output files when they contain multiple series
 - Warn and skip if writing a file with just metadata and no data values
 - Handle blank lines in Heidelberg reader
-
 
 Changes from 0.2.5 to 0.2.6
 - Updated translations for Dutch, Spanish and French
