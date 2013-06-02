@@ -369,9 +369,20 @@ public class OptionsWindow extends JDialog {
 		cboLocale.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				TricycleLocale locale = (TricycleLocale) cboLocale.getSelectedItem();
-				I18n.localeprefs.put("countrycode", locale.getCountryCode());
-				I18n.localeprefs.put("languagecode", locale.getLanguageCode());
+				
+				if(cboLocale.getSelectedIndex()==0)
+				{
+					log.debug("Resetting locale to system default");
+					I18n.localeprefs.remove("countrycode");
+					I18n.localeprefs.remove("languagecode");
+				}
+				else
+				{			
+					TricycleLocale locale = (TricycleLocale) cboLocale.getSelectedItem();
+					log.debug("Overriding locale to "+locale.getCountryCode()+", "+locale.getLanguageCode());
+					I18n.localeprefs.put("countrycode", locale.getCountryCode());
+					I18n.localeprefs.put("languagecode", locale.getLanguageCode());
+				}
 			}
 		});
 	}
