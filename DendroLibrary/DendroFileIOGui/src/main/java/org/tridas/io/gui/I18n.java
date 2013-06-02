@@ -51,19 +51,27 @@ public class I18n {
 			if(country.equals("xxx") || language.equals("xxx"))
 			{
 				// No prefs specified so just go with the default from the system
+				log.debug("No locale preferences specified.  Attempting to get system locale instead...");
 				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
+				log.debug("Using system locale: "+Locale.getDefault().getDisplayCountry()+" with lang "+Locale.getDefault().getDisplayLanguage());
+				
 			}
 			else
 			{
 				// Prefs specified so use these instead
-				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI", new Locale(language, country));
+				log.debug("Locale preferences specified (lang: "+language+", country: "+country+") which override the system default.  Attempting to use this...");
+				Locale specloc = new Locale(language, country);
+				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI", specloc);
+				log.debug("Successfully loaded locale: "+specloc.getDisplayCountry(specloc)+" with lang "+specloc.getDisplayLanguage(specloc));
 			}
 			
 		} catch (MissingResourceException mre) {
 			try {
+				log.debug("Failed to find specified locale.  Falling back to TRiCYCLE default locale");
+				
 				bundle = ResourceBundle.getBundle("locale/DendroFileIOGUI");
 			} catch (MissingResourceException mre2) {
-				log.error("Could not find locale file.");
+				log.error("Couldn't even find TRiCYCLE locale, this really shouldn't have happened!");
 				mre2.printStackTrace();
 				bundle = new ResourceBundle() {
 					
