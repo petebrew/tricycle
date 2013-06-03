@@ -164,7 +164,7 @@ public class OptionsWindow extends JDialog {
 		writingPanel.add(writingDefaults, "cell 0 3 2 1,alignx right,growy");
 		
 		privacyPanel = new JPanel();
-		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Miscellaneous options", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		privacyPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), I18n.getText("view.options.misc"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		getContentPane().add(privacyPanel, "cell 0 2,growx");
 		privacyPanel.setLayout(new MigLayout("", "[][320px:320px][670px]", "[23px][23px][]"));
 		
@@ -239,7 +239,7 @@ public class OptionsWindow extends JDialog {
 		
 		privacyPanel.add(cboLocale, "flowx,cell 2 0,alignx left");
 		
-		lblAutomaticallyCheckFor = new JLabel("Automatically check for updates:");
+		lblAutomaticallyCheckFor = new JLabel("Automatically check for updates");
 		privacyPanel.add(lblAutomaticallyCheckFor, "cell 1 1,alignx right");
 		
 		cbxAutoUpdate = new JCheckBox("");
@@ -405,7 +405,10 @@ public class OptionsWindow extends JDialog {
 		writingDefaults.setText(I18n.getText("view.options.output.defaults", cmodel.getOutputFormat()));
 		okButton.setText(I18n.getText("view.options.ok"));
 		cancelButton.setText(I18n.getText("general.cancel"));
-
+		lblAutomaticallyCheckFor.setText(I18n.getText("view.options.autocheckupdate")+":");
+		lblLocale.setText(I18n.getText("view.options.locale")+":");
+		lblEnableAnonymousUsage.setText(I18n.getText("view.options.enableanonstats")+":");
+		
 		for (String conv : NamingConvention.getNamingConventions()) {
 			namingConvention.addItem(conv);
 		}

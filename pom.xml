@@ -242,16 +242,13 @@
 							<source>
 								import java.util.Date
 								import java.text.MessageFormat
-								def timestamp = MessageFormat.format("{0,date,dd MMM yyyy, HH:mm
-								}", new Date())
+								def timestamp = MessageFormat.format("{0,date,dd MMM yyyy, HH:mm}", new Date())
 								project.properties['buildtimestamp'] = timestamp
 							</source>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-
-
 
 			<!-- Write project properties into a build properties file -->
 			<plugin>
@@ -391,6 +388,7 @@
 							<goal>jdeb</goal>
 						</goals>
 						<configuration>
+							<deb>${project.build.directory}/binaries/${project.version}/Linux/${project.build.finalName}.deb</deb>
 							<dataSet>
 								<data>
 									<src>${project.build.directory}/${project.build.finalName}.jar</src>
@@ -461,7 +459,6 @@
 					<prefix>/usr/local</prefix>
 					<!-- <changelogFile>documentation/changelog.txt</changelogFile> -->
 					<!-- <requires> <require>jre.i586</require> </requires> -->
-
 					<mappings>
 						<mapping>
 							<directory>/usr/share/tricycle</directory>
@@ -587,6 +584,53 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 
+					<!-- Strip duplicate deps from MacOSX bundle -->	 
+					<execution>
+					  <id>StripDupsFromOSX</id>
+					  <phase>package</phase>
+					  <configuration>
+					  	<tasks>
+						  <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+							  classpathref="maven.plugin.classpath"/>	
+								  	   <!-- Create the binary folder to hold the MacOSX package -->
+									  <echo> MKDIR ${project.build.directory}/binaries/${project.version}/MacOSX </echo>
+									  <mkdir dir="${project.build.directory}/binaries/${project.version}/MacOSX"/>
+							
+									  <!-- Delete the seperate dependencies as they are included in the jar -->
+									  <echo> Delete dependencies from JAR: ${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo</echo>
+									  <delete dir="${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo"/>
+									  				
+									  <!-- Copy in to our build folder the TRiCYCLE jar -->			
+									  <echo>Copy JAR into the build folder</echo>
+									  <echo>File: ${project.build.directory}/${project.build.finalName}.jar... into ${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo/org/tridas/io/${project.version}/</echo>	
+									  <copy file="${project.build.directory}/${project.build.finalName}.jar"		
+									  		todir="${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo/org/tridas/io/${project.version}/"/>		
+									  		
+									  <echo>Delete any previous OSX package</echo>
+									  <delete file="${project.build.directory}/binaries/${project.version}/MacOSX/${project.build.finalName}-app.zip" failonerror="false"/>		
+									  					
+									  										  
+									  <!-- Create the app.zip file from our build folder.  555 filemode required for executing-->
+									  <echo>Create the app.zip file from our build folder.  555 filemode required for executing</echo>								  
+									  <zip destfile="${project.build.directory}/binaries/${project.version}/MacOSX/${project.build.finalName}-app.zip" update="false">
+									  	<zipfileset filemode="555" dir="${project.build.directory}/${project.build.finalName}" includes="TRiCYCLE.app/**"/>
+									  </zip>
+									  
+									  <!-- Add license, manual and native package into the root of the zip -->
+									  <!-- <echo>Add license, manual and native package into the root of the zip</echo>
+									  <zip destfile="${project.build.directory}/binaries/desktop/${project.version}/MacOSX/${project.build.finalName}.zip" update="true">
+									  	     <fileset dir="Native/BuildResources/MacBuild/NativePackages/" includes="**/*.pkg"/>
+									  		 <fileset dir="${project.build.directory}/classes/Licenses/" includes="**/license.txt"/>
+									  		 <fileset dir="Documentation" includes="**/tellervo-manual.pdf"/>
+									  </zip>-->
+
+						  </tasks>	  
+					  </configuration>
+					  <goals>
+						  <goal>run</goal>
+					  </goals>					
+				  </execution>
+
 					<!-- Run Makensis to create the windows installer -->
 					<execution>
 						<id>RunNSIS</id>
@@ -596,6 +640,7 @@
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
 									classpathref="maven.plugin.classpath" />
 								<!-- <trycatch> <try> -->
+								 <mkdir dir="${project.build.directory}/binaries/${project.version}/Windows"/>
 								<exec dir="target/classes/build" executable="makensis">
 									<arg value="create-win-setup.nsi" />
 								</exec>
@@ -619,23 +664,66 @@
 								<!-- <copy file="${project.build.directory}/rpm/tricycle/RPMS/noarch/${project.build.finalName}*.noarch.rpm" 
 									tofile="${project.build.directory}/${project.build.finalName}-1.noarch.rpm" 
 									failonerror="false"/> -->
-								<copy todir="${project.build.directory}">
+								<copy todir="${project.build.directory}/binaries/${project.version}/Linux/">
 									<fileset dir="${project.build.directory}/rpm/tricycle/RPMS/noarch/">
-
 									</fileset>
-
-
 								</copy>
-
 							</tasks>
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
 					</execution>
+					
+					<execution>
+						<id>CopyJarFile</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
+									classpathref="maven.plugin.classpath"/>
+							      <mkdir dir="${project.build.directory}/binaries/${project.version}/Java"/>
+							      <copy file="${project.build.directory}/${project.build.finalName}.jar" tofile="${project.build.directory}/binaries/${project.version}/Java/${project.build.finalName}.jar" failonerror="false"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>					
+					</execution>
 
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>1.0b3</version>
+						<exclusions>
+							<exclusion>
+								<groupId>ant</groupId>
+								<artifactId>ant</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.6.5</version>
+					</dependency>
+			          <dependency>
+			            <groupId>ant</groupId>
+			            <artifactId>ant-jsch</artifactId>
+			            <version>1.6.5</version>
+			          </dependency>
+			          <dependency>
+			            <groupId>com.jcraft</groupId>
+			            <artifactId>jsch</artifactId>
+			            <version>0.1.42</version>
+			          </dependency>
+				</dependencies>
 			</plugin>
+
+
+
 
 		</plugins>
 		<pluginManagement>

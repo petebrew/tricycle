@@ -58,7 +58,7 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\..\..\target\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}-setup.exe"
+OutFile "..\..\..\target\binaries\${PRODUCT_VERSION}\Windows\${PRODUCT_NAME_LC}-${PRODUCT_VERSION}-setup.exe"
 ;OutFile "c:\temp\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
