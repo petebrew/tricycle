@@ -26,7 +26,7 @@
 	</appender>
 
 	<appender name="logfile" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="${user.home}/.TRiCYCLE.log" />
+		<param name="file" value="${java.io.tmpdir}/tricycle.log" />
 		<param name="MaxFileSize" value="500KB" />
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
