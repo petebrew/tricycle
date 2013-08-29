@@ -45,15 +45,15 @@ import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.FrontController;
 
 public class TricycleController extends FrontController {
-	public static final String STARTUP = "TRIYCYCLE_STARTUP_EVENT";
-	public static final String QUIT = "TRIYCYCLE_QUIT";
-	public static final String ABOUT = "TRIYCYCLE_ABOUT";
-	public static final String HELPVIEWER = "TRIYCYCLE_HELP";
+	public static final String STARTUP = "TRICYCLE_STARTUP_EVENT";
+	public static final String QUIT = "TRICYCLE_QUIT";
+	public static final String ABOUT = "TRICYCLE_ABOUT";
+	public static final String HELPVIEWER = "TRICYCLE_HELP";
 	public static final String CHECKFORUPDATES = "TRICYCLE_CHECK_FOR_UPDATES";
 	public static final String GUESS_FORMAT = "TRICYCLE_GUESS_FORMAT";
 	public static final String CANCEL_FORMAT_GUESS = "TRICYCLE_CANCEL_FORMAT_GUESS";
-	public static final String OPTIONS = "TRIYCYCLE_OPTIONS";
-	public static final String VIEW_LOG = "TRIYCYCLE_VIEW_LOG";
+	public static final String OPTIONS = "TRICYCLE_OPTIONS";
+	public static final String VIEW_LOG = "TRICYCLE_VIEW_LOG";
 	
 	private MainWindow view = null;
 	private AboutWindow about = null;
