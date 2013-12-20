@@ -99,7 +99,7 @@ public class FileListController extends FrontController {
 		fc.setFileFilter(fc.getAcceptAllFileFilter());
 		
 		// Loop through formats and create filters for each
-		ArrayList<DendroFileFilter> filters = TridasIO.getFileFilterArray();
+		ArrayList<DendroFileFilter> filters = TridasIO.getFileReadingFilterArray();
 		Collections.sort(filters);
 		for(DendroFileFilter filter : filters)
 		{
@@ -113,9 +113,13 @@ public class FileListController extends FrontController {
 		}
 
 		// Pick the last used directory by default
-		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
-		if(lastDirectory != null){
-			fc.setCurrentDirectory(lastDirectory);
+		try{
+			File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
+			if(lastDirectory != null){
+				fc.setCurrentDirectory(lastDirectory);
+			}
+		} catch (Exception e)
+		{
 		}
 		
 		int retValue = fc.showOpenDialog(TricycleModelLocator.getInstance().getMainWindow());
