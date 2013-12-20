@@ -1,5 +1,8 @@
 TRiCYCLE Changelog:
 
+- Added support for reading EarlyLateWood format files in Heidelberg reader
+
+
 Changes from 0.2.6 to 0.2.8
 - Various improvements to Sheffield support
 - Fixes to handling of Bescancon 'comma' year handling
