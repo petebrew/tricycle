@@ -184,7 +184,7 @@
 		<dependency>
 			<groupId>org.tridas</groupId>
 			<artifactId>dendrofileio</artifactId>
-			<version>1.0.7-SNAPSHOT</version>
+			<version>1.0.8-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
