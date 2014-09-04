@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.tridas</groupId>
 	<artifactId>tricycle</artifactId>
-	<version>0.2.8</version>
+	<version>0.2.9-SNAPSHOT</version>
 	<name>TRiCYCLE</name>
 	<description>Universal dendro data file converter</description>
 	<licenses>
@@ -184,7 +184,7 @@
 		<dependency>
 			<groupId>org.tridas</groupId>
 			<artifactId>dendrofileio</artifactId>
-			<version>1.0.8-SNAPSHOT</version>
+			<version>1.0.9-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -289,7 +289,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+		<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.7</version>
@@ -301,7 +301,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
