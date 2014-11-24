@@ -59,6 +59,7 @@ import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * @author Daniel
@@ -70,16 +71,16 @@ public class ConvertPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTree convertedTree;
 	private JButton saveButton;
-	private JButton convertButton;
 	private JButton expandAll;
 	private JButton collapseAll;
 	private JLabel results;
-	private JComboBox outputFormat;
 	private JButton previewButton;
 
 	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
 	
 	private final ConvertModel model;
+	private JPanel panel;
+	private JPanel panel_1;
 	
 	public ConvertPanel(ConvertModel argModel) {
 		model = argModel;
@@ -90,42 +91,22 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void initializeComponents() {
-		convertButton = new JButton();
-		saveButton = new JButton();
 		scrollPane = new JScrollPane();
 		convertedTree = new JTree();
-		results = new JLabel();
-		expandAll = new JButton();
-		collapseAll = new JButton();
-		outputFormat = new JComboBox();
+		
+		
+		setLayout(new MigLayout("", "[450px,grow]", "[35px][230px,grow][]"));
+		
+		
+		panel = new JPanel();
+		add(panel, "cell 0 0,grow");
+		panel.setLayout(new MigLayout("", "[222.00px][][119px,grow][][89px]", "[25px]"));
 		previewButton = new JButton();
+		panel.add(previewButton, "flowx,cell 0 0,alignx left,aligny top");
+		saveButton = new JButton();
+		panel.add(saveButton, "cell 4 0,alignx left,aligny top");
 		
-		setLayout(new java.awt.BorderLayout());
-		
-		Box top = Box.createHorizontalBox();
-		top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-		top.add(outputFormat);
-		top.add(convertButton);
-		top.add(previewButton);
-		top.add(saveButton);
-		top.add(Box.createHorizontalGlue());
-
-		collapseAll.putClientProperty( "JButton.buttonType", "segmentedTextured" );
-		collapseAll.putClientProperty( "JButton.segmentPosition", "first" );
-		expandAll.putClientProperty( "JButton.buttonType", "segmentedTextured" );
-		expandAll.putClientProperty( "JButton.segmentPosition", "last" );
-		
-		Box bottom = Box.createHorizontalBox();
-		bottom.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-		bottom.add(results);
-		bottom.add(Box.createHorizontalGlue());
-		bottom.add(collapseAll);
-		bottom.add(expandAll);
-		
-		add(top, BorderLayout.NORTH);
-		
-		add(bottom, java.awt.BorderLayout.PAGE_END);
-		
+	
 		ImageIcon ficon     = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/fail.png"));
 		ImageIcon wicon     = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/warning.png"));
 		ImageIcon sicon     = new ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/success.png"));
@@ -144,36 +125,27 @@ public class ConvertPanel extends JPanel {
 		convertedTree.expandRow(0);
 		scrollPane.setViewportView(convertedTree);
 		
-		add(scrollPane, java.awt.BorderLayout.CENTER);
+		add(scrollPane, "cell 0 1,grow");
+		
+		panel_1 = new JPanel();
+		add(panel_1, "cell 0 2,grow");
+		panel_1.setLayout(new MigLayout("", "[][grow][][]", "[]"));
+		results = new JLabel();
+		panel_1.add(results, "cell 0 0");
+		collapseAll = new JButton();
+		panel_1.add(collapseAll, "cell 2 0");
+		expandAll = new JButton();
+		panel_1.add(expandAll, "cell 3 0");
+		expandAll.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		expandAll.putClientProperty( "JButton.segmentPosition", "last" );
+		
+		
+
+		collapseAll.putClientProperty( "JButton.buttonType", "segmentedTextured" );
+		collapseAll.putClientProperty( "JButton.segmentPosition", "first" );
 	}
 	
 	private void addListeners() {
-		
-		convertButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ConfigModel config = TricycleModelLocator.getInstance().getConfigModel();
-				FileListModel flmodel = TricycleModelLocator.getInstance().getFileListModel();
-				ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
-				
-				ConvertEvent event = new ConvertEvent(flmodel.getInputFormat(),
-													  model.getOutputFormat(),
-													  config.getNamingConvention(),
-													  cmodel.getTreatFilesAs(),													  
-													  config.getReaderDefaults(),
-													  config.getWriterDefaults());
-				event.dispatch();
-			}
-		});
-
-		outputFormat.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String output = outputFormat.getSelectedItem().toString();
-				ConfigEvent event = new ConfigEvent(ConfigController.SET_OUTPUT_FORMAT, output);
-				event.dispatch();
-			}
-		});
 		
 		saveButton.addActionListener(new ActionListener() {
 			@Override
@@ -242,15 +214,11 @@ public class ConvertPanel extends JPanel {
 	}
 	
 	private void populateLocale() {
-		saveButton.setText(I18n.getText("view.convert.saveAll"));
-		convertButton.setText(I18n.getText("view.convert.convert"));
+		saveButton.setText("Save all...");
 		collapseAll.setText(I18n.getText("view.convert.collapse"));
 		expandAll.setText(I18n.getText("view.convert.expand"));
-		previewButton.setText(I18n.getText("view.convert.previewFile"));
+		previewButton.setText("Preview selected file");
 		
-		for (String out : OutputFormat.getOutputFormats()) {
-			outputFormat.addItem(out);
-		}
 	}
 	
 	private void linkModel() {
@@ -261,16 +229,6 @@ public class ConvertPanel extends JPanel {
 		}
 		expandToFiles();
 		
-		// Try to remember last used format
-		if(TricycleModelLocator.getInstance().getLastUsedOutputFormat()!=null)
-		{
-			outputFormat.setSelectedItem(TricycleModelLocator.getInstance().getLastUsedOutputFormat());
-			model.setOutputFormat(TricycleModelLocator.getInstance().getLastUsedOutputFormat());
-		}
-		else
-		{
-			outputFormat.setSelectedItem(model.getOutputFormat());
-		}
 		
 		if(model.getConvertedList().isEmpty()){
 			saveButton.setEnabled(false); // for issue 233
@@ -303,9 +261,10 @@ public class ConvertPanel extends JPanel {
 				}
 				else if (prop.equals("convWithWarnings")) {
 					setStatus(model.getProcessed(), model.getFailed(), model.getConvWithWarnings());
-				}else if (prop.equals("outputFormat")) {
+				}/*else if (prop.equals("outputFormat")) {
 					outputFormat.setSelectedItem(evt.getNewValue());
-				}else if(prop.equals("selectedNode")){
+				}*/
+				else if(prop.equals("selectedNode")){
 					DefaultMutableTreeNode node = model.getSelectedNode();
 					if(node == null){
 						previewButton.setEnabled(false);
@@ -328,11 +287,11 @@ public class ConvertPanel extends JPanel {
 				if (evt.getPropertyName().equals("lock")) {
 					boolean lock = (Boolean) evt.getNewValue();
 					if (lock) {
-						convertButton.setEnabled(false);
+						//convertButton.setEnabled(false);
 						saveButton.setEnabled(false);
 					}
 					else {
-						convertButton.setEnabled(true);
+						//convertButton.setEnabled(true);
 						if(!model.getConvertedList().isEmpty()){
 							saveButton.setEnabled(true); // for issue 233
 						}else{
