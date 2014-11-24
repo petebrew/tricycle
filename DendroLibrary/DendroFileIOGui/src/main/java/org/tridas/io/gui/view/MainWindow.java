@@ -63,7 +63,7 @@ public class MainWindow extends JFrame {
 	private JMenuItem guessFileFormatButton;
 	
 	private JMenuItem logMenuButton;
-	private JTabbedPane tabbedPane;
+	protected JTabbedPane tabbedPane;
 	public FileListPanel fileList;
 	public ConvertPanel convertPanel;
 	
@@ -99,16 +99,16 @@ public class MainWindow extends JFrame {
 		logMenuButton = new JMenuItem();
 		
 
-		fileList = new FileListPanel(TricycleModelLocator.getInstance().getFileListModel());
+		fileList = new FileListPanel(TricycleModelLocator.getInstance().getFileListModel(), this);
 		convertPanel = new ConvertPanel(TricycleModelLocator.getInstance().getConvertModel());
 
 		
-		tabbedPane.addTab(I18n.getText("view.main.fileListTab"), fileList);
-		tabbedPane.addTab(I18n.getText("view.main.convertTab"), convertPanel);
+		tabbedPane.addTab("Conversion Options", fileList);
+		tabbedPane.addTab("Results", convertPanel);
 		// set selected component to the file list
 		tabbedPane.setSelectedComponent(fileList);
 		
-		add(tabbedPane, java.awt.BorderLayout.CENTER);
+		getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
 		
 		
 		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
