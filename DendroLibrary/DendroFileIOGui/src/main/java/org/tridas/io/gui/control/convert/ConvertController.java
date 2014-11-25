@@ -84,31 +84,32 @@ public class ConvertController extends FrontController {
 			PreviewModel pmodel = new PreviewModel();
 			pmodel.setFilename(file.toString());
 			
-			boolean worked = false;
 			String[] strings = null;
 			try {
 				strings = file.file.saveToString();
-				worked = strings != null;
-			} catch (Exception e) {
-				log.error("Could not convert file '"+file.toString()+"' to strings", e);
-				worked = false;
-			}
 			
-			if (worked) {
-				String all = StringUtils.join(strings, "\n");
-				if(file.file instanceof TridasFile){
-					try{
-						all = XMLFormatter.format(all);
-					}catch(Exception e){
-						log.error("Error formatting xml text: "+all);
+				if(strings!=null)
+				{
+					String all = StringUtils.join(strings, "\n");
+					if(file.file instanceof TridasFile){
+						try{
+							all = XMLFormatter.format(all);
+						}catch(Exception e){
+							log.error("Error formatting xml text: "+all);
+						}
 					}
+					pmodel.setFileString(all);
 				}
-				pmodel.setFileString(all);
-			}
-			else {
+				
+			} catch (UnsupportedOperationException e)
+			{
+				pmodel.setFileString("This is a binary file so cannot be viewed as a conventional text file");
+			}			
+			catch (Exception e) {
+				log.error("Could not convert file '"+file.toString()+"' to strings", e);
 				pmodel.setFileString(I18n.getText("view.popup.preview.error"));
 			}
-			
+
 			MainWindow window = TricycleModelLocator.getInstance().getMainWindow();
 			Dimension size = window.getSize();
 			

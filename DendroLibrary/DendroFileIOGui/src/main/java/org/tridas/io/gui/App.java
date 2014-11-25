@@ -91,8 +91,8 @@ public class App {
 		try {
 			bundle = ResourceBundle.getBundle("build");
 		} catch (MissingResourceException mre) {
-			log.error("Could not find build properties file.");
-			mre.printStackTrace();
+			log.error("Could not find build properties file containing build timestamp, version, revision etc.");
+			//mre.printStackTrace();
 			bundle = new ResourceBundle() {
 				
 				@Override
@@ -148,7 +148,7 @@ public class App {
 		try {
 			value = build.getString(key);
 		} catch (MissingResourceException e) {
-			log.error("Unable to find translation entry for the key: " + key);
+			log.error("Unable to find build info: " + key);
 			return I18n.getText("???");
 		};
 		
