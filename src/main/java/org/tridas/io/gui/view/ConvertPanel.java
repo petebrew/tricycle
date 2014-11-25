@@ -18,7 +18,6 @@
  */
 package org.tridas.io.gui.view;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -26,11 +25,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,24 +38,19 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.ConvertCommand.DendroWrapper;
 import org.tridas.io.gui.components.CustomTreeCellRenderer;
-import org.tridas.io.gui.control.config.ConfigController;
-import org.tridas.io.gui.control.config.ConfigEvent;
 import org.tridas.io.gui.control.convert.ConvertController;
-import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.gui.control.convert.SaveEvent;
-import org.tridas.io.enums.OutputFormat;
-import org.tridas.io.gui.model.ConfigModel;
 import org.tridas.io.gui.model.ConvertModel;
-import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.ObjectEvent;
-import net.miginfocom.swing.MigLayout;
 
 /**
  * @author Daniel
@@ -76,7 +67,7 @@ public class ConvertPanel extends JPanel {
 	private JLabel results;
 	private JButton previewButton;
 
-	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Convertion Data");
+	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Conversion Data");
 	
 	private final ConvertModel model;
 	private JPanel panel;
