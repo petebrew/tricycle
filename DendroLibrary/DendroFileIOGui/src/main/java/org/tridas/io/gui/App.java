@@ -19,7 +19,6 @@ import java.util.Enumeration;
 import java.util.MissingResourceException;
 import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 import javax.swing.UIManager;
 
