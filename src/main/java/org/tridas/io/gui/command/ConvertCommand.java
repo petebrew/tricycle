@@ -34,7 +34,7 @@ import org.tridas.io.TridasIO;
 import org.tridas.io.defaults.IMetadataFieldSet;
 import org.tridas.io.exceptions.ConversionWarning;
 import org.tridas.io.exceptions.ConversionWarningException;
-import org.tridas.io.exceptions.IncompleteTridasDataException;
+import org.tridas.io.exceptions.ImpossibleConversionException;
 import org.tridas.io.exceptions.IncorrectDefaultFieldsException;
 import org.tridas.io.exceptions.InvalidDendroFileException;
 import org.tridas.io.gui.I18n;
@@ -321,7 +321,7 @@ public class ConvertCommand implements ICommand {
 				else {
 					writer.load(combinedContainer, (IMetadataFieldSet) argOutputDefaults.clone());
 				}
-			} catch (IncompleteTridasDataException e) {
+			} catch (ImpossibleConversionException e) {
 				struct.errorMessage = e.getMessage();
 			} catch (ConversionWarningException e) {
 				struct.errorMessage = e.getLocalizedMessage();
@@ -495,7 +495,7 @@ public class ConvertCommand implements ICommand {
 				else {
 					writer.load(combinedContainer, (IMetadataFieldSet) argOutputDefaults.clone());
 				}
-			} catch (IncompleteTridasDataException e) {
+			} catch (ImpossibleConversionException e) {
 				struct.errorMessage = e.getMessage();
 			} catch (ConversionWarningException e) {
 				struct.errorMessage = e.getLocalizedMessage();
@@ -644,7 +644,7 @@ public class ConvertCommand implements ICommand {
 					else {
 						writer.load(container, (IMetadataFieldSet) argOutputDefaults.clone());
 					}
-				} catch (IncompleteTridasDataException e) {
+				} catch (ImpossibleConversionException e) {
 					struct.errorMessage = e.getMessage();
 				} catch (ConversionWarningException e) {
 					struct.errorMessage = e.getLocalizedMessage();
