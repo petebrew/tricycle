@@ -52,6 +52,7 @@ import javax.swing.tree.TreePath;
 import net.miginfocom.swing.MigLayout;
 
 import org.codehaus.plexus.util.FileUtils;
+import org.tridas.io.IDendroFile;
 import org.tridas.io.exceptions.ConversionWarning;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.command.ConvertCommand.DendroWrapper;
@@ -503,8 +504,20 @@ public class ConvertPanel extends JPanel {
 				}
 			}catch (NullPointerException e){}
 			
-			if(hasMessages==false)
+			// Make sure that there aren't any warnings tucked away in the output files that we haven't seen yet 
+			for(IDendroFile file : ob.struct.writer.getFiles())
 			{
+				if(file.getDefaults().getWarnings().size()!=0)
+				{
+					appendConversionMsg("   ", "warningicon");
+					appendConversionMsg("   See warnings on individual output file(s)", "large");
+					hasMessages=true;
+					break;
+				}
+			}
+			
+			if(hasMessages==false)
+			{				
 				toggleSplitPane(JSplitPane.BOTTOM, false);
 				appendConversionMsg("File converted successfully with no warnings", "large");
 
