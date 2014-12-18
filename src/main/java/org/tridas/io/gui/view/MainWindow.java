@@ -16,6 +16,7 @@
 
 package org.tridas.io.gui.view;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,10 +24,12 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
@@ -37,6 +40,7 @@ import org.tridas.io.gui.control.fileList.BrowseEvent;
 import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
+import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
@@ -45,81 +49,171 @@ import com.dmurph.tracking.AnalyticsConfigData;
 import com.dmurph.tracking.JGoogleAnalyticsTracker;
 import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JToolBar;
+import javax.swing.JButton;
+import net.miginfocom.swing.MigLayout;
+
 /**
  * @author daniel
  */
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements ActionListener{
 	
 	private JMenu fileMenu;
 	private JMenu helpMenu;
 	private JMenuBar menuBar;
-	private JMenuItem quitMenuButton;
-	private JMenuItem optionsMenuButton;
-	private JMenuItem fileOpenButton;
-	private JMenuItem aboutMenuButton;
-	//private JMenuItem helpMenuButton;
-	private JMenuItem checkForUpdatesButton;
-	private JMenuItem guessFileFormatButton;
+	private JMenuItem menuExit;
+	private JMenuItem menuOptions;
+	private JMenuItem menuFileOpen;
+	private JMenuItem menuFileSave;
+	private JMenuItem menuAbout;
+	private JMenuItem menuCheckForUpdates;
+	private JMenuItem menuGuessFileFormat;
+	private JMenuItem menuViewLog;
 	
-	private JMenuItem logMenuButton;
 	protected JTabbedPane tabbedPane;
 	public FileListPanel fileList;
 	public ConvertPanel convertPanel;
 	
 	public final TricycleModel model;
+	private JToolBar toolBar;
+	private JToolbarButton btnOpen;
+	private JToolbarButton btnOptions;
+	private JToolbarButton btnConvert;
+	private JToolbarButton btnIdentify;
+	private JToolbarButton btnSave;
+	private JToolbarButton btnPreview;
+	
+	private ImageIcon icnFileOpen;
+	private ImageIcon icnOptions;
+	private ImageIcon icnExit;
+	private ImageIcon icnSave;
+	private ImageIcon icnIdentify;
+	private ImageIcon icnConvert;
+	private ImageIcon icnPreview;
 	
 	/** Creates new form NewJFrame */
 	public MainWindow(TricycleModel argModel) {
 		model = argModel;
+		loadIcons();
 		constructComponents();
 		populateLocale();
 		linkModel();
 		addListeners();
 		pack();
+		convertPanel.toggleSplitPane(JSplitPane.BOTTOM, false);
 		setLocationRelativeTo(null);
 		setTitle("TRiCYCLE");
+		this.setMinimumSize(new Dimension(700, 400));
+		
+
 		
 	}
 	
+	private void loadIcons()
+	{
+		icnFileOpen = null;
+		icnOptions = null;	
+		icnExit = null;
+		icnSave = null;
+		icnIdentify = null;
+		icnConvert = null;
+		icnPreview = null;
+		
+		try{
+			icnFileOpen = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/fileopen.png"));
+			icnOptions = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/settings.png"));
+			icnExit = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/exit.png"));
+			icnSave = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/filesave.png"));
+			icnIdentify = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/question.png"));
+			icnPreview = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/preview.png"));
+			icnConvert = new ImageIcon(IOUtils.getFileInJarURL("icons/22x22/run.png"));
+
+		} catch (NullPointerException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	private void constructComponents() {
+		
+		
+		
 		tabbedPane = new JTabbedPane();
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu();
-		quitMenuButton = new JMenuItem();
+		menuExit = new JMenuItem();
 		helpMenu = new JMenu();
-		aboutMenuButton = new JMenuItem();
-		//helpMenuButton = new JMenuItem();
-		checkForUpdatesButton = new JMenuItem();
-		guessFileFormatButton = new JMenuItem();
+		menuAbout = new JMenuItem();
+		menuCheckForUpdates = new JMenuItem();
 		
-		fileOpenButton = new JMenuItem();
+		menuGuessFileFormat = new JMenuItem();
+		menuGuessFileFormat.setIcon(icnIdentify);
 		
-		optionsMenuButton = new JMenuItem();
-		logMenuButton = new JMenuItem();
+		menuFileOpen = new JMenuItem();
+		menuFileOpen.setIcon(icnFileOpen);
+		
+		menuOptions = new JMenuItem();
+		menuOptions.setIcon(icnOptions);
+		
+		
+		menuViewLog = new JMenuItem();
+		getContentPane().setLayout(new MigLayout("", "[696px,grow,fill]", "[38px][515px,grow,fill]"));
 		
 
 		fileList = new FileListPanel(TricycleModelLocator.getInstance().getFileListModel(), this);
 		convertPanel = new ConvertPanel(TricycleModelLocator.getInstance().getConvertModel());
+		
 
 		
-		tabbedPane.addTab("Conversion Options", fileList);
+		tabbedPane.addTab("Convert files", fileList);
 		tabbedPane.addTab("Results", convertPanel);
 		// set selected component to the file list
 		tabbedPane.setSelectedComponent(fileList);
 		
-		getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
+		getContentPane().add(tabbedPane, "cell 0 1,alignx left,aligny top");
 		
 		
-		fileOpenButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		fileMenu.add(fileOpenButton);
-		fileMenu.add(optionsMenuButton);
 		
-		quitMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		toolBar = new JToolBar();
+		toolBar.setFloatable(false);
+		getContentPane().add(toolBar, "cell 0 0,growx,aligny top");
+		
+		btnOpen = new JToolbarButton("FileOpen", icnFileOpen);
+		toolBar.add(btnOpen);
+		
+		btnSave = new JToolbarButton(convertPanel.actionSaveAll);
+		btnSave.setText("");
+		toolBar.add(btnSave);
+		
+		btnOptions = new JToolbarButton("Options", icnOptions);	
+		toolBar.add(btnOptions);
+		
+		btnConvert = new JToolbarButton("Convert", icnConvert);
+		toolBar.add(btnConvert);
+		
+		btnIdentify = new JToolbarButton("Identify", icnIdentify);
+		toolBar.add(btnIdentify);
+		
+		btnPreview = new JToolbarButton(convertPanel.actionPreviewFile);
+		toolBar.add(btnPreview);
+		
+		
+		menuFileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		fileMenu.add(menuFileOpen);
+		menuFileSave = new JMenuItem();
+		menuFileSave.setAction(convertPanel.actionSaveAll);
+		fileMenu.add(menuFileSave);
+		fileMenu.addSeparator();
+		fileMenu.add(menuOptions);
+		
+		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		
 		if(!System.getProperty("os.name").startsWith("Mac")){
 			fileMenu.addSeparator();
-			fileMenu.add(quitMenuButton);
+			fileMenu.add(menuExit);
 		}
 		
 		menuBar.add(fileMenu);
@@ -127,13 +221,13 @@ public class MainWindow extends JFrame {
 		
 		//helpMenuButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
-		helpMenu.add(logMenuButton);
-		helpMenu.add(checkForUpdatesButton);
-		helpMenu.add(guessFileFormatButton);
+		helpMenu.add(menuViewLog);
+		helpMenu.add(menuCheckForUpdates);
+		helpMenu.add(menuGuessFileFormat);
 		//helpMenu.add(helpMenuButton);
 		if(!System.getProperty("os.name").startsWith("Mac")){
 			helpMenu.addSeparator();
-			helpMenu.add(aboutMenuButton);
+			helpMenu.add(menuAbout);
 		}
 		
 		menuBar.add(helpMenu);
@@ -142,15 +236,23 @@ public class MainWindow extends JFrame {
 	
 	private void populateLocale() {
 		setIconImage(TricycleModelLocator.getInstance().getWindowIcon().getImage());
-		fileOpenButton.setText(I18n.getText("general.open")+"...");
-		optionsMenuButton.setText(I18n.getText("view.files.options"));
-		quitMenuButton.setText(I18n.getText("view.main.quit"));
-		aboutMenuButton.setText(I18n.getText("view.main.about"));
-		guessFileFormatButton.setText(I18n.getText("view.main.guessFormat"));
-		//helpMenuButton.setText("Help");
-		checkForUpdatesButton.setText(I18n.getText("view.main.checkForUpdates"));
-
-		logMenuButton.setText(I18n.getText("view.main.log"));
+		
+		menuFileOpen.setText(I18n.getText("general.open")+"...");
+		btnOpen.setToolTipText(I18n.getText("general.open")+"...");
+		
+		menuOptions.setText(I18n.getText("view.files.options"));
+		btnOptions.setToolTipText(I18n.getText("view.files.options"));
+		
+		menuExit.setText(I18n.getText("view.main.quit"));
+		menuAbout.setText(I18n.getText("view.main.about"));
+		
+		menuGuessFileFormat.setText(I18n.getText("view.main.guessFormat"));
+		btnIdentify.setToolTipText(I18n.getText("view.main.guessFormat"));
+		
+		btnConvert.setToolTipText(I18n.getText("view.convert.do"));
+		
+		menuCheckForUpdates.setText(I18n.getText("view.main.checkForUpdates"));
+		menuViewLog.setText(I18n.getText("view.main.log"));
 		fileMenu.setText(I18n.getText("view.main.file"));
 		helpMenu.setText(I18n.getText("view.main.help"));
 	}
@@ -159,37 +261,35 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private void addListeners() {
-		fileOpenButton.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent argE) {
-				BrowseEvent event = new BrowseEvent();
-				event.dispatch();
-			}
-		});
 		
-		optionsMenuButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent argE) {
-				MVCEvent event = new MVCEvent(TricycleController.OPTIONS);
-				event.dispatch();
-			}
-		});
+		// Toolbar buttons
+		btnOpen.addActionListener(this);
+		btnOptions.addActionListener(this);
+		btnConvert.addActionListener(this);
 		
-		quitMenuButton.addActionListener(new ActionListener() {
+		// Menu buttons
+		menuOptions.addActionListener(this);
+		menuOptions.setActionCommand("Options");
+		menuFileOpen.addActionListener(this);
+		menuFileOpen.setActionCommand("FileOpen");
+
+
+		
+		menuExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MVCEvent event = new MVCEvent(TricycleController.QUIT);
 				event.dispatch();
 			}
 		});
-		aboutMenuButton.addActionListener(new ActionListener() {
+		menuAbout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MVCEvent event = new MVCEvent(TricycleController.ABOUT);
 				event.dispatch();
 			}
 		});
-		checkForUpdatesButton.addActionListener(new ActionListener(){
+		menuCheckForUpdates.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				CheckForUpdateEvent event = new CheckForUpdateEvent(true);
@@ -197,15 +297,12 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		guessFileFormatButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MVCEvent event = new MVCEvent(TricycleController.GUESS_FORMAT);
-				event.dispatch();
-			}
-		});
+		menuGuessFileFormat.setActionCommand("Identify");
+		menuGuessFileFormat.addActionListener(this);
+		btnIdentify.setActionCommand("Identify");
+		btnIdentify.addActionListener(this);
 
-		logMenuButton.addActionListener(new ActionListener() {
+		menuViewLog.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent argE) {
 				MVCEvent event = new MVCEvent(TricycleController.VIEW_LOG);
@@ -258,5 +355,29 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if(evt.getActionCommand().equals("FileOpen"))
+		{
+			BrowseEvent event = new BrowseEvent();
+			event.dispatch();
+		}
+		if(evt.getActionCommand().equals("Options"))
+		{
+			MVCEvent event = new MVCEvent(TricycleController.OPTIONS);
+			event.dispatch();
+		}
+		if(evt.getActionCommand().equals("Identify"))
+		{
+			MVCEvent event = new MVCEvent(TricycleController.GUESS_FORMAT);
+			event.dispatch();
+		}
+		if(evt.getActionCommand().equals("Convert"))
+		{
+			fileList.doConversion();
+		}
+
 	}
 }

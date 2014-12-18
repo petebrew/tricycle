@@ -62,6 +62,7 @@ public class GuessFormatCommand implements ICommand {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setMultiSelectionEnabled(false);
+		fc.setDialogTitle("Choose file to identify");
 
 		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
 		if(lastDirectory != null){
