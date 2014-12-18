@@ -56,6 +56,7 @@ import org.tridas.io.gui.model.FileListModel;
 import org.tridas.io.gui.model.TricycleModel;
 import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.gui.util.FileDrop;
+import org.tridas.io.gui.util.FileTruncatingCellRenderer;
 import org.tridas.io.util.IOUtils;
 
 import com.dmurph.mvc.MVCEvent;
@@ -82,10 +83,11 @@ public class FileListPanel extends JPanel {
 	private JLabel lblFormat;
 	private JLabel lblTreatFilesAs;
 	private JButton convertButton;
-	private JLabel lblOutputFormat;
 	private JComboBox outputFormat;
 	private ConvertModel convertmodel;
 	private MainWindow mainWindow;
+	private JLabel lblTo;
+	private JLabel lblFilesToConvert;
 	
 	public FileListPanel(FileListModel argModel, MainWindow mainWindow) {
 		model = argModel;
@@ -98,9 +100,9 @@ public class FileListPanel extends JPanel {
 	}
 
 	public void initComponents() {
-		setLayout(new MigLayout("", "[85.00,right][248.00][264.00px,grow][]", "[12.00px][fill][][32.00][grow][][][]"));
+		setLayout(new MigLayout("", "[85.00,right][248.00][][299.00][grow][]", "[12.00px][][fill][][32.00][grow][][]"));
 
-		lblFormat = new JLabel("File(s) to convert:");
+		lblFormat = new JLabel("Convert from:");
 		add(lblFormat, "cell 0 0");
 		
 		ImageIcon saIcon = null;
@@ -130,15 +132,30 @@ public class FileListPanel extends JPanel {
 		}
 		inputFormat = new JComboBox();
 		add(inputFormat, "cell 1 0,growx");
+						
+						lblTo = new JLabel("to");
+						add(lblTo, "cell 2 0,alignx trailing");
+						
+						outputFormat = new JComboBox();
+						add(outputFormat, "cell 3 0,growx");
+						
+						lblFilesToConvert = new JLabel("Files to convert:");
+						add(lblFilesToConvert, "cell 0 1");
+						browseButton = new JButton();
+						add(browseButton, "cell 1 1");
 						fileList = new JList();
 						scrollPane = new JScrollPane();
-						add(scrollPane, "cell 1 1 2 5,growx");
+						add(scrollPane, "cell 1 2 4 5,growx");
 						
-								fileList.setModel(new DefaultListModel());
-								scrollPane.setViewportView(fileList);
+						fileList.setModel(new DefaultListModel());
+						scrollPane.setViewportView(fileList);
+				
+						
+						fileList.setCellRenderer(new FileTruncatingCellRenderer());
+						
 				
 						selectAllButton = new JButton();
-						add(selectAllButton, "cell 3 1");
+						add(selectAllButton, "cell 5 2");
 						selectAllButton.setIcon(saIcon);
 						selectAllButton.setPreferredSize(new Dimension(25, 25));
 						selectAllButton.setMaximumSize(new Dimension(25, 25));
@@ -147,7 +164,7 @@ public class FileListPanel extends JPanel {
 						selectAllButton.putClientProperty("JButton.segmentPosition", "middle");
 		
 				selectNoneButton = new JButton();
-				add(selectNoneButton, "cell 3 2");
+				add(selectNoneButton, "cell 5 3");
 				selectNoneButton.setIcon(snIcon);
 				selectNoneButton.setPreferredSize(new Dimension(25, 25));
 				selectNoneButton.setMaximumSize(new Dimension(25, 25));
@@ -156,7 +173,7 @@ public class FileListPanel extends JPanel {
 				selectNoneButton.putClientProperty("JButton.segmentPosition", "last");
 				
 						removeSelectedButton = new JButton();
-						add(removeSelectedButton, "cell 3 3");
+						add(removeSelectedButton, "cell 5 4");
 						removeSelectedButton.setIcon(rsIcon);
 						removeSelectedButton.setPreferredSize(new Dimension(25, 25));
 						removeSelectedButton.setMaximumSize(new Dimension(25, 25));
@@ -166,25 +183,12 @@ public class FileListPanel extends JPanel {
 								"last");
 		
 				removeAll = new JButton();
-				add(removeAll, "cell 3 5");
+				add(removeAll, "cell 5 6");
 				removeAll.setIcon(raIcon);
 				removeAll.setPreferredSize(new Dimension(25, 25));
 				removeAll.setMaximumSize(new Dimension(25, 25));
 				removeAll.putClientProperty("JButton.buttonType", "segmentedTextured");
 				removeAll.putClientProperty("JButton.segmentPosition", "last");
-		browseButton = new JButton();
-		add(browseButton, "cell 2 0");
-				
-				lblOutputFormat = new JLabel("Output format:");
-				add(lblOutputFormat, "cell 0 6,alignx trailing");
-						
-						outputFormat = new JComboBox();
-						add(outputFormat, "cell 1 6,growx");
-										
-										convertButton = new JButton();
-										convertButton.setIcon(runIcon);
-										convertButton.setText("Do conversion");
-										add(convertButton, "cell 2 6 2 2,alignx right");
 								
 										lblTreatFilesAs = new JLabel(I18n.getText("view.files.treatas"));
 										add(lblTreatFilesAs, "cell 0 7,alignx trailing");
@@ -195,26 +199,35 @@ public class FileListPanel extends JPanel {
 										I18n.getText("view.files.treatas.separate"),
 										I18n.getText("view.files.treatas.oneproject"),
 										I18n.getText("view.files.treatas.oneobject") }));
+								
+								convertButton = new JButton();
+								convertButton.setIcon(runIcon);
+								add(convertButton, "cell 3 7 3 1,alignx right");
 	}
 
+	public void doConversion()
+	{
+		ConfigModel config = TricycleModelLocator.getInstance().getConfigModel();
+		FileListModel flmodel = TricycleModelLocator.getInstance().getFileListModel();
+		ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
+		
+		ConvertEvent event = new ConvertEvent(flmodel.getInputFormat(),
+											  convertmodel.getOutputFormat(),
+											  config.getNamingConvention(),
+											  cmodel.getTreatFilesAs(),													  
+											  config.getReaderDefaults(),
+											  config.getWriterDefaults());
+		event.dispatch();
+		mainWindow.tabbedPane.setSelectedIndex(1);
+	}
+	
 	private void addListeners() {
 
 		convertButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ConfigModel config = TricycleModelLocator.getInstance().getConfigModel();
-				FileListModel flmodel = TricycleModelLocator.getInstance().getFileListModel();
-				ConvertModel cmodel = TricycleModelLocator.getInstance().getConvertModel();
-				
-				ConvertEvent event = new ConvertEvent(flmodel.getInputFormat(),
-													  convertmodel.getOutputFormat(),
-													  config.getNamingConvention(),
-													  cmodel.getTreatFilesAs(),													  
-													  config.getReaderDefaults(),
-													  config.getWriterDefaults());
-				event.dispatch();
-				mainWindow.tabbedPane.setSelectedIndex(1);
 
+				doConversion();
 			}
 		});
 		
@@ -330,6 +343,9 @@ public class FileListPanel extends JPanel {
 		// ImageIcon snIcon = new
 		// ImageIcon(IOUtils.getFileInJarURL("icons/"+iconSize+"/selectnone.png"));
 
+		convertButton.setText(I18n.getText("view.convert.do"));
+
+		
 		browseButton.setText(I18n.getText("view.files.browse"));
 
 		selectAllButton.setToolTipText(I18n.getText("view.files.selectAll"));
@@ -473,4 +489,7 @@ public class FileListPanel extends JPanel {
 	
 	}
 
+	
+	
+	
 }

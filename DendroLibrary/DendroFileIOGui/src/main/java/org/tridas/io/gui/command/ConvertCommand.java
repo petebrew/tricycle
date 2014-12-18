@@ -700,8 +700,8 @@ public class ConvertCommand implements ICommand {
 			boolean fail = false;
 			if (s.errorMessage != null) {
 				DefaultMutableTreeNode errorMessage = new DefaultMutableTreeNode(s.errorMessage);
-				leaf.add(errorMessage);
-				nodes.add(leaf);
+				//leaf.add(errorMessage);
+				//nodes.add(leaf);
 				failed++;
 				fail = true;
 			}
@@ -716,7 +716,7 @@ public class ConvertCommand implements ICommand {
 						HashSet<String> set = new HashSet<String>();
 						
 						for (ConversionWarning warning : file.getDefaults().getWarnings()) {
-							set.add(warning.toStringWithField());
+							//set.add(warning.toStringWithField());
 						}
 						
 						for(String warning : set){
@@ -731,7 +731,7 @@ public class ConvertCommand implements ICommand {
 			
 			if (s.reader != null && s.reader.getWarnings().length != 0) {
 				warnings = true;
-				DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(
+				/*DefaultMutableTreeNode readerWarnings = new DefaultMutableTreeNode(
 						I18n.getText("control.convert.readerWarnings"));
 				
 				// put them all in a hash set first so no duplicates.
@@ -744,12 +744,12 @@ public class ConvertCommand implements ICommand {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning);
 					readerWarnings.add(warn);
 				}
-				leaf.add(readerWarnings);
+				leaf.add(readerWarnings);*/
 			}
 			
 			if (s.writer != null && s.writer.getWarnings().length != 0) {
 				warnings = true;
-				DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(
+				/*DefaultMutableTreeNode writerWarnings = new DefaultMutableTreeNode(
 						I18n.getText("control.convert.writerWarnings"));
 				
 				// put them all in a hash set first so no duplicates.
@@ -762,7 +762,7 @@ public class ConvertCommand implements ICommand {
 					DefaultMutableTreeNode warn = new DefaultMutableTreeNode(warning);
 					writerWarnings.add(warn);
 				}
-				leaf.add(writerWarnings);
+				leaf.add(writerWarnings);*/
 			}
 			
 			if (warnings) {
