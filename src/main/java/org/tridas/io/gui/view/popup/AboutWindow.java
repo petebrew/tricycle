@@ -42,6 +42,7 @@ import org.tridas.io.gui.model.TricycleModelLocator;
 import org.tridas.io.util.IOUtils;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
+import javax.swing.JTextPane;
 
 /**
  * @author Daniel Murphy
@@ -87,12 +88,12 @@ public class AboutWindow extends JDialog {
 		
 		
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
 		getContentPane().add(tabbedPane, "cell 0 1,grow");
 		
 		JPanel panelAbout = new JPanel();
 		tabbedPane.addTab(I18n.getText("view.popup.about"), null, panelAbout, null);
-		panelAbout.setLayout(new MigLayout("", "[171.00px,grow][grow]", "[][][][][][][][109.00px,grow,fill]"));
+		panelAbout.setLayout(new MigLayout("", "[171.00px,grow][grow]", "[][][][][][][][22.00][]"));
 		
 		JLabel lblVersion = new JLabel(I18n.getText("view.popup.about.version")+":");
 		panelAbout.add(lblVersion, "cell 0 0,alignx right");
@@ -129,22 +130,18 @@ public class AboutWindow extends JDialog {
 		txtGUIAuthors.setFont(new Font("Dialog", Font.PLAIN, 12));
 		panelAbout.add(txtGUIAuthors, "cell 1 5");
 		
-		JPanel panel = new JPanel();
-		panelAbout.add(panel, "cell 0 7 2 1,grow");
-		panel.setLayout(new BorderLayout(0, 0));
+		JLabel lblCitation = new JLabel("Citation:");
+		panelAbout.add(lblCitation, "cell 0 6,alignx right,aligny top");
 		
-		JTextArea txtAcknowledgements = new JTextArea();
+		JLabel lblBrewerPw = new JLabel("<html>Brewer, P.W., Murphy, D. and Jansma, E. (2011). TRiCYCLE: a universal conversion tool for digital tree-ring data. Tree-Ring Research, 67: 135–144.");
+		lblBrewerPw.setFont(new Font("Dialog", Font.PLAIN, 12));
+		panelAbout.add(lblBrewerPw, "cell 1 6");
+		
+		JLabel txtAcknowledgements = new JLabel();
+		panelAbout.add(txtAcknowledgements, "cell 0 8 2 1");
+		txtAcknowledgements.setFont(new Font("Dialog", Font.ITALIC, 10));
 		txtAcknowledgements.setForeground(Color.BLACK);
-		txtAcknowledgements.setEnabled(false);
-		txtAcknowledgements.setEditable(false);
-		txtAcknowledgements.setLineWrap(true);
-		txtAcknowledgements.setWrapStyleWord(true);
-		txtAcknowledgements.setText(I18n.getText("view.popup.about.acknowledgementstext"));
-		
-		panel.add(txtAcknowledgements);
-		
-		JLabel lblAcknowledgements = new JLabel(I18n.getText("view.popup.about.acknowledgements")+":");
-		panel.add(lblAcknowledgements, BorderLayout.NORTH);
+		txtAcknowledgements.setText("<html>Many thanks to Roland Aniol, Rémi Brageu, Aoife Daly, Marta Dominguez, Pascale Fraiture, Henri Grissino-Mayer, Kristof Haneca, Patrick Hoffsummer, Bernhard Knibbe, George Lambert, Rowin van Lanen, Catherine Lavier, Hans-Hubert Leuschner, Martin Munro, Ian Tyers and Ronald Visser for their assistance with understanding a number of the dendro data formats.");
 			
 		
 		JPanel panelLicense = new JPanel();
