@@ -114,7 +114,7 @@ public class FileListController extends FrontController {
 
 		// Pick the last used directory by default
 		try{
-			File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
+			File lastDirectory = TricycleModelLocator.getInstance().getLastDirectoryRead();
 			if(lastDirectory != null){
 				fc.setCurrentDirectory(lastDirectory);
 			}
@@ -123,7 +123,7 @@ public class FileListController extends FrontController {
 		}
 		
 		int retValue = fc.showOpenDialog(TricycleModelLocator.getInstance().getMainWindow());
-		TricycleModelLocator.getInstance().setLastDirectory(fc.getCurrentDirectory());
+		TricycleModelLocator.getInstance().setLastDirectoryRead(fc.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			files = fc.getSelectedFiles();
 			String formatDesc = fc.getFileFilter().getDescription();

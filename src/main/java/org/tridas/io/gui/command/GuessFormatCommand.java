@@ -64,13 +64,13 @@ public class GuessFormatCommand implements ICommand {
 		fc.setMultiSelectionEnabled(false);
 		fc.setDialogTitle("Choose file to identify");
 
-		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectory();
+		File lastDirectory = TricycleModelLocator.getInstance().getLastDirectoryRead();
 		if(lastDirectory != null){
 			fc.setCurrentDirectory(lastDirectory);
 		}
 		
 		int retValue = fc.showOpenDialog(TricycleModelLocator.getInstance().getMainWindow());
-		TricycleModelLocator.getInstance().setLastDirectory(fc.getCurrentDirectory());
+		TricycleModelLocator.getInstance().setLastDirectoryRead(fc.getCurrentDirectory());
 		if (retValue == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
 		}

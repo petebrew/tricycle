@@ -48,7 +48,8 @@ public class TricycleModelLocator {
 	
 	private static final TricycleModelLocator ml = new TricycleModelLocator();
 	private static final String PROPERTIES_LOCATION = "TRiCYCLE-properties.xml";
-	private static final String LAST_DIRECTORY = "LastDirectory";
+	private static final String LAST_DIRECTORY_READ = "LastDirectory";
+	private static final String LAST_DIRECTORY_WRITE = "LastDirectoryWrite";
 	private static final String LAST_INPUT_FORMAT = "LastInputFormat";
 	private static final String LAST_OUTPUT_FORMAT = "LastOutputFormat";
 	private static final String LAST_LOCALE_COUNTRY = "LastLocaleCountry";
@@ -140,19 +141,35 @@ public class TricycleModelLocator {
 		prefs.putBoolean(WARN_ABOUT_MATRIX_STYLE, argBool);
 	}	
 	
-	public File getLastDirectory(){
-		String dir = prefs.get(LAST_DIRECTORY, null);
+	public File getLastDirectoryRead(){
+		String dir = prefs.get(LAST_DIRECTORY_READ, null);
 		if(dir != null){
 			return new File(dir);
 		}
 		return null;
 	}
 		
-	public void setLastDirectory(File argLastDirectory){
+	public void setLastDirectoryRead(File argLastDirectory){
 		String path = argLastDirectory.getAbsolutePath();
-		String lastDir = prefs.get(LAST_DIRECTORY, null);
+		String lastDir = prefs.get(LAST_DIRECTORY_READ, null);
 		if(lastDir == null || !path.equals(lastDir)){
-			prefs.put(LAST_DIRECTORY, path);
+			prefs.put(LAST_DIRECTORY_READ, path);
+		}
+	}
+	
+	public File getLastDirectoryWrite(){
+		String dir = prefs.get(LAST_DIRECTORY_WRITE, null);
+		if(dir != null){
+			return new File(dir);
+		}
+		return null;
+	}
+		
+	public void setLastDirectoryWrite(File argLastDirectory){
+		String path = argLastDirectory.getAbsolutePath();
+		String lastDir = prefs.get(LAST_DIRECTORY_WRITE, null);
+		if(lastDir == null || !path.equals(lastDir)){
+			prefs.put(LAST_DIRECTORY_WRITE, path);
 		}
 	}
 	
