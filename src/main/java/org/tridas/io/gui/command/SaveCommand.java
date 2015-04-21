@@ -74,14 +74,13 @@ public class SaveCommand implements ICommand {
 			fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fd.setMultiSelectionEnabled(false);
 			File lastDirectory = TricycleModelLocator.getInstance().getLastDirectoryWrite();
-			if (lastDirectory != null) {
-				fd.setCurrentDirectory(lastDirectory);
-			}
+			fd.setCurrentDirectory(lastDirectory);
+			
 			
 			int retValue = fd.showSaveDialog(TricycleModelLocator.getInstance().getMainWindow());
-			TricycleModelLocator.getInstance().setLastDirectoryWrite(fd.getCurrentDirectory());
 			if (retValue == JFileChooser.APPROVE_OPTION) {
 				folder = fd.getSelectedFile();
+				TricycleModelLocator.getInstance().setLastDirectoryWrite(folder);
 			}
 			else {
 				return;
