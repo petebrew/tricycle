@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.tridas</groupId>
 	<artifactId>tricycle</artifactId>
-	<version>0.2.9-SNAPSHOT</version>
+	<version>0.2.9</version>
 	<name>TRiCYCLE</name>
 	<description>Universal dendro data file converter</description>
 	<licenses>
@@ -178,7 +178,7 @@
 		<dependency>
 			<groupId>org.tridas</groupId>
 			<artifactId>dendrofileio</artifactId>
-			<version>1.1.1-SNAPSHOT</version>
+			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
 
