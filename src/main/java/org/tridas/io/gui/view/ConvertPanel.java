@@ -467,7 +467,15 @@ public class ConvertPanel extends JPanel {
 					HashSet<String> warnings = new HashSet<String>();
 					for(ConversionWarning warning : ob.struct.reader.getWarnings())
 					{
-						warnings.add(warning.getMessage());					
+						String message = "";
+						if(warning.getField()!=null && warning.getField()!="")
+						{
+							message = warning.getField() + " - ";
+						}
+						
+						message += warning.getMessage();
+						
+						warnings.add(message);					
 					}
 					
 					Iterator<String> it = warnings.iterator();
