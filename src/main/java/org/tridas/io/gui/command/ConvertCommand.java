@@ -53,6 +53,7 @@ import org.tridas.io.naming.KeycodeNamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
 import org.tridas.io.naming.SeriesCode8CharNamingConvention;
 import org.tridas.io.naming.SeriesCodeNamingConvention;
+import org.tridas.io.naming.TellervoHierarchicalWithVariableNamingConvention;
 import org.tridas.io.naming.UUIDNamingConvention;
 import org.tridas.io.util.TridasUtils;
 import org.tridas.schema.TridasElement;
@@ -142,6 +143,10 @@ public class ConvertCommand implements ICommand {
 		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.keycode")))
 		{
 			naming = new KeycodeNamingConvention();
+		}
+		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.tellervohierarchicalwithvariable")))
+		{
+			naming = new TellervoHierarchicalWithVariableNamingConvention();
 		}
 		else {
 			JOptionPane.showMessageDialog(null, I18n.getText("control.convert.noNaming", event.getNamingConvention()),
