@@ -21,6 +21,8 @@ import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +53,19 @@ public class App {
 		if(!System.getProperty("os.name").startsWith("Mac")){
 			// For non-MacOSX systems set Nimbus as LnF
 			try {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+				//UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+				
+				 for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				        if ("Nimbus".equals(info.getName())) {
+				            UIManager.setLookAndFeel(info.getClassName());
+				            break;
+				        }
+				    }
+				
 			} catch (Exception e) {
-				log.warn(I18n.getText("lookfeel.nimbus"));
+				e.printStackTrace();
+				//log.warn(I18n.getText("lookfeel.nimbus"));
+				
 			}
 		}
 		else
