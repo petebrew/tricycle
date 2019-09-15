@@ -1,9 +1,9 @@
 Package: TRiCYCLE
-Version: 0.1
+Version: 0.3.5-SNAPSHOT
 Section: misc
 Priority: optional
 Architecture: all
-Depends: openjdk-6-jre
-Maintainer: Peter Brewer <p.brewer@cornell.edu>
+Depends: default-jre
+Maintainer: Peter Brewer <p.brewer@ltrr.arizona.edu>
 Description: Universal dendro data format converter
 Distribution: development
