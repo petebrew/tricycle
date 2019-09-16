@@ -37,6 +37,7 @@ import org.tridas.io.exceptions.ConversionWarningException;
 import org.tridas.io.exceptions.ImpossibleConversionException;
 import org.tridas.io.exceptions.IncorrectDefaultFieldsException;
 import org.tridas.io.exceptions.InvalidDendroFileException;
+import org.tridas.io.formats.corina.CorinaToTridasDefaults.DefaultFields;
 import org.tridas.io.gui.I18n;
 import org.tridas.io.gui.control.convert.ConvertEvent;
 import org.tridas.io.enums.InputFormat;
@@ -66,6 +67,7 @@ import com.dmurph.mvc.IncorrectThreadException;
 import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.ICommand;
+import com.google.common.io.Files;
 
 /**
  * @author Daniel
@@ -301,14 +303,14 @@ public class ConvertCommand implements ICommand {
 			}
 			
 			if (argNaming instanceof NumericalNamingConvention) {
-				if (argFiles[0].contains(".")) {
+				/*if (argFiles[0].contains(".")) {
 					String justFile = argFiles[0].substring(argFiles[0].lastIndexOf(File.separatorChar) + 1,
 							argFiles[0].lastIndexOf('.'));
 					((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
 				}
-				else {
-					((NumericalNamingConvention) argNaming).setBaseFilename(argFiles[0]);
-				}
+				else {*/
+					((NumericalNamingConvention) argNaming).setBaseFilename(Files.getNameWithoutExtension(argFiles[0]));
+				//}
 			}
 			
 			// Set naming
@@ -622,14 +624,9 @@ public class ConvertCommand implements ICommand {
 				}
 				
 				if (argNaming instanceof NumericalNamingConvention) {
-					if (file.contains(".")) {
-						String justFile = file.substring(file.lastIndexOf(File.separatorChar) + 1,
-								file.lastIndexOf('.'));
-						((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
-					}
-					else {
-						((NumericalNamingConvention) argNaming).setBaseFilename(file);
-					}
+
+					((NumericalNamingConvention) argNaming).setBaseFilename(Files.getNameWithoutExtension(file));
+					
 				}
 				
 				// Set naming
