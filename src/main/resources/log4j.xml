@@ -36,7 +36,7 @@
 	</appender>
 
 	<root>
-		<priority value="warning" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 		<appender-ref ref="logfile" />
 	</root>

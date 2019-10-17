@@ -52,6 +52,7 @@ import org.tridas.io.naming.HierarchicalNamingConvention;
 import org.tridas.io.naming.INamingConvention;
 import org.tridas.io.naming.KeycodeNamingConvention;
 import org.tridas.io.naming.NumericalNamingConvention;
+import org.tridas.io.naming.OriginalNamingConvention;
 import org.tridas.io.naming.SeriesCode8CharNamingConvention;
 import org.tridas.io.naming.SeriesCodeNamingConvention;
 import org.tridas.io.naming.TellervoHierarchicalWithVariableNamingConvention;
@@ -145,6 +146,10 @@ public class ConvertCommand implements ICommand {
 		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.keycode")))
 		{
 			naming = new KeycodeNamingConvention();
+		}
+		else if (event.getNamingConvention().equals("Original filename"))
+		{
+			naming = new OriginalNamingConvention();
 		}
 		else if (event.getNamingConvention().equals(org.tridas.io.I18n.getText("namingconvention.tellervohierarchicalwithvariable")))
 		{
