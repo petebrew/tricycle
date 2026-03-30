@@ -12,6 +12,9 @@ permissions:
   contents: read
   packages: read
 
+env:
+  GH_PACKAGES_USER: petebrew
+
 jobs:
   build-jar:
     name: Build Jar
@@ -50,8 +53,18 @@ jobs:
           </settings>
           EOF
         env:
-          GH_PACKAGES_USER: petebrew
           GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Validate DendroFileIO package access
+        shell: bash
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          test -n "${GH_PACKAGES_TOKEN}" || { echo "GH_PACKAGES_TOKEN is not configured"; exit 1; }
+          curl --silent --show-error --fail \
+            -u "${GH_PACKAGES_USER}:${GH_PACKAGES_TOKEN}" \
+            https://maven.pkg.github.com/petebrew/DendroFileIO/org/tridas/dendrofileio/2.0.0/dendrofileio-2.0.0.pom \
+            >/dev/null
 
       - name: Build plain jar
         run: mvn -B -DskipTests package
@@ -100,8 +113,18 @@ jobs:
           </settings>
           EOF
         env:
-          GH_PACKAGES_USER: petebrew
           GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Validate DendroFileIO package access
+        shell: bash
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          test -n "${GH_PACKAGES_TOKEN}" || { echo "GH_PACKAGES_TOKEN is not configured"; exit 1; }
+          curl --silent --show-error --fail \
+            -u "${GH_PACKAGES_USER}:${GH_PACKAGES_TOKEN}" \
+            https://maven.pkg.github.com/petebrew/DendroFileIO/org/tridas/dendrofileio/2.0.0/dendrofileio-2.0.0.pom \
+            >/dev/null
 
       - name: Build fat jar
         run: mvn -B -DskipTests -Pfat-jar package
