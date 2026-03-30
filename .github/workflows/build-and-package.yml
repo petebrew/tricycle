@@ -291,7 +291,7 @@ jobs:
           GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build Windows app image
-        run: mvn -B -DskipTests -Pjpackage,jpackage-windows verify
+        run: mvn -B -DskipTests "-Pjpackage,jpackage-windows" verify
         env:
           GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
