@@ -38,19 +38,20 @@ jobs:
             <servers>
               <server>
                 <id>github-dendrofileio</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
               <server>
                 <id>github-tridasjlib</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PACKAGES_USER: petebrew
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build plain jar
         run: mvn -B -DskipTests package
@@ -87,19 +88,20 @@ jobs:
             <servers>
               <server>
                 <id>github-dendrofileio</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
               <server>
                 <id>github-tridasjlib</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PACKAGES_USER: petebrew
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build fat jar
         run: mvn -B -DskipTests -Pfat-jar package
@@ -138,19 +140,20 @@ jobs:
             <servers>
               <server>
                 <id>github-dendrofileio</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
               <server>
                 <id>github-tridasjlib</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PACKAGES_USER: petebrew
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build Linux DEB package
         run: mvn -B -DskipTests -Pjpackage,jpackage-linux-deb verify
@@ -189,19 +192,20 @@ jobs:
             <servers>
               <server>
                 <id>github-dendrofileio</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
               <server>
                 <id>github-tridasjlib</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PACKAGES_USER: petebrew
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build Linux RPM package
         run: mvn -B -DskipTests -Pjpackage,jpackage-linux-rpm verify
@@ -240,19 +244,20 @@ jobs:
             <servers>
               <server>
                 <id>github-dendrofileio</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
               <server>
                 <id>github-tridasjlib</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PACKAGES_USER: petebrew
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build Windows app image
         run: mvn -B -DskipTests -Pjpackage,jpackage-windows verify
@@ -290,19 +295,20 @@ jobs:
             <servers>
               <server>
                 <id>github-dendrofileio</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
               <server>
                 <id>github-tridasjlib</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <username>${env.GH_PACKAGES_USER}</username>
+                <password>${env.GH_PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PACKAGES_USER: petebrew
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build macOS app image
         run: mvn -B -DskipTests -Pjpackage,jpackage-macos verify
