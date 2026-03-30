@@ -59,36 +59,22 @@
 		<app.name>TRiCYCLE</app.name>
 		<app.vendor>TRiDaS</app.vendor>
 		<app.description>Universal dendro data file converter</app.description>
+		<github.package.owner>petebrew</github.package.owner>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.resourceEncoding>ISO-8859-1</project.build.resourceEncoding>
 	</properties>
 
-	 <!--  Repository to deploy to.  When deploying make sure your .m2/settings.xml
-	 file contains the correct username and password for the repository server -->
-	<distributionManagement>
-	    <repository>
-	      <id>ltrr-releases</id>
-	      <url>https://repo.ltrr.arizona.edu/ltrr-releases/</url>
-	    </repository>
-	    <snapshotRepository>
-	      <id>ltrr-snapshots</id>
-	      <url>https://repo.ltrr.arizona.edu/ltrr-snapshots/</url>
-	    </snapshotRepository>
-	</distributionManagement>
-
 	<!-- Additional Repositories required for the build process -->
 	<repositories>
-		<!-- JBOSS -->
 		<repository>
-			<id>JBOSS</id>
-			<name>JBoss Repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+			<id>github-dendrofileio</id>
+			<name>GitHub Packages - dendrofileio</name>
+			<url>https://maven.pkg.github.com/${github.package.owner}/DendroFileIO</url>
 		</repository>
-
-		<!-- TRiDaS -->
 		<repository>
-			<id>ltrr-releases</id>
-			<url>https://repo.ltrr.arizona.edu/ltrr-releases/</url>
+			<id>github-tridasjlib</id>
+			<name>GitHub Packages - TridasJLib</name>
+			<url>https://maven.pkg.github.com/${github.package.owner}/TridasJLib</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -96,17 +82,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>ltrr-snapshots</id>
-			<url>https://repo.ltrr.arizona.edu/ltrr-snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-
 	</repositories>
 
 	<!-- Repositories for the plugins -->
@@ -262,7 +237,6 @@
 				<version>3.14.0</version>
 				<configuration>
 					<release>${maven.compiler.release}</release>
-					<optimise>true</optimise>
 					<debug>true</debug>
 				</configuration>
 			</plugin>
