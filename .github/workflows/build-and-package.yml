@@ -68,6 +68,8 @@ jobs:
 
       - name: Build plain jar
         run: mvn -B -DskipTests package
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload jar artifacts
         uses: actions/upload-artifact@v4
@@ -128,6 +130,8 @@ jobs:
 
       - name: Build fat jar
         run: mvn -B -DskipTests -Pfat-jar package
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload fat jar artifacts
         uses: actions/upload-artifact@v4
@@ -180,6 +184,8 @@ jobs:
 
       - name: Build Linux DEB package
         run: mvn -B -DskipTests -Pjpackage,jpackage-linux-deb verify
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload Linux DEB artifacts
         uses: actions/upload-artifact@v4
@@ -232,6 +238,8 @@ jobs:
 
       - name: Build Linux RPM package
         run: mvn -B -DskipTests -Pjpackage,jpackage-linux-rpm verify
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload Linux RPM artifacts
         uses: actions/upload-artifact@v4
@@ -284,6 +292,8 @@ jobs:
 
       - name: Build Windows app image
         run: mvn -B -DskipTests -Pjpackage,jpackage-windows verify
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
@@ -335,6 +345,8 @@ jobs:
 
       - name: Build macOS app image
         run: mvn -B -DskipTests -Pjpackage,jpackage-macos verify
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
