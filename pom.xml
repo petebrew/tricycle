@@ -136,9 +136,6 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>build.properties</include>
-					<include>build/tricycle</include>
-					<include>build/tricycle.desktop</include>
-					<include>build/create-win-setup.nsi</include>
 				</includes>
 			</resource>
 
@@ -418,6 +415,8 @@
 				<jpackage.linux.dest>${project.build.directory}/jpackage-linux</jpackage.linux.dest>
 				<jpackage.linux.installDir>/opt/tricycle</jpackage.linux.installDir>
 				<jpackage.linux.maintainer>p.brewer@ltrr.arizona.edu</jpackage.linux.maintainer>
+				<jpackage.linux.icon>${project.basedir}/src/main/resources/icons/48x48/tricycle.png</jpackage.linux.icon>
+				<jpackage.linux.resourceDir>${project.basedir}/src/main/jpackage/linux</jpackage.linux.resourceDir>
 			</properties>
 			<build>
 				<plugins>
@@ -449,8 +448,12 @@
 										<argument>${app.vendor}</argument>
 										<argument>--description</argument>
 										<argument>${app.description}</argument>
+										<argument>--icon</argument>
+										<argument>${jpackage.linux.icon}</argument>
 										<argument>--install-dir</argument>
 										<argument>${jpackage.linux.installDir}</argument>
+										<argument>--resource-dir</argument>
+										<argument>${jpackage.linux.resourceDir}</argument>
 										<argument>--linux-shortcut</argument>
 										<argument>--linux-menu-group</argument>
 										<argument>Science</argument>
@@ -476,6 +479,8 @@
 			<properties>
 				<jpackage.linux.dest>${project.build.directory}/jpackage-linux</jpackage.linux.dest>
 				<jpackage.linux.installDir>/opt/tricycle</jpackage.linux.installDir>
+				<jpackage.linux.icon>${project.basedir}/src/main/resources/icons/48x48/tricycle.png</jpackage.linux.icon>
+				<jpackage.linux.resourceDir>${project.basedir}/src/main/jpackage/linux</jpackage.linux.resourceDir>
 			</properties>
 			<build>
 				<plugins>
@@ -507,8 +512,12 @@
 										<argument>${app.vendor}</argument>
 										<argument>--description</argument>
 										<argument>${app.description}</argument>
+										<argument>--icon</argument>
+										<argument>${jpackage.linux.icon}</argument>
 										<argument>--install-dir</argument>
 										<argument>${jpackage.linux.installDir}</argument>
+										<argument>--resource-dir</argument>
+										<argument>${jpackage.linux.resourceDir}</argument>
 										<argument>--linux-shortcut</argument>
 										<argument>--linux-menu-group</argument>
 										<argument>Science</argument>
@@ -629,256 +638,6 @@
 			</build>
 		</profile>
 
-		<profile>
-			<id>legacy-native-packaging</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>jdeb</artifactId>
-						<groupId>org.vafer</groupId>
-						<version>0.8</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>jdeb</goal>
-								</goals>
-								<configuration>
-									<deb>${project.build.directory}/binaries/${project.version}/Linux/${project.build.finalName}.deb</deb>
-									<dataSet>
-										<data>
-											<src>${project.build.directory}/${project.build.finalName}.jar</src>
-											<type>file</type>
-											<mapper>
-												<type>perm</type>
-												<prefix>/usr/share/tricycle</prefix>
-											</mapper>
-										</data>
-										<data>
-											<src>target/classes/build/tricycle</src>
-											<type>file</type>
-											<mapper>
-												<type>perm</type>
-												<prefix>/usr/bin/</prefix>
-												<filemode>755</filemode>
-											</mapper>
-										</data>
-										<data>
-											<src>target/classes/build/tricycle.desktop</src>
-											<type>file</type>
-											<mapper>
-												<type>perm</type>
-												<prefix>/usr/share/applications/</prefix>
-												<filemode>755</filemode>
-											</mapper>
-										</data>
-										<data>
-											<src>src/main/resources/icons/48x48/tricycle.png</src>
-											<type>file</type>
-											<mapper>
-												<type>perm</type>
-												<prefix>/usr/share/pixmaps/</prefix>
-											</mapper>
-										</data>
-										<data>
-											<src>src/main/resources/icons/32x32/tricycle.xpm</src>
-											<type>file</type>
-											<mapper>
-												<type>perm</type>
-												<prefix>/usr/share/pixmaps/</prefix>
-											</mapper>
-										</data>
-									</dataSet>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>rpm-maven-plugin</artifactId>
-						<version>2.1-alpha-1</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>rpm</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<copyright>Apache 2.0</copyright>
-							<distribution>TRiCYCLE</distribution>
-							<group>Applications/File</group>
-							<icon>src/main/resources/icons/32x32/tricycle.xpm</icon>
-							<packager>TRiDaS</packager>
-							<prefix>/usr/local</prefix>
-							<mappings>
-								<mapping>
-									<directory>/usr/share/tricycle</directory>
-									<filemode>755</filemode>
-									<username>root</username>
-									<groupname>root</groupname>
-									<sources>
-										<source>
-											<location>${project.build.directory}/${project.build.finalName}.jar</location>
-										</source>
-									</sources>
-								</mapping>
-								<mapping>
-									<directory>/usr/bin/</directory>
-									<filemode>755</filemode>
-									<username>root</username>
-									<groupname>root</groupname>
-									<sources>
-										<source>
-											<location>${project.build.directory}/classes/build/tricycle</location>
-										</source>
-									</sources>
-								</mapping>
-								<mapping>
-									<directory>/usr/share/applications/</directory>
-									<filemode>755</filemode>
-									<username>root</username>
-									<groupname>root</groupname>
-									<sources>
-										<source>
-											<location>${project.build.directory}/classes/build/tricycle.desktop</location>
-										</source>
-									</sources>
-								</mapping>
-								<mapping>
-									<directory>/usr/share/pixmaps/</directory>
-									<filemode>755</filemode>
-									<username>root</username>
-									<groupname>root</groupname>
-									<sources>
-										<source>
-											<location>src/main/resources/icons/32x32/tricycle.xpm</location>
-										</source>
-									</sources>
-								</mapping>
-							</mappings>
-							<preinstallScriptlet>
-								<script>echo "Installing TRiCYCLE now"</script>
-							</preinstallScriptlet>
-						</configuration>
-					</plugin>
-
-					<plugin>
-						<groupId>sh.tak.appbundler</groupId>
-						<artifactId>appbundle-maven-plugin</artifactId>
-						<version>1.0.4</version>
-						<configuration>
-							<mainClass>org.tridas.io.gui.App</mainClass>
-							<iconFile>${basedir}/src/main/resources/icons/application.icns</iconFile>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>bundle</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>StripDupsFromOSX</id>
-								<phase>package</phase>
-								<configuration>
-									<tasks>
-										<taskdef resource="net/sf/antcontrib/antcontrib.properties"
-											classpathref="maven.plugin.classpath"/>
-										<echo> MKDIR ${project.build.directory}/binaries/${project.version}/MacOSX </echo>
-										<mkdir dir="${project.build.directory}/binaries/${project.version}/MacOSX"/>
-										<echo> Delete dependencies from JAR: ${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo</echo>
-										<delete dir="${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo"/>
-										<echo>Copy JAR into the build folder</echo>
-										<echo>File: ${project.build.directory}/${project.build.finalName}.jar... into ${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo/org/tridas/io/${project.version}/</echo>
-										<copy file="${project.build.directory}/${project.build.finalName}.jar"
-											todir="${project.build.directory}/${project.build.finalName}/TRiCYCLE.app/Contents/Resources/Java/repo/org/tridas/io/${project.version}/"/>
-										<echo>Delete any previous OSX package</echo>
-										<delete file="${project.build.directory}/binaries/${project.version}/MacOSX/${project.build.finalName}-app.zip" failonerror="false"/>
-										<echo>Create the app.zip file from our build folder. 555 filemode required for executing</echo>
-										<zip destfile="${project.build.directory}/binaries/${project.version}/MacOSX/${project.build.finalName}-app.zip" update="false">
-											<zipfileset filemode="555" dir="${project.build.directory}/${project.build.finalName}" includes="TRiCYCLE.app/**"/>
-										</zip>
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-
-							<execution>
-								<id>CopyRPMFile</id>
-								<phase>package</phase>
-								<configuration>
-									<tasks>
-										<taskdef resource="net/sf/antcontrib/antcontrib.properties"
-											classpathref="maven.plugin.classpath" />
-										<copy todir="${project.build.directory}/binaries/${project.version}/Linux/">
-											<fileset dir="${project.build.directory}/rpm/tricycle/RPMS/noarch/">
-											</fileset>
-										</copy>
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-
-							<execution>
-								<id>CopyJarFile</id>
-								<phase>package</phase>
-								<configuration>
-									<tasks>
-										<taskdef resource="net/sf/antcontrib/antcontrib.properties"
-											classpathref="maven.plugin.classpath"/>
-										<mkdir dir="${project.build.directory}/binaries/${project.version}/Java"/>
-										<copy file="${project.build.directory}/${project.build.finalName}.jar" tofile="${project.build.directory}/binaries/${project.version}/Java/${project.build.finalName}.jar" failonerror="false"/>
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>ant-contrib</groupId>
-								<artifactId>ant-contrib</artifactId>
-								<version>1.0b3</version>
-								<exclusions>
-									<exclusion>
-										<groupId>ant</groupId>
-										<artifactId>ant</artifactId>
-									</exclusion>
-								</exclusions>
-							</dependency>
-							<dependency>
-								<groupId>ant</groupId>
-								<artifactId>ant-nodeps</artifactId>
-								<version>1.6.5</version>
-							</dependency>
-							<dependency>
-								<groupId>ant</groupId>
-								<artifactId>ant-jsch</artifactId>
-								<version>1.6.5</version>
-							</dependency>
-							<dependency>
-								<groupId>com.jcraft</groupId>
-								<artifactId>jsch</artifactId>
-								<version>0.1.42</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 
 </project>
