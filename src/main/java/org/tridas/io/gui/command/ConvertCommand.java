@@ -68,7 +68,6 @@ import com.dmurph.mvc.IncorrectThreadException;
 import com.dmurph.mvc.MVC;
 import com.dmurph.mvc.MVCEvent;
 import com.dmurph.mvc.control.ICommand;
-import com.google.common.io.Files;
 
 /**
  * @author Daniel
@@ -314,7 +313,7 @@ public class ConvertCommand implements ICommand {
 					((NumericalNamingConvention) argNaming).setBaseFilename(justFile);
 				}
 				else {*/
-					((NumericalNamingConvention) argNaming).setBaseFilename(Files.getNameWithoutExtension(argFiles[0]));
+					((NumericalNamingConvention) argNaming).setBaseFilename(getNameWithoutExtension(argFiles[0]));
 				//}
 			}
 			
@@ -630,7 +629,7 @@ public class ConvertCommand implements ICommand {
 				
 				if (argNaming instanceof NumericalNamingConvention) {
 
-					((NumericalNamingConvention) argNaming).setBaseFilename(Files.getNameWithoutExtension(file));
+					((NumericalNamingConvention) argNaming).setBaseFilename(getNameWithoutExtension(file));
 					
 				}
 				
@@ -872,5 +871,14 @@ public class ConvertCommand implements ICommand {
 			e.printStackTrace();
 			return container;
 		}
+	}
+
+	private String getNameWithoutExtension(String path) {
+		String fileName = new File(path).getName();
+		int extensionStart = fileName.lastIndexOf('.');
+		if (extensionStart <= 0) {
+			return fileName;
+		}
+		return fileName.substring(0, extensionStart);
 	}
 }

@@ -160,7 +160,8 @@ public class App {
 			value = build.getString(key);
 		} catch (MissingResourceException e) {
 			log.error("Unable to find build info: " + key);
-			return I18n.getText("???");
+			//return I18n.getText("???");
+			return "???";
 		};
 		
 		StringBuffer buf = new StringBuffer();

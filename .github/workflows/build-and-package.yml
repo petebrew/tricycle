@@ -1,0 +1,161 @@
+name: Build And Package
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-jar:
+    name: Build Jar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build plain jar
+        run: mvn -B -DskipTests package
+
+      - name: Upload jar artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tricycle-jar
+          path: |
+            target/*.jar
+
+  build-fat-jar:
+    name: Build Fat Jar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build fat jar
+        run: mvn -B -DskipTests -Pfat-jar package
+
+      - name: Upload fat jar artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tricycle-fat-jar
+          path: |
+            target/*-all.jar
+            target/*.jar
+
+  package-linux-deb:
+    name: Package Linux DEB
+    runs-on: ubuntu-latest
+    needs: build-jar
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Linux DEB package
+        run: mvn -B -DskipTests -Pjpackage,jpackage-linux-deb verify
+
+      - name: Upload Linux DEB artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tricycle-linux-deb
+          path: |
+            target/jpackage-linux/**/*.deb
+            target/jpackage/**/*
+
+  package-linux-rpm:
+    name: Package Linux RPM
+    runs-on: ubuntu-latest
+    needs: build-jar
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Linux RPM package
+        run: mvn -B -DskipTests -Pjpackage,jpackage-linux-rpm verify
+
+      - name: Upload Linux RPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tricycle-linux-rpm
+          path: |
+            target/jpackage-linux/**/*.rpm
+            target/jpackage/**/*
+
+  package-windows:
+    name: Package Windows App Image
+    runs-on: windows-latest
+    needs: build-jar
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Windows app image
+        run: mvn -B -DskipTests -Pjpackage,jpackage-windows verify
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tricycle-windows-app-image
+          path: |
+            target/jpackage-windows/**/*
+
+  package-macos:
+    name: Package macOS App Image
+    runs-on: macos-latest
+    needs: build-jar
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build macOS app image
+        run: mvn -B -DskipTests -Pjpackage,jpackage-macos verify
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tricycle-macos-app-image
+          path: |
+            target/jpackage-macos/**/*
