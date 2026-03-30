@@ -1,0 +1,116 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Maven: Build Jar",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "package"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: Build Fat Jar",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "-Pfat-jar",
+        "package"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: Build App Image",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "-Pjpackage",
+        "clean",
+        "verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: Build DEB",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "-Pjpackage,jpackage-linux-deb",
+        "clean",
+        "verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: Build RPM",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "-Pjpackage,jpackage-linux-rpm",
+        "clean",
+        "verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: Build Windows MSI",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "-Djpackage.windows.type=msi",
+        "-Pjpackage,jpackage-windows",
+        "clean",
+        "verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: Build Windows EXE",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "-DskipTests",
+        "-Djpackage.windows.type=exe",
+        "-Pjpackage,jpackage-windows",
+        "clean",
+        "verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

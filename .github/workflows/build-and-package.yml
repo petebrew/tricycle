@@ -250,9 +250,15 @@ jobs:
             target/jpackage/**/*
 
   package-windows:
-    name: Package Windows App Image
+    name: Package Windows ${{ matrix.installer_type }}
     runs-on: windows-latest
     needs: build-jar
+    strategy:
+      fail-fast: false
+      matrix:
+        installer_type:
+          - msi
+          - exe
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -290,16 +296,17 @@ jobs:
           GH_PACKAGES_USER: petebrew
           GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
-      - name: Build Windows app image
-        run: mvn -B -DskipTests "-Pjpackage,jpackage-windows" verify
+      - name: Build Windows installer
+        run: mvn -B -DskipTests "-Djpackage.windows.type=${{ matrix.installer_type }}" "-Pjpackage,jpackage-windows" clean verify
         env:
           GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: tricycle-windows-app-image
+          name: tricycle-windows-${{ matrix.installer_type }}
           path: |
+            target/jpackage-windows/**/*.${{ matrix.installer_type }}
             target/jpackage-windows/**/*
 
   package-macos:

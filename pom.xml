@@ -542,6 +542,7 @@
 			<id>jpackage-windows</id>
 			<properties>
 				<jpackage.windows.dest>${project.build.directory}/jpackage-windows</jpackage.windows.dest>
+				<jpackage.windows.type>msi</jpackage.windows.type>
 			</properties>
 			<build>
 				<plugins>
@@ -560,7 +561,7 @@
 									<executable>jpackage</executable>
 									<arguments>
 										<argument>--type</argument>
-										<argument>app-image</argument>
+										<argument>${jpackage.windows.type}</argument>
 										<argument>--input</argument>
 										<argument>${jpackage.input}</argument>
 										<argument>--dest</argument>
@@ -579,6 +580,9 @@
 										<argument>${app.description}</argument>
 										<argument>--icon</argument>
 										<argument>${project.basedir}/src/main/resources/icons/application.ico</argument>
+										<argument>--win-menu</argument>
+										<argument>--win-shortcut</argument>
+										<argument>--win-dir-chooser</argument>
 									</arguments>
 								</configuration>
 							</execution>
