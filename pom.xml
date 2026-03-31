@@ -596,6 +596,8 @@
 			<id>jpackage-macos</id>
 			<properties>
 				<jpackage.macos.dest>${project.build.directory}/jpackage-macos</jpackage.macos.dest>
+				<jpackage.macos.type>app-image</jpackage.macos.type>
+				<jpackage.macos.identifier>org.tridas.tricycle</jpackage.macos.identifier>
 			</properties>
 			<build>
 				<plugins>
@@ -614,7 +616,7 @@
 									<executable>jpackage</executable>
 									<arguments>
 										<argument>--type</argument>
-										<argument>app-image</argument>
+										<argument>${jpackage.macos.type}</argument>
 										<argument>--input</argument>
 										<argument>${jpackage.input}</argument>
 										<argument>--dest</argument>
@@ -633,6 +635,10 @@
 										<argument>${app.description}</argument>
 										<argument>--icon</argument>
 										<argument>${project.basedir}/src/main/resources/icons/application.icns</argument>
+										<argument>--mac-package-name</argument>
+										<argument>${jpackage.app.name}</argument>
+										<argument>--mac-package-identifier</argument>
+										<argument>${jpackage.macos.identifier}</argument>
 									</arguments>
 								</configuration>
 							</execution>

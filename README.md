@@ -12,7 +12,7 @@ TRiCYCLE now targets Java 21.
 - `mvn -Pjpackage,jpackage-linux-deb verify` builds a Linux `.deb`
 - `mvn -Pjpackage,jpackage-linux-rpm verify` builds a Linux `.rpm`
 - `mvn -Pjpackage,jpackage-windows verify` builds a Windows app image on Windows
-- `mvn -Pjpackage,jpackage-macos verify` builds a macOS app image on macOS
+- `mvn -Pjpackage,jpackage-macos verify` builds a macOS `.app` bundle on macOS
 
 ## CI
 
@@ -21,4 +21,4 @@ GitHub Actions is configured in [.github/workflows/build-and-package.yml](./.git
 - build the plain jar on Linux
 - build the fat jar on Linux
 - build Linux `.deb` and `.rpm` packages
-- build Windows and macOS app images on native runners
+- build Windows installers and macOS `.app` bundles on native runners
